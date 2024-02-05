@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center">
   <a href="https://nextjs-flask-starter.vercel.app/">
     <img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" height="96">
@@ -76,3 +77,11 @@ To learn more about Next.js, take a look at the following resources:
 - [Flask Documentation](https://flask.palletsprojects.com/en/1.1.x/) - learn about Flask features and API.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+=======
+# Opal
+Preliminary creation of the Project OPAL website for NOAA's Atlatnic Oceanographic and Metereological Laboratory
+
+Authors:
+- Carter Rollins
+- Bayden Willms
+>>>>>>> a4710e64f9691daeda5de9eb29e3b1c4a8fd67e6
