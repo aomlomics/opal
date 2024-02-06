@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getBaseUrl } from "@/helpers/utils";
 import Image from "next/image";
+import { UserButton } from "@clerk/nextjs";
 
 export default function Header() {
 	return (
@@ -23,8 +24,7 @@ export default function Header() {
 					<div></div>
 				</div>
 				<div className="navbar-end">
-					{/* <Link href={`${getBaseUrl()}/admin`}>Admin</Link>
-					<Link href={`${getBaseUrl()}/api/auth/signout?callbackUrl=/`}>Sign Out</Link> */}
+					<UserButton afterSignOutUrl="/"/>
 				</div>
 			</div>
 		</header>
