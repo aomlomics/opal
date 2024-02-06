@@ -8,7 +8,7 @@ export default function Header() {
 			<Link className="normal-case text-xl" href={`${getBaseUrl()}`}>
 				<div className="avatar m-3">
 					<div className="w-20">
-						<Image src={`/public/noaaLogoWithWriting.png`} alt="" fill={true}/>
+						<Image src="/noaaLogoWithWriting.png" alt="" fill={true}/>
 					</div>
 				</div>
 			</Link>
