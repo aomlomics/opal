@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Header() {
 	return (
 		<header className="sticky top-0 z-40">
-			<div className="justify-between navbar bg-base-100">
+			<div className="justify-between navbar">
 				<button id="skipNav" className="w-0 h-0"></button>
 				<div className="navbar-start">
 					{/* <SmallNav/> */}
