@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getBaseUrl } from "@/helpers/utils";
 import Image from "next/image";
-import UserNav from "@/components/UserNav";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
 	
@@ -11,7 +11,7 @@ export default function Header() {
 				<button id="skipNav" className="w-0 h-0"></button>
 				<div className="navbar-start">
 					{/* <SmallNav/> */}
-					<Link className="normal-case text-xl h-20 w-60 bg-neutral" href={`${getBaseUrl()}`}>
+					<Link className="normal-case text-xl h-20 w-60 bg-neutral rounded-3xl lg:rounded-l-none" href={`${getBaseUrl()}`}>
 						<div className="avatar w-full h-full">
 							<Image src="/images/noaaLogo.svg" alt="" fill={true} style={{objectFit: "contain"}}/>
 						</div>
@@ -24,8 +24,15 @@ export default function Header() {
 					{/* <Nav/> */}
 					<div></div>
 				</div>
-				<div className="navbar-end">
-					<UserNav></UserNav>
+				<div className="navbar-end mr-5">
+					<SignedIn>
+						<UserButton afterSignOutUrl="/" />
+					</SignedIn>
+					<SignedOut>
+						<SignInButton>
+							<button className="btn">Sign In</button>
+						</SignInButton>
+					</SignedOut>
 				</div>
 			</div>
 		</header>
