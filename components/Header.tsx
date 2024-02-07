@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { getBaseUrl } from "@/helpers/utils";
 import Image from "next/image";
-import { UserButton } from "@clerk/nextjs";
+import UserNav from "@/components/UserNav";
+import { User } from "@clerk/nextjs/dist/types/server";
 
 export default function Header() {
+	
 	return (
 		<header className="sticky top-0 z-40 bg-secondary">
 			<div className="justify-between navbar">
@@ -24,7 +26,7 @@ export default function Header() {
 					<div></div>
 				</div>
 				<div className="navbar-end">
-					<UserButton afterSignOutUrl="/"/>
+					<UserNav></UserNav>
 				</div>
 			</div>
 		</header>
