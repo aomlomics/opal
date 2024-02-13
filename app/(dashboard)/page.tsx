@@ -5,7 +5,7 @@ const Map = dynamic(() => import('@/components/Map'), {
 
 export default function Dashboard() {
 	return (
-		<div className="">
+		<div className="w-full grow-1">
 			<Map></Map>
 		</div>
 	);

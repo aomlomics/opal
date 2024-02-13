@@ -25,26 +25,45 @@ export default function MyMap() {
 		return (
 			<>
 				{markers.map((marker) => {
-					return <Marker icon={ICON} position={marker}>
-						<Popup>
-							A pretty CSS3 popup. <br /> Easily customizable.
-						</Popup>
-					</Marker>
+					return (
+						<Marker key={marker.toString()} icon={ICON} position={marker}>
+							<Popup>
+								A pretty CSS3 popup. <br /> Easily customizable.
+							</Popup>
+						</Marker>
+					);
 				})}
 			</>
 		);
 	}
 
+	//jsx element to reset display markers (DOES NOT WORK WITH LocationMarkers INTERCEPTING CLICK EVENT)
+	function ResetMarkers() {
+		function test() {
+			console.log("hi")
+			setMarkers([centerStart])
+		}
+
+		return (
+			<div className="leaflet-left leaflet-bottom">
+				<div className="leaflet-bar leaflet-control">
+					<button className="text-black bg-white p-1" onClick={test}>Reset Markers</button>
+				</div>
+			</div>
+		);
+	}
+
 	return (
-		<div style={{ width: '95vh', height: '75vh', marginLeft:'116.5vh'}}>
+		<div className="flex flex-col items-start w-1/2 h-1/2">
 			<button className="btn btn-accent" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
-			<MapContainer center={centerStart} zoom={ZOOM_LEVEL} scrollWheelZoom={false} style={{ width: '100%', height: '80%' }}>
-				<TileLayer
-					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-				/>
-				<LocationMarkers></LocationMarkers>
-			</MapContainer>
+				<MapContainer className="w-full grow" center={centerStart} zoom={ZOOM_LEVEL} scrollWheelZoom={false}>
+					<TileLayer
+						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+					/>
+					<LocationMarkers></LocationMarkers>
+					{/* <ResetMarkers></ResetMarkers> */}
+				</MapContainer>
 		</div>
 	);
 };
