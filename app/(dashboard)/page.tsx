@@ -5,8 +5,8 @@ const Map = dynamic(() => import('@/components/Map'), {
 
 export default function Dashboard() {
 	return (
-		<>
+		<div className="">
 			<Map></Map>
-		</>
+		</div>
 	);
 }

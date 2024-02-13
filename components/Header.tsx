@@ -4,7 +4,6 @@ import Image from "next/image";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
-	
 	return (
 		<header className="sticky top-0 z-40 bg-secondary">
 			<div className="justify-between navbar p-0">
