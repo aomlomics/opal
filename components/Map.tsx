@@ -6,12 +6,12 @@ import "leaflet/dist/leaflet.css"
 
 
 export default function MyMap() {
-	const [center, setCenter] = useState({ lat: 25.7617, lng: -80.1918 })
+	const [center, setCenter] = useState({ lat: 25.7617, lng: -80.8918 })
 	const ZOOM_LEVEL = 7
 	const mapRef = useRef()
 
 	return (
-		<div className="mx-auto w-2/3 h-97">
+		<div style={{ width: '95vh', height: '75vh', marginLeft:'116.5vh'}}>
 		  <MapContainer center={center} zoom={ZOOM_LEVEL} scrollWheelZoom={false} style={{ width: '100%', height: '80%' }}>
 			<TileLayer
 			  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
