@@ -1,25 +1,28 @@
 "use client"
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef} from 'react'
 import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 
+
 export default function MyMap() {
-	const [center, setCenter] = useState({ lat: -4.043477, lng: 39.668205 })
-	const ZOOM_LEVEL = 9
+	const [center, setCenter] = useState({ lat: 25.7617, lng: -80.1918 })
+	const ZOOM_LEVEL = 7
 	const mapRef = useRef()
 
 	return (
-		<MapContainer className='min-w-full' center={center} zoom={ZOOM_LEVEL} scrollWheelZoom={false}>
+		<div className="mx-auto w-2/3 h-97">
+		  <MapContainer center={center} zoom={ZOOM_LEVEL} scrollWheelZoom={false} style={{ width: '100%', height: '80%' }}>
 			<TileLayer
-				attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-				url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+			  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 			/>
 			<Marker position={center}>
-				<Popup>
-					A pretty CSS3 popup. <br /> Easily customizable.
-				</Popup>
+			  <Popup>
+				A pretty CSS3 popup. <br /> Easily customizable.
+			  </Popup>
 			</Marker>
-		</MapContainer>
-	)
-}
+		  </MapContainer>
+		</div>
+	  );
+	};
