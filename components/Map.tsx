@@ -38,16 +38,11 @@ export default function MyMap() {
 	}
 
 	//jsx element to reset display markers (DOES NOT WORK WITH LocationMarkers INTERCEPTING CLICK EVENT)
-	function ResetMarkers() {
-		function test() {
-			console.log("hi")
-			setMarkers([centerStart])
-		}
-
+	function ResetMarkersButton() {
 		return (
 			<div className="leaflet-left leaflet-bottom">
 				<div className="leaflet-bar leaflet-control">
-					<button className="text-black bg-white p-1" onClick={test}>Reset Markers</button>
+					<button className="text-black bg-white p-1" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
 				</div>
 			</div>
 		);
@@ -56,14 +51,18 @@ export default function MyMap() {
 	return (
 		<div className="flex flex-col items-start w-1/2 h-1/2">
 			<button className="btn btn-accent" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
-				<MapContainer className="w-full grow" center={centerStart} zoom={ZOOM_LEVEL} scrollWheelZoom={false}>
-					<TileLayer
-						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-					/>
-					<LocationMarkers></LocationMarkers>
-					{/* <ResetMarkers></ResetMarkers> */}
-				</MapContainer>
+			<MapContainer className="w-full grow" center={centerStart} zoom={ZOOM_LEVEL}>
+				<TileLayer
+					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+				/>
+				<TileLayer
+					attribution='Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a>'
+					url="https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png"
+				/>
+				<LocationMarkers></LocationMarkers>
+				{/* <ResetMarkersButton></ResetMarkersButton> */}
+			</MapContainer>
 		</div>
 	);
 };
