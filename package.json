@@ -1,14 +1,12 @@
 {
-  "name": "next-flask",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "flask-dev": "pip install -r requirements.txt && python -m flask --app api/index run -p 5328",
-    "next-dev": "next dev",
-    "dev": "concurrently \"pnpm run next-dev\" \"pnpm run flask-dev\"",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "node prisma/seed.mjs",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.6",
@@ -27,6 +25,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-leaflet": "^4.2.1",
+    "swr": "^2.2.4",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
   },
