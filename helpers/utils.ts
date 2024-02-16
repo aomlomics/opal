@@ -8,7 +8,7 @@ export function getBaseUrl() {
 	if (process.env.NODE_ENV === "development") {
 		return "http://localhost:3000";
 	}
-	return "opal-ochre.vercel.app";
+	return "https://opal-ochre.vercel.app";
 }
 
 export function isEmpty(obj: Object) {
