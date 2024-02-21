@@ -3,7 +3,6 @@
 import { clientApiFetch as clientApiFetch } from "@/helpers/utils";
 import useSWR from "swr";
 
-
 export default function TestClient() {
 	const projectsResponse = clientApiFetch(useSWR, "projects");
 	if (projectsResponse.isLoading) return <div>Loading...</div>;
