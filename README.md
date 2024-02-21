@@ -11,4 +11,7 @@ Open the Prisma database view
 ```bash
 npx prisma studio
 ```
-
+Push schema changes to database
+```bash
+npx prisma generate --generator js
+```

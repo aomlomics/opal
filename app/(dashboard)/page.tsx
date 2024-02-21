@@ -14,7 +14,7 @@ export default async function Dashboard() {
 		<div className="w-full grow-1">
 			<Map></Map>
 			<div>
-				<p>Response from remote server: {data.response}</p>
+				<p>Response from remote server: {data}</p>
 			</div>
 		</div>
 	);
