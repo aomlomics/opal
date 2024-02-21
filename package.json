@@ -6,7 +6,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "node prisma/seed.mjs",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --generator js"
   },
   "dependencies": {
     "@prisma/client": "^5.10.1",
