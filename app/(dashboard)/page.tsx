@@ -1,3 +1,4 @@
+import TestClient from '@/components/TestClient';
 import dynamic from 'next/dynamic'
 const Map = dynamic(() => import('@/components/Map'), {
 	ssr: false,
@@ -15,6 +16,8 @@ export default async function Dashboard() {
 			<Map></Map>
 			<div>
 				<p>Response from remote server: {data}</p>
+				<p>------------------------------------------------------</p>
+				<TestClient></TestClient>
 			</div>
 		</div>
 	);
