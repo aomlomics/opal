@@ -1,13 +1,12 @@
-import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import { authMiddleware } from "@clerk/nextjs";
 import { getBaseUrl } from "@/helpers/utils";
 
-export default withAuth(
-	function middleware(request: NextRequestWithAuth) {
-		if ((request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/api/admin")) && request.nextauth.token?.roleId !== "admin") {
-			return NextResponse.rewrite(new URL(`${getBaseUrl()}/denied`, request.url));
-		}
-	}
-);
+export default authMiddleware({
+	publicRoutes: (request) => {
+		return !(request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/api/admin"));
+	},
+});
 
-export const config = { matcher: ["/admin/:path*", "/api/admin/:path*"] };
+export const config = {
+  	matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};

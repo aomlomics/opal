@@ -3,7 +3,6 @@
 import { fetcher, getBaseUrl } from "@/helpers/utils";
 import useSWR from "swr";
 
-
 export default function TestClient() {
 	const projectsResponse = useSWR(`${getBaseUrl()}/api/projects`, fetcher);
 	if (projectsResponse.isLoading) return <div>Loading...</div>;
