@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import LogInOut from "@/components/LogInOut";
 import { getBaseUrl } from "@/helpers/utils";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
 	return (
@@ -24,7 +24,14 @@ export default function Header() {
 					<div></div>
 				</div>
 				<div className="navbar-end mr-5">
-					<LogInOut></LogInOut>
+					<SignedIn>
+						<UserButton afterSignOutUrl="/" />
+					</SignedIn>
+					<SignedOut>
+						<SignInButton>
+							<button className="btn">Sign In</button>
+						</SignInButton>
+					</SignedOut>
 				</div>
 			</div>
 		</header>
