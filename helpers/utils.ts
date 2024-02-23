@@ -1,9 +1,7 @@
-export function clientApiFetch(useSWR: any, apiRoute: string) {
-	return useSWR(`${getBaseUrl()}/api/${apiRoute}`, async (url: string) => {
-		const res = await fetch(url);
-		if (!res.ok) return { response: "error" };
-		return await res.json();
-	});
+export async function fetcher(url: string) {
+	const res = await fetch(url);
+	if (!res.ok) return { response: "error" };
+	return await res.json();
 }
 
 export function getBaseUrl() {
