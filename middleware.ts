@@ -1,5 +1,4 @@
 import { authMiddleware } from "@clerk/nextjs";
-import { getBaseUrl } from "@/helpers/utils";
 
 export default authMiddleware({
 	publicRoutes: (request) => {

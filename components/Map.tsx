@@ -53,11 +53,11 @@ export default function MyMap() {
 			<button className="btn btn-accent" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
 			<MapContainer className="w-full grow" center={centerStart} zoom={ZOOM_LEVEL}>
 				<TileLayer
-					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+					attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 				<TileLayer
-					attribution='Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a>'
+					attribution="Map data: &copy; <a href='http://www.openseamap.org'>OpenSeaMap</a>"
 					url="https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png"
 				/>
 				<LocationMarkers></LocationMarkers>
