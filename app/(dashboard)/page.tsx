@@ -1,11 +1,13 @@
-import TestClient from '@/components/TestClient';
-import dynamic from 'next/dynamic'
-const Map = dynamic(() => import('@/components/Map'), {
+import TestClient from "@/components/TestClient";
+import { getRemoteUrl } from "@/helpers/utils";
+import dynamic from "next/dynamic"
+import { cookies } from "next/headers";
+const Map = dynamic(() => import("@/components/Map"), {
 	ssr: false,
 })
 
 export default async function Dashboard() {
-	const res = await fetch("https://opalserver-qnwedardvq-uc.a.run.app/", {
+	const res = await fetch(getRemoteUrl(), {
 		method: "GET",
 		cache: "no-store"
 	});
