@@ -16,12 +16,12 @@ export default async function Admin() {
 		return <div>Error {res.status}: {res.statusText}</div>
 	}
 	const data = await res.json();
-	console.log(data)
 
 	return (
 		<div>
 			<Link href="/"><button className="btn btn-accent">Home</button></Link>
 			<button className="btn btn-accent">Verify login</button>
+			<p>Authentication status: {String(data.authenticated)}</p>
 		</div>
 	);
 }
