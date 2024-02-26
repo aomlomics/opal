@@ -4,18 +4,19 @@ import { getRemoteUrl } from "@/helpers/utils";
 
 export default async function Admin() {
 	const jwt = cookies().get("__session");
+	const body = JSON.stringify({ jwt: jwt?.value })
 	const res = await fetch(`${getRemoteUrl()}/admin`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"
 		},
-		body: JSON.stringify({ jwt: jwt?.value }),
+		body,
 		cache: "no-store"
 	});
-	if (!res.ok) {
-		return <div>Error {res.status}: {res.statusText}</div>
-	}
 	const data = await res.json();
+	if (data.error) {
+		return <div>Error: {data.error}</div>
+	}
 
 	return (
 		<div>
