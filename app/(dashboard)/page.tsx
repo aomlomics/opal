@@ -11,10 +11,10 @@ export default async function Dashboard() {
 		method: "GET",
 		cache: "no-store"
 	});
-	if (!res.ok) {
-		return <div>Error {res.status}: {res.statusText}</div>
-	}
 	const data = await res.json();
+	if (data.error) {
+		return <div>Error: {data.error}</div>
+	}
 
 	return (
 		<div className="w-full grow-1">
