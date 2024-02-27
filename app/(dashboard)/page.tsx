@@ -1,10 +1,9 @@
 import TestClient from "@/components/TestClient";
 import { getRemoteUrl } from "@/helpers/utils";
-import dynamic from "next/dynamic"
-import { cookies } from "next/headers";
+import dynamic from "next/dynamic";
 const Map = dynamic(() => import("@/components/Map"), {
 	ssr: false,
-})
+});
 
 export default async function Dashboard() {
 	const res = await fetch(getRemoteUrl(), {
