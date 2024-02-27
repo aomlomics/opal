@@ -2,7 +2,8 @@ import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
 	publicRoutes: (request) => {
-		return !(request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/api/admin"));
+		return !(request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/api/admin") 
+		|| request.nextUrl.pathname.startsWith("/tourmaline") || request.nextUrl.pathname.startsWith("/api/tourmaline"))
 	},
 });
 
