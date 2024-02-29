@@ -19,6 +19,7 @@
     "concurrently": "^8.0.1",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
+    "formidable": "^3.5.1",
     "formik": "^2.4.5",
     "leaflet": "^1.9.4",
     "next": "^13.5.6",
