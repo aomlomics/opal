@@ -1,0 +1,7 @@
+quart==0.19.4
+prisma==0.12.0
+uvicorn==0.27.1
+gunicorn==20.1.0
+Werkzeug==3.0.1
+pyjwt==2.8.0
+tldextract==5.1.1
