@@ -21,4 +21,4 @@ RUN prisma generate --generator py
 
 # Run the web service on container startup on port 8080, as per Google Cloud Run's Container runtime contract.
 # Here we use gunicorn with the uvicorn ASGI worker class.
-CMD exec gunicorn --bind 8080 --workers 1 --threads 8 --timeout 0 -k uvicorn.workers.UvicornWorker main:app
+CMD exec gunicorn --bind :8080 --workers 1 --threads 8 --timeout 0 -k uvicorn.workers.UvicornWorker main:app

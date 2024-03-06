@@ -8,7 +8,7 @@ This will open our remote server at `localhost:8080`, and expose the default por
 
 To delete the container and image, use
 ```bash
-docker rm --force opalserver; docker rmi opalserver
+docker rm --force opal; docker rmi opal
 ```
 
 To open the container in VSCode, open the Command Pallette `ctrl + shift + p` and run `Dev Containers: Attach to Running Container` (this requires the Dev Containers extension). When opening the first time, VSCode will think every file has been changed (potentially line-termination inconsistencies, not sure). Discard all git changes before starting any work. You should only have to do this once after creating the container.
