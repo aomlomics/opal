@@ -16,8 +16,9 @@ COPY server/requirements.txt app/server/requirements.txt
 RUN pip install --no-cache-dir -r app/server/requirements.txt
 
 # Copy local code to the container image
-WORKDIR /app/server
+WORKDIR /app
 COPY . ./
+WORKDIR /app/server
 
 # Generate prisma client
 RUN prisma generate --generator py
