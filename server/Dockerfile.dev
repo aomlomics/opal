@@ -8,22 +8,28 @@ LABEL description="Docker image to build the Opal server for handling Tourmaline
 # Allow statements and log messages to immediately appear in the logs
 ENV PYTHONUNBUFFERED True
 
-# Update apt and install screen
-RUN apt-get update && apt-get install -y screen
+# Install screen and node/npm
+RUN apt update
+RUN apt install -y screen
 
-# Install Python dependencies
-COPY server/requirements.txt app/server/requirements.txt
-RUN pip install --no-cache-dir -r app/server/requirements.txt
+# Set home directory as the server folder
+ENV HOME /app
+ENV REPO ${HOME}/Opal
+
+# Install Python dependencies and generate Python Prisma client
+WORKDIR ${REPO}/server
+COPY server/requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy local code to the container image
-WORKDIR /app
+WORKDIR ${REPO}
 COPY . ./
-WORKDIR /app/server
+WORKDIR ${REPO}/server
 
-# Generate prisma client
+# Generate Prisma Python client
 RUN prisma generate --generator py
 
-# Run the web service on container startup on port 8080, as per Google Cloud Run's Container runtime contract.
-# Here we use gunicorn with the uvicorn ASGI worker class.
-# We use a screen to reattach to the process later.
+# Run the web service at container startup on port 8080, as per Google Cloud Run's Container runtime contract
+# Here we use gunicorn with the uvicorn ASGI worker class
+# We use a screen to reattach to the process later
 CMD exec screen -S opalserver gunicorn --pid app.pid --bind :8080 --workers 1 --threads 8 --timeout 0 -k uvicorn.workers.UvicornWorker main:app

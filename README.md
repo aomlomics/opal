@@ -11,9 +11,14 @@ To delete the container and image, use
 docker rm --force opal; docker rmi opal
 ```
 
-To open the container in VSCode, open the Command Pallette `ctrl + shift + p` and run `Dev Containers: Attach to Running Container` (this requires the Dev Containers extension). When opening the first time, VSCode will think every file has been changed (potentially line-termination inconsistencies, not sure). Discard all git changes before starting any work. You should only have to do this once after creating the container.
+To open the container in VSCode, open the Command Pallette `ctrl + shift + p` and run `Dev Containers: Attach to Running Container` (this requires the Dev Containers extension).
 
-## server
+Open the folder `/app/Opal/server` in VSCode.
+
+When opening the first time, VSCode will think every file has been changed (potentially line-termination inconsistencies, not sure). Discard all git changes before starting any work. You should only have to do this once after creating the container.
+
+# server
+The server must be handled inside the Docker container.
 
 To reattach your terminal to the gunicorn process, use
 ```bash
@@ -27,10 +32,11 @@ The `start.sh` script will run the gunicorn process in a screen. Behavior is the
 
 A good workflow is to attach to the screen as soon as you open the container in VSCode. Then, make another terminal and put the attached terminal next to the new one. That way, you can restart the server using the the new terminal and view the server's output at the same time.
 
-## vercel
+# vercel
+The front-end must be handled outside of the Docker container.
 
-### Helpful commands
-All of these commands must be ran from inside the `vercel` folder. You can run the front-end either inside of the Docker container, or outside.
+## Helpful commands
+All of these commands must be ran from inside the `vercel` folder.
 
 Install all node dependencies from package.json
 ```bash
