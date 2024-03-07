@@ -4,18 +4,7 @@ import TestClient from "@/components/TestClient";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import FileUploadForm from "@/components/TourmalineForm";
-
-//Code for interface on Form values, if needed
-/*
-interface FormValues {
-	fastqSequences: File[] | null;
-	metadata: File | null;
-	manifestFile: File | null;
-	refDatabase1: File | null;
-	refDatabase2: File | null;
-  }
-*/
+import TourmalineUpload from "@/components/TourmalineForm";
 
 
 export default function Tourmaline() {
@@ -30,12 +19,12 @@ export default function Tourmaline() {
 					</Link>
 
 					<div className="flex justify-center">
-					<p>This is where the Tourmaline form will be for input parameters and files.</p>
+					<p>This form is under construction</p>
 					</div>
 
 					<div className="flex justify-center z-30 bg-accent rounded-3xl">
 						<div className="h-100 w-120 rounded-3xl">
-							<FileUploadForm/>
+							<TourmalineUpload/>
 						</div>
 					</div>
 

@@ -1,139 +1,71 @@
 "use client"
 
 import React from 'react';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import useSWR from 'swr'; // Import useSWR
+import { fetcher, getRemoteUrl } from '@/helpers/utils'; // Import the fetcher and getRemoteUrl functions
 
-// Avoid TypeScript form value errors with this:
-interface FormValues {
-  fastqSequences: File | null;
-  /* You can use Filelist instead of file if you want to allow multiple files */
-  metadata: File | null;
-  manifestFile: File | null;
-  refDatabase1: File | null;
-  refDatabase2: File | null;
-}
-
-// Validation schema for the form fields using Yup (WIP)
-const fileUploadSchema = Yup.object().shape({
-  fastqSequences: Yup.mixed().required("FASTQ file is required"),
-  metadata: Yup.mixed().required("Metadata file is required"),
-  manifestFile: Yup.mixed().required("Manifest file is required"),
-  refDatabase1: Yup.mixed().required("First reference database file is required"),
-  refDatabase2: Yup.mixed().required("Second reference database file is required"),
+// Define the form schema using Zod
+const schema = z.object({
+  denoiseMethod: z.enum(['DADA2 paired-end', 'DADA2 single-end', 'Deblur single-end']),
 });
 
-const FileUploadForm: React.FC = () => {
-  const handleSubmit = async (values: FormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
-    const formData = new FormData();
+type FormData = z.infer<typeof schema>;
 
-    /*
-    if (values.fastqSequences) {
-      Array.from(values.fastqSequences).forEach(file => {
-        formData.append('fastqSequences', file);
-      });
-    ^ Use something like this if multiple files per upload*/
-    
-    if (values.fastqSequences) formData.append('fastqSequences', values.fastqSequences);
-    if (values.metadata) formData.append('metadata', values.metadata);
-    if (values.manifestFile) formData.append('manifestFile', values.manifestFile);
-    if (values.refDatabase1) formData.append('refDatabase1', values.refDatabase1);
-    if (values.refDatabase2) formData.append('refDatabase2', values.refDatabase2);
+export const TourmalineUpload: React.FC = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
-    // Have not made API route yet, so this is a placeholder:
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      const response = await fetch(`/api/tourmaline`, {
-        method: 'POST',
-        body: formData,
-      });
-      if (!response.ok) throw new Error('Network error');
-      const data = await response.json();
-      console.log('Successfully uploaded data to Tourmaline Server', data);
-    } catch (error) {
-      console.error('Upload error:', error);
-    }
+      // Construct the URL using getRemoteUrl function
+      const remoteUrl = getRemoteUrl();
 
-    setSubmitting(false);
+      // Send form data using useSWR
+      const response = await fetcher(remoteUrl);
+
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Submission error:', error);
+    }
   };
 
   return (
-    <Formik
-      initialValues={{
-        fastqSequences: null,
-        metadata: null,
-        manifestFile: null,
-        refDatabase1: null,
-        refDatabase2: null,
-      }}
-      validationSchema={fileUploadSchema}
-      onSubmit={handleSubmit}
-    >
-      {({ setFieldValue, isSubmitting }) => (
-        <Form className="space-y-6">
-          <div>
-            <label htmlFor="fastqSequences" className="flex justify-center block text-xl font-medium text-black-700">FASTQ Sequences</label>
-            <input 
-              id="fastqSequences" 
-              name="fastqSequences" 
-              type="file" 
-              onChange={event => setFieldValue("fastqSequences", event.target.files ? event.target.files[0] : null)} 
-              className="file-input file-input-bordered file-input-secondary file-input-sm w-full max-w-xs" 
-            />
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div className="flex flex-col items-center">
+        <label htmlFor="denoiseMethod" className="mb-2 text-lg text-gray-700">Choose a Denoise method:</label>
+        <div className="relative inline-block w-full text-gray-700">
+          <select
+            {...register('denoiseMethod')}
+            id="denoiseMethod"
+            className="appearance-none bg-white border border-gray-300 w-full py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            <option value="DADA2 paired-end">DADA2 paired-end</option>
+            <option value="DADA2 single-end">DADA2 single-end</option>
+            <option value="Deblur single-end">Deblur single-end</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 010 1.414L4.586 9l4 4 4-4-.707-.707L9 10.586 5.707 7.293a1 1 0 010-1.414z"/></svg>
           </div>
+        </div>
+        {errors.denoiseMethod && <p className="text-red-500 text-xs italic">{errors.denoiseMethod.message}</p>}
+      </div>
 
-          <div>
-            <label htmlFor="metadata" className="flex justify-center block text-xl font-medium text-black-700">Metadata</label>
-            <input 
-              id="metadata" 
-              name="metadata" 
-              type="file" 
-              onChange={event => setFieldValue("metadata", event.target.files ? event.target.files[0] : null)} 
-              className="file-input file-input-bordered file-input-secondary file-input-sm w-full max-w-xs" 
-            />
-          </div>
-
-          <div>
-            <label htmlFor="manifestFile" className="flex justify-center block text-xl font-medium text-black-700">Manifest</label>
-            <input 
-              id="manifestFile" 
-              name="manifestFile" 
-              type="file" 
-              onChange={event => setFieldValue("manifestFile", event.target.files ? event.target.files[0] : null)} 
-              className="file-input file-input-bordered file-input-secondary file-input-sm w-full max-w-xs" 
-            />
-          </div>
-
-          <div>
-            <label htmlFor="refDatabase1" className="flex justify-center block text-xl font-medium text-black-700">Reference Database Sequence File</label>
-            <input 
-              id="refDatabase1" 
-              name="refDatabase1" 
-              type="file" 
-              onChange={event => setFieldValue("refDatabase1", event.target.files ? event.target.files[0] : null)} 
-              className="file-input file-input-bordered file-input-secondary file-input-sm w-full max-w-xs" 
-            />
-          </div>
-
-          <div>
-            <label htmlFor="refDatabase2" className="flex justify-center block text-xl font-medium text-black-700">Reference Database Taxonomy File</label>
-            <input 
-              id="refDatabase2" 
-              name="refDatabase2" 
-              type="file" 
-              onChange={event => setFieldValue("refDatabase2", event.target.files ? event.target.files[0] : null)} 
-              className="file-input file-input-bordered file-input-secondary file-input-sm w-full max-w-xs" 
-            />
-          </div>
-
-          <div className="flex justify-center">
-            <button type="submit" disabled={isSubmitting} className="btn btn-secondary">
-              Submit
-            </button>
-          </div>
-        </Form>
-      )}
-    </Formik>
+      <div className="flex justify-center">
+        <button type="submit" className="btn bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
+          Submit
+        </button>
+      </div>
+    </form>
   );
 };
 
-export default FileUploadForm;
+export default TourmalineUpload;
