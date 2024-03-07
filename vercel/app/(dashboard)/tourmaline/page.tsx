@@ -4,7 +4,7 @@ import TestClient from "@/components/TestClient";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import TourmalineUpload from "@/components/TourmalineForm";
+import TourmalineForm from "@/components/TourmalineForm";
 
 
 export default function Tourmaline() {
@@ -24,7 +24,7 @@ export default function Tourmaline() {
 
 					<div className="flex justify-center z-30 bg-accent rounded-3xl">
 						<div className="h-100 w-120 rounded-3xl">
-							<TourmalineUpload/>
+							<TourmalineForm/>
 						</div>
 					</div>
 
