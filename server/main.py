@@ -2,15 +2,14 @@ from prisma import Prisma
 import jwt
 from time import time
 import tldextract
-#from quart_cors import cors
+from quart_cors import cors
 
 from quart import Quart, request
-
 app = Quart(__name__)
-#app = cors(app, allow_origin="http://localhost:3000")
-#app = cors(app, allow_origin="https://opal-ochre.vercel.app")
 
 URLS = ["http://localhost:3000", "https://opal-ochre.vercel.app"]
+app = cors(app, allow_origin=URLS)
+
 ACCEPTED_EMAIL_DOMAINS=["noaa.gov", "msstate.edu"]
 CLERK_PEM_PUBLIC_KEY="""-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvO06iWJ1mGVwtrynz9oq
@@ -65,7 +64,7 @@ async def tourmaline_receive():
     try:
         form_data = await request.form
         print("Form data received:", dict(form_data))
-        
+
         return {"message": "Form data received successfully"}
     except:
         return {"error": "Server could not handle the request"}
