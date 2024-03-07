@@ -12,9 +12,9 @@ export function getBaseUrl() {
 }
 
 export function getRemoteUrl() {
-	// if (process.env.NODE_ENV === "development") {
-	// 	return "http://localhost:8080";
-	// }
+	if (process.env.NODE_ENV === "development") {
+		return "http://localhost:8080";
+	}
 	return "https://opalserver-qnwedardvq-uc.a.run.app";
 }
 
