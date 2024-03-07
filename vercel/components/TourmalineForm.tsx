@@ -4,8 +4,7 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import useSWR from 'swr'; // Import useSWR
-import { fetcher, getRemoteUrl } from '@/helpers/utils'; // Import the fetcher and getRemoteUrl functions
+import { getRemoteUrl } from '@/helpers/utils';
 
 // Define the form schema using Zod
 const schema = z.object({
@@ -21,11 +20,10 @@ export const TourmalineUpload: React.FC = () => {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-      // Construct the URL using getRemoteUrl function
-      const remoteUrl = getRemoteUrl();
-
-      // Send form data using useSWR
-      const response = await fetcher(remoteUrl);
+		const response = await fetch(`${getRemoteUrl()}/tourmalineReceive`, {
+			method: "POST",
+			body: JSON.stringify({ test: "hi" })
+		});
 
       if (!response.ok) {
         throw new Error(`Server responded with status: ${response.status}`);
