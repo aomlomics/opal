@@ -13,7 +13,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-export const TourmalineUpload: React.FC = () => {
+export default function TourmalineForm() {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
@@ -65,5 +65,3 @@ export const TourmalineUpload: React.FC = () => {
     </form>
   );
 };
-
-export default TourmalineUpload;
