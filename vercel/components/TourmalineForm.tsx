@@ -20,15 +20,22 @@ export default function TourmalineForm() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
-		const response = await fetch(`${getRemoteUrl()}/tourmalineReceive`, {
-			method: "POST",
-			body: JSON.stringify({ test: "hi" })
-		});
-
+      const formData = new FormData();
+      // Dynamically add form data fields to FormData
+      // Should be able to work when I have more fields later on
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+  
+      const response = await fetch(`${getRemoteUrl()}/tourmalineReceive`, {
+        method: "POST",
+        body: formData,
+      });
+  
       if (!response.ok) {
         throw new Error(`Server responded with status: ${response.status}`);
       }
-
+  
       const result = await response.json();
       console.log(result);
     } catch (error) {
