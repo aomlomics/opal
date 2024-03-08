@@ -11,7 +11,7 @@ export default function Tourmaline() {
 	
 	return (
 			<div className="flex justify-center z-30 flex-1">
-				<div className="normal-case text-xl h-40 w-100 bg-neutral rounded-3xl">
+				<div className="normal-case text-xl h-40 w-1/2 bg-neutral rounded-3xl">
 					<Link href={"https://github.com/aomlomics/tourmaline"}>
 					<div className="avatar w-full h-full">
 						<Image src="/images/tourmalineLogo.png" alt="" fill={true} style={{objectFit: "contain"}}/>
