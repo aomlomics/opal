@@ -61,10 +61,22 @@ async def admin():
 
 @app.route("/tourmalineReceive", methods=["POST"])
 async def tourmaline_receive():
-    try:
-        form_data = await request.form
-        print("Form data received:", dict(form_data))
+  try:
+    # Directly read and print the raw request body for debugging
+    raw_body = await request.get_data()
+    print("Raw request body:", raw_body)
+		
+    form_fields = await request.form
+    print("Form data received:")
+    for name, value in form_fields.items():						
+      print(f"Field name: {name}, value: {value}")
+    
+    files = await request.files
+    print("Files received:")
+    for file_name, file in files.items():
+      print(f"File name: {file_name}, file: {file.filename}")
 
-        return {"message": "Form data received successfully"}
-    except:
-        return {"error": "Server could not handle the request"}
+    return{"message": "Form data received successfully"}	
+  except Exception as e:  # Added to catch and print the exception
+    print(f"Error processing request: {e}")
+    return {"error": "Server could not handle the request"}, 500
