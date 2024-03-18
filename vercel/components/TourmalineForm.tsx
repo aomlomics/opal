@@ -3,9 +3,7 @@
 
 /*
 ---TODO---
-- Fix submit button enabling on tab switch
-- Make the tabs look better (on the left side)
-- Send file as well as the rest of the form data
+
 - Have fields that load only if a certain option is selected,
 	- i.e. if DADA2 paired-end is selected, show the fields for DADA2 paired-end
 
@@ -80,13 +78,20 @@ export default function TourmalineForm() {
   	};
 
 	return (
-		<div>
-			<div className="tabs">
-				<button className={activeTab === 'Denoise' ? 'active' : ''} onClick={() => setActiveTab('Denoise')}>Denoise</button>
-				<button className={activeTab === 'Taxonomic Level' ? 'active' : ''} onClick={() => setActiveTab('Taxonomic Level')}>Taxonomic Level</button>
-				<button className={activeTab === 'Metadata' ? 'active' : ''} onClick={() => setActiveTab('Metadata')}>Metadata</button>
-			</div>
-			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+		<div className="flex w-full bg-neutral rounded-3xl">
+						<ul className="menu bg-white w-1/4 rounded-3xl"> 
+                <li className={activeTab === 'Denoise' ? 'bg-secondary text-white rounded-2xl' : ''}>
+                    <a onClick={() => setActiveTab('Denoise')}>Denoise</a>
+                </li>
+                <li className={activeTab === 'Taxonomic Level' ? 'bg-secondary text-white rounded-2xl' : ''}>
+                    <a onClick={() => setActiveTab('Taxonomic Level')}>Taxonomic Level</a>
+                </li>
+                <li className={activeTab === 'Metadata' ? 'bg-secondary text-white rounded-2xl' : ''}>
+                    <a onClick={() => setActiveTab('Metadata')}>Metadata</a>
+                </li>
+            </ul>
+				<div className="flex-grow p-1 flex flex-col justify-center items-center">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
 				{activeTab === 'Denoise' && (
 					<div>
 						<select
@@ -152,12 +157,13 @@ export default function TourmalineForm() {
 						type="submit"
 						disabled={!isDirty || !isValid || formSubmitted} // Submit button is disabled based on form state and submission status
 						// className={`mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md ${!isDirty || !isValid || formSubmitted ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'} focus:outline-none text-white`}
-						className="btn btn-primary"
+						className="btn btn-secondary"
 					>
 						Submit
 					</button>
 				</div>
 			</form>
 		</div>
+	</div>
 	);
 }

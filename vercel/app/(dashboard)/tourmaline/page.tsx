@@ -8,27 +8,19 @@ import TourmalineForm from "@/components/TourmalineForm";
 
 
 export default function Tourmaline() {
-	
-	return (
-			<div className="flex justify-center z-30 flex-1">
-				<div className="normal-case text-xl h-40 w-1/2 bg-neutral rounded-3xl">
-					<Link href={"https://github.com/aomlomics/tourmaline"}>
-					<div className="avatar w-full h-full">
-						<Image src="/images/tourmalineLogo.png" alt="" fill={true} style={{objectFit: "contain"}}/>
-					</div>
-					</Link>
+  return (
+    <div className="flex flex-col items-center z-30 flex-1">
+      <div className="text-xl w-1/2 max-w-4xl bg-neutral rounded-3xl mb-4"> 
+        <Link href={"https://github.com/aomlomics/tourmaline"}>
+          <div className="relative h-40 w-full"> 
+            <Image src="/images/tourmalineLogo.png" alt="" layout="fill" objectFit="contain"/>
+          </div>
+        </Link>
+      </div>
 
-					<div className="flex justify-center">
-					<p>This form is under construction</p>
-					</div>
-
-					<div className="flex justify-center z-30 bg-accent rounded-3xl">
-						<div className="h-100 w-120 rounded-3xl">
-							<TourmalineForm/>
-						</div>
-					</div>
-
-				</div>
-			</div>
-	);
+      <div className="flex justify-center z-30 bg-neutral rounded-3xl p-2 w-full max-w-5xl"> 
+        <TourmalineForm/>
+      </div>
+    </div>
+  );
 }
