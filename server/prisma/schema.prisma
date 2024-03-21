@@ -15,7 +15,7 @@ datasource db {
 
 model Project {
   	id			String	@id @default(cuid())
-  	projectId	String
+  	projectId	String	@unique
 	title		String
 	description	String?
 }
