@@ -1,4 +1,4 @@
-import TestClient from "@/components/TestClient";
+import ProjectCatalogue from "@/components/ProjectCatalogue";
 import { getRemoteUrl } from "@/helpers/utils";
 import dynamic from "next/dynamic";
 const Map = dynamic(() => import("@/components/Map"), {
@@ -19,10 +19,7 @@ export default async function Dashboard() {
 		<div className="w-full grow-1">
 			<Map></Map>
 			<div>
-				<p>test</p>
-				<p>Response from remote server: {data}</p>
-				<p>------------------------------------------------------</p>
-				<TestClient></TestClient>
+				<ProjectCatalogue></ProjectCatalogue>
 			</div>
 		</div>
 	);
