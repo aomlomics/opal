@@ -5,7 +5,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node prisma/seed.mjs",
+    "seed": "node prisma/seed.ts",
     "postinstall": "prisma generate --generator js"
   },
   "dependencies": {
