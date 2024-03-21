@@ -6,21 +6,19 @@ const Map = dynamic(() => import("@/components/Map"), {
 });
 
 export default async function Dashboard() {
-	const res = await fetch(getRemoteUrl(), {
-		method: "GET",
-		cache: "no-store"
-	});
-	const data = await res.json();
-	if (data.error) {
-		return <div>Error: {data.error}</div>
-	}
+	// const res = await fetch(getRemoteUrl(), {
+	// 	method: "GET",
+	// 	cache: "no-store"
+	// });
+	// const data = await res.json();
+	// if (data.error) {
+	// 	return <div>Error: {data.error}</div>
+	// }
 
 	return (
-		<div className="w-full grow-1">
+		<main className="flex flex-col z-40 m-5 gap-5">
 			<Map></Map>
-			<div>
-				<ProjectCatalogue></ProjectCatalogue>
-			</div>
-		</div>
+			<ProjectCatalogue></ProjectCatalogue>
+		</main>
 	);
 }
