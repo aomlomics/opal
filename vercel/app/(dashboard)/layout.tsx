@@ -5,9 +5,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 	return (
 		<div className="flex flex-col min-h-screen">
 			<Header/>
-			<div className="flex justify-center z-30 flex-1">
-				{children}
-			</div>
+			{children}
 			<Footer/>
 		</div>
 	);
