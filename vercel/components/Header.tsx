@@ -10,7 +10,7 @@ export default function Header() {
 				<button id="skipNav" className="w-0 h-0"></button>
 				<div className="navbar-start">
 					{/* <SmallNav/> */}
-					<Link className="normal-case text-xl h-20 w-60 bg-neutral rounded-3xl lg:rounded-l-none" href={`${getBaseUrl()}`}>
+					<Link className="normal-case text-xl h-20 w-60 bg-neutral rounded-3xl rounded-l-none" href={`${getBaseUrl()}`}>
 						<div className="avatar w-full h-full">
 							<Image src="/images/noaaLogo.svg" alt="" fill={true} style={{objectFit: "contain"}}/>
 						</div>
