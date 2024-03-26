@@ -25,20 +25,26 @@ export default function TaxonomicTab({register, errors}: {
 		</div>
 		<div className="space-y-4 p-1 flex items-center">
 			<label className="form-control w-2/3 max-w-xs">
-				<span className="label-text">Taxonomic Level</span>
-				<select {...register('taxonomicLevel')} className={`select select-bordered w-full ${errors.taxonomicLevel && "select-error"}`}>
-					<option value="" disabled>Select Level</option>
+				<div className="label pb-0">
+					<span className="label-text">Taxonomic Level</span>
+					<span className="label-text-alt">
+						<InfoButton infoText="More information about Taxonomic Level"/>
+					</span>
+				</div>
+					<select {...register('taxonomicLevel')} className={`select select-bordered w-full ${errors.taxonomicLevel && "select-error"}`}>
+						<option value="" disabled>Select Level</option>
 						{Array(7).fill(null).map((_, i) => (
-					<option key={i+1} value={i+1}>{i+1}</option>
+							<option key={i+1} value={i+1}>{i+1}</option>
 						))}
-				</select>
-			</label>
-					<InfoButton infoText="More information about Taxonomic Level"/>
-			<div className="label">
-				<span className="label-text-alt text-red-500">
-					{errors.taxonomicLevel && "Please select an option"}
-				</span>
-			</div>
+					</select>
+					</label>
+					{errors.taxonomicLevel && (
+					<div className="label">
+						<span className="label-text-alt text-red-500">
+							Please select an option
+						</span>
+				</div>
+			)}
 		</div>
 	</div>
 	)

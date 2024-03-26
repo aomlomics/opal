@@ -9,23 +9,28 @@ export default function SubsamplingTab({register, errors}: {
 		<div>
 			<div className="space-y-4 p-1">
 				<label className="form-control max-w-xs relative">
-					<span className="label-text">Core Sampling Depth</span>
-					<div className="relative w-3/4">
-						<input {...register('core_sampling_depth')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
-						<div className="absolute inset-y-0 right-0 flex items-center pr-2">
+					<div className="label pb-0">
+						<span className="label-text">Core Sampling Depth</span>
+						<span className="label-text-alt">
 							<InfoButton infoText="More information about Core Sampling Depth"/>
-						</div>
+						</span>
+					</div>
+					<div className="relative w-full">
+						<input {...register('core_sampling_depth')} placeholder="Enter length" className="input input-bordered w-full"/>
 					</div>
 				</label>
 			</div>
+
 			<div className="space-y-4 p-1">
 				<label className="form-control max-w-xs relative">
-					<span className="label-text">Alpha Max Depth</span>
-					<div className="relative w-3/4">
-						<input {...register('alpha_max_depth')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
-						<div className="absolute inset-y-0 right-0 flex items-center pr-2">
+					<div className="label pb-0">
+						<span className="label-text">Alpha Max Depth</span>
+						<span className="label-text-alt">
 							<InfoButton infoText="More information about Alpha Max Depth"/>
-						</div>
+						</span>
+					</div>
+					<div className="relative w-full">
+						<input {...register('alpha_max_depth')} placeholder="Enter length" className="input input-bordered w-full"/>
 					</div>
 				</label>
 			</div>

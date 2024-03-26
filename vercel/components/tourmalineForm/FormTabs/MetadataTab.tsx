@@ -6,17 +6,19 @@ export default function MetadataTab({register, errors}: {
 	errors: FieldErrors<any>
 }) {
 	return(
-		<div>
-			<div className="label">
-				<span className="label-text">Upload Metadata (.tsv):</span>
-			</div>
-			<input
-				type="file"
-				{...register('metadataFile')}
-				accept=".tsv"
-				// onChange={(e) => setValue('metadataFile', e.target.files ? e.target.files : undefined)}
-				className="file-input file-input-bordered file-input-secondary w-full max-w-xs"
-			/>
-		</div>
+<div className="flex flex-col items-start">
+  <span className="label-text mb-1">Upload Metadata (.tsv):</span>
+  <div className="relative">
+    <input
+      type="file"
+      {...register('metadataFile')}
+      accept=".tsv"
+      className="file-input file-input-bordered file-input-secondary w-full max-w-xs"
+    />
+    <div className="absolute right-0 -translate-y-14 translate-x-5">
+      <InfoButton infoText="More information about Metadata file"/>
+    </div>
+  </div>
+</div>
 	)
 }

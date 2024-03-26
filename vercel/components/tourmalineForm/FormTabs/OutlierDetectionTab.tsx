@@ -7,36 +7,46 @@ export default function OutlierDetectionTab({register, errors}: {
 }) {
 	return(
 		<div>
-			<div className="space-y-4 p-1 flex items-center">
-				<label className="form-control w-1/2 max-w-xs">
-					<span className="label-text">Distance Metric</span>
+			<div className="space-y-4 p-1">
+				<label className="form-control relative max-w-xs">
+					<div className="label pb-0">
+						<span className="label-text">Distance Metric</span>
+						<span className="label-text-alt">
+							<InfoButton infoText="More information about Distance Metric"/>
+						</span>
+					</div>
 					<select {...register('odseq_distance_metric')} className={`select select-bordered w-full ${errors.odseq_distance_metric && "select-error"}`}>
 						<option value="" disabled selected>Select Distance Metric</option>
 						<option value="linear">Linear</option>
 						<option value="affine">Affine</option>
 					</select>
 				</label>
-				<InfoButton infoText="More information about Distance Metric"/>
 			</div>
+
 			<div className="space-y-4 p-1">
 				<label className="form-control max-w-xs relative">
-					<span className="label-text">Bootstrap Replicates</span>
-					<div className="relative w-1/2">
-						<input {...register('odseq_bootstrap_replicates')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
-						<div className="absolute inset-y-0 right-0 flex items-center pr-2">
+					<div className="label pb-0">
+						<span className="label-text">Bootstrap Replicates</span>
+						<span className="label-text-alt">
 							<InfoButton infoText="More information about Bootstrap Replicates"/>
-						</div>
+						</span>
+					</div>
+					<div className="relative w-full">
+						<input {...register('odseq_bootstrap_replicates')} placeholder="Enter length" className="input input-bordered w-full"/>
 					</div>
 				</label>
 			</div>
+
 			<div className="space-y-4 p-1">
 				<label className="form-control max-w-xs relative">
-					<span className="label-text">Threshold</span>
-					<div className="relative w-1/2">
-						<input {...register('odseq_threshold')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
-						<div className="absolute inset-y-0 right-0 flex items-center pr-2">
+					<div className="label pb-0">
+						<span className="label-text">Threshold</span>
+						<span className="label-text-alt">
 							<InfoButton infoText="More information about Threshold"/>
-						</div>
+						</span>
+					</div>
+					<div className="relative w-full">
+						<input {...register('odseq_threshold')} placeholder="Enter length" className="input input-bordered w-full"/>
 					</div>
 				</label>
 			</div>

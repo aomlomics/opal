@@ -7,9 +7,14 @@ export default function ReportThemeTab({register, errors}: {
 }) {
 	return(
 		<div>
-			<div className="space-y-4 p-1 flex items-center">
-				<label className="form-control w-2/3 max-w-xs">
-					<span className="label-text">Report Theme</span>
+			<div className="space-y-4 p-1">
+				<label className="form-control relative max-w-xs">
+					<div className="label pb-0">
+						<span className="label-text">Report Theme</span>
+						<span className="label-text-alt">
+							<InfoButton infoText="More information about Report Theme"/>
+						</span>
+					</div>
 					<select {...register('report_theme')} className={`select select-bordered w-full ${errors.report_theme && "select-error"}`}>
 						<option value="" disabled selected>Select Report Theme</option>
 						<option value="github">Github</option>
@@ -20,7 +25,6 @@ export default function ReportThemeTab({register, errors}: {
 						<option value="whitey">Whitey</option>
 					</select>
 				</label>
-				<InfoButton infoText="More information about Report Theme"/>
 			</div>
 		</div>
 	)
