@@ -19,7 +19,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									<div className="relative w-full">
 										<input {...register('dada2pe_trunc_len_f')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
 										<div className="absolute inset-y-0 right-0 flex items-center pr-2">
-											<InfoButton infoText="More information about Forward Truncation Length"/>
+											<InfoButton infoText="Position at which forward read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
 										</div>
 									</div>
 								</label>
@@ -29,7 +29,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									<div className="relative w-full">
 										<input {...register('dada2pe_trunc_len_r')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
 										<div className="absolute inset-y-0 right-0 flex items-center pr-2">
-											<InfoButton infoText="More information about Reverse Truncation Length"/>
+											<InfoButton infoText="Position at which reverse read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
 										</div>
 									</div>
 								</label>
@@ -39,21 +39,21 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 						<div className="space-y-4 p-1">
 						<div className="flex gap-x-4">
 						<label className="form-control w-1/2 max-w-xs relative">
-							<span className="label-text">Forward Left Trim Length</span>
+							<span className="label-text">Forward Read 5' Trimming Position</span>
 							<div className="relative w-full">
 								<input {...register('dada2pe_trim_left_f')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
 								<div className="absolute inset-y-0 right-0 flex items-center pr-2">
-									<InfoButton infoText="More information about Forward Left Trim Length"/>
+									<InfoButton infoText="Position at which forward read sequences should be trimmed due to low quality. This trims the 5' end of the input sequences, which will be the bases that were sequenced in the first cycles."/>
 								</div>
 							</div>
 						</label>
 
 						<label className="form-control w-1/2 max-w-xs relative">
-							<span className="label-text">Forward Right Trim Length</span>
+							<span className="label-text">Reverse Read 5' Trimming Position</span>
 							<div className="relative w-full">
 								<input {...register('dada2pe_trim_left_r')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
 								<div className="absolute inset-y-0 right-0 flex items-center pr-2">
-									<InfoButton infoText="More information about Forward Right Trim Length"/>
+									<InfoButton infoText="Position at which reverse read sequences should be trimmed due to low quality. This trims the 5' end of the input sequences, which will be the bases that were sequenced in the first cycles."/>
 								</div>
 							</div>
 						</label>
@@ -67,7 +67,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 							<div className="relative w-full">
 								<input {...register('dada2pe_max_ee_f')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
 								<div className="absolute inset-y-0 right-0 flex items-center pr-2">
-									<InfoButton infoText="More information about Forward Max Expected Errors"/>
+									<InfoButton infoText="Forward reads with number of expected errors higher than this value will be discarded."/>
 								</div>
 							</div>
 						</label>
@@ -77,7 +77,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 							<div className="relative w-full">
 								<input {...register('dada2pe_max_ee_r')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
 								<div className="absolute inset-y-0 right-0 flex items-center pr-2">
-									<InfoButton infoText="More information about Reverse Max Expected Errors"/>
+									<InfoButton infoText="Reverse reads with number of expected errors higher than this value will be discarded."/>
 								</div>
 							</div>
 						</label>
@@ -90,7 +90,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="relative w-1/2">
 									<input {...register('dada2pe_trunc_q')} placeholder="dada2pe_trunc_q" className="input input-bordered w-full pr-8"/>
 									<div className="absolute inset-y-0 right-0 flex items-center pr-2">
-										<InfoButton infoText="More information about Truncation Quality Threshold"/>
+										<InfoButton infoText="Reads are truncated at the first instance of a quality score less than or equal to this value. If the resulting read is then shorter than `trunc-len-f` or `trunc-len-r` (depending on the direction of the read) it is discarded."/>
 									</div>
 								</div>
 							</label>
@@ -105,7 +105,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 							<option value="pseudo">Pseudo</option>
 							</select>
 						</label>
-						<InfoButton infoText="More information about Pooling Method"/>
+						<InfoButton infoText="The method used to pool samples for denoising. 'independent': Samples are denoised indpendently. 'pseudo': The pseudo-pooling method is used to approximate pooling of samples. In short, samples are denoised independently once, ASVs detected in at least 2 samples are recorded, and samples are denoised independently a second time, but this time with prior knowledge of the recorded ASVs and thus higher sensitivity to those ASVs."/>
 						</div>
 
 						<div className="space-y-4 p-1 flex items-center">
@@ -118,7 +118,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									<option value="pooled">Pooled</option>
 								</select>
 							</label>
-							<InfoButton infoText="More information about Chimera Method"/>
+							<InfoButton infoText="The method used to remove chimeras. 'none': No chimera removal is performed. 'pooled': All reads are pooled prior to chimera detection. 'consensus': Chimeras are detected in samples individually, and sequences found chimeric in a sufficient fraction of samples are removed."/>
 						</div>
 
 						<div className="space-y-4 p-1">
