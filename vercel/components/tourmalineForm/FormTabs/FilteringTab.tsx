@@ -8,16 +8,20 @@ export default function FilteringTab({register, errors}: {
 }) {
 	return(
 		<div>
-			<div className="space-y-4 p-1 flex items-center">
-				<label className="form-control w-2/3 max-w-xs">
-					<span className="label-text">Filtering Selection</span>
+			<div className="space-y-4 p-1">
+				<label className="form-control relative max-w-xs">
+					<div className="label pb-0">
+						<span className="label-text">Filtering Selection</span>
+						<span className="label-text-alt">
+							<InfoButton infoText="More information about Filtering Selection"/>
+						</span>
+					</div>
 					<select {...register('filtering_election')} className={`select select-bordered w-full ${errors.filtering_election && "select-error"}`}>
 						<option value="" disabled selected>Select Filtering Selection</option>
 						<option value="unfiltered">Unfiltered</option>
 						<option value="filtered">Both: Filtered and Unfiltered</option>
 					</select>
 				</label>
-				<InfoButton infoText="More information about Filtering Selection"/>
 			</div>
 		</div>
 	)
