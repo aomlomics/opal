@@ -1,7 +1,7 @@
 import { prisma } from "@/helpers/prisma";
 
 export default async function ProjectId({ params }: { params: { project_id: string } }) {
-	const project = await prisma.project.findUnique({
+	const project = await prisma.study_Data.findUnique({ //SCHEMA
 		where: {
 			project_id: params.project_id
 		}

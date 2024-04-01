@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getBaseUrl } from "@/helpers/utils";
 
 export default async function ProjectCatalogue() {
-	let projects = await prisma.project.findMany();
+	let projects = await prisma.study_Data.findMany(); //SCHEMA
 	if (!projects) return <div>Failed to load projects</div>;
 	projects = [...projects, ...projects, ...projects] //testing multiple entries
 
