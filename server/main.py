@@ -41,7 +41,7 @@ async def hello_world():
 	try:
 		projects = None
 		async with Prisma() as prisma:
-			projects = await prisma.project.find_many()
+			projects = await prisma.study_data.find_many()
 
 		return list(map(lambda proj: proj.model_dump_json(), projects))
 	except:
