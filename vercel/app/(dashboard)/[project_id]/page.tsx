@@ -1,9 +1,9 @@
 import { prisma } from "@/helpers/prisma";
 
-export default async function ProjectId({ params }: { params: { projectId: string } }) {
+export default async function ProjectId({ params }: { params: { project_id: string } }) {
 	const project = await prisma.project.findUnique({
 		where: {
-			projectId: params.projectId
+			project_id: params.project_id
 		}
 	});
 	if (!project) return <div>Failed to load project</div>;
