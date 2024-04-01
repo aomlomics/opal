@@ -34,7 +34,7 @@ The `start.sh` script will run the gunicorn process in a screen. Behavior is the
 The front-end must be handled outside of the Docker container.
 
 ## Helpful commands
-All of these commands must be executed from inside the `vercel` folder.
+All of these commands must be executed from inside `/vercel`.
 
 Install all node dependencies from package.json
 ```bash
@@ -48,7 +48,15 @@ Open the Prisma database view
 ```bash
 npx prisma studio
 ```
-Push schema changes to database
+Push schema changes to database (all database migrations should be done in `/vercel`)
 ```bash
-npx prisma generate --generator js
+npx prisma migrate dev --name <insert migration name>
+```
+Pull schema changes from database (must be done in `/server` after creating a migration in `/vercel`)
+```bash
+prisma db pull
+```
+Generate Prisma Client
+```bash
+prisma generate
 ```
