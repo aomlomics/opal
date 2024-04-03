@@ -1,21 +1,285 @@
-generator js {
-	provider = "prisma-client-js"
-}
-
 generator py {
-	provider = "prisma-client-py"
-	recursive_type_depth = 5
+  provider             = "prisma-client-py"
+  recursive_type_depth = "5"
 }
 
 datasource db {
-	provider = "postgresql"
-	url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-	directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model Project {
-  	id			String	@id @default(cuid())
-  	projectId	String
-	title		String
-	description	String?
+model Study_Data {
+  id                     String   @id @default(cuid())
+  project_id             String   @unique
+  project_id_external    String
+  project_name           String
+  project_contact        String
+  project_description    String
+  type                   String
+  license                String
+  citation               String?
+  keywords               String?
+  associated_parties     String?
+  study_area_description String?
+  external_links         String?
+  recordedBy             String?
+  sampling_description   String?
+  grant_number           String?
+  grant_title            String?
+  grant_agency           String?
+  project_proposal       String?
+  accessions             String?
+  metadata_notes         String?
+  date_modified          DateTime @default(now())
+  modified_by            String
+}
+
+model Amplicon_PrepData {
+  id                      String   @id
+  sample_name             String
+  library_id              String
+  title                   String
+  library_strategy        String
+  library_source          String
+  library_selection       String
+  lib_layout              String
+  platform                String
+  instrument_model        String
+  design_description      String
+  filetype                String
+  filename                String
+  filename2               String?
+  drive_location          String
+  biosample_accession     String?
+  sra_accession           String?
+  date_dna_extracted      DateTime
+  extraction_personnel    String
+  date_pcr                DateTime
+  pcr_personnel           String
+  seq_facility            String?
+  seq_meth                String?
+  nucl_acid_ext           String?
+  amplicon_sequenced      String?
+  target_gene             String?
+  target_subfragment      String?
+  pcr_primer_forward      String?
+  pcr_primer_reverse      String?
+  pcr_primer_name_forward String?
+  pcr_primer_name_reverse String?
+  pcr_primer_reference    String?
+  pcr_cond                String?
+  nucl_acid_amp           String?
+  adapters                String?
+  mid_barcode             String?
+  date_modified           DateTime @default(now())
+  modified_by             String
+}
+
+model Analysis_Data {
+  id                       String   @id
+  amplicon_sequenced       String
+  ampliconSize             Int?
+  trim_method              String?
+  cluster_method           String?
+  pid_clustering           String?
+  taxa_class_method        String
+  taxa_ref_db              String
+  assembly_qual            String?
+  assembly_software        String?
+  annot                    String?
+  number_contig            Int?
+  code_repo                String
+  sop                      String?
+  identificationReferences String
+  controls_used            String?
+  compl_score              String?
+  compl_software           String?
+  compl_appr               String?
+  contam_score             String?
+  contam_screen_input      String?
+  contam_screen_param      String?
+  decontam_software        String?
+  bin_param                String?
+  bin_software             String?
+  reassembly_bin           String?
+  mag_cov_software         String?
+  date_modified            DateTime @default(now())
+  modified_by              String
+}
+
+model Measurement_Metadata {
+  id                String  @id
+  aoml_file         String
+  aoml_term         String  @unique
+  measurementType   String?
+  measurementTypeID String?
+  measurementUnit   String?
+  measurementUnitID String?
+}
+
+model Metag_Prep_Data {
+  id                  String   @id
+  sample_name         String
+  library_id          String
+  title               String
+  library_strategy    String
+  library_source      String
+  library_selection   String
+  lib_layout          String
+  platform            String
+  instrument_model    String
+  design_description  String
+  filetype            String
+  filename            String
+  filename2           String?
+  drive_location      String
+  biosample_accession String?
+  sra_accession       String?
+  seq_facility        String?
+  nucl_acid_ext       String?
+  nucl_acid_amp       String?
+  adapters            String?
+  mid_barcode         String?
+  seq_meth            String?
+  tax_class           String?
+  date_modified       DateTime @default(now())
+  modified_by         String
+}
+
+model Water_Sample_Data {
+  id                    String    @id
+  sample_name           String
+  serial_number         String?
+  cruise_id             String?
+  line_id               String?
+  station               String?
+  locationID            String?
+  ctd_bottle_no         String?
+  sample_replicate      String?
+  source_mat_id         String?
+  biological_replicates String?
+  extract_number        String?
+  sample_title          String?
+  bioproject_accession  String?
+  notes_sampling        String?
+  project_id            String?
+  metagenome_sequence   String?
+  organism              String
+  collection_date_local DateTime?
+  collection_date       DateTime
+  depth                 Float
+  minimumDepthInMeters  Float?
+  maximumDepthInMeters  Float?
+  env_broad_scale       String
+  env_local_scale       String
+  env_medium            String
+  geo_loc_name          String
+  waterBody             String?
+  countryCode           String?
+  lat_lon               String
+  decimalLatitude       Float?
+  decimalLongitude      Float?
+  geodeticDatum         String?
+  samp_vol_we_dna_ext   String?
+  samp_collect_device   String?
+  samp_mat_process      String?
+  size_frac             String?
+  dna_conc              String?
+  concentrationUnit     String?
+  sample_type           String?
+  collection_method     String?
+  basisOfRecord         String?
+  alkalinity            String?
+  alkalinity_method     String?
+  alkyl_diethers        String?
+  altitude              String?
+  aminopept_act         String?
+  ammonium              String?
+  atmospheric_data      String?
+  bac_prod              String?
+  bac_resp              String?
+  bacteria_carb_prod    String?
+  biomass               String?
+  bishomohopanol        String?
+  bromide               String?
+  calcium               String?
+  carb_nitro_ratio      String?
+  chem_administration   String?
+  chloride              String?
+  chlorophyll           String?
+  conduc                String?
+  density               Float?
+  diether_lipids        String?
+  diss_carb_dioxide     String?
+  diss_hydrogen         String?
+  diss_inorg_carb       String?
+  diss_inorg_nitro      String?
+  diss_inorg_phosp      String?
+  diss_org_carb         String?
+  diss_org_nitro        String?
+  diss_oxygen           String?
+  down_par              String?
+  elev                  Float?
+  fluor                 String?
+  glucosidase_act       String?
+  isolation_source      String?
+  light_intensity       String?
+  magnesium             String?
+  mean_frict_vel        Float?
+  mean_peak_frict_vel   Float?
+  misc_param            String?
+  n_alkanes             String?
+  neg_cont_type         String?
+  nitrate               String?
+  nitrite               String?
+  nitro                 String?
+  omics_observ_id       String?
+  org_carb              String?
+  org_matter            String?
+  org_nitro             String?
+  organism_count        String?
+  oxy_stat_samp         String?
+  part_org_carb         String?
+  part_org_nitro        String?
+  perturbation          String?
+  petroleum_hydrocarb   String?
+  ph                    String?
+  phaeopigments         String?
+  phosphate             String?
+  phosplipid_fatt_acid  String?
+  photon_flux           String?
+  pos_cont_type         String?
+  potassium             String?
+  pressure              String?
+  primary_prod          String?
+  redox_potential       String?
+  rel_to_oxygen         String?
+  salinity              String?
+  samp_store_dur        String?
+  samp_store_loc        String?
+  samp_store_temp       String?
+  silicate              String?
+  size_frac_low         String?
+  size_frac_up          String?
+  sodium                String?
+  soluble_react_phosp   String?
+  source_material_id    String?
+  sulfate               String?
+  sulfide               String?
+  suspend_part_matter   String?
+  temp                  String?
+  tidal_stage           String?
+  tot_depth_water_col   String?
+  tot_diss_nitro        String?
+  tot_inorg_nitro       String?
+  tot_nitro             String?
+  tot_part_carb         String?
+  tot_phosp             String?
+  turbidity             String?
+  water_current         String?
+  description           String?
+  date_modified         DateTime  @default(now())
+  modified_by           String
+  amplicon_sequenced    String?
 }
