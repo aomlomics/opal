@@ -12,7 +12,7 @@ export default function OutlierDetectionTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Distance Metric</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Distance Metric"/>
+							<InfoButton infoText="Indicating the type of distance metric to be computed."/>
 						</span>
 					</div>
 					<select {...register('odseq_distance_metric')} className={`select select-bordered w-full ${errors.odseq_distance_metric && "select-error"}`}>
@@ -28,7 +28,7 @@ export default function OutlierDetectionTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Bootstrap Replicates</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Bootstrap Replicates"/>
+							<InfoButton infoText="The number of bootstrap replicates to be run. The higher the more robust the detection should be."/>
 						</span>
 					</div>
 					<div className="relative w-full">
@@ -42,7 +42,7 @@ export default function OutlierDetectionTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Threshold</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Threshold"/>
+							<InfoButton infoText="The probability to be left at the right of the bootstrap scores distribution when computing outliers. This parameter may need some tuning depending on each specific problem."/>
 						</span>
 					</div>
 					<div className="relative w-full">

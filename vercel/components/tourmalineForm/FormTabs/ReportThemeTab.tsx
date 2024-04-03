@@ -12,7 +12,7 @@ export default function ReportThemeTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Report Theme</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Report Theme"/>
+							<InfoButton infoText="Report theme for your HTML report."/>
 						</span>
 					</div>
 					<select {...register('report_theme')} className={`select select-bordered w-full ${errors.report_theme && "select-error"}`}>

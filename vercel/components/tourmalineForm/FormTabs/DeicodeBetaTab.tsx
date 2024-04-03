@@ -12,7 +12,7 @@ export default function DeicodeBetaTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Minimum Sample Count</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Minimum Sample Count"/>
+							<InfoButton infoText="Minimum sum cutoff of sample across all features. The value can be at minimum zero and must be an whole integer. It is suggested to be greater than or equal to 500."/>
 						</span>
 					</div>
 					<div className="relative w-full">
@@ -26,7 +26,7 @@ export default function DeicodeBetaTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Minimum Feature Count</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Minimum Feature Count"/>
+							<InfoButton infoText="Minimum sum cutoff of features across all samples. The value can be at minimum zero and must be an whole integer"/>
 						</span>
 					</div>
 					<div className="relative w-full">
@@ -40,7 +40,7 @@ export default function DeicodeBetaTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Minimum Feature Frequency</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Minimum Feature Frequency"/>
+							<InfoButton infoText="Minimum percentage of samples a feature must appear with a value greater than zero. This value can range from 0 to 100 with decimal values allowed."/>
 						</span>
 					</div>
 					<div className="relative w-full">
@@ -54,7 +54,7 @@ export default function DeicodeBetaTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Maximum Iterations</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Maximum Iterations"/>
+							<InfoButton infoText="The number of iterations to optimize the solution (suggested to be below 100; beware of overfitting)."/>
 						</span>
 					</div>
 					<div className="relative w-full">
@@ -68,7 +68,7 @@ export default function DeicodeBetaTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Number of Features</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Number of Features"/>
+							<InfoButton infoText="Number of most important features (arrows) to display in the biplot ordination."/>
 						</span>
 					</div>
 					<div className="relative w-full">
