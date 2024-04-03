@@ -1,21 +1,284 @@
 generator js {
-  	provider = "prisma-client-js"
-}
-
-generator py {
-  	provider = "prisma-client-py"
-	recursive_type_depth = 5
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  	provider = "postgresql"
-  	url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  	directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model Project {
-  	id        	String	@id @default(cuid())
-  	projectId		String
-  	title     	String
- 	description   String?
+model Study_Data {
+  id						String		@id @default(cuid())
+  project_id				String		@unique
+  project_id_external		String
+  project_name				String
+  project_contact			String
+  project_description		String
+  type						String
+  license					String
+  citation					String?
+  keywords					String?
+  associated_parties		String?
+  study_area_description	String?
+  external_links			String?
+  recordedBy				String? //should be snake case, not camel case
+  sampling_description		String?
+  grant_number				String? //int or string?
+  grant_title				String?
+  grant_agency				String?
+  project_proposal			String?
+  accessions				String?
+  metadata_notes			String?
+  date_modified				DateTime	@default(now())
+  modified_by				String
+}
+
+model Water_Sample_Data { //might need to be broken into multiple tables
+	id						String		@id @default(cuid())
+	sample_name				String
+	serial_number			String?
+	cruise_id				String? //int or string?
+	line_id					String? //int or string?
+	station					String? //int or string?
+	locationID				String? //should be snake case, not camel case
+	ctd_bottle_no			String?
+	sample_replicate		String?
+	source_mat_id			String?
+	biological_replicates	String?
+	extract_number			String? //int, float, or string?
+	sample_title			String?
+	bioproject_accession	String?
+	notes_sampling			String?
+	project_id				String? //foreign key reference on Study_Data? if not, should be named something else
+	amplicon_sequenced		String?
+	metagenome_sequence		String?
+	organism				String
+	collection_date_local	DateTime? //shouldn't be necessary
+	collection_date			DateTime
+	depth					Float
+	minimumDepthInMeters	Float? //should be snake case, not camel case
+	maximumDepthInMeters	Float? //should be snake case, not camel case
+	env_broad_scale			String
+	env_local_scale			String
+	env_medium				String
+	geo_loc_name			String
+	waterBody				String? //should be snake case, not camel case
+	countryCode				String? //should be snake case, not camel case
+	lat_lon					String //calculated field?
+	decimalLatitude			Float? //shouldn't be necessary | should be snake case, not camel case
+	decimalLongitude		Float? //shouldn't be necessary | should be snake case, not camel case
+	geodeticDatum			String? //should be snake case, not camel case
+	samp_vol_we_dna_ext		String? //int, float, or string?
+	samp_collect_device		String?
+	samp_mat_process		String?
+	size_frac				String? //float or string? (units)
+	dna_conc				String?
+	concentrationUnit		String? //should be in a "units" table | should be snake case, not camel case
+	sample_type				String? //foreign key reference?
+	collection_method		String?	//foreign key reference?
+	basisOfRecord			String? //should be snake case, not camel case
+	alkalinity				String? //int, float, or string?
+	alkalinity_method		String?
+	alkyl_diethers			String? //int, float, or string?
+	altitude				String? //int, float, or string?
+	aminopept_act			String? //int, float, or string?
+	ammonium				String? //int, float, or string?
+	atmospheric_data		String? //int, float, or string?
+	bac_prod				String? //int, float, or string?
+	bac_resp				String? //int, float, or string?
+	bacteria_carb_prod		String? //int, float, or string?
+	biomass					String? //int, float, or string?
+	bishomohopanol			String? //int, float, or string?
+	bromide					String? //int, float, or string?
+	calcium					String? //int, float, or string?
+	carb_nitro_ratio		String? //int, float, or string?
+	chem_administration		String? //foreign key reference? | should be String[] @default([])
+	chloride				String? //int, float, or string?
+	chlorophyll				String? //int, float, or string?
+	conduc					String? //int, float, or string?
+	density					Float?
+	diether_lipids			String? //int, float, or string? | can include many? should be array?
+	diss_carb_dioxide		String? //int, float, or string?
+	diss_hydrogen			String? //int, float, or string?
+	diss_inorg_carb			String? //int, float, or string?
+	diss_inorg_nitro		String? //int, float, or string?
+	diss_inorg_phosp		String? //int, float, or string?
+	diss_org_carb			String? //int, float, or string?
+	diss_org_nitro			String? //int, float, or string?
+	diss_oxygen				String? //int, float, or string?
+	down_par				String? //int, float, or string?
+	elev					Float?
+	fluor					String? //int, float, or string?
+	glucosidase_act			String? //int, float, or string?
+	isolation_source		String?
+	light_intensity			String? //int, float, or string?
+	magnesium				String? //int, float, or string?
+	mean_frict_vel			Float?
+	mean_peak_frict_vel		Float?
+	misc_param				String? //foreign key reference?
+	n_alkanes				String? //int, float, or string? | can include many? should be array?
+	neg_cont_type			String? //foreign key reference?
+	nitrate					String? //int, float, or string?
+	nitrite					String? //int, float, or string?
+	nitro					String? //int, float, or string?
+	omics_observ_id			String? //foreign key reference?
+	org_carb				String? //int, float, or string?
+	org_matter				String? //int, float, or string?
+	org_nitro				String? //int, float, or string?
+	organism_count			String? //int, float, or string?
+	oxy_stat_samp			String? //int, float, or string?
+	part_org_carb			String? //int, float, or string?
+	part_org_nitro			String? //int, float, or string?
+	perturbation			String? //int, float, or string?
+	petroleum_hydrocarb		String? //int, float, or string?
+	ph						String? //int, float, or string?
+	phaeopigments			String? //int, float, or string?
+	phosphate				String? //int, float, or string?
+	phosplipid_fatt_acid	String? //int, float, or string?
+	photon_flux				String? //int, float, or string?
+	pos_cont_type			String? //int, float, or string?
+	potassium				String? //int, float, or string?
+	pressure				String? //int, float, or string?
+	primary_prod			String? //int, float, or string?
+	redox_potential			String? //int, float, or string?
+	rel_to_oxygen			String? //foreign key reference?
+	salinity				String? //float or string? (units)
+	samp_store_dur			String? //ISO 8601 duration string
+	samp_store_loc			String?
+	samp_store_temp			String? //float or string? (units)
+	silicate				String? //int, float, or string?
+	size_frac_low			String? //float or string? (units)
+	size_frac_up			String? //float or string? (units)
+	sodium					String? //int, float, or string?
+	soluble_react_phosp		String? //int, float, or string?
+	source_material_id		String? //foreign key reference?
+	sulfate					String? //int, float, or string?
+	sulfide					String? //int, float, or string?
+	suspend_part_matter		String? //int, float, or string?
+	temp					String? //float or string? (units)
+	tidal_stage				String?
+	tot_depth_water_col		String? //int, float, or string?
+	tot_diss_nitro			String? //int, float, or string?
+	tot_inorg_nitro			String? //int, float, or string?
+	tot_nitro				String? //int, float, or string?
+	tot_part_carb			String? //int, float, or string?
+	tot_phosp				String? //float or string? | calculated field?
+	turbidity				String? //int, float, or string?
+	water_current			String? //int, float, or string?
+	description				String?
+	date_modified			DateTime	@default(now())
+	modified_by				String
+}
+
+model Amplicon_PrepData {
+	id						String		@id @default(cuid())
+	sample_name				String
+	library_id				String
+	title					String
+	library_strategy		String
+	library_source			String
+	library_selection		String
+	lib_layout				String //why change naming convention?
+	platform				String
+	instrument_model		String
+	design_description		String
+	filetype				String //foreign key reference?
+	filename				String
+	filename2				String? //why not array of file names?
+	drive_location			String
+	biosample_accession		String?
+	sra_accession			String?
+	date_dna_extracted		DateTime
+	extraction_personnel	String //should be String[]
+	date_pcr				DateTime
+	pcr_personnel			String //should be String[]
+	seq_facility			String?
+	seq_meth				String? //foreign key reference?
+	nucl_acid_ext			String?
+	amplicon_sequenced		String?
+	target_gene				String?
+	target_subfragment		String?
+	pcr_primer_forward		String?
+	pcr_primer_reverse		String?
+	pcr_primer_name_forward	String?
+	pcr_primer_name_reverse	String?
+	pcr_primer_reference	String?
+	pcr_cond				String? //foreign key reference?
+	nucl_acid_amp			String?
+	adapters				String?
+	mid_barcode				String?
+	date_modified			DateTime	@default(now())
+	modified_by				String
+}
+
+model Metag_Prep_Data {
+	id						String		@id @default(cuid())
+	sample_name				String
+	library_id				String
+	title					String
+	library_strategy		String
+	library_source			String
+	library_selection		String
+	lib_layout				String //why change naming convention?
+	platform				String
+	instrument_model		String
+	design_description		String
+	filetype				String //foreign key reference?
+	filename				String
+	filename2				String? //why not array of file names?
+	drive_location			String
+	biosample_accession		String?
+	sra_accession			String?
+	seq_facility			String?
+	nucl_acid_ext			String?
+	nucl_acid_amp			String?
+	adapters				String?
+	mid_barcode				String?
+	seq_meth				String?
+	tax_class				String? //foreign key reference?
+	date_modified			DateTime	@default(now())
+	modified_by				String
+}
+
+model Analysis_Data {
+	id							String		@id @default(cuid())
+	amplicon_sequenced			String
+	ampliconSize				Int? //int or float? | should be snake case, not camel case
+	trim_method					String? //foreign key referenc?
+	cluster_method				String? //foreign key reference?
+	pid_clustering				String? //foreign key reference?
+	taxa_class_method			String //foreign key reference?
+	taxa_ref_db					String
+	assembly_qual				String? //what is this?
+	assembly_software			String? //foreign key reference?
+	annot						String? //foreign key reference?
+	number_contig				Int?
+	code_repo					String
+	sop							String?
+	identificationReferences	String
+	controls_used				String? //should be String[] @default([])
+	compl_score					String? //int, float, or string?
+	compl_software				String? //foreign key reference?
+	compl_appr					String? //foreign key reference?
+	contam_score				String? //int, float, or string?
+	contam_screen_input			String? //foreign key reference?
+	contam_screen_param			String? //foreign key reference? | string[] @default([])?
+	decontam_software			String? //foreign key reference? | string[] @default([])?
+	bin_param					String? //foreign key reference? | string[] @default([])?
+	bin_software				String? //foreign key reference? | string[] @default([])?
+	reassembly_bin				String? //should be Boolean
+	mag_cov_software			String? //foreign key reference? | string[] @default([])?
+	date_modified				DateTime	@default(now())
+	modified_by					String
+}
+
+model Measurement_Metadata { //should store unit data for each table separately
+	id						String	@id @default(cuid())
+	aoml_term				String	@unique
+	aoml_file				String //should be a reference to table type
+	measurementType			String? //should be snake case, not camel case
+	measurementUnit			String? //should be snake case, not camel case
+	measurementTypeID		String? //should be snake case, not camel case
+	measurementUnitID		String? //should be snake case, not camel case
 }

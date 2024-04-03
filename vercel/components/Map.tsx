@@ -49,7 +49,7 @@ export default function MyMap() {
 	}
 
 	return (
-		<div className="flex flex-col items-start w-1/2 h-1/2">
+		<div className="flex flex-col items-start h-80 w-1/2">
 			<button className="btn btn-accent" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
 			<MapContainer className="w-full grow" center={centerStart} zoom={ZOOM_LEVEL}>
 				<TileLayer
