@@ -16,7 +16,7 @@ export default function MetadataTab({register, errors}: {
       className="file-input file-input-bordered file-input-secondary w-full max-w-xs"
     />
     <div className="absolute right-0 -translate-y-14 translate-x-5">
-      <InfoButton infoText="More information about Metadata file"/>
+      <InfoButton infoText="Visit the Tourmaline GitHub page for information and an example of an acceptable metadata file. Click 'Tourmaline' above."/>
     </div>
   </div>
 </div>

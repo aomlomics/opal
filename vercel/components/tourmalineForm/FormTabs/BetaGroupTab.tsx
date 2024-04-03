@@ -12,7 +12,7 @@ export default function BetaGroupTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Beta Group Column</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Beta Group Column"/>
+							<InfoButton infoText="Metadata column to test beta group significance; this column must appear in the metadata file."/>
 						</span>
 					</div>
 					<div className="relative w-full">
@@ -28,7 +28,7 @@ export default function BetaGroupTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Beta Group Method</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Beta Group Method"/>
+							<InfoButton infoText="Choose one of the available methods."/>
 						</span>
 					</div>
 					<select {...register('beta_group_method')} className={`select select-bordered w-full ${errors.beta_group_method && "select-error"}`}>
@@ -45,7 +45,7 @@ export default function BetaGroupTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Beta Group Pairwise</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Beta Group Pairwise"/>
+							<InfoButton infoText="Choosing '--p-pairwise' can significantly slow down performance speed."/>
 						</span>
 					</div>
 					<select {...register('beta_group_pairwise')} className={`select select-bordered w-full ${errors.beta_group_pairwise && "select-error"}`}>

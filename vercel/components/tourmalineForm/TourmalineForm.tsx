@@ -2,7 +2,6 @@
 /*
 ---TODO---
 
-	- Add explanations from Tourmaline container --help commands and config.yaml to info buttons
 	- Add a title for each tab with a brief description of what the tab is for
 	- IMPORTANT: Refine the constraints and error messaging
   - Filtering tab needs to be completed after discussions
@@ -37,7 +36,7 @@ export default function TourmalineForm() {
 	const [formSubmitted, setFormSubmitted] = useState(false);
 	const { register, handleSubmit, formState: { isValid, errors }, watch } = useForm<SchemaData>({
     	resolver: zodResolver(schema),
-    	mode: 'onChange',
+    	mode: 'onBlur',
 		//All default values can be set here
 		defaultValues: {
 			dada2pe_trunc_len_f: 240,
@@ -111,6 +110,9 @@ export default function TourmalineForm() {
 
 	//Watch for msaMethod to render the muscle_iters field
 	const selectedMsaMethod = watch('msaMethod');
+
+	//Watch for rendering infobutton text based on taxonomic classifier method
+	const selectedTaxClassifier = watch('taxClassMethod')
 
 	// Manually register the file input field for metadata file
 	// React.useEffect(() => {
@@ -213,6 +215,7 @@ export default function TourmalineForm() {
 					<TaxonomicTab
 						register={register}
 						errors={errors}
+						selectedTaxClassifier={selectedTaxClassifier} // Add the selectedTaxClassifier prop
 					></TaxonomicTab>
 				)}
 				{activeTab === 'Multiple Sequence Alignment' && (
@@ -271,16 +274,19 @@ export default function TourmalineForm() {
 					></MetadataTab>
 				)}
 				{activeTab === 'Submit' && (
-					<div className="flex justify-center p-4">
-						<button
-							type="submit"
-							//Removed isDirty check, because it doesn't work if you dont change initial value of Denoise rendered fields
-							disabled={!isValid || formSubmitted} // Submit button is disabled based on form state and submission status
-							// className={`mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md ${!isDirty || !isValid || formSubmitted ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'} focus:outline-none text-white`}
-							className="btn btn-secondary"
-						>
-							Submit
-						</button>
+					<div>
+						<p className="text-md text-center text-secondary">Please carefully check all of your inputs before submitting. Remember: garbage in, garbage out.</p>
+						<div className="flex justify-center p-4">
+							<button
+								type="submit"
+								//Removed isDirty check, because it doesn't work if you dont change initial value of Denoise rendered fields
+								disabled={!isValid || formSubmitted} // Submit button is disabled based on form state and submission status
+								// className={`mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md ${!isDirty || !isValid || formSubmitted ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'} focus:outline-none text-white`}
+								className="btn btn-secondary"
+							>
+								Submit
+							</button>
+						</div>
 					</div>
 				)}
 

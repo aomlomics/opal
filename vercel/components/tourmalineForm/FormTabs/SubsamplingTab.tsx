@@ -12,7 +12,7 @@ export default function SubsamplingTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Core Sampling Depth</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Core Sampling Depth"/>
+							<InfoButton infoText="Subsampling depth for core diversity analyses."/>
 						</span>
 					</div>
 					<div className="relative w-full">
@@ -26,7 +26,7 @@ export default function SubsamplingTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Alpha Max Depth</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="More information about Alpha Max Depth"/>
+							<InfoButton infoText="Maximum subsampling depth for alpha diversity rarefaction analysis."/>
 						</span>
 					</div>
 					<div className="relative w-full">

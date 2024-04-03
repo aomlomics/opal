@@ -14,17 +14,24 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 					<>
 						<div className="space-y-4 p-1">
 							<div className="flex gap-x-4">
-								<label className="form-control w-1/2 max-w-xs">
-									<div className="label pb-0">
-										<span className="label-text">Forward Truncation Length</span>
-										<span className="label-text-alt">
-											<InfoButton infoText="Position at which forward read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
-										</span>
-									</div>
-									<div className="relative w-full">
-										<input {...register('dada2pe_trunc_len_f')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
-									</div>
-								</label>
+							<label className="form-control w-1/2 max-w-xs">
+    <div className="label pb-0">
+      <span className="label-text">Forward Truncation Length</span>
+      <InfoButton infoText="Position at which forward read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
+    </div>
+<div className="relative w-full">
+	<input 
+		{...register('dada2pe_trunc_len_f', { valueAsNumber: true })}
+		placeholder="Enter length"
+		className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_len_f ? 'input-error' : ''}`}
+	/>
+	{errors.dada2pe_trunc_len_f && (
+		<span className="text-red-500 text-sm mt-1">
+			{String(errors.dada2pe_trunc_len_f.message)}
+		</span>
+	)}
+</div>
+  </label>
 
 								<label className="form-control w-1/2 max-w-xs">
 									<div className="label pb-0">
@@ -150,7 +157,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Minimum Fold Parent Over Abundance</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Minimum Fold Parent Over Abundance"/>
+										<InfoButton infoText="The minimum abundance of potential parents of a sequence being tested as chimeric, expressed as a fold-change versus the abundance of the sequence being tested. Values should be greater than or equal to 1 (i.e. parents should be more abundant than the sequence being tested). This parameter has no effect if chimera-method is 'none'."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -164,7 +171,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Number of Reads to Learn</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Number of Reads to Learn"/>
+										<InfoButton infoText="The number of reads to use when training the error model. Smaller numbers will result in a shorter run time but a less reliable error model."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -183,7 +190,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Truncation Length</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Truncation Length"/>
+										<InfoButton infoText="Position at which sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. If 0 is provided, no truncation or length filtering will be performed."/>
 									</span>
 								</div>								
 								<div className="relative w-full">
@@ -197,7 +204,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Trim Left</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Trim Left"/>
+										<InfoButton infoText="Position at which sequences should be trimmed due to low quality. This trims the 5' end of the of the input sequences, which will be the bases that were sequenced in the first cycles."/>
 									</span>
 								</div>								
 								<div className="relative w-full">
@@ -211,7 +218,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Max Expected Errors</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Max Expected Errors"/>
+										<InfoButton infoText="Reads with number of expected errors higher than this value will be discarded."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -225,7 +232,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Truncation Quality Threshold</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Truncation Quality Threshold"/>
+										<InfoButton infoText="Reads are truncated at the first instance of a quality score less than or equal to this value. If the resulting read is then shorter than 'Truncation Length', it is discarded."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -239,7 +246,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Pooling Method</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Pooling Method"/>
+										<InfoButton infoText="The method used to pool samples for denoising. 'independent': Samples are denoised independently. 'pseudo': The pseudo-pooling method is used to approximate pooling of samples. In short, samples are denoised independently once, ASVs detected in at least 2 samples are recorded, and samples are denoised independently a second time, but this time with prior knowledge of the recorded ASVs and thus higher sensitivity to those ASVs."/>
 									</span>
 								</div>
 								<select {...register('dada2se_pooling_method')} className={`select select-bordered w-full ${errors.dada2se_pooling_method && "select-error"}`}>
@@ -255,7 +262,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Chimera Method</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Chimera Method"/>
+										<InfoButton infoText="The method used to remove chimeras. 'none': No chimera removal is performed. 'pooled': All reads are pooled prior to chimera detection. 'consensus': Chimeras are detected in samples individually, and sequences found chimeric in a sufficient fraction of samples are removed."/>
 									</span>
 								</div>
 								<select {...register('dada2se_chimera_method')} className={`select select-bordered w-full ${errors.dada2se_chimera_method && "select-error"}`}>
@@ -272,7 +279,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Minimum Fold Parent Over Abundance</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Minimum Fold Parent Over Abundance"/>
+										<InfoButton infoText="The minimum abundance of potential parents of a sequence being tested as chimeric, expressed as a fold-change versus the abundance of the sequence being tested. Values should be greater than or equal to 1 (i.e. parents should be more abundant than the sequence being tested). This parameter has no effect if chimera-method is 'none'."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -286,7 +293,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Number of Reads to Learn</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Number of Reads to Learn"/>
+										<InfoButton infoText="The number of reads to use when training the error model. Smaller numbers will result in a shorter run time but a less reliable error model."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -305,7 +312,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Trim Length</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Trim Length"/>
+										<InfoButton infoText="Sequence trim length, specify -1 to disable trimming."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -319,7 +326,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Mean Error</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Mean Error"/>		
+										<InfoButton infoText="The mean per nucleotide error, used for original sequence estimate."/>		
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -333,7 +340,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Indel Probability</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Indel Probability"/>
+										<InfoButton infoText="Insertion/deletion (indel) probability (same for N indels)."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -347,7 +354,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Indel Max</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Indel Max"/>
+										<InfoButton infoText="Maximum number of insertion/deletions."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -361,7 +368,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Minimum Reads</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Minimum Reads"/>
+										<InfoButton infoText="Retain only features appearing at least min-reads times across all samples in the resulting feature table."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -375,7 +382,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Minimum Size</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="More information about Minimum Size"/>		
+										<InfoButton infoText="In each sample, discard all features with an abundance less than min-size."/>		
 									</span>
 								</div>
 								<div className="relative w-full">
