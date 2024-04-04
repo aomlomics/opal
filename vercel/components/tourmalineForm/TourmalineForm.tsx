@@ -187,9 +187,9 @@ export default function TourmalineForm() {
 				<li className={activeTab === 'Filtering' ? 'bg-secondary text-white rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Filtering')}>Filtering</a>
 				</li>
-				<li className={activeTab === 'Threads' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				{/* <li className={activeTab === 'Threads' ? 'bg-secondary text-white rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Threads')}>Threads</a>
-				</li>
+				</li> */}
 				<li className={activeTab === 'Metadata' ? 'bg-secondary text-white rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Metadata')}>Metadata</a>
 				</li>
@@ -197,101 +197,101 @@ export default function TourmalineForm() {
 					<a onClick={() => setActiveTab('Submit')}>Submit</a>
 				</li>
 			</ul>
-				<div className="flex-grow p-1 flex flex-col justify-center items-center">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
-				
-				{/* Tab rendering */}
-				{activeTab === 'About' && (
-					<AboutTab></AboutTab>
-				)}
-				{activeTab === 'Denoise' && (
-					<DenoiseMethodTab
-						register={register}
-						errors={errors}
-						selectedDenoiseMethod={selectedDenoiseMethod}
-					></DenoiseMethodTab>
-				)}
-				{activeTab === 'Taxonomic Level' && (
-					<TaxonomicTab
-						register={register}
-						errors={errors}
-						selectedTaxClassifier={selectedTaxClassifier} // Add the selectedTaxClassifier prop
-					></TaxonomicTab>
-				)}
-				{activeTab === 'Multiple Sequence Alignment' && (
-					<>
-						<MsaTab
+			<div className="flex-grow p-1 flex flex-col justify-center items-center">
+				<form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
+
+					{/* Tab rendering */}
+					{activeTab === 'About' && (
+						<AboutTab></AboutTab>
+					)}
+					{activeTab === 'Denoise' && (
+						<DenoiseMethodTab
 							register={register}
 							errors={errors}
-							selectedMsaMethod={selectedMsaMethod || "muscle"} // Add a default value for selectedMsaMethod
-						/>
-					</>
-				)}
-				{activeTab === 'Outlier Detection' && (
-					<OutlierDetectionTab
-						register={register}
-						errors={errors}
-					></OutlierDetectionTab>
-				)}
-				{activeTab === 'Subsampling (Rarefaction)' && (
-					<SubsamplingTab
-						register={register}
-						errors={errors}
-					></SubsamplingTab>
-				)}
-				{activeTab === 'Beta Group Significance' && (
-					<BetaGroupTab
-						register={register}
-						errors={errors}
-					></BetaGroupTab>
-				)}
-				{activeTab === 'Deicode Beta Diversity' && (
-					<DeicodeBetaTab
-						register={register}
-						errors={errors}
-					></DeicodeBetaTab>
-				)}
-				{activeTab === 'Report Theme' && (
-					<ReportThemeTab
-						register={register}
-						errors={errors}
-					></ReportThemeTab>
-				)}
-				{activeTab === 'Filtering' && (
-					<FilteringTab
-						register={register}
-						errors={errors}
-					></FilteringTab>
-				)}
-				{activeTab === 'Threads' && (
-					//write me the 8 fields for threads
-					<ThreadsTab register={register} errors={errors}></ThreadsTab>
-				)}
-				{activeTab === 'Metadata' && (
-					<MetadataTab
-						register={register}
-						errors={errors}
-					></MetadataTab>
-				)}
-				{activeTab === 'Submit' && (
-					<div>
-						<p className="text-md text-center text-secondary">Please carefully check all of your inputs before submitting. Remember: garbage in, garbage out.</p>
-						<div className="flex justify-center p-4">
-							<button
-								type="submit"
-								//Removed isDirty check, because it doesn't work if you dont change initial value of Denoise rendered fields
-								disabled={!isValid || formSubmitted} // Submit button is disabled based on form state and submission status
-								// className={`mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md ${!isDirty || !isValid || formSubmitted ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'} focus:outline-none text-white`}
-								className="btn btn-secondary"
-							>
-								Submit
-							</button>
+							selectedDenoiseMethod={selectedDenoiseMethod}
+						></DenoiseMethodTab>
+					)}
+					{activeTab === 'Taxonomic Level' && (
+						<TaxonomicTab
+							register={register}
+							errors={errors}
+							selectedTaxClassifier={selectedTaxClassifier} // Add the selectedTaxClassifier prop
+						></TaxonomicTab>
+					)}
+					{activeTab === 'Multiple Sequence Alignment' && (
+						<>
+							<MsaTab
+								register={register}
+								errors={errors}
+								selectedMsaMethod={selectedMsaMethod || "muscle"} // Add a default value for selectedMsaMethod
+							/>
+						</>
+					)}
+					{activeTab === 'Outlier Detection' && (
+						<OutlierDetectionTab
+							register={register}
+							errors={errors}
+						></OutlierDetectionTab>
+					)}
+					{activeTab === 'Subsampling (Rarefaction)' && (
+						<SubsamplingTab
+							register={register}
+							errors={errors}
+						></SubsamplingTab>
+					)}
+					{activeTab === 'Beta Group Significance' && (
+						<BetaGroupTab
+							register={register}
+							errors={errors}
+						></BetaGroupTab>
+					)}
+					{activeTab === 'Deicode Beta Diversity' && (
+						<DeicodeBetaTab
+							register={register}
+							errors={errors}
+						></DeicodeBetaTab>
+					)}
+					{activeTab === 'Report Theme' && (
+						<ReportThemeTab
+							register={register}
+							errors={errors}
+						></ReportThemeTab>
+					)}
+					{activeTab === 'Filtering' && (
+						<FilteringTab
+							register={register}
+							errors={errors}
+						></FilteringTab>
+					)}
+					{/* {activeTab === 'Threads' && (
+						//write me the 8 fields for threads
+						<ThreadsTab register={register} errors={errors}></ThreadsTab>
+					)} */}
+					{activeTab === 'Metadata' && (
+						<MetadataTab
+							register={register}
+							errors={errors}
+						></MetadataTab>
+					)}
+					{activeTab === 'Submit' && (
+						<div>
+							<p className="text-md text-center text-secondary">Please carefully check all of your inputs before submitting. Remember: garbage in, garbage out.</p>
+							<div className="flex justify-center p-4">
+								<button
+									type="submit"
+									//Removed isDirty check, because it doesn't work if you dont change initial value of Denoise rendered fields
+									disabled={!isValid || formSubmitted} // Submit button is disabled based on form state and submission status
+									// className={`mt-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md ${!isDirty || !isValid || formSubmitted ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-700'} focus:outline-none text-white`}
+									className="btn btn-secondary"
+								>
+									Submit
+								</button>
+							</div>
 						</div>
-					</div>
-				)}
+					)}
 
-			</form>
+				</form>
+			</div>
 		</div>
-	</div>
 	);
 }
