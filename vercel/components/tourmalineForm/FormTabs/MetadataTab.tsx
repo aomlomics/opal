@@ -6,19 +6,19 @@ export default function MetadataTab({register, errors}: {
 	errors: FieldErrors<any>
 }) {
 	return(
-<div className="flex flex-col items-start">
-  <span className="label-text mb-1">Upload Metadata (.tsv):</span>
-  <div className="relative">
-    <input
-      type="file"
-      {...register('metadataFile')}
-      accept=".tsv"
-      className="file-input file-input-bordered file-input-secondary w-full max-w-xs"
-    />
-    <div className="absolute right-0 -translate-y-14 translate-x-5">
-      <InfoButton infoText="Visit the Tourmaline GitHub page for information and an example of an acceptable metadata file. Click 'Tourmaline' above."/>
-    </div>
-  </div>
-</div>
-	)
+		<label className="form-control w-full max-w-xs">
+			<div className="label">
+				<span className="label-text mb-1">Upload Metadata (.tsv):</span>
+				<span className="label-text-alt">
+					<InfoButton infoText="Visit the Tourmaline GitHub page for information and an example of an acceptable metadata file. Click 'Tourmaline' above."/>
+				</span>
+			</div>
+			<input
+				type="file"
+				{...register('metadataFile')}
+				accept=".tsv"
+				className="file-input file-input-bordered file-input-secondary w-full max-w-xs"
+			/>
+		</label>
+	);
 }

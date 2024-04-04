@@ -10,29 +10,28 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 	function renderDenoiseFields() {
 		switch(selectedDenoiseMethod){
 			case 'DADA2 paired-end':
-				return(
+				return (
 					<>
 						<div className="space-y-4 p-1">
 							<div className="flex gap-x-4">
-							<label className="form-control w-1/2 max-w-xs">
-    <div className="label pb-0">
-      <span className="label-text">Forward Truncation Length</span>
-      <InfoButton infoText="Position at which forward read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
-    </div>
-<div className="relative w-full">
-	<input 
-		{...register('dada2pe_trunc_len_f', { valueAsNumber: true })}
-		placeholder="Enter length"
-		className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_len_f ? 'input-error' : ''}`}
-	/>
-	{errors.dada2pe_trunc_len_f && (
-		<span className="text-red-500 text-sm mt-1">
-			{String(errors.dada2pe_trunc_len_f.message)}
-		</span>
-	)}
-</div>
-  </label>
-
+								<label className="form-control w-1/2 max-w-xs">
+									<div className="label pb-0">
+										<span className="label-text">Forward Truncation Length</span>
+										<InfoButton infoText="Position at which forward read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
+									</div>
+									<div className="relative w-full">
+										<input
+											{...register('dada2pe_trunc_len_f', { valueAsNumber: true })}
+											placeholder="Enter length"
+											className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_len_f ? 'input-error' : ''}`}
+										/>
+										{errors.dada2pe_trunc_len_f && (
+											<span className="text-red-500 text-sm mt-1">
+												{String(errors.dada2pe_trunc_len_f.message)}
+											</span>
+										)}
+									</div>
+								</label>
 								<label className="form-control w-1/2 max-w-xs">
 									<div className="label pb-0">
 										<span className="label-text">Reverse Truncation Length</span>
@@ -75,65 +74,65 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 							</div>
 						</div>
 
-					<div className="space-y-4 p-1">
-						<div className="flex gap-x-4">
-						<label className="form-control w-1/2 max-w-xs relative">
-							<div className="label pb-0">
-								<span className="label-text">Forward Max Expected Errors</span>
-								<span className="label-text-alt">
-									<InfoButton infoText="Forward reads with number of expected errors higher than this value will be discarded."/>
-								</span>
-							</div>
-							<div className="relative w-full">
-								<input {...register('dada2pe_max_ee_f')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
-							</div>
-						</label>
+						<div className="space-y-4 p-1">
+							<div className="flex gap-x-4">
+								<label className="form-control w-1/2 max-w-xs relative">
+									<div className="label pb-0">
+										<span className="label-text">Forward Max Expected Errors</span>
+										<span className="label-text-alt">
+											<InfoButton infoText="Forward reads with number of expected errors higher than this value will be discarded."/>
+										</span>
+									</div>
+									<div className="relative w-full">
+										<input {...register('dada2pe_max_ee_f')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									</div>
+								</label>
 
-						<label className="form-control w-1/2 max-w-xs relative">
-							<div className="label pb-0">
-								<span className="label-text">Reverse Max Expected Errors</span>
-								<span className="label-text-alt">
-									<InfoButton infoText="Reverse reads with number of expected errors higher than this value will be discarded."/>
-								</span>
+								<label className="form-control w-1/2 max-w-xs relative">
+									<div className="label pb-0">
+										<span className="label-text">Reverse Max Expected Errors</span>
+										<span className="label-text-alt">
+											<InfoButton infoText="Reverse reads with number of expected errors higher than this value will be discarded."/>
+										</span>
+									</div>
+									<div className="relative w-full">
+										<input {...register('dada2pe_max_ee_r')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									</div>
+								</label>
 							</div>
-							<div className="relative w-full">
-								<input {...register('dada2pe_max_ee_r')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
-							</div>
-						</label>
-					</div>
-					</div>
+						</div>
 
-					<div className="space-y-4 p-1">
-						<div className="flex gap-x-4">
-							<label className="form-control relative max-w-xs">
+						<div className="space-y-4 p-1">
+							<div className="flex gap-x-4">
+								<label className="form-control relative max-w-xs">
+									<div className="label pb-0">
+										<span className="label-text">Truncation Quality Threshold</span>
+										<span className="label-text-alt">
+											<InfoButton infoText="Reads are truncated at the first instance of a quality score less than or equal to this value. If the resulting read is then shorter than `trunc-len-f` or `trunc-len-r` (depending on the direction of the read) it is discarded."/>
+										</span>
+									</div>
+									<div className="relative">
+										<input {...register('dada2pe_trunc_q')} placeholder="dada2pe_trunc_q" className="input input-bordered w-full pr-8"/>
+									</div>
+								</label>
+							</div>
+						</div>
+
+						<div className="space-y-4 p-1 flex items-center">
+							<label className="form-control w-relative max-w-xs">
 								<div className="label pb-0">
-									<span className="label-text">Truncation Quality Threshold</span>
+									<span className="label-text">Pooling Method</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="Reads are truncated at the first instance of a quality score less than or equal to this value. If the resulting read is then shorter than `trunc-len-f` or `trunc-len-r` (depending on the direction of the read) it is discarded."/>
+										<InfoButton infoText="The method used to pool samples for denoising. 'independent': Samples are denoised indpendently. 'pseudo': The pseudo-pooling method is used to approximate pooling of samples. In short, samples are denoised independently once, ASVs detected in at least 2 samples are recorded, and samples are denoised independently a second time, but this time with prior knowledge of the recorded ASVs and thus higher sensitivity to those ASVs."/>
 									</span>
 								</div>
-								<div className="relative">
-									<input {...register('dada2pe_trunc_q')} placeholder="dada2pe_trunc_q" className="input input-bordered w-full pr-8"/>
-								</div>
+								<select {...register('dada2pe_pooling_method')} className={`select select-bordered w-full ${errors.dada2pe_pooling_method && "select-error"}`}>
+									<option disabled value="">Select Pooling Method</option>
+									<option value="independent">Independent</option>
+									<option value="pseudo">Pseudo</option>
+								</select>
 							</label>
 						</div>
-					</div>
-
-					<div className="space-y-4 p-1 flex items-center">
-						<label className="form-control w-relative max-w-xs">
-							<div className="label pb-0">
-								<span className="label-text">Pooling Method</span>
-								<span className="label-text-alt">
-									<InfoButton infoText="The method used to pool samples for denoising. 'independent': Samples are denoised indpendently. 'pseudo': The pseudo-pooling method is used to approximate pooling of samples. In short, samples are denoised independently once, ASVs detected in at least 2 samples are recorded, and samples are denoised independently a second time, but this time with prior knowledge of the recorded ASVs and thus higher sensitivity to those ASVs."/>
-								</span>
-							</div>
-							<select {...register('dada2pe_pooling_method')} className={`select select-bordered w-full ${errors.dada2pe_pooling_method && "select-error"}`}>
-							<option disabled value="">Select Pooling Method</option>
-							<option value="independent">Independent</option>
-							<option value="pseudo">Pseudo</option>
-							</select>
-						</label>
-					</div>
 
 						<div className="space-y-4 p-1 flex items-center">
 							<label className="form-control relative max-w-xs">
@@ -183,7 +182,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 				);
 
 			case 'DADA2 single-end':
-				return(
+				return (
 					<>
 						<div className="space-y-4 p-1">
 							<label className="form-control max-w-xs relative">
@@ -192,7 +191,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									<span className="label-text-alt">
 										<InfoButton infoText="Position at which sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. If 0 is provided, no truncation or length filtering will be performed."/>
 									</span>
-								</div>								
+								</div>
 								<div className="relative w-full">
 									<input {...register('dada2se_trunc_len')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
 								</div>
@@ -206,7 +205,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									<span className="label-text-alt">
 										<InfoButton infoText="Position at which sequences should be trimmed due to low quality. This trims the 5' end of the of the input sequences, which will be the bases that were sequenced in the first cycles."/>
 									</span>
-								</div>								
+								</div>
 								<div className="relative w-full">
 									<input {...register('dada2se_trim_left')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
 								</div>
@@ -305,7 +304,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 				);
 
 			case 'Deblur single-end':
-				return(
+				return (
 					<>
 						<div className="space-y-4 p-1">
 							<label className="form-control max-w-xs relative">
@@ -326,7 +325,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Mean Error</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="The mean per nucleotide error, used for original sequence estimate."/>		
+										<InfoButton infoText="The mean per nucleotide error, used for original sequence estimate."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -382,7 +381,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								<div className="label pb-0">
 									<span className="label-text">Minimum Size</span>
 									<span className="label-text-alt">
-										<InfoButton infoText="In each sample, discard all features with an abundance less than min-size."/>		
+										<InfoButton infoText="In each sample, discard all features with an abundance less than min-size."/>
 									</span>
 								</div>
 								<div className="relative w-full">
@@ -411,7 +410,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 			</select>
 
 			{/* Conditionally render fields based on denoiseMethod */}
-			{renderDenoiseFields()}
+			{renderDenoiseFields()}s
 
 			<div className="label">
 				<span className="label-text-alt"></span>
