@@ -140,6 +140,29 @@ enum lib_layout {
 	single
 }
 
+// will have to change from enum
+enum platform {
+	underscore_LS454 @map("_LS454")
+	ABI_SOLID
+	BGISEQ
+	CAPILLARY
+	COMPLETE_GENOMICS
+	HELICOS
+	ILLUMINA
+	ION_TORRENT
+	OXFORD_NANOPORE
+	PACBIO_SMRT
+}
+
+// instrument model is dependant on platform
+enum instrument_model {
+	BGISEQ_500 @map("BGISEQ-500")
+	DNBSEQ_G400 @map("DNBSEQ-G400")
+	DNBSEQ_T7 @map("DNBSEQ-T7")
+	DNBSEQ_G50 @map("DNBSEQ-G50")
+	MGISEQ_2000RS @map("MGISEQ-2000RS")
+}
+
 enum filetype {
 	bam
 	srf
