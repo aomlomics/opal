@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getBaseUrl } from "@/helpers/utils";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import TabButton from "@/components/TabButton";
 
 export default function Header() {
 	return (
@@ -18,6 +19,11 @@ export default function Header() {
 					<div className="hidden lg:block">
 						{/* <Search/> */}
 					</div>
+				<div className="navbar-center hidden lg:flex">
+					<TabButton tabName='Home' route='/' />
+					<TabButton tabName='Tourmaline' route='/tourmaline' />
+					<TabButton tabName='About' route='/about' />
+				</div>
 				</div>
 				<div className="navbar-center hidden lg:flex">
 					{/* <Nav/> */}
