@@ -1,46 +1,43 @@
 import { z } from 'zod';
+import { intWithMin0, numWithMin0, numWithMin1, numWithMinNeg1 } from '@/components/tourmalineForm/validationHelper';
 
 // Define the form schema using Zod
 export const schema = z.object({
 	denoiseMethod: z.enum(['DADA2 paired-end', 'DADA2 single-end', 'Deblur single-end']),
 
 	//Dynamically rendered fields based on denoiseMethod
-	//DADA2 paired-end:
-	dada2pe_trunc_len_f: z.number().min(0).refine(val => Number.isInteger(val), {
-		message: "Must be an integer",
-	}),
-
-	// DADA2 Paired-end Fields
-	dada2pe_trunc_len_r: z.number().min(0).optional(),
-	dada2pe_trim_left_f: z.number().min(0).optional(),
-	dada2pe_trim_left_r: z.number().min(0).optional(),
-	dada2pe_max_ee_f: z.number().min(0).optional(),
-	dada2pe_max_ee_r: z.number().min(0).optional(),
-	dada2pe_trunc_q: z.number().min(0).optional(),
+	//DADA2 paired-end Fields:
+	dada2pe_trunc_len_f: intWithMin0().optional(),
+	dada2pe_trunc_len_r: intWithMin0().optional(),
+	dada2pe_trim_left_f: intWithMin0().optional(),
+	dada2pe_trim_left_r: intWithMin0().optional(),
+	dada2pe_max_ee_f: numWithMin0().optional(),
+	dada2pe_max_ee_r: numWithMin0().optional(),
+	dada2pe_trunc_q: intWithMin0().optional(),
 	dada2pe_pooling_method: z.enum(['independent', 'pseudo']).optional(),
 	dada2pe_chimera_method: z.enum(['consensus', 'none', 'pooled']).optional(),
-	dada2pe_min_fold_parent_over_abundance: z.number().min(1).optional(),
-	dada2pe_n_reads_learn: z.number().min(1).optional(),
+	dada2pe_min_fold_parent_over_abundance: numWithMin1().optional(),
+	dada2pe_n_reads_learn: intWithMin0().optional(),
 
 	//DADA2 Single-end Fields
-	dada2se_trunc_len: z.number().min(0).optional(),
-	dada2se_trim_left: z.number().min(0).optional(),
-	dada2se_max_ee: z.number().min(0).optional(),
-	dada2se_trunc_q: z.number().min(0).optional(),
+	dada2se_trunc_len: intWithMin0().optional(),
+	dada2se_trim_left: intWithMin0().optional(),
+	dada2se_max_ee: numWithMin0().optional(),
+	dada2se_trunc_q: intWithMin0().optional(),
 	dada2se_pooling_method: z.enum(['independent', 'pseudo']).optional(),
 	dada2se_chimera_method: z.enum(['consensus', 'none', 'pooled']).optional(),
-	dada2se_min_fold_parent_over_abundance: z.number().min(1).optional(),
-	dada2se_n_reads_learn: z.number().min(1).optional(),
+	dada2se_min_fold_parent_over_abundance: numWithMin1().optional(),
+	dada2se_n_reads_learn: intWithMin0().optional(),
 
 	//Deblur Single-end Fields
-	deblur_trim_length: z.number().min(-1).optional(),
+	deblur_trim_length: numWithMinNeg1().optional(),
 	//deblur_sample_stats: z.
 	//Not sure how to handle these. Will consult Luke/Katherine soon
-	deblur_mean_error: z.number().min(0).optional(),
-	deblur_indel_prob: z.number().min(0).optional(),
-	deblur_indel_max: z.number().min(0).optional(),
-	deblur_min_reads: z.number().min(0).optional(),
-	deblur_min_size: z.number().min(0).optional(),
+	deblur_mean_error: numWithMin0().optional(),
+	deblur_indel_prob: numWithMin0().optional(),
+	deblur_indel_max: intWithMin0().optional(),
+	deblur_min_reads: intWithMin0().optional(),
+	deblur_min_size: intWithMin0().optional(),
 
 	//Taxonomic Level Fields
 	taxClassMethod: z.enum(['naive-bayes', 'consensus-blast', 'consensus-vsearch']),

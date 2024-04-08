@@ -1,5 +1,6 @@
 import { FieldErrors } from "react-hook-form/dist/types/errors";
 import InfoButton from "@/components/tourmalineForm/InfoButton";
+import ErrorMessage from "@/components/tourmalineForm/ErrorMessage";
 
 export default function DenoiseMethodTab({ register, errors, selectedDenoiseMethod}: {
 	register: any,
@@ -14,24 +15,16 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 					<>
 						<div className="space-y-4 p-1">
 							<div className="flex gap-x-4">
-								<label className="form-control w-1/2 max-w-xs">
-									<div className="label pb-0">
+							<label className="form-control w-1/2 max-w-xs">
+								<div className="label pb-0">
 										<span className="label-text">Forward Truncation Length</span>
 										<InfoButton infoText="Position at which forward read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
-									</div>
-									<div className="relative w-full">
-										<input
-											{...register('dada2pe_trunc_len_f', { valueAsNumber: true })}
-											placeholder="Enter length"
-											className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_len_f ? 'input-error' : ''}`}
-										/>
-										{errors.dada2pe_trunc_len_f && (
-											<span className="text-red-500 text-sm mt-1">
-												{String(errors.dada2pe_trunc_len_f.message)}
-											</span>
-										)}
-									</div>
-								</label>
+								</div>
+								<div className="relative w-full">
+									<input {...register('dada2pe_trunc_len_f')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_len_f ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2pe_trunc_len_f'/>
+    						</div>
+							</label>
 								<label className="form-control w-1/2 max-w-xs">
 									<div className="label pb-0">
 										<span className="label-text">Reverse Truncation Length</span>
@@ -40,7 +33,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										</span>
 									</div>
 									<div className="relative w-full">
-										<input {...register('dada2pe_trunc_len_r')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+										<input {...register('dada2pe_trunc_len_r')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_len_r ? 'input-error' : ''}`}/>
+										<ErrorMessage errors={errors} name='dada2pe_trunc_len_r'/>
 									</div>
 								</label>
 							</div>
@@ -56,7 +50,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										</span>
 									</div>
 									<div className="relative w-full">
-										<input {...register('dada2pe_trim_left_f')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+										<input {...register('dada2pe_trim_left_f')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_trim_left_f ? 'input-error' : ''}`}/>
+										<ErrorMessage errors={errors} name='dada2pe_trim_left_f'/>
 									</div>
 								</label>
 
@@ -68,7 +63,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										</span>
 									</div>
 									<div className="relative w-full">
-										<input {...register('dada2pe_trim_left_r')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+										<input {...register('dada2pe_trim_left_r')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_trim_left_r ? 'input-error' : ''}`}/>
+										<ErrorMessage errors={errors} name='dada2pe_trim_left_r'/>
 									</div>
 								</label>
 							</div>
@@ -84,7 +80,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										</span>
 									</div>
 									<div className="relative w-full">
-										<input {...register('dada2pe_max_ee_f')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+										<input {...register('dada2pe_max_ee_f')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_max_ee_f ? 'input-error' : ''}`}/>
+										<ErrorMessage errors={errors} name='dada2pe_max_ee_f'/>
 									</div>
 								</label>
 
@@ -96,7 +93,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										</span>
 									</div>
 									<div className="relative w-full">
-										<input {...register('dada2pe_max_ee_r')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+										<input {...register('dada2pe_max_ee_r')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_max_ee_r ? 'input-error' : ''}`}/>
+										<ErrorMessage errors={errors} name='dada2pe_max_ee_r'/>
 									</div>
 								</label>
 							</div>
@@ -112,7 +110,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										</span>
 									</div>
 									<div className="relative">
-										<input {...register('dada2pe_trunc_q')} placeholder="dada2pe_trunc_q" className="input input-bordered w-full pr-8"/>
+										<input {...register('dada2pe_trunc_q')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_q ? 'input-error' : ''}`}/>
+										<ErrorMessage errors={errors} name='dada2pe_trunc_q'/>
 									</div>
 								</label>
 							</div>
@@ -160,7 +159,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('dada2se_trunc_len')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('dada2pe_min_fold_parent_over_abundance')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_min_fold_parent_over_abundance ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2pe_min_fold_parent_over_abundance'/>
 								</div>
 							</label>
 						</div>
@@ -174,7 +174,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('dada2pe_n_reads_learn')} placeholder="dada2pe_n_reads_learn" className="input input-bordered w-full pr-8"/>
+									<input {...register('dada2pe_n_reads_learn')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_n_reads_learn ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2pe_n_reads_learn'/>
 								</div>
 							</label>
 						</div>
@@ -193,7 +194,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('dada2se_trunc_len')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('dada2se_trunc_len')} className={`input input-bordered w-full pr-8 ${errors.dada2se_trunc_len ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2se_trunc_len'/>
 								</div>
 							</label>
 						</div>
@@ -207,7 +209,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('dada2se_trim_left')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('dada2se_trim_left')} className={`input input-bordered w-full pr-8 ${errors.dada2se_trim_left ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2se_trim_left'/>
 								</div>
 							</label>
 						</div>
@@ -221,7 +224,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('dada2se_max_ee')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('dada2se_max_ee')} className={`input input-bordered w-full pr-8 ${errors.dada2se_max_ee ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2se_max_ee'/>
 								</div>
 							</label>
 						</div>
@@ -235,7 +239,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('dada2se_trunc_q')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('dada2se_trunc_q')} className={`input input-bordered w-full pr-8 ${errors.dada2se_trunc_q ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2se_trunc_q'/>
 								</div>
 							</label>
 						</div>
@@ -282,7 +287,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('dada2se_min_fold_parent_over_abundance')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('dada2se_min_fold_parent_over_abundance')} className={`input input-bordered w-full pr-8 ${errors.dada2se_min_fold_parent_over_abundance ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2se_min_fold_parent_over_abundance'/>
 								</div>
 							</label>
 						</div>
@@ -296,7 +302,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('dada2se_n_reads_learn')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('dada2se_n_reads_learn')} className={`input input-bordered w-full pr-8 ${errors.dada2se_n_reads_learn ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='dada2se_n_reads_learn'/>
 								</div>
 							</label>
 						</div>
@@ -315,7 +322,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('deblur_trim_length')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('deblur_trim_length')} className={`input input-bordered w-full pr-8 ${errors.deblur_trim_length ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='deblur_trim_length'/>
 								</div>
 							</label>
 						</div>
@@ -329,7 +337,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('deblur_mean_error')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('deblur_mean_error')} className={`input input-bordered w-full pr-8 ${errors.deblur_mean_error ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='deblur_mean_error'/>
 								</div>
 							</label>
 						</div>
@@ -343,7 +352,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('deblur_indel_prob')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('deblur_indel_prob')} className={`input input-bordered w-full pr-8 ${errors.deblur_indel_prob ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='deblur_indel_prob'/>
 								</div>
 							</label>
 						</div>
@@ -357,7 +367,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('deblur_indel_max')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('deblur_indel_max')} className={`input input-bordered w-full pr-8 ${errors.deblur_indel_max ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='deblur_indel_max'/>
 								</div>
 							</label>
 						</div>
@@ -371,7 +382,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('deblur_min_reads')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('deblur_min_reads')} className={`input input-bordered w-full pr-8 ${errors.deblur_min_reads ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='deblur_min_reads'/>
 								</div>
 							</label>
 						</div>
@@ -385,7 +397,8 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 									</span>
 								</div>
 								<div className="relative w-full">
-									<input {...register('deblur_min_size')} placeholder="Enter length" className="input input-bordered w-full pr-8"/>
+									<input {...register('deblur_min_size')} className={`input input-bordered w-full pr-8 ${errors.deblur_min_size ? 'input-error' : ''}`}/>
+									<ErrorMessage errors={errors} name='deblur_min_size'/>
 								</div>
 							</label>
 						</div>
@@ -410,7 +423,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 			</select>
 
 			{/* Conditionally render fields based on denoiseMethod */}
-			{renderDenoiseFields()}s
+			{renderDenoiseFields()}
 
 			<div className="label">
 				<span className="label-text-alt"></span>
