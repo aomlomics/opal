@@ -6,6 +6,10 @@
 	- IMPORTANT: Refine the constraints and error messaging
   - Filtering tab needs to be completed after discussions
 
+	- More padding in containers that hold the form 
+	- Not making the message on metadata colummn red
+	
+
 */
 
 import React, { useState } from 'react';

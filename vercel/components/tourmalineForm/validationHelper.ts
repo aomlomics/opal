@@ -1,9 +1,39 @@
 import { z } from 'zod';
 
-// A function to create a numeric field schema with dynamic ranges and custom messages
-export const intInRange0To100 = () => {
-  return z.number()
-    .int("Must be an integer")
-    .min(0, { message: "Must be greater than or equal to 0" })
-    .max(100, { message: "Must be less than or equal to 100" });
+//Fields that must be an int, and must be greater than or equal to 0
+export const intWithMin0 = () => {
+	return z.preprocess((val) => {
+		// Must parse input to attempt to convert string (HTML default) to number 
+		const parsed = parseFloat(String(val));
+		return isNaN(parsed) ? val : parsed;
+	}, z.number()
+		.int('Must be an integer')
+		.min(0, 'Must be greater than or equal to 0'));
+};
+
+//Fields that must be a number (could be decimal), and must be greater than or equal to 0
+export const numWithMin0 = () => {
+	return z.preprocess((val) => {
+		const parsed = parseFloat(String(val));
+		return isNaN(parsed) ? val : parsed;
+	}, z.number()
+		.min(0, 'Must be greater than or equal to 0'));
+};
+
+//Fields that must be a number (could be decimal), and must be greater than or equal to 1
+export const numWithMin1 = () => {
+	return z.preprocess((val) => {
+		const parsed = parseFloat(String(val));
+		return isNaN(parsed) ? val : parsed;
+	}, z.number()
+		.min(1, 'Must be greater than or equal to 1'));
+};
+
+//Fields that must be a number (could be decimal), and must be greater than or equal to -1
+export const numWithMinNeg1 = () => {
+	return z.preprocess((val) => {
+		const parsed = parseFloat(String(val));
+		return isNaN(parsed) ? val : parsed;
+	}, z.number()
+		.min(-1, 'Must be greater than or equal to 1'));
 };
