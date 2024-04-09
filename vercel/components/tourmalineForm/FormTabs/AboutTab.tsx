@@ -3,9 +3,7 @@
 export default function AboutTab(){
 	return(
 		<div>
-			<div className="mb-4">
-				<h1 className="text-secondary text-4xl font-bold text-center p-1">About</h1>
-			</div>
+			<h1 className="text-secondary text-4xl font-bold text-center p-1">About</h1>
 			<div className="p-4 text-left">
 				<h2 className="text-secondary text-xl font-semibold">What is this page?</h2>
 				<p className="leading-relaxed mt-2">

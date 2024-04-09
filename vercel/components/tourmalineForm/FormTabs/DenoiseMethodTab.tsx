@@ -1,6 +1,7 @@
 import { FieldErrors } from "react-hook-form/dist/types/errors";
 import InfoButton from "@/components/tourmalineForm/InfoButton";
 import ErrorMessage from "@/components/tourmalineForm/ErrorMessage";
+import DualTextField from "@/components/tourmalineForm/DualTextField";
 
 export default function DenoiseMethodTab({ register, errors, selectedDenoiseMethod}: {
 	register: any,
@@ -13,32 +14,18 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 			case 'DADA2 paired-end':
 				return (
 					<>
-						<div className="space-y-4 p-1">
-							<div className="flex gap-x-4">
-							<label className="form-control w-1/2 max-w-xs">
-								<div className="label pb-0">
-										<span className="label-text">Forward Truncation Length</span>
-										<InfoButton infoText="Position at which forward read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
-								</div>
-								<div className="relative w-full">
-									<input {...register('dada2pe_trunc_len_f')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_len_f ? 'input-error' : ''}`}/>
-									<ErrorMessage errors={errors} name='dada2pe_trunc_len_f'/>
-    						</div>
-							</label>
-								<label className="form-control w-1/2 max-w-xs">
-									<div className="label pb-0">
-										<span className="label-text">Reverse Truncation Length</span>
-										<span className="label-text-alt">
-										<InfoButton infoText="Position at which reverse read sequences should be truncated due to decrease in quality. This truncates the 3' end of the of the input sequences, which will be the bases that were sequenced in the last cycles. Reads that are shorter than this value will be discarded. After this parameter is applied there must still be at least a 12 nucleotide overlap between the forward and reverse reads. If 0 is provided, no truncation or length filtering will be performed"/>
-										</span>
-									</div>
-									<div className="relative w-full">
-										<input {...register('dada2pe_trunc_len_r')} className={`input input-bordered w-full pr-8 ${errors.dada2pe_trunc_len_r ? 'input-error' : ''}`}/>
-										<ErrorMessage errors={errors} name='dada2pe_trunc_len_r'/>
-									</div>
-								</label>
-							</div>
-						</div>
+						<DualTextField
+        					register1={register}
+        					register2={register}
+        					errors={errors}
+        					name1="dada2pe_trunc_len_f"
+        					label1="Forward Truncation Length"
+        					infoButton1={<InfoButton infoText="Position at which forward read sequences should be truncated..." />}
+        					name2="dada2pe_trunc_len_r"
+        					label2="Reverse Truncation Length"
+        					infoButton2={<InfoButton infoText="Position at which reverse read sequences should be truncated..." />}
+        					ErrorMessageComponent={ErrorMessage}
+      					/>
 
 						<div className="space-y-4 p-1">
 							<div className="flex gap-x-4">
