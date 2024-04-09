@@ -8,7 +8,7 @@ import TourmalineForm from "@/components/tourmalineForm/TourmalineForm";
 
 export default function Tourmaline() {
   return (
-    <div className="flex flex-col items-center z-30 flex-1">
+    <div className="py-4 flex flex-col items-center z-30 flex-1">
       <div className="w-1/2 max-w-4xl bg-neutral rounded-3xl mb-4">
         <Link href={"https://github.com/aomlomics/tourmaline"}>
           <div className="relative h-40 w-full flex items-center justify-center">
@@ -21,7 +21,7 @@ export default function Tourmaline() {
         </Link>
       </div>
 
-      <div className="flex justify-center z-30 bg-neutral rounded-3xl p-2 w-full max-w-5xl">
+      <div className="mb-4 flex justify-center z-30 bg-neutral rounded-3xl p-2 w-full max-w-5xl">
         <TourmalineForm />
       </div>
     </div>
