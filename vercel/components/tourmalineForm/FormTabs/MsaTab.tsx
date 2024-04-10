@@ -1,5 +1,7 @@
 import { FieldErrors } from "react-hook-form/dist/types/errors";
 import InfoButton from "@/components/tourmalineForm/InfoButton";
+import TextField from "@/components/tourmalineForm/TextField";
+import ErrorMessage from "@/components/tourmalineForm/ErrorMessage";
 
 export default function MsaTab({ register, errors, selectedMsaMethod }: {
 	register: any,
@@ -8,8 +10,8 @@ export default function MsaTab({ register, errors, selectedMsaMethod }: {
 }) {
 	return (
 		<div>
-			<div className="space-y-4 p-1 flex items-center">
-				<label className="form-control w-2/3 max-w-xs">
+			<div className="p-1 flex justify-center w-full">
+				<label className="form-control w-3/4">
 					<div className="label pb-0">
 						<span className="label-text">Multiple Sequence Alignment Method</span>
 						<span className="label-text-alt">
@@ -26,17 +28,18 @@ export default function MsaTab({ register, errors, selectedMsaMethod }: {
 			</div>
 
 			{selectedMsaMethod === 'muscle' && (
-				<div className="space-y-4 p-1 flex items-center">
-					<label className="form-control w-2/3 max-w-xs">
-						<div className="label pb-0">
-							<span className="label-text">Alignment Muscle Iterations</span>
-							<span className="label-text-alt">
-								<InfoButton infoText="Number of refinement iterations."/>
-							</span>
-						</div>
-						<input {...register('muscle_iters')} type="text" placeholder="Enter iterations" className="input input-bordered w-full"/>
-					</label>
+				<div className="flex justify-center w-full">
+				<div className="w-3/4">
+					<TextField
+						register={register}
+						errors={errors}
+						name="muscle_iters"
+						label="Minimum Fold Parent Over Abundance"
+						infoButton={<InfoButton infoText="Number of refinement iterations." />}
+						ErrorMessageComponent={ErrorMessage}
+					/>
 				</div>
+			</div>
 			)}
 		</div>
 	);

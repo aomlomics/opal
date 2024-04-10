@@ -1,5 +1,7 @@
 import {FieldErrors} from "react-hook-form/dist/types/errors";
 import InfoButton from "@/components/tourmalineForm/InfoButton";
+import ErrorMessage from "@/components/tourmalineForm/ErrorMessage";
+import TextField from "@/components/tourmalineForm/TextField";
 
 export default function OutlierDetectionTab({register, errors}: {
 	register: any,
@@ -7,8 +9,8 @@ export default function OutlierDetectionTab({register, errors}: {
 }) {
 	return(
 		<div>
-			<div className="space-y-4 p-1">
-				<label className="form-control relative max-w-xs">
+			<div className="p-1 flex justify-center w-full">
+				<label className="form-control w-3/4">
 					<div className="label pb-0">
 						<span className="label-text">Distance Metric</span>
 						<span className="label-text-alt">
@@ -23,32 +25,30 @@ export default function OutlierDetectionTab({register, errors}: {
 				</label>
 			</div>
 
-			<div className="space-y-4 p-1">
-				<label className="form-control max-w-xs relative">
-					<div className="label pb-0">
-						<span className="label-text">Bootstrap Replicates</span>
-						<span className="label-text-alt">
-							<InfoButton infoText="The number of bootstrap replicates to be run. The higher the more robust the detection should be."/>
-						</span>
-					</div>
-					<div className="relative w-full">
-						<input {...register('odseq_bootstrap_replicates')} placeholder="Enter length" className="input input-bordered w-full"/>
-					</div>
-				</label>
+			<div className="flex justify-center w-full">
+				<div className="w-3/4">
+					<TextField
+						register={register}
+						errors={errors}
+						name="odseq_bootstrap_replicates"
+						label="Bootstrap Replicates"
+						infoButton={<InfoButton infoText="The number of bootstrap replicates to be run. The higher the more robust the detection should be." />}
+						ErrorMessageComponent={ErrorMessage}
+					/>
+				</div>
 			</div>
 
-			<div className="space-y-4 p-1">
-				<label className="form-control max-w-xs relative">
-					<div className="label pb-0">
-						<span className="label-text">Threshold</span>
-						<span className="label-text-alt">
-							<InfoButton infoText="The probability to be left at the right of the bootstrap scores distribution when computing outliers. This parameter may need some tuning depending on each specific problem."/>
-						</span>
-					</div>
-					<div className="relative w-full">
-						<input {...register('odseq_threshold')} placeholder="Enter length" className="input input-bordered w-full"/>
-					</div>
-				</label>
+			<div className="flex justify-center w-full">
+				<div className="w-3/4">
+					<TextField
+						register={register}
+						errors={errors}
+						name="odseq_threshold"
+						label="Threshold"
+						infoButton={<InfoButton infoText="The probability to be left at the right of the bootstrap scores distribution when computing outliers. This parameter may need some tuning depending on each specific problem." />}
+						ErrorMessageComponent={ErrorMessage}
+					/>
+				</div>
 			</div>
 		</div>
 	)

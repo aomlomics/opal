@@ -1,5 +1,7 @@
 import {FieldErrors} from 'react-hook-form/dist/types/errors';
 import InfoButton from '@/components/tourmalineForm/InfoButton';
+import TextField from '@/components/tourmalineForm/TextField';
+import ErrorMessage from '@/components/tourmalineForm/ErrorMessage';
 
 export default function BetaGroupTab({register, errors}: {
 	register: any,
@@ -7,24 +9,24 @@ export default function BetaGroupTab({register, errors}: {
 }) {
 	return(
 		<div>
-			<div className="space-y-4 p-1">
-				<label className="form-control relative max-w-xs">
-					<div className="label pb-0">
-						<span className="label-text">Beta Group Column</span>
-						<span className="label-text-alt">
-							<InfoButton infoText="Metadata column to test beta group significance; this column must appear in the metadata file."/>
-						</span>
-					</div>
-					<div className="relative w-full">
-						<input {...register('beta_group_column')} type="text" placeholder="Enter column name" className="input input-bordered w-full"/>
-					</div>
+			<div className="flex justify-center w-full">
+				<div className="w-3/4">
+					<TextField
+						register={register}
+						errors={errors}
+						name="beta_group_column"
+						label="Beta Group Column"
+						infoButton={<InfoButton infoText="Metadata column to test beta group significance; this column must appear in the metadata file." />}
+						ErrorMessageComponent={ErrorMessage}
+					/>
 					<label className="label">
-						<span className="label-text-alt text-red-500">Warning: The column name must match the desired column in your metadata file EXACTLY.</span>
+						<span className="label-text-alt text-secondary">Warning: The column name must match the desired column in your metadata file EXACTLY.</span>
 					</label>
-				</label>
+				</div>
 			</div>
-			<div className="space-y-4 p-1">
-				<label className="form-control relative max-w-xs">
+
+			<div className="p-1 flex justify-center w-full">
+				<label className="form-control w-3/4">
 					<div className="label pb-0">
 						<span className="label-text">Beta Group Method</span>
 						<span className="label-text-alt">
@@ -40,8 +42,8 @@ export default function BetaGroupTab({register, errors}: {
 				</label>
 			</div>
 
-			<div className="space-y-4 p-1">
-				<label className="form-control relative max-w-xs">
+			<div className="p-1 flex justify-center w-full">
+				<label className="form-control w-3/4">
 					<div className="label pb-0">
 						<span className="label-text">Beta Group Pairwise</span>
 						<span className="label-text-alt">

@@ -18,8 +18,8 @@ export default function TaxonomicTab({register, errors, selectedTaxClassifier}: 
 
 	return (
 		<div>
-			<div className="space-y-4 p-1 flex items-center">
-				<label className="form-control w-2/3 max-w-xs">
+			<div className="p-1 flex justify-center w-full">
+				<label className="form-control w-3/4">
 					<div className="label pb-0">
 						<span className="label-text">Taxonomic Classifier Method</span>
 						<span className="label-text-alt">
@@ -34,8 +34,8 @@ export default function TaxonomicTab({register, errors, selectedTaxClassifier}: 
 					</select>
 				</label>
 			</div>
-			<div className="space-y-4 p-1 flex items-center">
-				<label className="form-control w-2/3 max-w-xs">
+			<div className="p-1 flex justify-center w-full">
+				<label className="form-control w-3/4">
 					<div className="label pb-0">
 						<span className="label-text">Taxonomic Level</span>
 						<span className="label-text-alt">
