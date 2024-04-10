@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { intWithMin0, numWithMin0, numWithMin1, numWithMinNeg1 } from '@/components/tourmalineForm/validationHelper';
+import { intWithMin0, intWithMin1, numWithMin0, numWithMin1, numWithMinNeg1, numWithMin0Max100 } from '@/components/tourmalineForm/validationHelper';
 
 // Define the form schema using Zod
 export const schema = z.object({
@@ -41,40 +41,41 @@ export const schema = z.object({
 
 	//Taxonomic Level Fields
 	taxClassMethod: z.enum(['naive-bayes', 'consensus-blast', 'consensus-vsearch']),
-	taxonomicLevel: z.coerce.number().min(1).max(7).optional(), // Ensuring the number is between 1 and 7
+	taxonomicLevel: z.coerce.number().min(1).max(7), // Ensuring the number is between 1 and 7
 
 	//Multiple Sequence Alignment
-	msaMethod: z.enum(['muscle', 'clustalo', 'mafft']).optional(),
-	muscle_iters: z.number().min(0).optional(),
+	msaMethod: z.enum(['muscle', 'clustalo', 'mafft']),
+	muscle_iters: intWithMin0().optional(), //unsure what the restrictions of muscle_iters should be
 
 	//Outlier Detection
-	odseq_distance_metric: z.enum(['linear', 'affine']).optional(),
-	odseq_bootstrap_replicates: z.number().min(0).optional(),
-	odseq_threshold: z.number().min(0).optional(),
+	odseq_distance_metric: z.enum(['linear', 'affine']),
+	odseq_bootstrap_replicates: intWithMin0(),
+	odseq_threshold: numWithMin0(),
 
 	//Subsampling (Rarefaction)
-	core_sampling_depth: z.number().min(0).optional(),
-	alpha_max_depth: z.number().min(0).optional(),
+	core_sampling_depth: intWithMin0(),
+	alpha_max_depth: intWithMin0(),
 
 	//Beta Group Significance
-	beta_group_column: z.string().optional(),
-	beta_group_method: z.enum(['permanova', 'anosim', 'permdisp']).optional(),
-	beta_group_pairwise: z.enum(['--p-no-pairwise', '--p-pairwise']).optional(),
+	beta_group_column: z.string(),
+	beta_group_method: z.enum(['permanova', 'anosim', 'permdisp']),
+	beta_group_pairwise: z.enum(['--p-no-pairwise', '--p-pairwise']),
 
 	//Deicode Beta Diversity
-	deicode_min_sample_count: z.number().min(0).optional(),
-	deicode_min_feature_count: z.number().min(0).optional(),
-	deicode_min_feature_frequency: z.number().min(0).max(100).optional(),
-	deicode_max_iterations: z.number().min(1).optional(),
-	deicode_num_features: z.number().min(1).optional(),
+	deicode_min_sample_count: intWithMin0(),
+	deicode_min_feature_count: intWithMin0(),
+	deicode_min_feature_frequency: numWithMin0Max100(),
+	deicode_max_iterations: intWithMin1(),
+	deicode_num_features: intWithMin1(),
 
 	//Report Theme
-	report_theme: z.enum(['github', 'gothic', 'newsprint', 'night', 'pixyll', 'whitey']).optional(),
+	report_theme: z.enum(['github', 'gothic', 'newsprint', 'night', 'pixyll', 'whitey']),
 
 	//Filtering
 	filtering_election: z.enum(['unfiltered', 'filtered']).optional(),
 
 	//Threads
+	/*
 	dada2pe_threads: z.number().min(1).max(8).optional(),
 	dada2se_threads: z.number().min(1).max(8).optional(),
 	deblur_threads: z.number().min(1).max(8).optional(),
@@ -83,6 +84,7 @@ export const schema = z.object({
 	phylogeny_fasttree_threads: z.number().min(1).max(8).optional(),
 	diversity_core_metrics_phylogenetic_threads: z.number().min(1).max(8).optional(),
 	other_threads: z.number().min(1).max(8).optional(),
+	*/
 
 	//Metadata File Field
 	metadataFile: z.custom<FileList | Buffer>((data) => {

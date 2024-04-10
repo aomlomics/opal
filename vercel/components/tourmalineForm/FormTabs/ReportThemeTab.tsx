@@ -7,8 +7,8 @@ export default function ReportThemeTab({register, errors}: {
 }) {
 	return(
 		<div>
-			<div className="space-y-4 p-1">
-				<label className="form-control relative max-w-xs">
+			<div className="p-1 flex justify-center w-full">
+				<label className="form-control w-3/4">
 					<div className="label pb-0">
 						<span className="label-text">Report Theme</span>
 						<span className="label-text-alt">
