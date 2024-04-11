@@ -21,7 +21,7 @@ export default function MsaTab({ register, errors, selectedMsaMethod }: {
 							<InfoButton infoText="'Muscle': https://drive5.com/muscle/    'Clustal Omega': http://www.clustal.org    'Mafft': Perform de novo multiple sequence alignment using MAFFT."/>
 						</span>
 					</div>
-					<select {...register('msaMethod')} className={`select select-bordered w-full ${errors.msaMethod && "select-error"}`}>
+					<select {...register('msaMethod')} className={`select select-bordered bg-neutral-content w-full ${errors.msaMethod && "select-error"}`}>
 						<option value="" disabled selected>Select Alignment Method</option>
 						<option value="muscle">Muscle</option>
 						<option value="clustalo">Clustal Omega</option>

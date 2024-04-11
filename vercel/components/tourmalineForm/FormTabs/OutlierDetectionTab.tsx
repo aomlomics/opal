@@ -20,7 +20,7 @@ export default function OutlierDetectionTab({register, errors}: {
 							<InfoButton infoText="Indicating the type of distance metric to be computed."/>
 						</span>
 					</div>
-					<select {...register('odseq_distance_metric')} className={`select select-bordered w-full ${errors.odseq_distance_metric && "select-error"}`}>
+					<select {...register('odseq_distance_metric')} className={`select select-bordered bg-neutral-content w-full ${errors.odseq_distance_metric && "select-error"}`}>
 						<option value="" disabled selected>Select Distance Metric</option>
 						<option value="linear">Linear</option>
 						<option value="affine">Affine</option>

@@ -88,7 +88,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										<InfoButton infoText="The method used to pool samples for denoising. 'independent': Samples are denoised indpendently. 'pseudo': The pseudo-pooling method is used to approximate pooling of samples. In short, samples are denoised independently once, ASVs detected in at least 2 samples are recorded, and samples are denoised independently a second time, but this time with prior knowledge of the recorded ASVs and thus higher sensitivity to those ASVs."/>
 									</span>
 								</div>
-								<select {...register('dada2pe_pooling_method')} className={`select select-bordered w-full ${errors.dada2pe_pooling_method && "select-error"}`}>
+								<select {...register('dada2pe_pooling_method')} className={`select select-bordered bg-neutral-content w-full ${errors.dada2pe_pooling_method && "select-error"}`}>
 									<option disabled value="">Select Pooling Method</option>
 									<option value="independent">Independent</option>
 									<option value="pseudo">Pseudo</option>
@@ -103,7 +103,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										<InfoButton infoText="The method used to remove chimeras. 'none': No chimera removal is performed. 'pooled': All reads are pooled prior to chimera detection. 'consensus': Chimeras are detected in samples individually, and sequences found chimeric in a sufficient fraction of samples are removed."/>
 									</span>
 								</div>
-								<select {...register('dada2pe_chimera_method')} className={`select select-bordered w-full ${errors.dada2pe_pooling_method && "select-error"}`}>
+								<select {...register('dada2pe_chimera_method')} className={`select select-bordered bg-neutral-content w-full ${errors.dada2pe_pooling_method && "select-error"}`}>
 									<option disabled value="">Select Chimera Method</option>
 									<option value="consensus">Consensus</option>
 									<option value="none">None</option>
@@ -197,7 +197,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										<InfoButton infoText="The method used to pool samples for denoising. 'independent': Samples are denoised independently. 'pseudo': The pseudo-pooling method is used to approximate pooling of samples. In short, samples are denoised independently once, ASVs detected in at least 2 samples are recorded, and samples are denoised independently a second time, but this time with prior knowledge of the recorded ASVs and thus higher sensitivity to those ASVs."/>
 									</span>
 								</div>
-								<select {...register('dada2se_pooling_method')} className={`select select-bordered w-full ${errors.dada2se_pooling_method && "select-error"}`}>
+								<select {...register('dada2se_pooling_method')} className={`select select-bordered bg-neutral-content w-full ${errors.dada2se_pooling_method && "select-error"}`}>
 										<option disabled value="">Select Pooling Method</option>
 										<option value="independent">Independent</option>
 										<option value="pseudo">Pseudo</option>
@@ -212,7 +212,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										<InfoButton infoText="The method used to remove chimeras. 'none': No chimera removal is performed. 'pooled': All reads are pooled prior to chimera detection. 'consensus': Chimeras are detected in samples individually, and sequences found chimeric in a sufficient fraction of samples are removed."/>
 									</span>
 								</div>
-								<select {...register('dada2se_chimera_method')} className={`select select-bordered w-full ${errors.dada2se_chimera_method && "select-error"}`}>
+								<select {...register('dada2se_chimera_method')} className={`select select-bordered bg-neutral-content w-full ${errors.dada2se_chimera_method && "select-error"}`}>
 										<option disabled value="">Select Chimera Method</option>
 										<option value="consensus">Consensus</option>
 										<option value="none">None</option>
@@ -270,7 +270,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 										<InfoButton infoText="If true, gather stats per sample."/>
 									</span>
 								</div>
-								<select {...register('deblur_sample_stats')} className={`select select-bordered w-full ${errors.deblur_sample_stats && "select-error"}`}>
+								<select {...register('deblur_sample_stats')} className={`select select-bordered bg-neutral-content w-full ${errors.deblur_sample_stats && "select-error"}`}>
 										<option disabled value="">Optional sample stats election</option>
 										<option value="--p-sample-stats">--p-sample-stats</option>
 										<option value="--p-no-sample-stats">--p-no-sample-stats</option>
@@ -354,7 +354,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 				<select
 					{...register('denoiseMethod')}
 					// className="appearance-none bg-white border border-gray-300 w-full py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-					className={`select w-full max-w-xs ${errors.denoiseMethod && "select-error"}`}
+					className={`select select-bordered bg-neutral-content w-full max-w-xs ${errors.denoiseMethod && "select-error"}`}
 				>
 					<option value="DADA2 paired-end">DADA2 paired-end</option>
 					<option value="DADA2 single-end">DADA2 single-end</option>

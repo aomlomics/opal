@@ -10,7 +10,7 @@ export default function ThreadsTab({ register, errors}: {
 			<div className="space-y-4 p-1 flex items-center">
 				<label className="form-control w-1/2 max-w-xs">
 					<span className="label-text">{title}</span>
-					<select {...register(reg)} className={`select select-bordered w-full ${error && "select-error"}`}>
+					<select {...register(reg)} className={`select select-bordered bg-neutral-content w-full ${error && "select-error"}`}>
 						<option value="" disabled>Select the Number of Threads</option>
 						{Array.from({ length: 8 }, (_, i) => (
 							<option key={i+1} value={i+1}>{i+1}</option>

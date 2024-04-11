@@ -9,7 +9,7 @@ export default async function ProjectCatalogue() {
 
 	return (
 		<div className="p-5 bg-primary rounded-xl">
-			<h1 className="text-black text-3xl font-bold border-b-2 border-black mb-5">Projects:</h1>
+			<h1 className="text-3xl font-bold border-b-2 border-black mb-5">Projects:</h1>
 			<div className="flex flex-col gap-3">
 				{projects.map((proj) => (
 					<Link key={proj.id} href={`${getBaseUrl()}/${proj.project_id}`}>

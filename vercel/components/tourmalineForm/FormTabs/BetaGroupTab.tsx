@@ -36,7 +36,7 @@ export default function BetaGroupTab({register, errors}: {
 							<InfoButton infoText="Choose one of the available methods."/>
 						</span>
 					</div>
-					<select {...register('beta_group_method')} className={`select select-bordered w-full ${errors.beta_group_method && "select-error"}`}>
+					<select {...register('beta_group_method')} className={`select select-bordered bg-neutral-content w-full ${errors.beta_group_method && "select-error"}`}>
 						<option value="" disabled selected>Select Beta Group Method</option>
 						<option value="permanova">Permanova</option>
 						<option value="anosim">Anosim</option>
@@ -53,13 +53,13 @@ export default function BetaGroupTab({register, errors}: {
 							<InfoButton infoText="Choosing '--p-pairwise' can significantly slow down performance speed."/>
 						</span>
 					</div>
-					<select {...register('beta_group_pairwise')} className={`select select-bordered w-full ${errors.beta_group_pairwise && "select-error"}`}>
+					<select {...register('beta_group_pairwise')} className={`select select-bordered bg-neutral-content w-full ${errors.beta_group_pairwise && "select-error"}`}>
 						<option value="" disabled selected>Select Beta Group Pairwise</option>
 						<option value="--p-no-pairwise">No Pairwise (--p-no-pairwise)</option>
 						<option value="--p-pairwise">Pairwise (--p-pairwise)</option>
 					</select>
 				</label>
 			</div>
-		</div>	
+		</div>
 	)
 }
