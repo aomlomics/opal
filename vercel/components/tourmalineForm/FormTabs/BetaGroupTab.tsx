@@ -23,7 +23,7 @@ export default function BetaGroupTab({register, errors}: {
 						ErrorMessageComponent={ErrorMessage}
 					/>
 					<label className="label">
-						<span className="label-text-alt text-secondary">Warning: The column name must match the desired column in your metadata file EXACTLY.</span>
+						<span className="label-text-alt text-warning bg-secondary rounded-lg p-2 mt-[-10px]">Warning: The column name must match the desired column in your metadata file EXACTLY</span>
 					</label>
 				</div>
 			</div>
