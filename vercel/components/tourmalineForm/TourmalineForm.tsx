@@ -65,6 +65,7 @@ export default function TourmalineForm() {
 			dada2se_n_reads_learn: 1000000,
 
 			deblur_trim_length: 240,
+			deblur_sample_stats: "--p-no-sample-stats",
 			deblur_mean_error: 0.005,
 			deblur_indel_prob: 0.01,
 			deblur_indel_max: 3,
@@ -98,6 +99,7 @@ export default function TourmalineForm() {
 
 			filtering_election: "unfiltered",
 
+			/*
 			dada2pe_threads: 8,
 			dada2se_threads: 8,
 			deblur_threads: 8,
@@ -106,6 +108,7 @@ export default function TourmalineForm() {
 			phylogeny_fasttree_threads: 8,
 			diversity_core_metrics_phylogenetic_threads: 8,
 			other_threads: 8
+			*/
 		}
 	});
 
@@ -168,7 +171,7 @@ export default function TourmalineForm() {
 					<a onClick={() => setActiveTab('Denoise')}>Denoise</a>
 				</li>
 				<li className={activeTab === 'Taxonomic Level' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Taxonomic Level')}>Taxonomic Level</a>
+					<a onClick={() => setActiveTab('Taxonomic Level')}>Taxonomic Classification</a>
 				</li>
 				<li className={activeTab === 'Multiple Sequence Alignment' ? 'bg-secondary text-white rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Multiple Sequence Alignment')}>Multiple Sequence Alignment</a>

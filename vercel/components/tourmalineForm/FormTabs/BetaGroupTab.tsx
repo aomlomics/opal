@@ -9,6 +9,9 @@ export default function BetaGroupTab({register, errors}: {
 }) {
 	return(
 		<div>
+			<div className="text-center my-4">
+				<h1 className="text-3xl font-bold text-secondary">Beta Group Significance</h1>
+			</div>
 			<div className="flex justify-center w-full">
 				<div className="w-3/4">
 					<TextField
