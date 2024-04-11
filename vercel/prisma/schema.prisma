@@ -8,6 +8,176 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
+
+// Enums
+// Water_Sample_Data
+enum sample_type {
+	seawater
+	sediment
+	extraction_blank @map("extraction blank")
+	distilled_water_blank @map("distilled water blank")
+	rtsf_blank @map("RTSF blank")
+	mock_community @map("mock community")
+	positive_control @map("positive control")
+	pcr_no_template_control @map("PCR no-template control")
+	bead_cleanup_blank @map("bead cleanup blank")
+}
+
+enum oxy_stat_samp {
+	aerobic
+	anaerobic
+}
+
+enum rel_to_oxy {
+	aerobe
+	anaerobe
+	facultative
+	microaerophilic
+	microanaerobe
+	obligate_aerobe @map("obligate aerobe")
+	obligate_anaerobe @map("obligate anaerobe")
+	missing
+	not_applicable @map("not applicable")
+	not_collected @map("not collected")
+	not_provided @map("not provided")
+	restricted_access @map("restricted access")
+}
+
+enum tidal_stage {
+	low
+	high
+}
+
+// Amplicon_Prep_Data && Metag_Prep_Data
+enum library_strategy {
+	WGA
+	WGS
+	WXS
+	RNA_Seq @map("RNA-Seq")
+	miRNA_Seq @map("miRNA-Seq")
+	WCS
+	CLONE
+	POOLCLONE
+	AMPLICON
+	CLONEEND
+	FINISHING
+	ChIP_Seq @map("ChIP-Seq")
+	MNase_Seq @map("MNase-Seq")
+	DNase_Hypersensitivity @map("DNase-Hypersensitivity")
+	Bisulfite_Seq @map("Bisulfite-Seq")
+	Tn_Seq @map("Tn-Seq")
+	EST
+	FL_cDNA @map("FL-cDNA")
+	CTS
+	MRE_Seq @map("MRE-Seq")
+	MeDIP_Seq @map("MeDIP-Seq")
+	MDB_Seq @map("MDB-Seq")
+	Synthetic_Long_Read @map("Synthetic-Long-Read")
+	ATAC_seq @map("ATAC-seq") //why is seq not Seq?
+	ChIA_PET @map("ChIA-PET")
+	FAIRE_seq @map("FAIRE-seq") //why is seq not Seq?
+	Hi_C @map("Hi-C")
+	ncRNA_Seq @map("ncRNA-Seq")
+	RAD_Seq @map("RAD-Seq")
+	RIP_Seq @map("RIP-Seq")
+	SELEX
+	ssRNA_seq @map("ssRNA_seq") //why is seq not Seq?
+	Targeted_Capture @map("Targeted-Capture")
+	Tethered_Chromatin_Conformation_Capture @map("Tethered Chromatin Conformation Capture")
+	OTHER
+}
+
+enum library_source {
+	GENOMIC
+	TRANSCRIPTOMIC
+	METAGENOMIC
+	METATRANSCRIPTOMIC
+	SYNTHETIC
+	VIRAL_RNA @map("VIRAL RNA")
+	GENOMIC_SINGLE_CELL @map("GENOMIC SINGLE CELL")
+	TRANSCRIPTOMIC_SINGLE_CELL @map("TRANSCRIPTOMIC SINGLE CELL")
+	OTHER
+}
+
+enum library_selection {
+	RANDOM
+	PCR
+	RANDOM_PCR @map("RANDOM PCR")
+	RT_PCR @map("RT-PCR")
+	HMPR
+	MF
+	CF_S @map("CF-S")
+	CF_M @map("CF-M")
+	CF_H @map("CF-H")
+	CF_T @map("CF-T")
+	MDA
+	MSLL
+	cDNA
+	ChIP
+	MNase //why is a lowercase?
+	DNAse //why is a uppercase?
+	Hybrid_Selection @map("Hybrid Selection")
+	Reduced_Representation @map("Reduced Representation")
+	Restriction_Digest @map("Restriction Digest")
+	five_methylcytidine_antibody @map("5-methylcytidine antibody")
+	MBD2_protein_methyl_CpG_binding_domain @map("MBD2 protein methyl-CpG binding domain")
+	CAGE
+	RACE
+	size_fractionation @map("size fractionation")
+	Padlock_probes_capture_method @map("Padlock probes capture method")
+	other
+	unspecified
+	cNDA_oligo_dT
+	cDNA_randomPrinting
+	Inverse_rRNA @map("Inverse rRNA")
+	Oligo_dT @map("Oligo-dT")
+	PolyA
+	repeat_fractionation @map("repeat fractionation")
+}
+
+enum lib_layout {
+	paired
+	single
+}
+
+// will have to change from enum
+enum platform {
+	underscore_LS454 @map("_LS454")
+	ABI_SOLID
+	BGISEQ
+	CAPILLARY
+	COMPLETE_GENOMICS
+	HELICOS
+	ILLUMINA
+	ION_TORRENT
+	OXFORD_NANOPORE
+	PACBIO_SMRT
+}
+
+// instrument model is dependant on platform
+enum instrument_model {
+	BGISEQ_500 @map("BGISEQ-500")
+	DNBSEQ_G400 @map("DNBSEQ-G400")
+	DNBSEQ_T7 @map("DNBSEQ-T7")
+	DNBSEQ_G50 @map("DNBSEQ-G50")
+	MGISEQ_2000RS @map("MGISEQ-2000RS")
+}
+
+enum filetype {
+	bam
+	srf
+	sff
+	fastq
+	fourfivefour_native @map("454_native")
+	Helicos_native
+	SOLiD_native
+	PacBio_HDF5
+	CompleteGenomics_native
+	OxfordNanopore_native
+}
+
+
+// Models
 model Study_Data {
   id						String		@id @default(cuid())
   project_id				String		@unique
@@ -30,7 +200,7 @@ model Study_Data {
   project_proposal			String?
   accessions				String?
   metadata_notes			String?
-  date_modified				DateTime	@default(now())
+  date_modified				DateTime	@updatedAt
   modified_by				String
 }
 
@@ -75,7 +245,7 @@ model Water_Sample_Data { //might need to be broken into multiple tables
 	size_frac				String? //float or string? (units)
 	dna_conc				String?
 	concentrationUnit		String? //should be in a "units" table | should be snake case, not camel case
-	sample_type				String? //enum
+	sample_type				sample_type?
 	collection_method		String?	//foreign key reference? | enum?
 	basisOfRecord			String? //should be snake case, not camel case
 	alkalinity				String? //int, float, or string?
@@ -127,7 +297,7 @@ model Water_Sample_Data { //might need to be broken into multiple tables
 	org_matter				String? //int, float, or string?
 	org_nitro				String? //int, float, or string?
 	organism_count			String? //int, float, or string?
-	oxy_stat_samp			String? //int, float, or string?
+	oxy_stat_samp			oxy_stat_samp?
 	part_org_carb			String? //int, float, or string?
 	part_org_nitro			String? //int, float, or string?
 	perturbation			String? //int, float, or string?
@@ -142,7 +312,7 @@ model Water_Sample_Data { //might need to be broken into multiple tables
 	pressure				String? //int, float, or string?
 	primary_prod			String? //int, float, or string?
 	redox_potential			String? //int, float, or string?
-	rel_to_oxygen			String? //foreign key reference? | enum?
+	rel_to_oxygen			rel_to_oxy?
 	salinity				String? //float or string? (units)
 	samp_store_dur			String? //ISO 8601 duration string
 	samp_store_loc			String?
@@ -157,7 +327,7 @@ model Water_Sample_Data { //might need to be broken into multiple tables
 	sulfide					String? //int, float, or string?
 	suspend_part_matter		String? //int, float, or string?
 	temp					String? //float or string? (units)
-	tidal_stage				String?
+	tidal_stage				tidal_stage?
 	tot_depth_water_col		String? //int, float, or string?
 	tot_diss_nitro			String? //int, float, or string?
 	tot_inorg_nitro			String? //int, float, or string?
@@ -167,7 +337,7 @@ model Water_Sample_Data { //might need to be broken into multiple tables
 	turbidity				String? //int, float, or string?
 	water_current			String? //int, float, or string?
 	description				String?
-	date_modified			DateTime	@default(now())
+	date_modified			DateTime	@updatedAt
 	modified_by				String
 }
 
@@ -176,14 +346,14 @@ model Amplicon_PrepData {
 	sample_name				String
 	library_id				String
 	title					String
-	library_strategy		String //enum
-	library_source			String //enum
-	library_selection		String //enum
-	lib_layout				String //why change naming convention? | //enum
+	library_strategy		library_strategy
+	library_source			library_source
+	library_selection		library_selection
+	lib_layout				lib_layout //why change naming convention?
 	platform				String //enum
 	instrument_model		String //enum
 	design_description		String
-	filetype				String //enum
+	filetype				filetype
 	filename				String
 	filename2				String? //why not array of file names?
 	drive_location			String
@@ -208,7 +378,7 @@ model Amplicon_PrepData {
 	nucl_acid_amp			String?
 	adapters				String?
 	mid_barcode				String?
-	date_modified			DateTime	@default(now())
+	date_modified			DateTime	@updatedAt
 	modified_by				String
 }
 
@@ -217,14 +387,14 @@ model Metag_Prep_Data {
 	sample_name				String
 	library_id				String
 	title					String
-	library_strategy		String //enum
-	library_source			String //enum
-	library_selection		String //enum
-	lib_layout				String //why change naming convention? //enum
+	library_strategy		library_strategy
+	library_source			library_source
+	library_selection		library_selection
+	lib_layout				lib_layout //why change naming convention?
 	platform				String //enum
 	instrument_model		String //enum
 	design_description		String
-	filetype				String //enum
+	filetype				filetype
 	filename				String
 	filename2				String? //why not array of file names?
 	drive_location			String
@@ -237,7 +407,7 @@ model Metag_Prep_Data {
 	mid_barcode				String?
 	seq_meth				String?
 	tax_class				String? //foreign key reference? //removed?
-	date_modified			DateTime	@default(now())
+	date_modified			DateTime	@updatedAt
 	modified_by				String
 }
 
@@ -269,7 +439,7 @@ model Analysis_Data {
 	bin_software				String? //foreign key reference? | string[] @default([])? | //enum?
 	reassembly_bin				String? //should be Boolean
 	mag_cov_software			String? //foreign key reference? | string[] @default([])? | //enum?
-	date_modified				DateTime	@default(now())
+	date_modified				DateTime	@updatedAt
 	modified_by					String
 }
 
