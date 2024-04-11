@@ -18,7 +18,7 @@ export default function ReportThemeTab({register, errors}: {
 							<InfoButton infoText="Report theme for your HTML report."/>
 						</span>
 					</div>
-					<select {...register('report_theme')} className={`select select-bordered w-full ${errors.report_theme && "select-error"}`}>
+					<select {...register('report_theme')} className={`select select-bordered bg-neutral-content w-full ${errors.report_theme && "select-error"}`}>
 						<option value="" disabled selected>Select Report Theme</option>
 						<option value="github">Github</option>
 						<option value="gothic">Gothic</option>

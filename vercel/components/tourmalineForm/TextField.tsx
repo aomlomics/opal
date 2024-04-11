@@ -8,7 +8,7 @@ export default function TextField({
 	label,
 	infoButton,
 	ErrorMessageComponent,
-}: 
+}:
 {
 	register: any
 	errors: FieldErrors
@@ -29,7 +29,7 @@ export default function TextField({
 					<div className="relative w-full">
 						<input
 							{...register(name)}
-							className={`input input-bordered w-full pr-8 ${
+							className={`input input-bordered bg-neutral-content w-full pr-8 ${
 								errors[name] ? 'input-error' : ''
 							}`}
 						/>

@@ -29,7 +29,7 @@ export default function TaxonomicTab({register, errors, selectedTaxClassifier}: 
 							<InfoButton infoText={infoText}/>
 						</span>
 					</div>
-					<select {...register("taxClassMethod")} className={`select select-bordered w-full ${errors.taxClassMethod && "select-error"}`}>
+					<select {...register("taxClassMethod")} className={`select select-bordered bg-neutral-content w-full ${errors.taxClassMethod && "select-error"}`}>
 						<option disabled value="">Select Classifier Method</option>
 						<option value="naive-bayes">Naive Bayes</option>
 						<option value="consensus-blast">BLAST </option>
@@ -45,7 +45,7 @@ export default function TaxonomicTab({register, errors, selectedTaxClassifier}: 
 							<InfoButton infoText="The taxonomic level at which the features should be collapsed. All ouput features will have exactly this many levels of taxonomic annotation."/>
 						</span>
 					</div>
-					<select {...register("taxonomicLevel")} className={`select select-bordered w-full ${errors.taxonomicLevel && "select-error"}`}>
+					<select {...register("taxonomicLevel")} className={`select select-bordered bg-neutral-content w-full ${errors.taxonomicLevel && "select-error"}`}>
 						<option value="" disabled>Select Level</option>
 						{Array(7).fill(null).map((_, i) => (
 							<option key={i+1} value={i+1}>{i+1}</option>

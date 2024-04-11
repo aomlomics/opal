@@ -22,7 +22,7 @@ export default function MetadataTab({register, errors}: {
 						type="file"
 						{...register('metadataFile')}
 						accept=".tsv"
-						className="file-input file-input-bordered file-input-secondary w-full max-w-xs"
+						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 					/>
 				</label>
 			</div>
