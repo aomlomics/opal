@@ -9,6 +9,9 @@ export default function OutlierDetectionTab({register, errors}: {
 }) {
 	return(
 		<div>
+			<div className="text-center my-4">
+				<h1 className="text-3xl font-bold text-secondary">Outlier Detection</h1>
+			</div>
 			<div className="p-1 flex justify-center w-full">
 				<label className="form-control w-3/4">
 					<div className="label pb-0">

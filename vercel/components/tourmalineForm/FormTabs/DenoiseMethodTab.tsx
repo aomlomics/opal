@@ -262,6 +262,21 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 								/>
 							</div>
 						</div>
+						<div className="p-1 flex justify-center w-full">
+							<label className="form-control w-3/4">
+								<div className="label pb-0">
+									<span className="label-text">Deblur Sample Stats</span>
+									<span className="label-text-alt">
+										<InfoButton infoText="If true, gather stats per sample."/>
+									</span>
+								</div>
+								<select {...register('deblur_sample_stats')} className={`select select-bordered w-full ${errors.deblur_sample_stats && "select-error"}`}>
+										<option disabled value="">Optional sample stats election</option>
+										<option value="--p-sample-stats">--p-sample-stats</option>
+										<option value="--p-no-sample-stats">--p-no-sample-stats</option>
+								</select>
+							</label>
+						</div>
 						<div className="flex justify-center w-full">
 							<div className="w-1/2">
 								<TextField
@@ -332,6 +347,9 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 
 	return (
 		<div>
+			<div className="text-center my-4">
+				<h1 className="text-3xl font-bold text-secondary">Denoise Method</h1>
+			</div>
 			<div className="p-1 flex justify-center w-full">
 				<select
 					{...register('denoiseMethod')}

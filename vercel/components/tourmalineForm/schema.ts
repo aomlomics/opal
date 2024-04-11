@@ -31,8 +31,7 @@ export const schema = z.object({
 
 	//Deblur Single-end Fields
 	deblur_trim_length: numWithMinNeg1().optional(),
-	//deblur_sample_stats: z.
-	//Not sure how to handle these. Will consult Luke/Katherine soon
+	deblur_sample_stats: z.enum(['--p-sample-stats', '--p-no-sample-stats']),
 	deblur_mean_error: numWithMin0().optional(),
 	deblur_indel_prob: numWithMin0().optional(),
 	deblur_indel_max: intWithMin0().optional(),
