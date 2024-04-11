@@ -190,7 +190,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 							</div>
 						</div>
 						<div className="p-1 flex justify-center w-full">
-							<label className="form-control w-1/2">
+							<label className="form-control w-3/4">
 								<div className="label pb-0">
 									<span className="label-text">Pooling Method</span>
 									<span className="label-text-alt">
@@ -205,7 +205,7 @@ export default function DenoiseMethodTab({ register, errors, selectedDenoiseMeth
 							</label>
 						</div>
 						<div className="p-1 flex justify-center w-full">
-							<label className="form-control w-1/2">
+							<label className="form-control w-3/4">
 								<div className="label pb-0">
 									<span className="label-text">Chimera Method</span>
 									<span className="label-text-alt">

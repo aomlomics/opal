@@ -22,7 +22,7 @@ export default function AboutTab(){
 				
 				<h2 className="text-secondary text-xl font-semibold mt-4">Get Started</h2>
 				<p className="leading-relaxed mt-2">
-					Ready to initiate your run? Click the Denoise tab on the left, hover for hints, and click Submit when finished.
+					Ready to initiate your run? Click the Denoise tab on the left or use the arrows below. Hover over the info buttons for hints, and click Submit when finished.
 				</p>
 			</div>
 		</div>

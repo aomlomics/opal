@@ -38,6 +38,35 @@ import MetadataTab from '@/components/tourmalineForm/FormTabs/MetadataTab';
 export default function TourmalineForm() {
 	const [activeTab, setActiveTab] = useState('About'); // Initial active tab
 	const [formSubmitted, setFormSubmitted] = useState(false);
+
+	//Array of tab order for page navigation buttons
+	const tabOrder = [
+		'About',
+		'Denoise',
+		'Taxonomic Level',
+		'Multiple Sequence Alignment',
+		'Outlier Detection',
+		'Subsampling (Rarefaction)',
+		'Beta Group Significance',
+		'Deicode Beta Diversity',
+		'Report Theme',
+		'Filtering',
+		'Metadata',
+		'Submit'
+	];
+
+	function nextTab(){
+		const currentIndex = tabOrder.indexOf(activeTab);
+		const nextIndex = (currentIndex + 1) % tabOrder.length;
+		setActiveTab(tabOrder[nextIndex]);
+	}
+
+	function prevTab(){
+		const currentIndex = tabOrder.indexOf(activeTab);
+		const previousIndex = (currentIndex - 1 + tabOrder.length) % tabOrder.length;
+		setActiveTab(tabOrder[previousIndex]);
+	}
+
 	const { register, handleSubmit, formState: { isValid, errors }, watch } = useForm<SchemaData>({
     	resolver: zodResolver(schema),
     	mode: 'onBlur',
@@ -296,7 +325,11 @@ export default function TourmalineForm() {
 							</div>
 						</div>
 					)}
-
+					<div className='flex justify-center space-x-2 mt-4'>
+						<button className='btn' onClick={prevTab}>«</button>
+						<button className='btn' onClick={nextTab}>»</button>
+					</div>
+					
 				</form>
 			</div>
 		</div>
