@@ -18,7 +18,7 @@ module.exports = {
 					secondary: "#043484", //Catalina Blue
 					accent: "#79BCE4", //Seagull
 					neutral: "#BFD0E5", //Periwinkle Gray
-					"neutral-content": "whitesmoke"
+					"neutral-content": "whitesmoke",
 				}
 			},
 			{
@@ -29,6 +29,7 @@ module.exports = {
 					accent: "#79BCE4", //Seagull
 					neutral: "#BFD0E5", //Periwinkle Gray
 					"base-content": "black",
+					"neutral-content": "whitesmoke",
 				}
 			}
 		]
