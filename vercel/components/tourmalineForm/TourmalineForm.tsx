@@ -6,9 +6,9 @@
 	- IMPORTANT: Refine the constraints and error messaging
   - Filtering tab needs to be completed after discussions
 
-	- More padding in containers that hold the form 
+	- More padding in containers that hold the form
 	- Not making the message on metadata colummn red
-	
+
 
 */
 
@@ -233,8 +233,8 @@ export default function TourmalineForm() {
 					<a onClick={() => setActiveTab('Submit')}>Submit</a>
 				</li>
 			</ul>
-			<div className="flex-grow p-1 flex flex-col justify-center items-center">
-				<form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md">
+			<div className="flex-grow p-1 flex flex-col items-center">
+				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full max-w-md h-full justify-between">
 
 					{/* Tab rendering */}
 					{activeTab === 'About' && (
@@ -326,10 +326,10 @@ export default function TourmalineForm() {
 						</div>
 					)}
 					<div className='flex justify-center space-x-2 mt-4'>
-						<button className='btn' onClick={prevTab}>«</button>
-						<button className='btn' onClick={nextTab}>»</button>
+						<button className='btn btn-primary' onClick={prevTab}>«</button>
+						<button className='btn btn-primary' onClick={nextTab}>»</button>
 					</div>
-					
+
 				</form>
 			</div>
 		</div>
