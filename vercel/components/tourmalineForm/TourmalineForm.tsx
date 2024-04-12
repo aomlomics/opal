@@ -310,7 +310,7 @@ export default function TourmalineForm() {
 						></MetadataTab>
 					)}
 					{activeTab === 'Submit' && (
-						<div>
+						<div className='pt-24'>
 							<p className="text-md text-center text-secondary">Please carefully check all of your inputs before submitting. Remember: garbage in, garbage out.</p>
 							<div className="flex justify-center p-4">
 								<button
@@ -326,8 +326,8 @@ export default function TourmalineForm() {
 						</div>
 					)}
 					<div className='flex justify-center space-x-2 mt-4'>
-						<button className='btn btn-primary' onClick={prevTab}>«</button>
-						<button className='btn btn-primary' onClick={nextTab}>»</button>
+						<button type='button' className='btn btn-primary' onClick={prevTab}>«</button>
+						<button type='button' className='btn btn-primary' onClick={nextTab}>»</button>
 					</div>
 
 				</form>
