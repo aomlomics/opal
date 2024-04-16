@@ -2,12 +2,17 @@ generator js {
   provider = "prisma-client-js"
 }
 
+//Used for automatic Entity Relationship Diagram of the DB schema
+generator dbml {
+	provider = "prisma-dbml-generator"
+	outputName = "OpalERD.dbml"
+}
+
 datasource db {
   provider  = "postgresql"
   url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
-
 
 // Enums
 // Water_Sample_Data
