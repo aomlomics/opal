@@ -12,9 +12,11 @@ const ICON = icon({
 
 export default function MyMap() {
 	const centerStart = { lat: 25.7617, lng: -80.8918 };
-	const ZOOM_LEVEL = 7
+	const ZOOM_LEVEL = 5
 
 	const [markers, setMarkers] = useState([centerStart]);
+
+	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
 
 	//jsx element to display markers where the user clicks on the map
 	function LocationMarkers() {
@@ -49,17 +51,18 @@ export default function MyMap() {
 	}
 
 	return (
-		<div className="flex flex-col items-start h-80 w-1/2">
+		<div className="flex flex-col items-start h-80 w-3/5">
 			<button className="btn btn-accent" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
 			<MapContainer className="w-full grow" center={centerStart} zoom={ZOOM_LEVEL}>
 				<TileLayer
-					attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+					attribution='Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri &mdash; Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>'
+					url={`https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`}
 				/>
+				{/*}
 				<TileLayer
-					attribution="Map data: &copy; <a href='http://www.openseamap.org'>OpenSeaMap</a>"
+					attribution="&copy; <a href='http://www.openseamap.org'></a>"
 					url="https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png"
-				/>
+				/>{*/}
 				<LocationMarkers></LocationMarkers>
 				{/* <ResetMarkersButton></ResetMarkersButton> */}
 			</MapContainer>
