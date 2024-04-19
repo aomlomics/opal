@@ -17,7 +17,9 @@ export default async function Dashboard() {
 
 	return (
 		<main className="flex flex-col z-40 m-5 gap-5">
-			<Map></Map>
+			<div className="flex-grow">
+				<Map></Map>
+			</div>
 			<ProjectCatalogue></ProjectCatalogue>
 		</main>
 	);
