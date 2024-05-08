@@ -60,3 +60,8 @@ Generate Prisma Client
 ```bash
 prisma generate
 ```
+To create an Entity Relationship Diagram (ERD) for the current version of the database, run:
+```bash
+npx prisma generate
+```
+Then, Copy and Paste the contents of the schema.dbml file in `prisma/dbml` to: [DB Diagram](https://dbdiagram.io/d)
