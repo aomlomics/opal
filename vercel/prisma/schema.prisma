@@ -1,459 +1,616 @@
 generator js {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 //Used for automatic Entity Relationship Diagram of the DB schema
 generator dbml {
-	provider = "prisma-dbml-generator"
-	outputName = "OpalERD.dbml"
+    provider   = "prisma-dbml-generator"
+    outputName = "OpalERD.dbml"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL")
+    directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 // Enums
 // Water_Sample_Data
 enum sample_type {
-	seawater
-	sediment
-	extraction_blank @map("extraction blank")
-	distilled_water_blank @map("distilled water blank")
-	rtsf_blank @map("RTSF blank")
-	mock_community @map("mock community")
-	positive_control @map("positive control")
-	pcr_no_template_control @map("PCR no-template control")
-	bead_cleanup_blank @map("bead cleanup blank")
+    seawater
+    sediment
+    extraction_blank        @map("extraction blank")
+    distilled_water_blank   @map("distilled water blank")
+    rtsf_blank              @map("RTSF blank")
+    mock_community          @map("mock community")
+    positive_control        @map("positive control")
+    pcr_no_template_control @map("PCR no-template control")
+    bead_cleanup_blank      @map("bead cleanup blank")
+    mock
+    pcr_blank
 }
 
 enum oxy_stat_samp {
-	aerobic
-	anaerobic
+    aerobic
+    anaerobic
 }
 
 enum rel_to_oxy {
-	aerobe
-	anaerobe
-	facultative
-	microaerophilic
-	microanaerobe
-	obligate_aerobe @map("obligate aerobe")
-	obligate_anaerobe @map("obligate anaerobe")
-	missing
-	not_applicable @map("not applicable")
-	not_collected @map("not collected")
-	not_provided @map("not provided")
-	restricted_access @map("restricted access")
+    aerobe
+    anaerobe
+    facultative
+    microaerophilic
+    microanaerobe
+    obligate_aerobe   @map("obligate aerobe")
+    obligate_anaerobe @map("obligate anaerobe")
+    missing
+    not_applicable    @map("not applicable")
+    not_collected     @map("not collected")
+    not_provided      @map("not provided")
+    restricted_access @map("restricted access")
 }
 
 enum tidal_stage {
-	low
-	high
+    low
+    high
 }
 
 // Amplicon_Prep_Data && Metag_Prep_Data
 enum library_strategy {
-	WGA
-	WGS
-	WXS
-	RNA_Seq @map("RNA-Seq")
-	miRNA_Seq @map("miRNA-Seq")
-	WCS
-	CLONE
-	POOLCLONE
-	AMPLICON
-	CLONEEND
-	FINISHING
-	ChIP_Seq @map("ChIP-Seq")
-	MNase_Seq @map("MNase-Seq")
-	DNase_Hypersensitivity @map("DNase-Hypersensitivity")
-	Bisulfite_Seq @map("Bisulfite-Seq")
-	Tn_Seq @map("Tn-Seq")
-	EST
-	FL_cDNA @map("FL-cDNA")
-	CTS
-	MRE_Seq @map("MRE-Seq")
-	MeDIP_Seq @map("MeDIP-Seq")
-	MDB_Seq @map("MDB-Seq")
-	Synthetic_Long_Read @map("Synthetic-Long-Read")
-	ATAC_seq @map("ATAC-seq") //why is seq not Seq?
-	ChIA_PET @map("ChIA-PET")
-	FAIRE_seq @map("FAIRE-seq") //why is seq not Seq?
-	Hi_C @map("Hi-C")
-	ncRNA_Seq @map("ncRNA-Seq")
-	RAD_Seq @map("RAD-Seq")
-	RIP_Seq @map("RIP-Seq")
-	SELEX
-	ssRNA_seq @map("ssRNA_seq") //why is seq not Seq?
-	Targeted_Capture @map("Targeted-Capture")
-	Tethered_Chromatin_Conformation_Capture @map("Tethered Chromatin Conformation Capture")
-	OTHER
+    wga
+    wgs
+    wxs
+    rna_seq                                 @map("RNA-Seq")
+    mirna_seq                               @map("miRNA-Seq")
+    wcs
+    clone
+    poolclone
+    amplicon
+    cloneend
+    finishing
+    chip_seq                                @map("ChIP-Seq")
+    mnase_seq                               @map("MNase-Seq")
+    dnase_hypersensitivity                  @map("DNase-Hypersensitivity")
+    bisulfite_seq                           @map("Bisulfite-Seq")
+    tn_seq                                  @map("Tn-Seq")
+    est
+    fl_cdna                                 @map("FL-cDNA")
+    cts
+    mre_seq                                 @map("MRE-Seq")
+    medip_seq                               @map("MeDIP-Seq")
+    mdb_seq                                 @map("MDB-Seq")
+    synthetic_long_read                     @map("Synthetic-Long-Read")
+    atac_seq                                @map("ATAC-seq") //why is seq not Seq?
+    chia_pet                                @map("ChIA-PET")
+    faire_seq                               @map("FAIRE-seq") //why is seq not Seq?
+    hi_c                                    @map("Hi-C")
+    ncrna_seq                               @map("ncRNA-Seq")
+    rad_seq                                 @map("RAD-Seq")
+    rip_seq                                 @map("RIP-Seq")
+    selex
+    ssrna_seq                               @map("ssRNA_seq") //why is seq not Seq?
+    targeted_capture                        @map("Targeted-Capture")
+    tethered_chromatin_conformation_capture @map("Tethered Chromatin Conformation Capture")
+    other
 }
 
 enum library_source {
-	GENOMIC
-	TRANSCRIPTOMIC
-	METAGENOMIC
-	METATRANSCRIPTOMIC
-	SYNTHETIC
-	VIRAL_RNA @map("VIRAL RNA")
-	GENOMIC_SINGLE_CELL @map("GENOMIC SINGLE CELL")
-	TRANSCRIPTOMIC_SINGLE_CELL @map("TRANSCRIPTOMIC SINGLE CELL")
-	OTHER
+    genomic
+    transcriptomic
+    metagenomic
+    metatranscriptomic
+    synthetic
+    viral_rna                  @map("VIRAL RNA")
+    genomic_single_cell        @map("GENOMIC SINGLE CELL")
+    transcriptomic_single_cell @map("TRANSCRIPTOMIC SINGLE CELL")
+    other
 }
 
 enum library_selection {
-	RANDOM
-	PCR
-	RANDOM_PCR @map("RANDOM PCR")
-	RT_PCR @map("RT-PCR")
-	HMPR
-	MF
-	CF_S @map("CF-S")
-	CF_M @map("CF-M")
-	CF_H @map("CF-H")
-	CF_T @map("CF-T")
-	MDA
-	MSLL
-	cDNA
-	ChIP
-	MNase //why is a lowercase?
-	DNAse //why is a uppercase?
-	Hybrid_Selection @map("Hybrid Selection")
-	Reduced_Representation @map("Reduced Representation")
-	Restriction_Digest @map("Restriction Digest")
-	five_methylcytidine_antibody @map("5-methylcytidine antibody")
-	MBD2_protein_methyl_CpG_binding_domain @map("MBD2 protein methyl-CpG binding domain")
-	CAGE
-	RACE
-	size_fractionation @map("size fractionation")
-	Padlock_probes_capture_method @map("Padlock probes capture method")
-	other
-	unspecified
-	cNDA_oligo_dT
-	cDNA_randomPrinting
-	Inverse_rRNA @map("Inverse rRNA")
-	Oligo_dT @map("Oligo-dT")
-	PolyA
-	repeat_fractionation @map("repeat fractionation")
+    random
+    pcr
+    random_pcr                             @map("RANDOM PCR")
+    rt_pcr                                 @map("RT-PCR")
+    hmpr
+    mf
+    cf_s                                   @map("CF-S")
+    cf_m                                   @map("CF-M")
+    cf_h                                   @map("CF-H")
+    cf_t                                   @map("CF-T")
+    mda
+    msll
+    cdna
+    chip
+    mnase //why is a lowercase?
+    dnase //why is a uppercase?
+    hybrid_selection                       @map("Hybrid Selection")
+    reduced_representation                 @map("Reduced Representation")
+    restriction_digest                     @map("Restriction Digest")
+    five_methylcytidine_antibody           @map("5-methylcytidine antibody")
+    mbd2_protein_methyl_cpg_binding_domain @map("MBD2 protein methyl-CpG binding domain")
+    cage
+    race
+    size_fractionation                     @map("size fractionation")
+    padlock_probes_capture_method          @map("Padlock probes capture method")
+    other
+    unspecified
+    cnda_oligo_dt
+    cdna_randomprinting
+    inverse_rrna                           @map("Inverse rRNA")
+    oligo_dt                               @map("Oligo-dT")
+    polya
+    repeat_fractionation                   @map("repeat fractionation")
 }
 
 enum lib_layout {
-	paired
-	single
+    paired
+    single
 }
 
 // will have to change from enum
 enum platform {
-	underscore_LS454 @map("_LS454")
-	ABI_SOLID
-	BGISEQ
-	CAPILLARY
-	COMPLETE_GENOMICS
-	HELICOS
-	ILLUMINA
-	ION_TORRENT
-	OXFORD_NANOPORE
-	PACBIO_SMRT
+    underscore_ls454  @map("_LS454")
+    abi_solid
+    bgiseq
+    capillary
+    complete_genomics
+    helicos
+    illumina
+    ion_torrent
+    oxford_nanopore
+    pacbio_smrt
 }
 
 // instrument model is dependant on platform
 enum instrument_model {
-	BGISEQ_500 @map("BGISEQ-500")
-	DNBSEQ_G400 @map("DNBSEQ-G400")
-	DNBSEQ_T7 @map("DNBSEQ-T7")
-	DNBSEQ_G50 @map("DNBSEQ-G50")
-	MGISEQ_2000RS @map("MGISEQ-2000RS")
+    bgiseq_500    @map("BGISEQ-500")
+    dnbseq_g400   @map("DNBSEQ-G400")
+    dnbseq_t7     @map("DNBSEQ-T7")
+    dnbseq_g50    @map("DNBSEQ-G50")
+    mgiseq_2000rs @map("MGISEQ-2000RS")
 }
 
 enum filetype {
-	bam
-	srf
-	sff
-	fastq
-	fourfivefour_native @map("454_native")
-	Helicos_native
-	SOLiD_native
-	PacBio_HDF5
-	CompleteGenomics_native
-	OxfordNanopore_native
+    bam
+    srf
+    sff
+    fastq
+    fourfivefour_native     @map("454_native")
+    helicos_native
+    solid_native
+    pacbio_hdf5
+    completegenomics_native
+    oxfordnanopore_native
 }
-
 
 // Models
 model Study_Data {
-  id						String		@id @default(cuid())
-  project_id				String		@unique
-  project_id_external		String
-  project_name				String
-  project_contact			String
-  project_description		String
-  type						String
-  license					String
-  citation					String?
-  keywords					String?
-  associated_parties		String?
-  study_area_description	String?
-  external_links			String?
-  recordedBy				String? //should be snake case, not camel case
-  sampling_description		String?
-  grant_number				String? //int or string?
-  grant_title				String?
-  grant_agency				String?
-  project_proposal			String?
-  accessions				String?
-  metadata_notes			String?
-  date_modified				DateTime	@updatedAt
-  modified_by				String
+    id                     String       @id @default(cuid())
+    project_id             String       @unique
+    project_id_external    String
+    project_name           String
+    project_contact        String
+    project_description    String
+    type                   String
+    license                String
+    citation               String?
+    keywords               String?
+    associated_parties     String?
+    study_area_description String?
+    external_links         String?
+    recordedBy             String? //should be snake case, not camel case
+    sampling_description   String?
+    grant_number           String? //int or string?
+    grant_title            String?
+    grant_agency           String?
+    project_proposal       String?
+    accessions             String?
+    metadata_notes         String?
+    date_modified          DateTime     @updatedAt
+    modified_by            String
+    occurrences            Occurrence[]
 }
 
-model Water_Sample_Data { //might need to be broken into multiple tables
-	id						String		@id @default(cuid())
-	sample_name				String
-	serial_number			String?
-	cruise_id				String? //int or string?
-	line_id					String? //int or string?
-	station					String? //int or string?
-	locationID				String? //should be snake case, not camel case
-	ctd_bottle_no			String?
-	sample_replicate		String?
-	source_mat_id			String?
-	biological_replicates	String?
-	extract_number			String? //int, float, or string?
-	sample_title			String?
-	bioproject_accession	String?
-	notes_sampling			String?
-	project_id				String? //foreign key reference on Study_Data? if not, should be named something else
-	amplicon_sequenced		String?
-	metagenome_sequence		String?
-	organism				String
-	collection_date_local	DateTime? //shouldn't be necessary
-	collection_date			DateTime
-	depth					Float
-	minimumDepthInMeters	Float? //should be snake case, not camel case
-	maximumDepthInMeters	Float? //should be snake case, not camel case
-	env_broad_scale			String
-	env_local_scale			String
-	env_medium				String
-	geo_loc_name			String
-	waterBody				String? //should be snake case, not camel case
-	countryCode				String? //should be snake case, not camel case
-	lat_lon					String //calculated field?
-	decimalLatitude			Float? //shouldn't be necessary | should be snake case, not camel case
-	decimalLongitude		Float? //shouldn't be necessary | should be snake case, not camel case
-	geodeticDatum			String? //should be snake case, not camel case
-	samp_vol_we_dna_ext		String? //int, float, or string?
-	samp_collect_device		String?
-	samp_mat_process		String?
-	size_frac				String? //float or string? (units)
-	dna_conc				String?
-	concentrationUnit		String? //should be in a "units" table | should be snake case, not camel case
-	sample_type				sample_type?
-	collection_method		String?	//foreign key reference? | enum?
-	basisOfRecord			String? //should be snake case, not camel case
-	alkalinity				String? //int, float, or string?
-	alkalinity_method		String?
-	alkyl_diethers			String? //int, float, or string?
-	altitude				String? //int, float, or string?
-	aminopept_act			String? //int, float, or string?
-	ammonium				String? //int, float, or string?
-	atmospheric_data		String? //int, float, or string?
-	bac_prod				String? //int, float, or string?
-	bac_resp				String? //int, float, or string?
-	bacteria_carb_prod		String? //int, float, or string?
-	biomass					String? //int, float, or string?
-	bishomohopanol			String? //int, float, or string?
-	bromide					String? //int, float, or string?
-	calcium					String? //int, float, or string?
-	carb_nitro_ratio		String? //int, float, or string?
-	chem_administration		String? //foreign key reference? | should be String[] @default([]) | enum?
-	chloride				String? //int, float, or string?
-	chlorophyll				String? //int, float, or string?
-	conduc					String? //int, float, or string?
-	density					Float?
-	diether_lipids			String? //int, float, or string? | can include many? should be array?
-	diss_carb_dioxide		String? //int, float, or string?
-	diss_hydrogen			String? //int, float, or string?
-	diss_inorg_carb			String? //int, float, or string?
-	diss_inorg_nitro		String? //int, float, or string?
-	diss_inorg_phosp		String? //int, float, or string?
-	diss_org_carb			String? //int, float, or string?
-	diss_org_nitro			String? //int, float, or string?
-	diss_oxygen				String? //int, float, or string?
-	down_par				String? //int, float, or string?
-	elev					Float?
-	fluor					String? //int, float, or string?
-	glucosidase_act			String? //int, float, or string?
-	isolation_source		String?
-	light_intensity			String? //int, float, or string?
-	magnesium				String? //int, float, or string?
-	mean_frict_vel			Float?
-	mean_peak_frict_vel		Float?
-	misc_param				String? //foreign key reference?
-	n_alkanes				String? //int, float, or string? | can include many? should be array?
-	neg_cont_type			String? //foreign key reference? | enum?
-	nitrate					String? //int, float, or string?
-	nitrite					String? //int, float, or string?
-	nitro					String? //int, float, or string?
-	omics_observ_id			String? //???
-	org_carb				String? //int, float, or string?
-	org_matter				String? //int, float, or string?
-	org_nitro				String? //int, float, or string?
-	organism_count			String? //int, float, or string?
-	oxy_stat_samp			oxy_stat_samp?
-	part_org_carb			String? //int, float, or string?
-	part_org_nitro			String? //int, float, or string?
-	perturbation			String? //int, float, or string?
-	petroleum_hydrocarb		String? //int, float, or string?
-	ph						String? //int, float, or string?
-	phaeopigments			String? //int, float, or string?
-	phosphate				String? //int, float, or string?
-	phosplipid_fatt_acid	String? //int, float, or string?
-	photon_flux				String? //int, float, or string?
-	pos_cont_type			String? //int, float, or string?
-	potassium				String? //int, float, or string?
-	pressure				String? //int, float, or string?
-	primary_prod			String? //int, float, or string?
-	redox_potential			String? //int, float, or string?
-	rel_to_oxygen			rel_to_oxy?
-	salinity				String? //float or string? (units)
-	samp_store_dur			String? //ISO 8601 duration string
-	samp_store_loc			String?
-	samp_store_temp			String? //float or string? (units)
-	silicate				String? //int, float, or string?
-	size_frac_low			String? //float or string? (units)
-	size_frac_up			String? //float or string? (units)
-	sodium					String? //int, float, or string?
-	soluble_react_phosp		String? //int, float, or string?
-	source_material_id		String? //foreign key reference? | why is this a duplicate field?
-	sulfate					String? //int, float, or string?
-	sulfide					String? //int, float, or string?
-	suspend_part_matter		String? //int, float, or string?
-	temp					String? //float or string? (units)
-	tidal_stage				tidal_stage?
-	tot_depth_water_col		String? //int, float, or string?
-	tot_diss_nitro			String? //int, float, or string?
-	tot_inorg_nitro			String? //int, float, or string?
-	tot_nitro				String? //int, float, or string?
-	tot_part_carb			String? //int, float, or string?
-	tot_phosp				String? //float or string? | calculated field?
-	turbidity				String? //int, float, or string?
-	water_current			String? //int, float, or string?
-	description				String?
-	date_modified			DateTime	@updatedAt
-	modified_by				String
+model Water_Sample_Data {
+    id                    String         @id @default(cuid())
+    sample_name           String
+    serial_number         String?
+    cruise_id             String? //int or string?
+    line_id               String? //int or string?
+    station               String? //int or string?
+    locationID            String? //should be snake case, not camel case
+    ctd_bottle_no         String?
+    sample_replicate      String?
+    source_mat_id         String?
+    biological_replicates String?
+    extract_number        String? //int, float, or string?
+    sample_title          String?
+    bioproject_accession  String?
+    notes_sampling        String?
+    project_id            String? //foreign key reference on Study_Data? if not, should be named something else
+    amplicon_sequenced    String?
+    metagenome_sequence   String?
+    organism              String
+    collection_date_local DateTime? //shouldn't be necessary
+    collection_date       DateTime
+    depth                 Float
+    minimumDepthInMeters  Float? //should be snake case, not camel case
+    maximumDepthInMeters  Float? //should be snake case, not camel case
+    env_broad_scale       String
+    env_local_scale       String
+    env_medium            String
+    geo_loc_name          String
+    waterBody             String? //should be snake case, not camel case
+    countryCode           String? //should be snake case, not camel case
+    lat_lon               String //calculated field?
+    decimalLatitude       Float? //shouldn't be necessary | should be snake case, not camel case
+    decimalLongitude      Float? //shouldn't be necessary | should be snake case, not camel case
+    geodeticDatum         String? //should be snake case, not camel case
+    samp_vol_we_dna_ext   String? //int, float, or string?
+    samp_collect_device   String?
+    samp_mat_process      String?
+    size_frac             String? //float or string? (units)
+    dna_conc              String?
+    concentrationUnit     String? //should be in a "units" table | should be snake case, not camel case
+    sample_type           sample_type?
+    collection_method     String? //foreign key reference? | enum?
+    basisOfRecord         String? //should be snake case, not camel case
+    alkalinity            String? //int, float, or string?
+    alkalinity_method     String?
+    alkyl_diethers        String? //int, float, or string?
+    altitude              String? //int, float, or string?
+    aminopept_act         String? //int, float, or string?
+    ammonium              String? //int, float, or string?
+    atmospheric_data      String? //int, float, or string?
+    bac_prod              String? //int, float, or string?
+    bac_resp              String? //int, float, or string?
+    bacteria_carb_prod    String? //int, float, or string?
+    biomass               String? //int, float, or string?
+    bishomohopanol        String? //int, float, or string?
+    bromide               String? //int, float, or string?
+    calcium               String? //int, float, or string?
+    carb_nitro_ratio      String? //int, float, or string?
+    chem_administration   String? //foreign key reference? | should be String[] @default([]) | enum?
+    chloride              String? //int, float, or string?
+    chlorophyll           String? //int, float, or string?
+    conduc                String? //int, float, or string?
+    density               Float?
+    diether_lipids        String? //int, float, or string? | can include many? should be array?
+    diss_carb_dioxide     String? //int, float, or string?
+    diss_hydrogen         String? //int, float, or string?
+    diss_inorg_carb       String? //int, float, or string?
+    diss_inorg_nitro      String? //int, float, or string?
+    diss_inorg_phosp      String? //int, float, or string?
+    diss_org_carb         String? //int, float, or string?
+    diss_org_nitro        String? //int, float, or string?
+    diss_oxygen           String? //int, float, or string?
+    down_par              String? //int, float, or string?
+    elev                  Float?
+    fluor                 String? //int, float, or string?
+    glucosidase_act       String? //int, float, or string?
+    isolation_source      String?
+    light_intensity       String? //int, float, or string?
+    magnesium             String? //int, float, or string?
+    mean_frict_vel        Float?
+    mean_peak_frict_vel   Float?
+    misc_param            String? //foreign key reference?
+    n_alkanes             String? //int, float, or string? | can include many? should be array?
+    neg_cont_type         String? //foreign key reference? | enum?
+    nitrate               String? //int, float, or string?
+    nitrite               String? //int, float, or string?
+    nitro                 String? //int, float, or string?
+    omics_observ_id       String? //???
+    org_carb              String? //int, float, or string?
+    org_matter            String? //int, float, or string?
+    org_nitro             String? //int, float, or string?
+    organism_count        String? //int, float, or string?
+    oxy_stat_samp         oxy_stat_samp?
+    part_org_carb         String? //int, float, or string?
+    part_org_nitro        String? //int, float, or string?
+    perturbation          String? //int, float, or string?
+    petroleum_hydrocarb   String? //int, float, or string?
+    ph                    String? //int, float, or string?
+    phaeopigments         String? //int, float, or string?
+    phosphate             String? //int, float, or string?
+    phosplipid_fatt_acid  String? //int, float, or string?
+    photon_flux           String? //int, float, or string?
+    pos_cont_type         String? //int, float, or string?
+    potassium             String? //int, float, or string?
+    pressure              String? //int, float, or string?
+    primary_prod          String? //int, float, or string?
+    redox_potential       String? //int, float, or string?
+    rel_to_oxygen         rel_to_oxy?
+    salinity              String? //float or string? (units)
+    samp_store_dur        String? //ISO 8601 duration string
+    samp_store_loc        String?
+    samp_store_temp       String? //float or string? (units)
+    silicate              String? //int, float, or string?
+    size_frac_low         String? //float or string? (units)
+    size_frac_up          String? //float or string? (units)
+    sodium                String? //int, float, or string?
+    soluble_react_phosp   String? //int, float, or string?
+    source_material_id    String? //foreign key reference? | why is this a duplicate field?
+    sulfate               String? //int, float, or string?
+    sulfide               String? //int, float, or string?
+    suspend_part_matter   String? //int, float, or string?
+    temp                  String? //float or string? (units)
+    tidal_stage           tidal_stage?
+    tot_depth_water_col   String? //int, float, or string?
+    tot_diss_nitro        String? //int, float, or string?
+    tot_inorg_nitro       String? //int, float, or string?
+    tot_nitro             String? //int, float, or string?
+    tot_part_carb         String? //int, float, or string?
+    tot_phosp             String? //float or string? | calculated field?
+    turbidity             String? //int, float, or string?
+    water_current         String? //int, float, or string?
+    description           String?
+    date_modified         DateTime       @updatedAt
+    modified_by           String
 }
 
 model Amplicon_PrepData {
-	id						String		@id @default(cuid())
-	sample_name				String
-	library_id				String
-	title					String
-	library_strategy		library_strategy
-	library_source			library_source
-	library_selection		library_selection
-	lib_layout				lib_layout //why change naming convention?
-	platform				String //enum
-	instrument_model		String //enum
-	design_description		String
-	filetype				filetype
-	filename				String
-	filename2				String? //why not array of file names?
-	drive_location			String
-	biosample_accession		String?
-	sra_accession			String?
-	date_dna_extracted		DateTime
-	extraction_personnel	String //should be String[]
-	date_pcr				DateTime
-	pcr_personnel			String //should be String[]
-	seq_facility			String?
-	seq_meth				String? //foreign key reference? | enum?
-	nucl_acid_ext			String?
-	amplicon_sequenced		String?
-	target_gene				String?
-	target_subfragment		String?
-	pcr_primer_forward		String?
-	pcr_primer_reverse		String?
-	pcr_primer_name_forward	String?
-	pcr_primer_name_reverse	String?
-	pcr_primer_reference	String?
-	pcr_cond				String? //foreign key reference? || enum?
-	nucl_acid_amp			String?
-	adapters				String?
-	mid_barcode				String?
-	date_modified			DateTime	@updatedAt
-	modified_by				String
+    id                      String            @id @default(cuid())
+    sample_name             String
+    library_id              String
+    title                   String
+    library_strategy        library_strategy
+    library_source          library_source
+    library_selection       library_selection
+    lib_layout              lib_layout //why change naming convention?
+    platform                String //enum
+    instrument_model        String //enum
+    design_description      String
+    filetype                filetype
+    filename                String
+    filename2               String? //why not array of file names?
+    drive_location          String
+    biosample_accession     String?
+    sra_accession           String?
+    date_dna_extracted      DateTime
+    extraction_personnel    String //should be String[]
+    date_pcr                DateTime
+    pcr_personnel           String //should be String[]
+    seq_facility            String?
+    seq_meth                String? //foreign key reference? | enum?
+    nucl_acid_ext           String?
+    amplicon_sequenced      String?
+    target_gene             String?
+    target_subfragment      String?
+    pcr_primer_forward      String?
+    pcr_primer_reverse      String?
+    pcr_primer_name_forward String?
+    pcr_primer_name_reverse String?
+    pcr_primer_reference    String?
+    pcr_cond                String? //foreign key reference? || enum?
+    nucl_acid_amp           String?
+    adapters                String?
+    mid_barcode             String?
+    date_modified           DateTime          @updatedAt
+    modified_by             String
 }
 
 model Metag_Prep_Data {
-	id						String		@id @default(cuid())
-	sample_name				String
-	library_id				String
-	title					String
-	library_strategy		library_strategy
-	library_source			library_source
-	library_selection		library_selection
-	lib_layout				lib_layout //why change naming convention?
-	platform				String //enum
-	instrument_model		String //enum
-	design_description		String
-	filetype				filetype
-	filename				String
-	filename2				String? //why not array of file names?
-	drive_location			String
-	biosample_accession		String?
-	sra_accession			String?
-	seq_facility			String?
-	nucl_acid_ext			String?
-	nucl_acid_amp			String?
-	adapters				String?
-	mid_barcode				String?
-	seq_meth				String?
-	tax_class				String? //foreign key reference? //removed?
-	date_modified			DateTime	@updatedAt
-	modified_by				String
+    id                  String            @id @default(cuid())
+    sample_name         String
+    library_id          String
+    title               String
+    library_strategy    library_strategy
+    library_source      library_source
+    library_selection   library_selection
+    lib_layout          lib_layout //why change naming convention?
+    platform            String //enum
+    instrument_model    String //enum
+    design_description  String
+    filetype            filetype
+    filename            String
+    filename2           String? //why not array of file names?
+    drive_location      String
+    biosample_accession String?
+    sra_accession       String?
+    seq_facility        String?
+    nucl_acid_ext       String?
+    nucl_acid_amp       String?
+    adapters            String?
+    mid_barcode         String?
+    seq_meth            String?
+    tax_class           String? //foreign key reference? //removed?
+    date_modified       DateTime          @updatedAt
+    modified_by         String
 }
 
 model Analysis_Data {
-	id							String		@id @default(cuid())
-	amplicon_sequenced			String
-	ampliconSize				Int? //int or float? | should be snake case, not camel case
-	trim_method					String? //foreign key referenc?
-	cluster_method				String? //foreign key reference? | //enum?
-	pid_clustering				String? //foreign key reference? | //enum?
-	taxa_class_method			String //foreign key reference? | //enum?
-	taxa_ref_db					String
-	assembly_qual				String? //what is this?
-	assembly_software			String? //foreign key reference? | //enum?
-	annot						String? //foreign key reference? | //enum?
-	number_contig				Int?
-	code_repo					String
-	sop							String?
-	identificationReferences	String
-	controls_used				String? //should be String[] @default([])
-	compl_score					String? //int, float, or string?
-	compl_software				String? //foreign key reference? | //enum?
-	compl_appr					String? //foreign key reference? | //enum?
-	contam_score				String? //int, float, or string?
-	contam_screen_input			String? //foreign key reference? | //enum?
-	contam_screen_param			String? //foreign key reference? | string[] @default([])? | //enum?
-	decontam_software			String? //foreign key reference? | string[] @default([])? | //enum?
-	bin_param					String? //foreign key reference? | string[] @default([])? | //enum?
-	bin_software				String? //foreign key reference? | string[] @default([])? | //enum?
-	reassembly_bin				String? //should be Boolean
-	mag_cov_software			String? //foreign key reference? | string[] @default([])? | //enum?
-	date_modified				DateTime	@updatedAt
-	modified_by					String
+    id                       String   @id @default(cuid())
+    amplicon_sequenced       String
+    ampliconSize             Int? //int or float? | should be snake case, not camel case
+    trim_method              String? //foreign key referenc?
+    cluster_method           String? //foreign key reference? | //enum?
+    pid_clustering           String? //foreign key reference? | //enum?
+    taxa_class_method        String //foreign key reference? | //enum?
+    taxa_ref_db              String
+    assembly_qual            String? //what is this?
+    assembly_software        String? //foreign key reference? | //enum?
+    annot                    String? //foreign key reference? | //enum?
+    number_contig            Int?
+    code_repo                String
+    sop                      String?
+    identificationReferences String
+    controls_used            String? //should be String[] @default([])
+    compl_score              String? //int, float, or string?
+    compl_software           String? //foreign key reference? | //enum?
+    compl_appr               String? //foreign key reference? | //enum?
+    contam_score             String? //int, float, or string?
+    contam_screen_input      String? //foreign key reference? | //enum?
+    contam_screen_param      String? //foreign key reference? | string[] @default([])? | //enum?
+    decontam_software        String? //foreign key reference? | string[] @default([])? | //enum?
+    bin_param                String? //foreign key reference? | string[] @default([])? | //enum?
+    bin_software             String? //foreign key reference? | string[] @default([])? | //enum?
+    reassembly_bin           String? //should be Boolean
+    mag_cov_software         String? //foreign key reference? | string[] @default([])? | //enum?
+    date_modified            DateTime @updatedAt
+    modified_by              String
 }
 
-model Measurement_Metadata { //should store unit data for each table separately
-	id						String	@id @default(cuid())
-	aoml_term				String	@unique
-	aoml_file				String //should be a reference to table type
-	measurementType			String? //should be snake case, not camel case
-	measurementUnit			String? //should be snake case, not camel case
-	measurementTypeID		String? //should be snake case, not camel case
-	measurementUnitID		String? //should be snake case, not camel case
+model Measurement_Metadata {
+    id                String  @id @default(cuid())
+    aoml_term         String  @unique
+    aoml_file         String //should be a reference to table type
+    measurementType   String? //should be snake case, not camel case
+    measurementUnit   String? //should be snake case, not camel case
+    measurementTypeID String? //should be snake case, not camel case
+    measurementUnitID String? //should be snake case, not camel case
+}
+
+model Taxonomy {
+    id       String    @id @default(cuid())
+    level0   String?
+    level1   String?
+    level2   String?
+    level3   String?
+    level4   String?
+    level5   String?
+    level6   String?
+    level7   String?
+    level8   String?
+    level9   String?
+    features Feature[]
+}
+
+model Feature {
+    id          String       @id @default(cuid())
+    featureId   String       @unique
+    taxonomyId  String
+    taxonomy    Taxonomy     @relation(fields: [taxonomyId], references: [id])
+    confidence  Float
+    occurrences Occurrence[]
+}
+
+model Occurrence {
+    id           String         @id @default(cuid())
+    occurence    Int
+    featureId    String
+    feature      Feature        @relation(fields: [featureId], references: [id])
+    sampleId     String
+    sample       SampleMetadata @relation(fields: [sampleId], references: [id])
+    Study_Data   Study_Data?    @relation(fields: [study_DataId], references: [id])
+    study_DataId String?
+}
+
+enum replicate {
+    a
+    b
+    c
+}
+
+enum depth_category {
+    dcm
+    deep
+    diw
+    sediment
+    surface
+}
+
+enum sample_collection_device {
+    extraction_filter           @map("Extraction filter")
+    milliq_carboy               @map("MilliQ carboy")
+    niskin_bottle               @map("Niskin bottle")
+    pcr_negative_control        @map("PCR negative control")
+    positive_control_16s        @map("Positive control (16S)")
+    sediment_core_aqueous_layer @map("Sediment core (aqueous layer)")
+}
+
+enum sample_collection_method {
+    ctd_rosette                 @map("CTD rosette")
+    extraction_filter           @map("Extraction filter")
+    milliq_carboy               @map("MilliQ carboy")
+    pcr_negative_control        @map("PCR negative control")
+    positive_control_16s        @map("Positive control (16S)")
+    sediment_core_aqueous_layer @map("Sediment core (aqueous layer)")
+}
+
+enum plate {
+    plate1
+    plate2
+    plate3
+    plate4
+    plate5
+    plate6
+}
+
+enum target_gene {
+    sixteen_s_rrna_18s_rrna @map("{16S rRNA, 18S rRNA}")
+}
+
+model SampleMetadata {
+    id                         String                   @id @default(cuid())
+    sample_name                String
+    replicate                  replicate?
+    serial_number              String
+    extract_number             String?
+    sequid_16s_xxx             String?
+    seqid_18s_xxx              String?
+    seqid_12s_xxx              String?
+    project_id                 String
+    project_title              String
+    project_description        String
+    project_proposal           String
+    notes                      String?
+    collection_date_only       DateTime //combine with time
+    collection_time_local_only DateTime //combine with date
+    cruise                     String?
+    station                    String
+    region                     String
+    degrees_latitude           Float
+    degrees_longitude          Float
+    depth_meters               Int
+    depth_category             depth_category?
+    ctd_bottle_no              Int
+    volume_filtered_ml         Int
+    sample_collection_device   sample_collection_device
+    sample_collection_method   sample_collection_method
+    sample_material_processing String //typo in sheet "procesing"
+    size_fraction              String //not a fraction??
+    env_material               String //only water or blank, could be boolean?
+    sample_type                sample_type
+    temperature_celsius        Float
+    ph                         Float
+    salinity                   Float
+    pressure                   Int
+    temp_station               String //has to be string because of the underscore in the data
+    temp_depth                 String //has to be string because of the underscore in the data
+    ctdoxy                     Float
+    oxygen_umol_kg             Float
+    silicate_umol_kg           Float
+    nitrate_umol_kg            Float
+    nitrate_nitrite_umol_kg    Float
+    nh4_umol_kg                Float
+    dic_umol_kg                Float
+    pco2_mea_uatm              Float
+    ph_tot_mea                 Float
+    carbonate_umol_kg          Float
+    dna_sample_number          Int
+    plate                      plate
+    plate_name                 String
+    well_number                Int
+    well_position              String
+    station_depth              String //has to be string because of the underscore in the data
+    ship_crs_expocode          String
+    woce_sect                  String
+    date                       DateTime //combine with time
+    utc_time                   DateTime //combine with date
+    lat_lon                    String //redundant
+    submitted_to_insdc         String
+    investigation_type         String
+    samp_mat_process           String
+    target_gene                target_gene
+    additional_notes           String?
+    notes_on_bottle_metadata   String?
+    occurrences                Occurrence[]
+    otherMetadata              OtherMetadata[]
+}
+
+model OtherMetadata {
+    id       String         @id @default(cuid())
+    field    String
+    sampleId String
+    sample   SampleMetadata @relation(fields: [sampleId], references: [id])
 }
