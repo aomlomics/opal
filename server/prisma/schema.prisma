@@ -10,8 +10,8 @@ datasource db {
 }
 
 model Study_Data {
-  id                     String   @id @default(cuid())
-  project_id             String   @unique
+  id                     String       @id @default(cuid())
+  project_id             String       @unique
   project_id_external    String
   project_name           String
   project_contact        String
@@ -31,23 +31,19 @@ model Study_Data {
   project_proposal       String?
   accessions             String?
   metadata_notes         String?
-  date_modified          DateTime @default(now())
+  date_modified          DateTime
   modified_by            String
+  Occurrence             Occurrence[]
 }
 
 model Amplicon_PrepData {
-  id                      String   @id
+  id                      String            @id
   sample_name             String
   library_id              String
   title                   String
-  library_strategy        String
-  library_source          String
-  library_selection       String
-  lib_layout              String
   platform                String
   instrument_model        String
   design_description      String
-  filetype                String
   filename                String
   filename2               String?
   drive_location          String
@@ -72,8 +68,13 @@ model Amplicon_PrepData {
   nucl_acid_amp           String?
   adapters                String?
   mid_barcode             String?
-  date_modified           DateTime @default(now())
+  date_modified           DateTime
   modified_by             String
+  library_strategy        library_strategy
+  library_source          library_source
+  library_selection       library_selection
+  lib_layout              lib_layout
+  filetype                filetype
 }
 
 model Analysis_Data {
@@ -104,7 +105,7 @@ model Analysis_Data {
   bin_software             String?
   reassembly_bin           String?
   mag_cov_software         String?
-  date_modified            DateTime @default(now())
+  date_modified            DateTime
   modified_by              String
 }
 
@@ -119,18 +120,13 @@ model Measurement_Metadata {
 }
 
 model Metag_Prep_Data {
-  id                  String   @id
+  id                  String            @id
   sample_name         String
   library_id          String
   title               String
-  library_strategy    String
-  library_source      String
-  library_selection   String
-  lib_layout          String
   platform            String
   instrument_model    String
   design_description  String
-  filetype            String
   filename            String
   filename2           String?
   drive_location      String
@@ -143,12 +139,17 @@ model Metag_Prep_Data {
   mid_barcode         String?
   seq_meth            String?
   tax_class           String?
-  date_modified       DateTime @default(now())
+  date_modified       DateTime
   modified_by         String
+  library_strategy    library_strategy
+  library_source      library_source
+  library_selection   library_selection
+  lib_layout          lib_layout
+  filetype            filetype
 }
 
 model Water_Sample_Data {
-  id                    String    @id
+  id                    String         @id
   sample_name           String
   serial_number         String?
   cruise_id             String?
@@ -187,7 +188,6 @@ model Water_Sample_Data {
   size_frac             String?
   dna_conc              String?
   concentrationUnit     String?
-  sample_type           String?
   collection_method     String?
   basisOfRecord         String?
   alkalinity            String?
@@ -239,7 +239,6 @@ model Water_Sample_Data {
   org_matter            String?
   org_nitro             String?
   organism_count        String?
-  oxy_stat_samp         String?
   part_org_carb         String?
   part_org_nitro        String?
   perturbation          String?
@@ -254,7 +253,6 @@ model Water_Sample_Data {
   pressure              String?
   primary_prod          String?
   redox_potential       String?
-  rel_to_oxygen         String?
   salinity              String?
   samp_store_dur        String?
   samp_store_loc        String?
@@ -269,7 +267,6 @@ model Water_Sample_Data {
   sulfide               String?
   suspend_part_matter   String?
   temp                  String?
-  tidal_stage           String?
   tot_depth_water_col   String?
   tot_diss_nitro        String?
   tot_inorg_nitro       String?
@@ -279,7 +276,330 @@ model Water_Sample_Data {
   turbidity             String?
   water_current         String?
   description           String?
-  date_modified         DateTime  @default(now())
+  date_modified         DateTime
   modified_by           String
   amplicon_sequenced    String?
+  sample_type           sample_type?
+  oxy_stat_samp         oxy_stat_samp?
+  rel_to_oxygen         rel_to_oxy?
+  tidal_stage           tidal_stage?
+}
+
+model Feature {
+  id         String       @id
+  featureId  String       @unique
+  taxonomyId String
+  confidence Float
+  Taxonomy   Taxonomy     @relation(fields: [taxonomyId], references: [id])
+  Occurrence Occurrence[]
+}
+
+model Occurrence {
+  id             String         @id
+  occurence      Int
+  featureId      String
+  sampleId       String
+  study_DataId   String?
+  Feature        Feature        @relation(fields: [featureId], references: [id])
+  SampleMetadata SampleMetadata @relation(fields: [sampleId], references: [id])
+  Study_Data     Study_Data?    @relation(fields: [study_DataId], references: [id])
+}
+
+model OtherMetadata {
+  id             String         @id
+  field          String
+  sampleId       String
+  SampleMetadata SampleMetadata @relation(fields: [sampleId], references: [id])
+}
+
+model SampleMetadata {
+  id                         String                   @id
+  sample_name                String
+  replicate                  replicate?
+  serial_number              String
+  extract_number             String?
+  sequid_16s_xxx             String?
+  seqid_18s_xxx              String?
+  seqid_12s_xxx              String?
+  project_id                 String
+  project_title              String
+  project_description        String
+  project_proposal           String
+  notes                      String?
+  collection_date_only       DateTime
+  collection_time_local_only DateTime
+  cruise                     String?
+  station                    String
+  region                     String
+  degrees_latitude           Float
+  degrees_longitude          Float
+  depth_meters               Int
+  depth_category             depth_category?
+  ctd_bottle_no              Int
+  volume_filtered_ml         Int
+  sample_collection_device   sample_collection_device
+  sample_collection_method   sample_collection_method
+  sample_material_processing String
+  size_fraction              String
+  env_material               String
+  sample_type                sample_type
+  temperature_celsius        Float
+  ph                         Float
+  salinity                   Float
+  pressure                   Int
+  temp_station               String
+  temp_depth                 String
+  ctdoxy                     Float
+  oxygen_umol_kg             Float
+  silicate_umol_kg           Float
+  nitrate_umol_kg            Float
+  nitrate_nitrite_umol_kg    Float
+  nh4_umol_kg                Float
+  dic_umol_kg                Float
+  pco2_mea_uatm              Float
+  ph_tot_mea                 Float
+  carbonate_umol_kg          Float
+  dna_sample_number          Int
+  plate                      plate
+  plate_name                 String
+  well_number                Int
+  well_position              String
+  station_depth              String
+  ship_crs_expocode          String
+  woce_sect                  String
+  date                       DateTime
+  utc_time                   DateTime
+  lat_lon                    String
+  submitted_to_insdc         String
+  investigation_type         String
+  samp_mat_process           String
+  target_gene                target_gene
+  additional_notes           String?
+  notes_on_bottle_metadata   String?
+  Occurrence                 Occurrence[]
+  OtherMetadata              OtherMetadata[]
+}
+
+model Taxonomy {
+  id      String    @id
+  level0  String?
+  level1  String?
+  level2  String?
+  level3  String?
+  level4  String?
+  level5  String?
+  level6  String?
+  level7  String?
+  level8  String?
+  level9  String?
+  Feature Feature[]
+}
+
+enum depth_category {
+  dcm
+  deep
+  diw
+  sediment
+  surface
+}
+
+enum filetype {
+  bam
+  srf
+  sff
+  fastq
+  native                  @map("454_native")
+  helicos_native
+  solid_native
+  pacbio_hdf5
+  completegenomics_native
+  oxfordnanopore_native
+}
+
+enum instrument_model {
+  BGISEQ_500    @map("BGISEQ-500")
+  DNBSEQ_G400   @map("DNBSEQ-G400")
+  DNBSEQ_T7     @map("DNBSEQ-T7")
+  DNBSEQ_G50    @map("DNBSEQ-G50")
+  MGISEQ_2000RS @map("MGISEQ-2000RS")
+}
+
+enum lib_layout {
+  paired
+  single
+}
+
+enum library_selection {
+  random
+  pcr
+  RANDOM_PCR                             @map("RANDOM PCR")
+  RT_PCR                                 @map("RT-PCR")
+  hmpr
+  mf
+  CF_S                                   @map("CF-S")
+  CF_M                                   @map("CF-M")
+  CF_H                                   @map("CF-H")
+  CF_T                                   @map("CF-T")
+  mda
+  msll
+  cdna
+  chip
+  mnase
+  dnase
+  Hybrid_Selection                       @map("Hybrid Selection")
+  Reduced_Representation                 @map("Reduced Representation")
+  Restriction_Digest                     @map("Restriction Digest")
+  methylcytidine_antibody                @map("5-methylcytidine antibody")
+  MBD2_protein_methyl_CpG_binding_domain @map("MBD2 protein methyl-CpG binding domain")
+  cage
+  race
+  size_fractionation                     @map("size fractionation")
+  Padlock_probes_capture_method          @map("Padlock probes capture method")
+  other
+  unspecified
+  cnda_oligo_dt
+  cdna_randomprinting
+  Inverse_rRNA                           @map("Inverse rRNA")
+  Oligo_dT                               @map("Oligo-dT")
+  polya
+  repeat_fractionation                   @map("repeat fractionation")
+}
+
+enum library_source {
+  genomic
+  transcriptomic
+  metagenomic
+  metatranscriptomic
+  synthetic
+  VIRAL_RNA                  @map("VIRAL RNA")
+  GENOMIC_SINGLE_CELL        @map("GENOMIC SINGLE CELL")
+  TRANSCRIPTOMIC_SINGLE_CELL @map("TRANSCRIPTOMIC SINGLE CELL")
+  other
+}
+
+enum library_strategy {
+  wga
+  wgs
+  wxs
+  RNA_Seq                                 @map("RNA-Seq")
+  miRNA_Seq                               @map("miRNA-Seq")
+  wcs
+  clone
+  poolclone
+  amplicon
+  cloneend
+  finishing
+  ChIP_Seq                                @map("ChIP-Seq")
+  MNase_Seq                               @map("MNase-Seq")
+  DNase_Hypersensitivity                  @map("DNase-Hypersensitivity")
+  Bisulfite_Seq                           @map("Bisulfite-Seq")
+  Tn_Seq                                  @map("Tn-Seq")
+  est
+  FL_cDNA                                 @map("FL-cDNA")
+  cts
+  MRE_Seq                                 @map("MRE-Seq")
+  MeDIP_Seq                               @map("MeDIP-Seq")
+  MDB_Seq                                 @map("MDB-Seq")
+  Synthetic_Long_Read                     @map("Synthetic-Long-Read")
+  ATAC_seq                                @map("ATAC-seq")
+  ChIA_PET                                @map("ChIA-PET")
+  FAIRE_seq                               @map("FAIRE-seq")
+  Hi_C                                    @map("Hi-C")
+  ncRNA_Seq                               @map("ncRNA-Seq")
+  RAD_Seq                                 @map("RAD-Seq")
+  RIP_Seq                                 @map("RIP-Seq")
+  selex
+  ssRNA_seq
+  Targeted_Capture                        @map("Targeted-Capture")
+  Tethered_Chromatin_Conformation_Capture @map("Tethered Chromatin Conformation Capture")
+  other
+}
+
+enum oxy_stat_samp {
+  aerobic
+  anaerobic
+}
+
+enum plate {
+  plate1
+  plate2
+  plate3
+  plate4
+  plate5
+  plate6
+}
+
+enum platform {
+  LS454             @map("_LS454")
+  abi_solid
+  bgiseq
+  capillary
+  complete_genomics
+  helicos
+  illumina
+  ion_torrent
+  oxford_nanopore
+  pacbio_smrt
+}
+
+enum rel_to_oxy {
+  aerobe
+  anaerobe
+  facultative
+  microaerophilic
+  microanaerobe
+  obligate_aerobe   @map("obligate aerobe")
+  obligate_anaerobe @map("obligate anaerobe")
+  missing
+  not_applicable    @map("not applicable")
+  not_collected     @map("not collected")
+  not_provided      @map("not provided")
+  restricted_access @map("restricted access")
+}
+
+enum replicate {
+  a
+  b
+  c
+}
+
+enum sample_collection_device {
+  Extraction_filter             @map("Extraction filter")
+  MilliQ_carboy                 @map("MilliQ carboy")
+  Niskin_bottle                 @map("Niskin bottle")
+  PCR_negative_control          @map("PCR negative control")
+  Positive_control__16S_        @map("Positive control (16S)")
+  Sediment_core__aqueous_layer_ @map("Sediment core (aqueous layer)")
+}
+
+enum sample_collection_method {
+  CTD_rosette                   @map("CTD rosette")
+  Extraction_filter             @map("Extraction filter")
+  MilliQ_carboy                 @map("MilliQ carboy")
+  PCR_negative_control          @map("PCR negative control")
+  Positive_control__16S_        @map("Positive control (16S)")
+  Sediment_core__aqueous_layer_ @map("Sediment core (aqueous layer)")
+}
+
+enum sample_type {
+  seawater
+  sediment
+  extraction_blank        @map("extraction blank")
+  distilled_water_blank   @map("distilled water blank")
+  RTSF_blank              @map("RTSF blank")
+  mock_community          @map("mock community")
+  positive_control        @map("positive control")
+  PCR_no_template_control @map("PCR no-template control")
+  bead_cleanup_blank      @map("bead cleanup blank")
+  mock
+  pcr_blank
+}
+
+enum target_gene {
+  S_rRNA__18S_rRNA_ @map("{16S rRNA, 18S rRNA}")
+}
+
+enum tidal_stage {
+  low
+  high
 }

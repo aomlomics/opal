@@ -1,0 +1,608 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Study_Data {
+  id String [pk]
+  project_id String [unique, not null]
+  project_id_external String [not null]
+  project_name String [not null]
+  project_contact String [not null]
+  project_description String [not null]
+  type String [not null]
+  license String [not null]
+  citation String
+  keywords String
+  associated_parties String
+  study_area_description String
+  external_links String
+  recordedBy String
+  sampling_description String
+  grant_number String
+  grant_title String
+  grant_agency String
+  project_proposal String
+  accessions String
+  metadata_notes String
+  date_modified DateTime [not null]
+  modified_by String [not null]
+  occurrences Occurrence [not null]
+}
+
+Table Water_Sample_Data {
+  id String [pk]
+  sample_name String [not null]
+  serial_number String
+  cruise_id String
+  line_id String
+  station String
+  locationID String
+  ctd_bottle_no String
+  sample_replicate String
+  source_mat_id String
+  biological_replicates String
+  extract_number String
+  sample_title String
+  bioproject_accession String
+  notes_sampling String
+  project_id String
+  amplicon_sequenced String
+  metagenome_sequence String
+  organism String [not null]
+  collection_date_local DateTime
+  collection_date DateTime [not null]
+  depth Float [not null]
+  minimumDepthInMeters Float
+  maximumDepthInMeters Float
+  env_broad_scale String [not null]
+  env_local_scale String [not null]
+  env_medium String [not null]
+  geo_loc_name String [not null]
+  waterBody String
+  countryCode String
+  lat_lon String [not null]
+  decimalLatitude Float
+  decimalLongitude Float
+  geodeticDatum String
+  samp_vol_we_dna_ext String
+  samp_collect_device String
+  samp_mat_process String
+  size_frac String
+  dna_conc String
+  concentrationUnit String
+  sample_type sample_type
+  collection_method String
+  basisOfRecord String
+  alkalinity String
+  alkalinity_method String
+  alkyl_diethers String
+  altitude String
+  aminopept_act String
+  ammonium String
+  atmospheric_data String
+  bac_prod String
+  bac_resp String
+  bacteria_carb_prod String
+  biomass String
+  bishomohopanol String
+  bromide String
+  calcium String
+  carb_nitro_ratio String
+  chem_administration String
+  chloride String
+  chlorophyll String
+  conduc String
+  density Float
+  diether_lipids String
+  diss_carb_dioxide String
+  diss_hydrogen String
+  diss_inorg_carb String
+  diss_inorg_nitro String
+  diss_inorg_phosp String
+  diss_org_carb String
+  diss_org_nitro String
+  diss_oxygen String
+  down_par String
+  elev Float
+  fluor String
+  glucosidase_act String
+  isolation_source String
+  light_intensity String
+  magnesium String
+  mean_frict_vel Float
+  mean_peak_frict_vel Float
+  misc_param String
+  n_alkanes String
+  neg_cont_type String
+  nitrate String
+  nitrite String
+  nitro String
+  omics_observ_id String
+  org_carb String
+  org_matter String
+  org_nitro String
+  organism_count String
+  oxy_stat_samp oxy_stat_samp
+  part_org_carb String
+  part_org_nitro String
+  perturbation String
+  petroleum_hydrocarb String
+  ph String
+  phaeopigments String
+  phosphate String
+  phosplipid_fatt_acid String
+  photon_flux String
+  pos_cont_type String
+  potassium String
+  pressure String
+  primary_prod String
+  redox_potential String
+  rel_to_oxygen rel_to_oxy
+  salinity String
+  samp_store_dur String
+  samp_store_loc String
+  samp_store_temp String
+  silicate String
+  size_frac_low String
+  size_frac_up String
+  sodium String
+  soluble_react_phosp String
+  source_material_id String
+  sulfate String
+  sulfide String
+  suspend_part_matter String
+  temp String
+  tidal_stage tidal_stage
+  tot_depth_water_col String
+  tot_diss_nitro String
+  tot_inorg_nitro String
+  tot_nitro String
+  tot_part_carb String
+  tot_phosp String
+  turbidity String
+  water_current String
+  description String
+  date_modified DateTime [not null]
+  modified_by String [not null]
+}
+
+Table Amplicon_PrepData {
+  id String [pk]
+  sample_name String [not null]
+  library_id String [not null]
+  title String [not null]
+  library_strategy library_strategy [not null]
+  library_source library_source [not null]
+  library_selection library_selection [not null]
+  lib_layout lib_layout [not null]
+  platform String [not null]
+  instrument_model String [not null]
+  design_description String [not null]
+  filetype filetype [not null]
+  filename String [not null]
+  filename2 String
+  drive_location String [not null]
+  biosample_accession String
+  sra_accession String
+  date_dna_extracted DateTime [not null]
+  extraction_personnel String [not null]
+  date_pcr DateTime [not null]
+  pcr_personnel String [not null]
+  seq_facility String
+  seq_meth String
+  nucl_acid_ext String
+  amplicon_sequenced String
+  target_gene String
+  target_subfragment String
+  pcr_primer_forward String
+  pcr_primer_reverse String
+  pcr_primer_name_forward String
+  pcr_primer_name_reverse String
+  pcr_primer_reference String
+  pcr_cond String
+  nucl_acid_amp String
+  adapters String
+  mid_barcode String
+  date_modified DateTime [not null]
+  modified_by String [not null]
+}
+
+Table Metag_Prep_Data {
+  id String [pk]
+  sample_name String [not null]
+  library_id String [not null]
+  title String [not null]
+  library_strategy library_strategy [not null]
+  library_source library_source [not null]
+  library_selection library_selection [not null]
+  lib_layout lib_layout [not null]
+  platform String [not null]
+  instrument_model String [not null]
+  design_description String [not null]
+  filetype filetype [not null]
+  filename String [not null]
+  filename2 String
+  drive_location String [not null]
+  biosample_accession String
+  sra_accession String
+  seq_facility String
+  nucl_acid_ext String
+  nucl_acid_amp String
+  adapters String
+  mid_barcode String
+  seq_meth String
+  tax_class String
+  date_modified DateTime [not null]
+  modified_by String [not null]
+}
+
+Table Analysis_Data {
+  id String [pk]
+  amplicon_sequenced String [not null]
+  ampliconSize Int
+  trim_method String
+  cluster_method String
+  pid_clustering String
+  taxa_class_method String [not null]
+  taxa_ref_db String [not null]
+  assembly_qual String
+  assembly_software String
+  annot String
+  number_contig Int
+  code_repo String [not null]
+  sop String
+  identificationReferences String [not null]
+  controls_used String
+  compl_score String
+  compl_software String
+  compl_appr String
+  contam_score String
+  contam_screen_input String
+  contam_screen_param String
+  decontam_software String
+  bin_param String
+  bin_software String
+  reassembly_bin String
+  mag_cov_software String
+  date_modified DateTime [not null]
+  modified_by String [not null]
+}
+
+Table Measurement_Metadata {
+  id String [pk]
+  aoml_term String [unique, not null]
+  aoml_file String [not null]
+  measurementType String
+  measurementUnit String
+  measurementTypeID String
+  measurementUnitID String
+}
+
+Table Taxonomy {
+  id String [pk]
+  level0 String
+  level1 String
+  level2 String
+  level3 String
+  level4 String
+  level5 String
+  level6 String
+  level7 String
+  level8 String
+  level9 String
+  features Feature [not null]
+}
+
+Table Feature {
+  id String [pk]
+  featureId String [unique, not null]
+  taxonomyId String [not null]
+  taxonomy Taxonomy [not null]
+  confidence Float [not null]
+  occurrences Occurrence [not null]
+}
+
+Table Occurrence {
+  id String [pk]
+  occurence Int [not null]
+  featureId String [not null]
+  feature Feature [not null]
+  sampleId String [not null]
+  sample SampleMetadata [not null]
+  Study_Data Study_Data
+  study_DataId String
+}
+
+Table SampleMetadata {
+  id String [pk]
+  sample_name String [not null]
+  replicate replicate
+  serial_number String [not null]
+  extract_number String
+  sequid_16s_xxx String
+  seqid_18s_xxx String
+  seqid_12s_xxx String
+  project_id String [not null]
+  project_title String [not null]
+  project_description String [not null]
+  project_proposal String [not null]
+  notes String
+  collection_date_only DateTime [not null]
+  collection_time_local_only DateTime [not null]
+  cruise String
+  station String [not null]
+  region String [not null]
+  degrees_latitude Float [not null]
+  degrees_longitude Float [not null]
+  depth_meters Int [not null]
+  depth_category depth_category
+  ctd_bottle_no Int [not null]
+  volume_filtered_ml Int [not null]
+  sample_collection_device sample_collection_device [not null]
+  sample_collection_method sample_collection_method [not null]
+  sample_material_processing String [not null]
+  size_fraction String [not null]
+  env_material String [not null]
+  sample_type sample_type [not null]
+  temperature_celsius Float [not null]
+  ph Float [not null]
+  salinity Float [not null]
+  pressure Int [not null]
+  temp_station String [not null]
+  temp_depth String [not null]
+  ctdoxy Float [not null]
+  oxygen_umol_kg Float [not null]
+  silicate_umol_kg Float [not null]
+  nitrate_umol_kg Float [not null]
+  nitrate_nitrite_umol_kg Float [not null]
+  nh4_umol_kg Float [not null]
+  dic_umol_kg Float [not null]
+  pco2_mea_uatm Float [not null]
+  ph_tot_mea Float [not null]
+  carbonate_umol_kg Float [not null]
+  dna_sample_number Int [not null]
+  plate plate [not null]
+  plate_name String [not null]
+  well_number Int [not null]
+  well_position String [not null]
+  station_depth String [not null]
+  ship_crs_expocode String [not null]
+  woce_sect String [not null]
+  date DateTime [not null]
+  utc_time DateTime [not null]
+  lat_lon String [not null]
+  submitted_to_insdc String [not null]
+  investigation_type String [not null]
+  samp_mat_process String [not null]
+  target_gene target_gene [not null]
+  additional_notes String
+  notes_on_bottle_metadata String
+  occurrences Occurrence [not null]
+  otherMetadata OtherMetadata [not null]
+}
+
+Table OtherMetadata {
+  id String [pk]
+  field String [not null]
+  sampleId String [not null]
+  sample SampleMetadata [not null]
+}
+
+Enum sample_type {
+  seawater
+  sediment
+  extraction_blank
+  distilled_water_blank
+  rtsf_blank
+  mock_community
+  positive_control
+  pcr_no_template_control
+  bead_cleanup_blank
+  mock
+  pcr_blank
+}
+
+Enum oxy_stat_samp {
+  aerobic
+  anaerobic
+}
+
+Enum rel_to_oxy {
+  aerobe
+  anaerobe
+  facultative
+  microaerophilic
+  microanaerobe
+  obligate_aerobe
+  obligate_anaerobe
+  missing
+  not_applicable
+  not_collected
+  not_provided
+  restricted_access
+}
+
+Enum tidal_stage {
+  low
+  high
+}
+
+Enum library_strategy {
+  wga
+  wgs
+  wxs
+  rna_seq
+  mirna_seq
+  wcs
+  clone
+  poolclone
+  amplicon
+  cloneend
+  finishing
+  chip_seq
+  mnase_seq
+  dnase_hypersensitivity
+  bisulfite_seq
+  tn_seq
+  est
+  fl_cdna
+  cts
+  mre_seq
+  medip_seq
+  mdb_seq
+  synthetic_long_read
+  atac_seq
+  chia_pet
+  faire_seq
+  hi_c
+  ncrna_seq
+  rad_seq
+  rip_seq
+  selex
+  ssrna_seq
+  targeted_capture
+  tethered_chromatin_conformation_capture
+  other
+}
+
+Enum library_source {
+  genomic
+  transcriptomic
+  metagenomic
+  metatranscriptomic
+  synthetic
+  viral_rna
+  genomic_single_cell
+  transcriptomic_single_cell
+  other
+}
+
+Enum library_selection {
+  random
+  pcr
+  random_pcr
+  rt_pcr
+  hmpr
+  mf
+  cf_s
+  cf_m
+  cf_h
+  cf_t
+  mda
+  msll
+  cdna
+  chip
+  mnase
+  dnase
+  hybrid_selection
+  reduced_representation
+  restriction_digest
+  five_methylcytidine_antibody
+  mbd2_protein_methyl_cpg_binding_domain
+  cage
+  race
+  size_fractionation
+  padlock_probes_capture_method
+  other
+  unspecified
+  cnda_oligo_dt
+  cdna_randomprinting
+  inverse_rrna
+  oligo_dt
+  polya
+  repeat_fractionation
+}
+
+Enum lib_layout {
+  paired
+  single
+}
+
+Enum platform {
+  underscore_ls454
+  abi_solid
+  bgiseq
+  capillary
+  complete_genomics
+  helicos
+  illumina
+  ion_torrent
+  oxford_nanopore
+  pacbio_smrt
+}
+
+Enum instrument_model {
+  bgiseq_500
+  dnbseq_g400
+  dnbseq_t7
+  dnbseq_g50
+  mgiseq_2000rs
+}
+
+Enum filetype {
+  bam
+  srf
+  sff
+  fastq
+  fourfivefour_native
+  helicos_native
+  solid_native
+  pacbio_hdf5
+  completegenomics_native
+  oxfordnanopore_native
+}
+
+Enum replicate {
+  a
+  b
+  c
+}
+
+Enum depth_category {
+  dcm
+  deep
+  diw
+  sediment
+  surface
+}
+
+Enum sample_collection_device {
+  extraction_filter
+  milliq_carboy
+  niskin_bottle
+  pcr_negative_control
+  positive_control_16s
+  sediment_core_aqueous_layer
+}
+
+Enum sample_collection_method {
+  ctd_rosette
+  extraction_filter
+  milliq_carboy
+  pcr_negative_control
+  positive_control_16s
+  sediment_core_aqueous_layer
+}
+
+Enum plate {
+  plate1
+  plate2
+  plate3
+  plate4
+  plate5
+  plate6
+}
+
+Enum target_gene {
+  sixteen_s_rrna_18s_rrna
+}
+
+Ref: Feature.taxonomyId > Taxonomy.id
+
+Ref: Occurrence.featureId > Feature.id
+
+Ref: Occurrence.sampleId > SampleMetadata.id
+
+Ref: Occurrence.study_DataId > Study_Data.id
+
+Ref: OtherMetadata.sampleId > SampleMetadata.id
