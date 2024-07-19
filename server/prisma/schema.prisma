@@ -10,30 +10,58 @@ datasource db {
 }
 
 model Study_Data {
-  id                     String       @id @default(cuid())
-  project_id             String       @unique
+  id                     String                @id @default(cuid())
   project_id_external    String
   project_name           String
-  project_contact        String
   project_description    String
-  type                   String
   license                String
   citation               String?
   keywords               String?
   associated_parties     String?
   study_area_description String?
-  external_links         String?
-  recordedBy             String?
   sampling_description   String?
-  grant_number           String?
   grant_title            String?
   grant_agency           String?
   project_proposal       String?
-  accessions             String?
-  metadata_notes         String?
   date_modified          DateTime
-  modified_by            String
+  accessRights           String?
+  adapter_forward        String?
+  adapter_reverse        String?
+  associated_resource    String[]
+  bibliographicCitation  String?
+  concentration_method   String?
+  dataGeneralizations    String?
+  detection_type         String?
+  dna_cleanup_0_1        String?
+  dna_cleanup_method     String?
+  experimental_factor    String?
+  informationWithheld    String?
+  institution            String?
+  institutionID          String?
+  instrument_model       instrument_model
+  lib_layout             lib_layout
+  lib_screen             String?
+  nucl_acid_ext          String?
+  nucl_acid_ext_kit      String?
+  nucl_acid_ext_modify   String?
+  platform               platform
+  precip_method_ext      String?
+  projectContact         String
+  projectContactID       String?
+  project_id_internal    String?
+  recordedByID           String?
+  rightsHolder           String?
+  seq_facility           String?
+  seq_kit                String?
+  uploadedBy             String
+  recordedBy             String[]
+  grant_number           Int?
+  Amplicon_PrepData      Amplicon_PrepData?
+  Analysis_Data          Analysis_Data?
+  Measurement_Metadata   Measurement_Metadata?
+  Metag_Prep_Data        Metag_Prep_Data?
   Occurrence             Occurrence[]
+  Water_Sample_Data      Water_Sample_Data[]
 }
 
 model Amplicon_PrepData {
@@ -49,9 +77,9 @@ model Amplicon_PrepData {
   drive_location          String
   biosample_accession     String?
   sra_accession           String?
-  date_dna_extracted      DateTime
+  date_dna_extracted      String
   extraction_personnel    String
-  date_pcr                DateTime
+  date_pcr                String
   pcr_personnel           String
   seq_facility            String?
   seq_meth                String?
@@ -69,16 +97,18 @@ model Amplicon_PrepData {
   adapters                String?
   mid_barcode             String?
   date_modified           DateTime
-  modified_by             String
   library_strategy        library_strategy
   library_source          library_source
   library_selection       library_selection
   lib_layout              lib_layout
   filetype                filetype
+  Study_DataId            String            @unique
+  uploadedBy              String
+  Study_Data              Study_Data        @relation(fields: [Study_DataId], references: [id])
 }
 
 model Analysis_Data {
-  id                       String   @id
+  id                       String     @id
   amplicon_sequenced       String
   ampliconSize             Int?
   trim_method              String?
@@ -106,17 +136,23 @@ model Analysis_Data {
   reassembly_bin           String?
   mag_cov_software         String?
   date_modified            DateTime
-  modified_by              String
+  Study_DataId             String     @unique
+  uploadedBy               String
+  Study_Data               Study_Data @relation(fields: [Study_DataId], references: [id])
 }
 
 model Measurement_Metadata {
-  id                String  @id
+  id                String     @id
   aoml_file         String
-  aoml_term         String  @unique
+  aoml_term         String     @unique
   measurementType   String?
   measurementTypeID String?
   measurementUnit   String?
   measurementUnitID String?
+  Study_DataId      String     @unique
+  date_modified     DateTime
+  uploadedBy        String
+  Study_Data        Study_Data @relation(fields: [Study_DataId], references: [id])
 }
 
 model Metag_Prep_Data {
@@ -140,176 +176,95 @@ model Metag_Prep_Data {
   seq_meth            String?
   tax_class           String?
   date_modified       DateTime
-  modified_by         String
   library_strategy    library_strategy
   library_source      library_source
   library_selection   library_selection
   lib_layout          lib_layout
   filetype            filetype
+  Study_DataId        String            @unique
+  uploadedBy          String
+  Study_Data          Study_Data        @relation(fields: [Study_DataId], references: [id])
 }
 
 model Water_Sample_Data {
-  id                    String         @id
-  sample_name           String
-  serial_number         String?
-  cruise_id             String?
-  line_id               String?
-  station               String?
-  locationID            String?
-  ctd_bottle_no         String?
-  sample_replicate      String?
-  source_mat_id         String?
-  biological_replicates String?
-  extract_number        String?
-  sample_title          String?
-  bioproject_accession  String?
-  notes_sampling        String?
-  project_id            String?
-  metagenome_sequence   String?
-  organism              String
-  collection_date_local DateTime?
-  collection_date       DateTime
-  depth                 Float
-  minimumDepthInMeters  Float?
-  maximumDepthInMeters  Float?
-  env_broad_scale       String
-  env_local_scale       String
-  env_medium            String
-  geo_loc_name          String
-  waterBody             String?
-  countryCode           String?
-  lat_lon               String
-  decimalLatitude       Float?
-  decimalLongitude      Float?
-  geodeticDatum         String?
-  samp_vol_we_dna_ext   String?
-  samp_collect_device   String?
-  samp_mat_process      String?
-  size_frac             String?
-  dna_conc              String?
-  concentrationUnit     String?
-  collection_method     String?
-  basisOfRecord         String?
-  alkalinity            String?
-  alkalinity_method     String?
-  alkyl_diethers        String?
-  altitude              String?
-  aminopept_act         String?
-  ammonium              String?
-  atmospheric_data      String?
-  bac_prod              String?
-  bac_resp              String?
-  bacteria_carb_prod    String?
-  biomass               String?
-  bishomohopanol        String?
-  bromide               String?
-  calcium               String?
-  carb_nitro_ratio      String?
-  chem_administration   String?
-  chloride              String?
-  chlorophyll           String?
-  conduc                String?
-  density               Float?
-  diether_lipids        String?
-  diss_carb_dioxide     String?
-  diss_hydrogen         String?
-  diss_inorg_carb       String?
-  diss_inorg_nitro      String?
-  diss_inorg_phosp      String?
-  diss_org_carb         String?
-  diss_org_nitro        String?
-  diss_oxygen           String?
-  down_par              String?
-  elev                  Float?
-  fluor                 String?
-  glucosidase_act       String?
-  isolation_source      String?
-  light_intensity       String?
-  magnesium             String?
-  mean_frict_vel        Float?
-  mean_peak_frict_vel   Float?
-  misc_param            String?
-  n_alkanes             String?
-  neg_cont_type         String?
-  nitrate               String?
-  nitrite               String?
-  nitro                 String?
-  omics_observ_id       String?
-  org_carb              String?
-  org_matter            String?
-  org_nitro             String?
-  organism_count        String?
-  part_org_carb         String?
-  part_org_nitro        String?
-  perturbation          String?
-  petroleum_hydrocarb   String?
-  ph                    String?
-  phaeopigments         String?
-  phosphate             String?
-  phosplipid_fatt_acid  String?
-  photon_flux           String?
-  pos_cont_type         String?
-  potassium             String?
-  pressure              String?
-  primary_prod          String?
-  redox_potential       String?
-  salinity              String?
-  samp_store_dur        String?
-  samp_store_loc        String?
-  samp_store_temp       String?
-  silicate              String?
-  size_frac_low         String?
-  size_frac_up          String?
-  sodium                String?
-  soluble_react_phosp   String?
-  source_material_id    String?
-  sulfate               String?
-  sulfide               String?
-  suspend_part_matter   String?
-  temp                  String?
-  tot_depth_water_col   String?
-  tot_diss_nitro        String?
-  tot_inorg_nitro       String?
-  tot_nitro             String?
-  tot_part_carb         String?
-  tot_phosp             String?
-  turbidity             String?
-  water_current         String?
-  description           String?
-  date_modified         DateTime
-  modified_by           String
-  amplicon_sequenced    String?
-  sample_type           sample_type?
-  oxy_stat_samp         oxy_stat_samp?
-  rel_to_oxygen         rel_to_oxy?
-  tidal_stage           tidal_stage?
+  id                             String                    @id
+  sample_name                    String
+  serial_number                  String?
+  cruise_id                      String?
+  line_id                        String?
+  station                        String?
+  locationID                     String?
+  ctd_bottle_no                  String?
+  sample_replicate               String?
+  biological_replicates          String?
+  extract_number                 String?
+  sample_title                   String?
+  bioproject_accession           String?
+  notes_sampling                 String?
+  metagenome_sequence            String?
+  organism                       String
+  minimumDepthInMeters           Float?
+  maximumDepthInMeters           Float?
+  env_broad_scale                String
+  env_local_scale                String
+  env_medium                     String
+  geo_loc_name                   String
+  waterBody                      String?
+  decimalLatitude                Float?
+  decimalLongitude               Float?
+  samp_vol_we_dna_ext            String?
+  samp_collect_device            String?
+  samp_mat_process               String?
+  size_frac                      String?
+  collection_method              String?
+  samp_store_dur                 String?
+  samp_store_loc                 String?
+  samp_store_temp                String?
+  source_material_id             String?
+  description                    String?
+  date_modified                  DateTime
+  amplicon_sequenced             String?
+  sample_type                    sample_type?
+  Study_DataId                   String
+  biosample_accession            String?
+  country                        String?
+  eventDate                      String
+  filter_onsite_dur              String?
+  filter_passive_active_0_1      String?
+  habitat_natural_artificial_0_1 String?
+  samp_size                      String?
+  samp_size_unit                 String?
+  samp_store_sol                 String?
+  samp_vol_ext_unit              String?
+  sterilise_method               String?
+  uploadedBy                     String
+  verbatimEventDate              String?
+  BARCODE_prep_per_library       BARCODE_prep_per_library?
+  Metag_Individual_Data          Metag_Individual_Data?
+  OtherData                      OtherData[]
+  Study_Data                     Study_Data                @relation(fields: [Study_DataId], references: [id])
+
+  @@unique([id, sample_name])
 }
 
 model Feature {
   id         String       @id
   featureId  String       @unique
-  taxonomyId String
   confidence Float
-  Taxonomy   Taxonomy     @relation(fields: [taxonomyId], references: [id])
+  TaxonomyId String
+  Taxonomy   Taxonomy     @relation(fields: [TaxonomyId], references: [id])
   Occurrence Occurrence[]
 }
 
 model Occurrence {
-  id             String         @id
-  occurence      Int
-  featureId      String
-  sampleId       String
-  study_DataId   String?
-  Feature        Feature        @relation(fields: [featureId], references: [id])
-  SampleMetadata SampleMetadata @relation(fields: [sampleId], references: [id])
-  Study_Data     Study_Data?    @relation(fields: [study_DataId], references: [id])
-}
-
-model OtherMetadata {
-  id             String         @id
-  field          String
-  sampleId       String
-  SampleMetadata SampleMetadata @relation(fields: [sampleId], references: [id])
+  id               String         @id
+  FeatureId        String
+  SampleMetadataId String
+  Study_DataId     String?
+  organismQuantity Int
+  Feature          Feature        @relation(fields: [FeatureId], references: [id])
+  SampleMetadata   SampleMetadata @relation(fields: [SampleMetadataId], references: [id])
+  Study_Data       Study_Data?    @relation(fields: [Study_DataId], references: [id])
 }
 
 model SampleMetadata {
@@ -326,8 +281,8 @@ model SampleMetadata {
   project_description        String
   project_proposal           String
   notes                      String?
-  collection_date_only       DateTime
-  collection_time_local_only DateTime
+  collection_date_only       String
+  collection_time_local_only String
   cruise                     String?
   station                    String
   region                     String
@@ -367,8 +322,8 @@ model SampleMetadata {
   station_depth              String
   ship_crs_expocode          String
   woce_sect                  String
-  date                       DateTime
-  utc_time                   DateTime
+  date                       String
+  utc_time                   String
   lat_lon                    String
   submitted_to_insdc         String
   investigation_type         String
@@ -377,22 +332,154 @@ model SampleMetadata {
   additional_notes           String?
   notes_on_bottle_metadata   String?
   Occurrence                 Occurrence[]
-  OtherMetadata              OtherMetadata[]
+  OtherData                  OtherData[]
 }
 
 model Taxonomy {
-  id      String    @id
-  level0  String?
-  level1  String?
-  level2  String?
-  level3  String?
-  level4  String?
-  level5  String?
-  level6  String?
-  level7  String?
-  level8  String?
-  level9  String?
-  Feature Feature[]
+  id         String    @id
+  taxonClass String?   @map("class")
+  division   String?
+  domain     String?
+  family     String?
+  genus      String?
+  kingdom    String?
+  order      String?
+  phylum     String?
+  species    String?
+  subdivison String?
+  supergroup String?
+  Feature    Feature[]
+}
+
+model BARCODE_prep_all_libraries {
+  id                           String                     @id
+  date_modified                DateTime
+  uploadedBy                   String
+  pos_cont_type                String?
+  neg_cont_type                String?
+  nucl_acid_amp                String?
+  pcr_cond                     String?
+  annealingTemp                String?
+  amplificationReactionVolume  String?
+  pcr_rep                      String?
+  pcr_analysis_software        String?
+  pcr_primer_forward           String?
+  pcr_primer_reverse           String?
+  pcr_primer_name_forward      String?
+  pcr_primer_name_reverse      String?
+  pcr_primer_reference_forward String?
+  pcr_primer_reference_reverse String?
+  target_taxa_pcr              String?
+  target_taxa_study            String?
+  target_gene                  String?
+  target_subfragment           String?
+  target_gene_size             String?
+  pcr_method_additional        String?
+  sop_bioinformatics           String?
+  code_repo                    String?
+  trim_method                  String?
+  trim_param                   String?
+  demux_tool                   String?
+  demux_max_mismatch           String?
+  merge_tool                   String?
+  merge_min_overlap            String?
+  min_len_0_1                  String?
+  min_len_cutoff               String?
+  min_len_tool                 String?
+  min_reads_0_1                String?
+  min_reads_cutoff             String?
+  min_reads_cutoff_unit        String?
+  min_reads_tool               String?
+  error_rate_0_1               String?
+  error_rate_tool              String?
+  error_rate_type              String?
+  error_rate_cutoff            String?
+  chimera_check_0_1            String?
+  chimera_check_method         String?
+  chimera_check_param          String?
+  otu_clust_0_1                String?
+  otu_clust_tool               String?
+  otu_clust_cutoff             String?
+  curation_0_1                 String?
+  curation_tool                String?
+  curation_param               String?
+  otu_db                       String?
+  otu_db_custom                String?
+  otu_seq_comp_appr            String?
+  tax_class_id_cutoff          String?
+  tax_class_query_cutoff       String?
+  tax_class_collapse           String?
+  tax_class_param_other        String?
+  tax_class                    String?
+  screen_contam_0_1            String?
+  screen_contam_method         String?
+  screen_geograph_0_1          String?
+  screen_geograph_method       String?
+  screen_nontarget_0_1         String?
+  screen_nontarget_method      String?
+  screen_other                 String?
+  bioinfo_method_additional    String?
+  BARCODE_prep_per_library     BARCODE_prep_per_library[]
+}
+
+model BARCODE_prep_per_library {
+  id                           String                     @id
+  date_modified                DateTime
+  uploadedBy                   String
+  Water_Sample_DataId          String
+  sample_name                  String
+  BARCODE_prep_all_librariesId String
+  library_id                   String
+  title                        String
+  design_description           String
+  filetype                     filetype
+  filename                     String
+  filename2                    String?
+  biosample_accession          String?
+  sra_accession                String?
+  mid_forward                  String?
+  mid_reverse                  String?
+  pool_dna_0_1                 String?
+  pool_dna_num                 String?
+  date_dna_extracted           String?
+  extraction_personnel         String?
+  date_pcr                     String?
+  pcr_personnel                String?
+  BARCODE_prep_all_libraries   BARCODE_prep_all_libraries @relation(fields: [BARCODE_prep_all_librariesId], references: [id])
+  Water_Sample_Data            Water_Sample_Data          @relation(fields: [Water_Sample_DataId, sample_name], references: [id, sample_name])
+
+  @@unique([Water_Sample_DataId, sample_name])
+}
+
+model Metag_Individual_Data {
+  id                  String            @id
+  date_modified       DateTime
+  uploadedBy          String
+  Water_Sample_DataId String
+  sample_name         String
+  library_id          String
+  title               String
+  design_description  String
+  filetype            filetype
+  filename            String
+  filename2           String?
+  drive_location      String?
+  biosample_accession String?
+  sra_accession       String?
+  mid_barcode         String?
+  Water_Sample_Data   Water_Sample_Data @relation(fields: [Water_Sample_DataId, sample_name], references: [id, sample_name])
+
+  @@unique([Water_Sample_DataId, sample_name])
+}
+
+model OtherData {
+  id                  String             @id
+  SampleMetadataId    String?
+  Water_Sample_DataId String?
+  key                 String
+  value               String
+  SampleMetadata      SampleMetadata?    @relation(fields: [SampleMetadataId], references: [id])
+  Water_Sample_Data   Water_Sample_Data? @relation(fields: [Water_Sample_DataId], references: [id])
 }
 
 enum depth_category {
@@ -509,7 +596,7 @@ enum library_strategy {
   RAD_Seq                                 @map("RAD-Seq")
   RIP_Seq                                 @map("RIP-Seq")
   selex
-  ssRNA_seq
+  ssrna_seq
   Targeted_Capture                        @map("Targeted-Capture")
   Tethered_Chromatin_Conformation_Capture @map("Tethered Chromatin Conformation Capture")
   other
