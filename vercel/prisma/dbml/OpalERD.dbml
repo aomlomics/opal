@@ -381,6 +381,10 @@ Table Taxonomy {
   family String
   genus String
   species String
+
+  indexes {
+    (domain, kingdom, supergroup, division, phylum, subdivison, taxonClass, order, family, genus, species) [unique]
+  }
 }
 
 Table Feature {
