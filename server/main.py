@@ -3,6 +3,7 @@ import jwt
 from time import time
 import tldextract
 from quart_cors import cors
+import csv
 
 from quart import Quart, request
 app = Quart(__name__)
@@ -58,25 +59,31 @@ async def admin():
 		return { "error": "Server could not handle the request" }
 
 
-
 @app.route("/tourmalineReceive", methods=["POST"])
 async def tourmaline_receive():
-  try:
-    # Directly read and print the raw request body for debugging
-    raw_body = await request.get_data()
-    print("Raw request body:", raw_body)
-		
-    form_fields = await request.form
-    print("Form data received:")
-    for name, value in form_fields.items():						
-      print(f"Field name: {name}, value: {value}")
-    
-    files = await request.files
-    print("Files received:")
-    for file_name, file in files.items():
-      print(f"File name: {file_name}, file: {file.filename}")
+	try:
+		# Directly read and print the raw request body for debugging
+		raw_body = await request.get_data()
+		print("Raw request body:", raw_body)
 
-    return{"message": "Form data received successfully"}	
-  except Exception as e:  # Added to catch and print the exception
-    print(f"Error processing request: {e}")
-    return {"error": "Server could not handle the request"}, 500
+		form_fields = await request.form
+		print("Form data received:")
+		for name, value in form_fields.items():
+			print(f"Field name: {name}, value: {value}")
+
+		files = await request.files
+		print("Files received:")
+		for file_name, file in files.items():
+			print(f"File name: {file_name}, file: {file.filename}")
+
+		return{"message": "Form data received successfully"}	
+	except Exception as e:  # Added to catch and print the exception
+		print(f"Error processing request: {e}")
+		return {"error": "Server could not handle the request"}, 500
+
+
+@app.route("/testData", methods=["POST"])
+async def testData():
+	with open("prisma/taxonomy.csv", newline="") as f:
+		reader = csv.DictReader(f)
+		print(reader.fieldnames)
