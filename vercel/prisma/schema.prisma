@@ -796,6 +796,8 @@ model Taxonomy {
     family     String?
     genus      String?
     species    String?
+
+    @@unique([domain, kingdom, supergroup, division, phylum, subdivison, taxonClass, order, family, genus, species])
 }
 
 model Feature {
