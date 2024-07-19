@@ -65,7 +65,7 @@ model Study_Data {
 }
 
 model Amplicon_PrepData {
-  id                      String            @id
+  id                      String            @id @default(cuid())
   sample_name             String
   library_id              String
   title                   String
@@ -108,7 +108,7 @@ model Amplicon_PrepData {
 }
 
 model Analysis_Data {
-  id                       String     @id
+  id                       String     @id @default(cuid())
   amplicon_sequenced       String
   ampliconSize             Int?
   trim_method              String?
@@ -142,7 +142,7 @@ model Analysis_Data {
 }
 
 model Measurement_Metadata {
-  id                String     @id
+  id                String     @id @default(cuid())
   aoml_file         String
   aoml_term         String     @unique
   measurementType   String?
@@ -156,7 +156,7 @@ model Measurement_Metadata {
 }
 
 model Metag_Prep_Data {
-  id                  String            @id
+  id                  String            @id @default(cuid())
   sample_name         String
   library_id          String
   title               String
@@ -187,7 +187,7 @@ model Metag_Prep_Data {
 }
 
 model Water_Sample_Data {
-  id                             String                    @id
+  id                             String                    @id @default(cuid())
   sample_name                    String
   serial_number                  String?
   cruise_id                      String?
@@ -248,7 +248,7 @@ model Water_Sample_Data {
 }
 
 model Feature {
-  id         String       @id
+  id         String       @id @default(cuid())
   featureId  String       @unique
   confidence Float
   TaxonomyId String
@@ -257,7 +257,7 @@ model Feature {
 }
 
 model Occurrence {
-  id               String         @id
+  id               String         @id @default(cuid())
   FeatureId        String
   SampleMetadataId String
   Study_DataId     String?
@@ -268,7 +268,7 @@ model Occurrence {
 }
 
 model SampleMetadata {
-  id                         String                   @id
+  id                         String                   @id @default(cuid())
   sample_name                String
   replicate                  replicate?
   serial_number              String
@@ -336,7 +336,7 @@ model SampleMetadata {
 }
 
 model Taxonomy {
-  id         String    @id
+  id         String    @id @default(cuid())
   taxonClass String?   @map("class")
   division   String?
   domain     String?
@@ -352,7 +352,7 @@ model Taxonomy {
 }
 
 model BARCODE_prep_all_libraries {
-  id                           String                     @id
+  id                           String                     @id @default(cuid())
   date_modified                DateTime
   uploadedBy                   String
   pos_cont_type                String?
@@ -423,7 +423,7 @@ model BARCODE_prep_all_libraries {
 }
 
 model BARCODE_prep_per_library {
-  id                           String                     @id
+  id                           String                     @id @default(cuid())
   date_modified                DateTime
   uploadedBy                   String
   Water_Sample_DataId          String
@@ -452,7 +452,7 @@ model BARCODE_prep_per_library {
 }
 
 model Metag_Individual_Data {
-  id                  String            @id
+  id                  String            @id @default(cuid())
   date_modified       DateTime
   uploadedBy          String
   Water_Sample_DataId String
@@ -473,7 +473,7 @@ model Metag_Individual_Data {
 }
 
 model OtherData {
-  id                  String             @id
+  id                  String             @id @default(cuid())
   SampleMetadataId    String?
   Water_Sample_DataId String?
   key                 String
