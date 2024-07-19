@@ -20,7 +20,7 @@ export default async function Dashboard() {
 			<div className="flex-grow">
 				<Map></Map>
 			</div>
-			<ProjectCatalogue></ProjectCatalogue>
+			{/* <ProjectCatalogue></ProjectCatalogue> */}
 		</main>
 	);
 }
