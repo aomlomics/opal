@@ -791,7 +791,7 @@ model Taxonomy {
     division   String?
     phylum     String?
     subdivison String?
-    class      String?
+    taxonClass String? @map("class")
     order      String?
     family     String?
     genus      String?
