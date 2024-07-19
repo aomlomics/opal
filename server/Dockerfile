@@ -6,7 +6,7 @@ LABEL maintainer="Carter Rollins"
 LABEL description="Docker image to build the Opal server for handling Tourmaline/QIIME2 requests."
 
 # Allow statements and log messages to immediately appear in the logs
-ENV PYTHONUNBUFFERED True
+ENV PYTHONUNBUFFERED=True
 
 # Install Python dependencies
 COPY requirements.txt app/requirements.txt
