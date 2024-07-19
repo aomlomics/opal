@@ -376,7 +376,7 @@ Table Taxonomy {
   division String
   phylum String
   subdivison String
-  class String
+  taxonClass String
   order String
   family String
   genus String
