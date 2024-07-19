@@ -4,6 +4,7 @@ from time import time
 import tldextract
 from quart_cors import cors
 import csv
+import traceback
 
 from quart import Quart, request
 app = Quart(__name__)
@@ -84,6 +85,36 @@ async def tourmaline_receive():
 
 @app.route("/testData", methods=["POST"])
 async def testData():
-	with open("prisma/taxonomy.csv", newline="") as f:
-		reader = csv.DictReader(f)
-		print(reader.fieldnames)
+	try:
+		async with Prisma() as prisma:
+			with open("prisma/taxonomy.csv", newline="") as f:
+				reader = csv.DictReader(f)
+				taxonomyOrder = ["domain", "kingdom", "supergroup", "division", "phylum", "subdivison", "taxonClass", "order", "family", "genus", "species"]
+				data = []
+				for row in reader:
+					#generate taxon key/value pairs
+					taxon = list(filter(None, row["Taxon"].split(";")))
+					taxonRow = {}
+					for i, t in enumerate(taxonomyOrder):
+						taxonRow[t] = taxon[i] if i < len(taxon) else None
+
+					print(taxonRow["domain"], taxonRow["phylum"])
+
+					#check if taxon already exists
+					# doesExist = await prisma.taxonomy.find_first(
+					# 	where=taxonRow
+					# )
+					# if not doesExist:
+					# 	data.append(taxonRow)
+					
+				#upload new taxon
+				result = await prisma.taxonomy.create(
+					data=data
+				)
+
+		print("jobs done")
+
+		return {"message": "Test successful"}
+	except Exception:
+		print(traceback.format_exc())
+		return {"error": "Error"}
