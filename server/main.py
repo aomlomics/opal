@@ -90,25 +90,36 @@ async def testData():
 			with open("prisma/taxonomy.csv", newline="") as f:
 				reader = csv.DictReader(f)
 				taxonomyOrder = ["domain", "kingdom", "supergroup", "division", "phylum", "subdivison", "taxonClass", "order", "family", "genus", "species"]
-				data = []
-				for j, row in enumerate(reader):
+				for row in reader:
 					#generate taxon key/value pairs
 					taxon = list(filter(None, row["Taxon"].split(";")))
-					taxonRow = {}
+					taxonData = {}
 					for i, t in enumerate(taxonomyOrder):
-						taxonRow[t] = taxon[i] if i < len(taxon) else None
+						taxonData[t] = taxon[i] if i < len(taxon) else None
 
-					# check if taxon already exists
-					doesExist = await prisma.taxonomy.find_first(
-						where=taxonRow
+					#check if taxon already exists
+					taxon = await prisma.taxonomy.find_first(
+						where = taxonData
 					)
-					if not taxonRow in data and not doesExist:
-						data.append(taxonRow)
-				
-				#upload new taxon
-				result = await prisma.taxonomy.create_many(
-					data=data
-				)
+
+					#add taxon to db
+					if not taxon:
+						taxon = await prisma.taxonomy.create(
+							data = taxonData
+						)
+
+					#create feature
+					feature = await prisma.feature.create(
+						data = {
+							"featureId": row["Feature ID"],
+							"confidence": float(row["Confidence"]),
+							"Taxonomy": {
+								"connect": {
+									"id": taxon.id
+								}
+							}
+						}
+					)
 
 		return {"message": "Test successful"}
 	except Exception:
@@ -116,14 +127,28 @@ async def testData():
 		return {"error": "Error"}
 	
 
-@app.route("/deleteTestTaxon", methods=["POST"])
-async def deleteTestData():
+# @app.route("/deleteTestTaxon", methods=["POST"])
+# async def deleteTestData():
+# 	try:
+# 		print("deleting")
+# 		async with Prisma() as prisma:
+# 			result = await prisma.taxonomy.delete_many()
+# 		print("deleted")
+# 		return {"message": "Deletion successful"}
+# 	except:
+# 		print(traceback.format_exc())
+# 		return {"error": "Error"}
+	
+
+@app.route("testMetadata", methods=["POST"])
+async def testFeatures():
 	try:
-		print("deleting")
 		async with Prisma() as prisma:
-			result = await prisma.taxonomy.delete_many()
-		print("deleted")
-		return {"message": "Deletion successful"}
+			with open("prisma/tableMetadata.csv", newline="") as f:
+				reader = csv.DictReader(f)
+				for row in reader:
+					pass
+				return {"message": "Test successful"}
 	except:
 		print(traceback.format_exc())
 		return {"error": "Error"}
