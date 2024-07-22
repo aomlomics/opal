@@ -407,7 +407,7 @@ Table SampleMetadata {
   id String [pk]
   Occurrences Occurrence [not null]
   OtherData OtherData [not null]
-  sample_name String [not null]
+  sample_name String [unique, not null]
   replicate replicate
   serial_number String [not null]
   extract_number String

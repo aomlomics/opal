@@ -831,7 +831,7 @@ model SampleMetadata {
     Occurrences Occurrence[]
     OtherData   OtherData[]
 
-    sample_name                String
+    sample_name                String                   @unique
     replicate                  replicate?
     serial_number              String
     extract_number             String?
