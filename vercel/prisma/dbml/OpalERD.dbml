@@ -409,10 +409,10 @@ Table SampleMetadata {
   Occurrences Occurrence [not null]
   OtherData OtherData [not null]
   sample_name String [unique, not null]
-  replicate replicate
+  replicate String
   serial_number String [not null]
   extract_number String
-  sequid_16s_xxx String
+  seqid_16s_xxx String
   seqid_18s_xxx String
   seqid_12s_xxx String
   project_id String [not null]
@@ -428,15 +428,15 @@ Table SampleMetadata {
   degrees_latitude Float [not null]
   degrees_longitude Float [not null]
   depth_meters Int [not null]
-  depth_category depth_category
+  depth_category String
   ctd_bottle_no Int [not null]
   volume_filtered_ml Int [not null]
-  sample_collection_device sample_collection_device [not null]
-  sample_collection_method sample_collection_method [not null]
+  sample_collection_device String [not null]
+  sample_collection_method String [not null]
   sample_material_processing String [not null]
   size_fraction String [not null]
   env_material String [not null]
-  sample_type sample_type [not null]
+  sample_type String [not null]
   temperature_celsius Float [not null]
   ph Float [not null]
   salinity Float [not null]
@@ -454,7 +454,7 @@ Table SampleMetadata {
   ph_tot_mea Float [not null]
   carbonate_umol_kg Float [not null]
   dna_sample_number Int [not null]
-  plate plate [not null]
+  plate String [not null]
   plate_name String [not null]
   well_number Int [not null]
   well_position String [not null]
@@ -467,7 +467,7 @@ Table SampleMetadata {
   submitted_to_insdc String [not null]
   investigation_type String [not null]
   samp_mat_process String [not null]
-  target_gene target_gene [not null]
+  target_gene String [not null]
   additional_notes String
   notes_on_bottle_metadata String
 }
