@@ -5,6 +5,7 @@ import tldextract
 from quart_cors import cors
 import csv
 import traceback
+import pandas as pd
 
 from quart import Quart, request
 app = Quart(__name__)
@@ -85,70 +86,121 @@ async def tourmaline_receive():
 
 @app.route("/testTaxon", methods=["POST"])
 async def testData():
+	print("testing taxon and feature data")
 	try:
 		async with Prisma() as prisma:
-			with open("prisma/taxonomy.csv", newline="") as f:
-				reader = csv.DictReader(f)
-				taxonomyOrder = ["domain", "kingdom", "supergroup", "division", "phylum", "subdivison", "taxonClass", "order", "family", "genus", "species"]
-				for row in reader:
-					#generate taxon key/value pairs
-					taxon = list(filter(None, row["Taxon"].split(";")))
-					taxonData = {}
-					for i, t in enumerate(taxonomyOrder):
-						taxonData[t] = taxon[i] if i < len(taxon) else None
+			featuresDF = pd.read_csv("prisma/features.csv")
 
-					#check if taxon already exists
-					taxon = await prisma.taxonomy.find_first(
-						where = taxonData
-					)
+			#add taxonomies to db
+			taxons = featuresDF["Taxon"].unique()
+			taxonomyOrder = ["domain", "kingdom", "supergroup", "division", "phylum", "subdivison", "taxonClass", "order", "family", "genus", "species"]
+			for t in taxons:
+				#build taxon query
+				taxonData = {
+					"stringIdentifier": t
+				}
+				split = list(filter(None, t.split(";")))
+				for i, tName in enumerate(taxonomyOrder):
+					taxonData[tName] = split[i] if i < len(split) else None
 
-					#add taxon to db
-					if not taxon:
-						taxon = await prisma.taxonomy.create(
-							data = taxonData
-						)
-
-					#create feature
-					feature = await prisma.feature.create(
-						data = {
+				#build feature-createMany nested query
+				taxonDF = featuresDF.loc[featuresDF["Taxon"] == t]
+				taxonData["Feature"] =  {
+					"createMany": {
+						"data": taxonDF.apply(lambda row: {
 							"featureId": row["Feature ID"],
-							"confidence": float(row["Confidence"]),
-							"Taxonomy": {
-								"connect": {
-									"id": taxon.id
-								}
-							}
-						}
-					)
+							"confidence": float(row["Confidence"])
+						}, axis=1).to_list()
+					}
+				}
 
+				await prisma.taxonomy.upsert(
+					where = { "stringIdentifier": t },
+					data = {
+						"create": taxonData,
+						"update": {
+							"Feature": taxonData["Feature"]
+						}
+					}
+				)
+
+		print("success")
 		return {"message": "Test successful"}
 	except Exception:
 		print(traceback.format_exc())
 		return {"error": "Error"}
-	
 
-# @app.route("/deleteTestTaxon", methods=["POST"])
-# async def deleteTestData():
-# 	try:
-# 		print("deleting")
-# 		async with Prisma() as prisma:
-# 			result = await prisma.taxonomy.delete_many()
-# 		print("deleted")
-# 		return {"message": "Deletion successful"}
-# 	except:
-# 		print(traceback.format_exc())
-# 		return {"error": "Error"}
-	
 
-@app.route("testMetadata", methods=["POST"])
-async def testFeatures():
+@app.route("/deleteTestTaxon", methods=["POST"])
+async def deleteTestData():
+	try:
+		print("deleting")
+		async with Prisma() as prisma:
+			feature = await prisma.feature.delete_many()
+			taxonomy = await prisma.taxonomy.delete_many()
+		print("deleted")
+
+		return {"message": "Deletion successful"}
+	except:
+		print(traceback.format_exc())
+		return {"error": "Error"}
+
+
+@app.route("/testMetadata", methods=["POST"])
+async def testMetadata():
+	print("testing metadata")
 	try:
 		async with Prisma() as prisma:
-			with open("prisma/tableMetadata.csv", newline="") as f:
+			metadataDF = pd.read_csv("prisma/metadata.csv")
+			print(metadataDF.to_dict("records"))
+
+			# with open("prisma/tableMetadata.csv", newline="") as f:
+			# 	reader = csv.DictReader(f)
+			# 	data = []
+			# 	for row in reader:
+			# 		print(row)
+			# 		data.append(row)
+				# await prisma.samplemetadata.create_many(
+				# 	data = data
+				# )
+
+		print("success")
+		return {"message": "Test successful"}
+	except:
+		print(traceback.format_exc())
+		return {"error": "Error"}
+	
+
+@app.route("/testOccurrences", methods=["POST"])
+async def testOccurrences():
+	print("testing occurrences data")
+	try:
+		async with Prisma() as prisma:
+			with open("prisma/occurrences.csv", newline="") as f:
 				reader = csv.DictReader(f)
+				data = []
 				for row in reader:
-					pass
-				return {"message": "Test successful"}
+					featureId = row.pop("featureId")
+					for key, value in row.items():
+						data.append({
+							"organismQuantity": value,
+							"Feature": {
+								"connect": {
+									"featureId": featureId
+								}
+							},
+							"SampleMetadata": {
+								"connect": {
+									"sample_name": key
+								}
+							}
+						})
+				await prisma.occurrence.create_many(
+					data = data
+				)
+
+		print("success")
+		return {"message": "Test successful"}
 	except:
 		print(traceback.format_exc())
 		return {"error": "Error"}
