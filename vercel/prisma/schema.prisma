@@ -785,17 +785,18 @@ model Taxonomy {
     // Relations
     Features Feature[]
 
-    domain     String?
-    kingdom    String?
-    supergroup String?
-    division   String?
-    phylum     String?
-    subdivison String?
-    taxonClass String? @map("class")
-    order      String?
-    family     String?
-    genus      String?
-    species    String?
+    stringIdentifier String  @unique
+    domain           String?
+    kingdom          String?
+    supergroup       String?
+    division         String?
+    phylum           String?
+    subdivison       String?
+    taxonClass       String? @map("class")
+    order            String?
+    family           String?
+    genus            String?
+    species          String?
 }
 
 model Feature {
