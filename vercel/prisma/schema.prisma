@@ -832,11 +832,11 @@ model SampleMetadata {
     Occurrences Occurrence[]
     OtherData   OtherData[]
 
-    sample_name                String                   @unique
-    replicate                  replicate?
+    sample_name                String  @unique
+    replicate                  String? //enum
     serial_number              String
     extract_number             String?
-    sequid_16s_xxx             String?
+    seqid_16s_xxx              String?
     seqid_18s_xxx              String?
     seqid_12s_xxx              String?
     project_id                 String
@@ -852,15 +852,15 @@ model SampleMetadata {
     degrees_latitude           Float
     degrees_longitude          Float
     depth_meters               Int
-    depth_category             depth_category?
+    depth_category             String? //enum
     ctd_bottle_no              Int
     volume_filtered_ml         Int
-    sample_collection_device   sample_collection_device
-    sample_collection_method   sample_collection_method
+    sample_collection_device   String //enum
+    sample_collection_method   String //enum
     sample_material_processing String //typo in sheet "procesing"
     size_fraction              String //not a fraction??
     env_material               String //only water or blank, could be boolean?
-    sample_type                sample_type
+    sample_type                String //enum
     temperature_celsius        Float
     ph                         Float
     salinity                   Float
@@ -878,7 +878,7 @@ model SampleMetadata {
     ph_tot_mea                 Float
     carbonate_umol_kg          Float
     dna_sample_number          Int
-    plate                      plate
+    plate                      String //enum
     plate_name                 String
     well_number                Int
     well_position              String
@@ -891,7 +891,7 @@ model SampleMetadata {
     submitted_to_insdc         String
     investigation_type         String
     samp_mat_process           String
-    target_gene                target_gene
+    target_gene                String //enum
     additional_notes           String?
     notes_on_bottle_metadata   String?
 }
