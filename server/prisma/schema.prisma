@@ -269,7 +269,7 @@ model Occurrence {
 
 model SampleMetadata {
   id                         String                   @id @default(cuid())
-  sample_name                String
+  sample_name                String                   @unique
   replicate                  replicate?
   serial_number              String
   extract_number             String?
@@ -336,19 +336,20 @@ model SampleMetadata {
 }
 
 model Taxonomy {
-  id         String    @id @default(cuid())
-  taxonClass String?   @map("class")
-  division   String?
-  domain     String?
-  family     String?
-  genus      String?
-  kingdom    String?
-  order      String?
-  phylum     String?
-  species    String?
-  subdivison String?
-  supergroup String?
-  Feature    Feature[]
+  id               String    @id @default(cuid())
+  taxonClass       String?   @map("class")
+  division         String?
+  domain           String?
+  family           String?
+  genus            String?
+  kingdom          String?
+  order            String?
+  phylum           String?
+  species          String?
+  subdivison       String?
+  supergroup       String?
+  stringIdentifier String    @unique
+  Feature          Feature[]
 }
 
 model BARCODE_prep_all_libraries {
