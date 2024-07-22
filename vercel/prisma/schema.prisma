@@ -834,64 +834,65 @@ model SampleMetadata {
 
     sample_name                String  @unique
     replicate                  String? //enum
-    serial_number              String
+    serial_number              String?
     extract_number             String?
     seqid_16s_xxx              String?
     seqid_18s_xxx              String?
     seqid_12s_xxx              String?
-    project_id                 String
-    project_title              String
-    project_description        String
-    project_proposal           String
+    project_id                 String?
+    project_title              String?
+    project_description        String?
+    project_proposal           String?
     notes                      String?
-    collection_date_only       String //ISO 8601 string
-    collection_time_local_only String //ISO 8601 string
+    collection_date_only       String? //ISO 8601 string
+    collection_time_local_only String? //ISO 8601 string
     cruise                     String?
-    station                    String
-    region                     String
-    degrees_latitude           Float
-    degrees_longitude          Float
-    depth_meters               Int
+    station                    String?
+    region                     String?
+    degrees_latitude           Float?
+    degrees_longitude          Float?
+    depth_meters               Int?
     depth_category             String? //enum
-    ctd_bottle_no              Int
-    volume_filtered_ml         Int
-    sample_collection_device   String //enum
-    sample_collection_method   String //enum
-    sample_material_processing String //typo in sheet "procesing"
-    size_fraction              String //not a fraction??
-    env_material               String //only water or blank, could be boolean?
-    sample_type                String //enum
-    temperature_celsius        Float
-    ph                         Float
-    salinity                   Float
-    pressure                   Int
-    temp_station               String //has to be string because of the underscore in the data
-    temp_depth                 String //has to be string because of the underscore in the data
-    ctdoxy                     Float
-    oxygen_umol_kg             Float
-    silicate_umol_kg           Float
-    nitrate_umol_kg            Float
-    nitrate_nitrite_umol_kg    Float
-    nh4_umol_kg                Float
-    dic_umol_kg                Float
-    pco2_mea_uatm              Float
-    ph_tot_mea                 Float
-    carbonate_umol_kg          Float
-    dna_sample_number          Int
-    plate                      String //enum
-    plate_name                 String
-    well_number                Int
-    well_position              String
-    station_depth              String //has to be string because of the underscore in the data
-    ship_crs_expocode          String
-    woce_sect                  String
-    date                       String //ISO 8601 string
-    utc_time                   String //ISO 8601 string
-    lat_lon                    String //redundant
-    submitted_to_insdc         String
-    investigation_type         String
-    samp_mat_process           String
-    target_gene                String //enum
+    ctd_bottle_no              Int?
+    volume_filtered_ml         Int?
+    sample_collection_device   String? //enum
+    sample_collection_method   String? //enum
+    sample_material_processing String? //typo in sheet "procesing"
+    size_fraction              String? //not a fraction??
+    env_material               String? //only water or blank, could be boolean?
+    sample_type                String? //enum
+    temperature_celsius        Float?
+    ph                         Float?
+    salinity                   Float?
+    pressure                   Int?
+    temp_station               String? //has to be string because of the underscore in the data
+    temp_depth                 String? //has to be string because of the underscore in the data
+    ctdoxy                     Float?
+    oxygen_umol_kg             Float?
+    silicate_umol_kg           Float?
+    nitrate_umol_kg            Float?
+    nitrite_umol_kg            Float?
+    nitrate_nitrite_umol_kg    Float?
+    nh4_umol_kg                Float?
+    dic_umol_kg                Float?
+    pco2_mea_uatm              Float?
+    ph_tot_mea                 Float?
+    carbonate_umol_kg          Float?
+    dna_sample_number          Int?
+    plate                      String? //enum
+    plate_name                 String?
+    well_number                Int?
+    well_position              String?
+    station_depth              String? //has to be string because of the underscore in the data
+    ship_crs_expocode          String?
+    woce_sect                  String?
+    date                       String? //ISO 8601 string
+    utc_time                   String? //ISO 8601 string
+    lat_lon                    String? //redundant
+    submitted_to_insdc         String?
+    investigation_type         String?
+    samp_mat_process           String?
+    target_gene                String? //enum
     additional_notes           String?
     notes_on_bottle_metadata   String?
 }
