@@ -31,36 +31,9 @@ export default function TestData() {
 		}
 	}
 
-	//FEATURES
-	async function sendFeatures() {
-		const res = await fetch(`${getRemoteUrl()}/sendFeatures`, {
-			method: "POST",
-			cache: "no-store"
-		});
-		const data = await res.json();
-		if (data.error) {
-			console.log(data.error)
-		} else {
-			console.log("success")
-		}
-	}
-
-	async function sendDeleteFeatures() {
-		const res = await fetch(`${getRemoteUrl()}/sendDeleteFeatures`, {
-			method: "POST",
-			cache: "no-store"
-		});
-		const data = await res.json();
-		if (data.error) {
-			console.log(data.error)
-		} else {
-			console.log("deletion successful")
-		}
-	}
-
 	//METADATA
 	async function sendMeta() {
-		const res = await fetch(`${getRemoteUrl()}/sendMeta`, {
+		const res = await fetch(`${getRemoteUrl()}/testMetadata`, {
 			method: "POST",
 			cache: "no-store"
 		});
@@ -73,7 +46,7 @@ export default function TestData() {
 	}
 
 	async function sendDeleteMeta() {
-		const res = await fetch(`${getRemoteUrl()}/sendDeleteMeta`, {
+		const res = await fetch(`${getRemoteUrl()}/deleteTestMetadata`, {
 			method: "POST",
 			cache: "no-store"
 		});
@@ -85,9 +58,9 @@ export default function TestData() {
 		}
 	}
 
-	//METADATA
+	//OCCURRENCES
 	async function sendOccurrence() {
-		const res = await fetch(`${getRemoteUrl()}/sendOccurrence`, {
+		const res = await fetch(`${getRemoteUrl()}/testOccurrences`, {
 			method: "POST",
 			cache: "no-store"
 		});
@@ -100,7 +73,7 @@ export default function TestData() {
 	}
 
 	async function sendDeleteOccurrence() {
-		const res = await fetch(`${getRemoteUrl()}/sendDeleteOccurrence`, {
+		const res = await fetch(`${getRemoteUrl()}/deleteTestOccurrences`, {
 			method: "POST",
 			cache: "no-store"
 		});
@@ -118,11 +91,6 @@ export default function TestData() {
 			<div className="flex flex-grow">
 				<button className="btn btn-primary flex-grow text-8xl h-full" onClick={sendTaxon}>Test</button>
 				<button className="btn btn-primary flex-grow text-8xl h-full" onClick={sendDeleteTaxon}>Delete</button>
-			</div>
-			<h1 className="text-primary text-4xl">Features:</h1>
-			<div className="flex flex-grow">
-				<button className="btn btn-primary flex-grow text-8xl h-full" onClick={sendFeatures}>Test</button>
-				<button className="btn btn-primary flex-grow text-8xl h-full" onClick={sendDeleteFeatures}>Delete</button>
 			</div>
 			<h1 className="text-primary text-4xl">Metadata:</h1>
 			<div className="flex flex-grow">
