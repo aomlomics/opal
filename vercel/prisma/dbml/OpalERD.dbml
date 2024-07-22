@@ -445,6 +445,7 @@ Table SampleMetadata {
   temp_depth String
   ctdoxy Float
   oxygen_umol_kg Float
+  phosphate_umol_kg Float
   silicate_umol_kg Float
   nitrate_umol_kg Float
   nitrite_umol_kg Float

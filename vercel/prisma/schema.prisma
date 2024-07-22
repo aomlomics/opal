@@ -869,6 +869,7 @@ model SampleMetadata {
     temp_depth                 String? //has to be string because of the underscore in the data
     ctdoxy                     Float?
     oxygen_umol_kg             Float?
+    phosphate_umol_kg          Float?
     silicate_umol_kg           Float?
     nitrate_umol_kg            Float?
     nitrite_umol_kg            Float?
