@@ -83,7 +83,7 @@ async def tourmaline_receive():
 		return {"error": "Server could not handle the request"}, 500
 
 
-@app.route("/testData", methods=["POST"])
+@app.route("/testTaxon", methods=["POST"])
 async def testData():
 	try:
 		async with Prisma() as prisma:
@@ -91,30 +91,39 @@ async def testData():
 				reader = csv.DictReader(f)
 				taxonomyOrder = ["domain", "kingdom", "supergroup", "division", "phylum", "subdivison", "taxonClass", "order", "family", "genus", "species"]
 				data = []
-				for row in reader:
+				for j, row in enumerate(reader):
 					#generate taxon key/value pairs
 					taxon = list(filter(None, row["Taxon"].split(";")))
 					taxonRow = {}
 					for i, t in enumerate(taxonomyOrder):
 						taxonRow[t] = taxon[i] if i < len(taxon) else None
 
-					print(taxonRow["domain"], taxonRow["phylum"])
-
-					#check if taxon already exists
-					# doesExist = await prisma.taxonomy.find_first(
-					# 	where=taxonRow
-					# )
-					# if not doesExist:
-					# 	data.append(taxonRow)
-					
+					# check if taxon already exists
+					doesExist = await prisma.taxonomy.find_first(
+						where=taxonRow
+					)
+					if not taxonRow in data and not doesExist:
+						data.append(taxonRow)
+				
 				#upload new taxon
-				result = await prisma.taxonomy.create(
+				result = await prisma.taxonomy.create_many(
 					data=data
 				)
 
-		print("jobs done")
-
 		return {"message": "Test successful"}
 	except Exception:
+		print(traceback.format_exc())
+		return {"error": "Error"}
+	
+
+@app.route("/deleteTestTaxon", methods=["POST"])
+async def deleteTestData():
+	try:
+		print("deleting")
+		async with Prisma() as prisma:
+			result = await prisma.taxonomy.delete_many()
+		print("deleted")
+		return {"message": "Deletion successful"}
+	except:
 		print(traceback.format_exc())
 		return {"error": "Error"}
