@@ -349,8 +349,6 @@ model Taxonomy {
   subdivison String?
   supergroup String?
   Feature    Feature[]
-
-  @@unique([domain, kingdom, supergroup, division, phylum, subdivison, taxonClass, order, family, genus, species])
 }
 
 model BARCODE_prep_all_libraries {
