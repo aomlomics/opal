@@ -151,8 +151,11 @@ async def testMetadata():
 	print("testing metadata")
 	try:
 		async with Prisma() as prisma:
-			metadataDF = pd.read_csv("prisma/metadata.csv")
-			print(metadataDF.to_dict("records"))
+			metadataDF = pd.read_csv("prisma/metadata.csv").replace(float("nan"), None)
+			# print(metadataDF.to_dict("records")[0])
+			await prisma.samplemetadata.create_many(
+				data = metadataDF.to_dict("records")
+			)
 
 			# with open("prisma/tableMetadata.csv", newline="") as f:
 			# 	reader = csv.DictReader(f)
