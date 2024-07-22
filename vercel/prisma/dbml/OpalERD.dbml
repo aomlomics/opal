@@ -370,6 +370,7 @@ Table Measurement_Metadata {
 Table Taxonomy {
   id String [pk]
   Features Feature [not null]
+  stringIdentifier String [unique, not null]
   domain String
   kingdom String
   supergroup String
