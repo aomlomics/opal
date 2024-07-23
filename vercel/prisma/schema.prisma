@@ -803,9 +803,9 @@ model Feature {
     id String @id @default(cuid())
 
     // Relations
-    TaxonomyId  String
-    Taxonomy    Taxonomy     @relation(fields: [TaxonomyId], references: [id])
-    Occurrences Occurrence[]
+    TaxonomyId String
+    Taxonomy   Taxonomy @relation(fields: [TaxonomyId], references: [id])
+    // Occurrences Occurrence[]
 
     featureId  String @unique
     confidence Float
@@ -815,14 +815,17 @@ model Occurrence {
     id String @id @default(cuid())
 
     // Relations
-    FeatureId        String
-    Feature          Feature        @relation(fields: [FeatureId], references: [id])
+    // FeatureId        String
+    // Feature          Feature        @relation(fields: [FeatureId], references: [id])
+    Feature          String
     SampleMetadataId String
     SampleMetadata   SampleMetadata @relation(fields: [SampleMetadataId], references: [id])
     Study_DataId     String?
     Study_Data       Study_Data?    @relation(fields: [Study_DataId], references: [id])
 
     organismQuantity Int
+    // Feature          Feature? @relation(fields: [featureId], references: [id])
+    featureId        String?
 }
 
 model SampleMetadata {
