@@ -248,21 +248,20 @@ model Water_Sample_Data {
 }
 
 model Feature {
-  id         String       @id @default(cuid())
-  featureId  String       @unique
+  id         String   @id @default(cuid())
+  featureId  String   @unique
   confidence Float
   TaxonomyId String
-  Taxonomy   Taxonomy     @relation(fields: [TaxonomyId], references: [id])
-  Occurrence Occurrence[]
+  Taxonomy   Taxonomy @relation(fields: [TaxonomyId], references: [id])
 }
 
 model Occurrence {
   id               String         @id @default(cuid())
-  FeatureId        String
   SampleMetadataId String
   Study_DataId     String?
   organismQuantity Int
-  Feature          Feature        @relation(fields: [FeatureId], references: [id])
+  Feature          String
+  featureId        String?
   SampleMetadata   SampleMetadata @relation(fields: [SampleMetadataId], references: [id])
   Study_Data       Study_Data?    @relation(fields: [Study_DataId], references: [id])
 }
