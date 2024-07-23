@@ -388,20 +388,19 @@ Table Feature {
   id String [pk]
   TaxonomyId String [not null]
   Taxonomy Taxonomy [not null]
-  Occurrences Occurrence [not null]
   featureId String [unique, not null]
   confidence Float [not null]
 }
 
 Table Occurrence {
   id String [pk]
-  FeatureId String [not null]
-  Feature Feature [not null]
+  Feature String [not null]
   SampleMetadataId String [not null]
   SampleMetadata SampleMetadata [not null]
   Study_DataId String
   Study_Data Study_Data
   organismQuantity Int [not null]
+  featureId String
 }
 
 Table SampleMetadata {
@@ -445,6 +444,7 @@ Table SampleMetadata {
   temp_depth String
   ctdoxy Float
   oxygen_umol_kg Float
+  phosphate_umol_kg Float
   silicate_umol_kg Float
   nitrate_umol_kg Float
   nitrite_umol_kg Float
@@ -709,8 +709,6 @@ Ref: Analysis_Data.Study_DataId - Study_Data.id
 Ref: Measurement_Metadata.Study_DataId - Study_Data.id
 
 Ref: Feature.TaxonomyId > Taxonomy.id
-
-Ref: Occurrence.FeatureId > Feature.id
 
 Ref: Occurrence.SampleMetadataId > SampleMetadata.id
 
