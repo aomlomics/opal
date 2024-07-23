@@ -152,55 +152,83 @@ async def testMetadata():
 	try:
 		async with Prisma() as prisma:
 			metadataDF = pd.read_csv("prisma/metadata.csv").replace(float("nan"), None)
-			print(metadataDF.to_dict("records")[0])
 			await prisma.samplemetadata.create_many(
 				data = metadataDF.to_dict("records")
 			)
-
-			# with open("prisma/tableMetadata.csv", newline="") as f:
-			# 	reader = csv.DictReader(f)
-			# 	data = []
-			# 	for row in reader:
-			# 		print(row)
-			# 		data.append(row)
-				# await prisma.samplemetadata.create_many(
-				# 	data = data
-				# )
 
 		print("success")
 		return {"message": "Test successful"}
 	except:
 		print(traceback.format_exc())
 		return {"error": "Error"}
-	
+
 
 @app.route("/testOccurrences", methods=["POST"])
 async def testOccurrences():
 	print("testing occurrences data")
 	try:
 		async with Prisma() as prisma:
-			with open("prisma/occurrences.csv", newline="") as f:
-				reader = csv.DictReader(f)
+			occurrencesDF = pd.read_csv("prisma/occurrences.csv")
+			occurrences = occurrencesDF.to_dict()
+			featureIds = occurrences.pop("featureId")
+			data = []
+			for col, row in occurrences.items():
 				data = []
-				for row in reader:
-					featureId = row.pop("featureId")
-					for key, value in row.items():
-						data.append({
-							"organismQuantity": value,
-							"Feature": {
-								"connect": {
-									"featureId": featureId
-								}
-							},
-							"SampleMetadata": {
-								"connect": {
-									"sample_name": key
-								}
-							}
-						})
-				await prisma.occurrence.create_many(
-					data = data
-				)
+				print(row)
+				break
+			# INEFFICIENT
+			# for featureRow in occurrences:
+			# 	featureId = featureRow.pop("featureId")
+			# 	data += [{
+			# 		"organismQuantity": quantity,
+			# 		"Feature": {
+			# 			"connect": {
+			# 				"featureId": featureId
+			# 			}
+			# 		},
+			# 		"SampleMetadata": {
+			# 			"connect": {
+			# 				"sample_name": sample
+			# 			}
+			# 		}
+			# 	} for sample, quantity in featureRow.items()]
+			# 	for entry in data:
+			# 		await prisma.occurrence.create(
+			# 			data = entry
+			# 		)
+			# 	break
+
+			# for i, row in enumerate(split["data"]):
+			# 	for j, cell in enumerate(row):
+			# 		data.append({
+			# 			"organismQuantity": cell
+			# 			"Feature": {
+			# 				"connect": {
+			# 					"featureId": 
+			# 				}
+			# 			}
+			# 		})
+
+			# with open("prisma/occurrences.csv", newline="") as f:
+			# 	reader = csv.DictReader(f)
+			# 	data = []
+			# 	for row in reader:
+			# 		featureId = row.pop("featureId")
+			# 		for sample, quantity in row.items():
+			# 			print(featureId)
+			# 			data.append({
+			# 				"organismQuantity": quantity,
+			# 				"Feature": {
+			# 					"connect": {
+			# 						"featureId": featureId
+			# 					}
+			# 				},
+			# 				"SampleMetadata": {
+			# 					"connect": {
+			# 						"sample_name": sample
+			# 					}
+			# 				}
+			# 			})
 
 		print("success")
 		return {"message": "Test successful"}

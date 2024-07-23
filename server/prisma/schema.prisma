@@ -268,87 +268,90 @@ model Occurrence {
 }
 
 model SampleMetadata {
-  id                         String                   @id @default(cuid())
-  sample_name                String
-  replicate                  replicate?
-  serial_number              String
+  id                         String       @id @default(cuid())
+  sample_name                String       @unique
+  serial_number              String?
   extract_number             String?
-  sequid_16s_xxx             String?
   seqid_18s_xxx              String?
   seqid_12s_xxx              String?
-  project_id                 String
-  project_title              String
-  project_description        String
-  project_proposal           String
+  project_id                 String?
+  project_title              String?
+  project_description        String?
+  project_proposal           String?
   notes                      String?
-  collection_date_only       String
-  collection_time_local_only String
+  collection_date_only       String?
+  collection_time_local_only String?
   cruise                     String?
-  station                    String
-  region                     String
-  degrees_latitude           Float
-  degrees_longitude          Float
-  depth_meters               Int
-  depth_category             depth_category?
-  ctd_bottle_no              Int
-  volume_filtered_ml         Int
-  sample_collection_device   sample_collection_device
-  sample_collection_method   sample_collection_method
-  sample_material_processing String
-  size_fraction              String
-  env_material               String
-  sample_type                sample_type
-  temperature_celsius        Float
-  ph                         Float
-  salinity                   Float
-  pressure                   Int
-  temp_station               String
-  temp_depth                 String
-  ctdoxy                     Float
-  oxygen_umol_kg             Float
-  silicate_umol_kg           Float
-  nitrate_umol_kg            Float
-  nitrate_nitrite_umol_kg    Float
-  nh4_umol_kg                Float
-  dic_umol_kg                Float
-  pco2_mea_uatm              Float
-  ph_tot_mea                 Float
-  carbonate_umol_kg          Float
-  dna_sample_number          Int
-  plate                      plate
-  plate_name                 String
-  well_number                Int
-  well_position              String
-  station_depth              String
-  ship_crs_expocode          String
-  woce_sect                  String
-  date                       String
-  utc_time                   String
-  lat_lon                    String
-  submitted_to_insdc         String
-  investigation_type         String
-  samp_mat_process           String
-  target_gene                target_gene
+  station                    String?
+  region                     String?
+  degrees_latitude           Float?
+  degrees_longitude          Float?
+  depth_meters               Int?
+  ctd_bottle_no              Int?
+  volume_filtered_ml         Int?
+  sample_material_processing String?
+  size_fraction              String?
+  env_material               String?
+  temperature_celsius        Float?
+  ph                         Float?
+  salinity                   Float?
+  pressure                   Int?
+  temp_station               String?
+  temp_depth                 String?
+  ctdoxy                     Float?
+  oxygen_umol_kg             Float?
+  silicate_umol_kg           Float?
+  nitrate_umol_kg            Float?
+  nitrate_nitrite_umol_kg    Float?
+  nh4_umol_kg                Float?
+  dic_umol_kg                Float?
+  pco2_mea_uatm              Float?
+  ph_tot_mea                 Float?
+  carbonate_umol_kg          Float?
+  dna_sample_number          Int?
+  plate_name                 String?
+  well_number                Int?
+  well_position              String?
+  station_depth              String?
+  ship_crs_expocode          String?
+  woce_sect                  String?
+  date                       String?
+  utc_time                   String?
+  lat_lon                    String?
+  submitted_to_insdc         String?
+  investigation_type         String?
+  samp_mat_process           String?
   additional_notes           String?
   notes_on_bottle_metadata   String?
+  seqid_16s_xxx              String?
+  replicate                  String?
+  depth_category             String?
+  sample_collection_device   String?
+  sample_collection_method   String?
+  sample_type                String?
+  plate                      String?
+  target_gene                String?
+  nitrite_umol_kg            Float?
+  phosphate_umol_kg          Float?
   Occurrence                 Occurrence[]
   OtherData                  OtherData[]
 }
 
 model Taxonomy {
-  id         String    @id @default(cuid())
-  taxonClass String?   @map("class")
-  division   String?
-  domain     String?
-  family     String?
-  genus      String?
-  kingdom    String?
-  order      String?
-  phylum     String?
-  species    String?
-  subdivison String?
-  supergroup String?
-  Feature    Feature[]
+  id               String    @id @default(cuid())
+  taxonClass       String?   @map("class")
+  division         String?
+  domain           String?
+  family           String?
+  genus            String?
+  kingdom          String?
+  order            String?
+  phylum           String?
+  species          String?
+  subdivison       String?
+  supergroup       String?
+  stringIdentifier String    @unique
+  Feature          Feature[]
 }
 
 model BARCODE_prep_all_libraries {
