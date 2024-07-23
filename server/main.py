@@ -136,8 +136,9 @@ async def deleteTestData():
 	try:
 		print("deleting")
 		async with Prisma() as prisma:
-			feature = await prisma.feature.delete_many()
-			taxonomy = await prisma.taxonomy.delete_many()
+			await prisma.samplemetadata.delete_many()
+			await prisma.feature.delete_many()
+			await prisma.taxonomy.delete_many()
 		print("deleted")
 
 		return {"message": "Deletion successful"}
@@ -163,6 +164,20 @@ async def testMetadata():
 		return {"error": "Error"}
 
 
+@app.route("/deleteTestOccurrences", methods=["POST"])
+async def deleteTestOccurrences():
+	try:
+		print("deleting")
+		async with Prisma() as prisma:
+			await prisma.occurrence.delete_many()
+		print("deleted")
+
+		return {"message": "Deletion successful"}
+	except:
+		print(traceback.format_exc())
+		return {"error": "Error"}
+
+
 @app.route("/testOccurrences", methods=["POST"])
 async def testOccurrences():
 	print("testing occurrences data")
@@ -171,13 +186,30 @@ async def testOccurrences():
 			occurrencesDF = pd.read_csv("prisma/occurrences.csv")
 			occurrences = occurrencesDF.to_dict()
 			featureIds = occurrences.pop("featureId")
-			data = []
-			for col, row in occurrences.items():
-				data = []
-				print(row)
+			for sample, row in occurrences.items():
+				newOccs = []
+				for i, quantity in row.items():
+					newOccs.append({
+						"organismQuantity": int(quantity),
+						"Feature": featureIds[i]
+					})
+
+				await prisma.samplemetadata.update(
+					where = {
+						"sample_name": sample
+					},
+					data = {
+						"Occurrence": {
+							"createMany": {
+								"data": newOccs
+							}
+						}
+					}
+				)
 				break
+
 			# INEFFICIENT
-			# for featureRow in occurrences:
+			# for i, featureRow in enumerate(occurrences):
 			# 	featureId = featureRow.pop("featureId")
 			# 	data += [{
 			# 		"organismQuantity": quantity,
@@ -191,12 +223,11 @@ async def testOccurrences():
 			# 				"sample_name": sample
 			# 			}
 			# 		}
-			# 	} for sample, quantity in featureRow.items()]
-			# 	for entry in data:
-			# 		await prisma.occurrence.create(
-			# 			data = entry
-			# 		)
-			# 	break
+			# 	} for sample, quantity in featureRow.items() if quantity != 0]
+				# for entry in data:
+				# 	await prisma.occurrence.create(
+				# 		data = entry
+				# 	)
 
 			# for i, row in enumerate(split["data"]):
 			# 	for j, cell in enumerate(row):
