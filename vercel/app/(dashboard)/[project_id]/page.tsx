@@ -10,7 +10,8 @@ export default async function ProjectId({ params }: { params: { project_id: stri
 
 	return (
 		<div>
-			{JSON.stringify(project)}
+			{/* {JSON.stringify(project/)} */}
+			testing, failure
 		</div>
 	);
 }

@@ -370,6 +370,7 @@ Table Measurement_Metadata {
 Table Taxonomy {
   id String [pk]
   Features Feature [not null]
+  stringIdentifier String [unique, not null]
   domain String
   kingdom String
   supergroup String
@@ -387,86 +388,87 @@ Table Feature {
   id String [pk]
   TaxonomyId String [not null]
   Taxonomy Taxonomy [not null]
-  Occurrences Occurrence [not null]
   featureId String [unique, not null]
   confidence Float [not null]
 }
 
 Table Occurrence {
   id String [pk]
-  FeatureId String [not null]
-  Feature Feature [not null]
+  Feature String [not null]
   SampleMetadataId String [not null]
   SampleMetadata SampleMetadata [not null]
   Study_DataId String
   Study_Data Study_Data
   organismQuantity Int [not null]
+  featureId String
 }
 
 Table SampleMetadata {
   id String [pk]
   Occurrences Occurrence [not null]
   OtherData OtherData [not null]
-  sample_name String [not null]
-  replicate replicate
-  serial_number String [not null]
+  sample_name String [unique, not null]
+  replicate String
+  serial_number String
   extract_number String
-  sequid_16s_xxx String
+  seqid_16s_xxx String
   seqid_18s_xxx String
   seqid_12s_xxx String
-  project_id String [not null]
-  project_title String [not null]
-  project_description String [not null]
-  project_proposal String [not null]
+  project_id String
+  project_title String
+  project_description String
+  project_proposal String
   notes String
-  collection_date_only String [not null]
-  collection_time_local_only String [not null]
+  collection_date_only String
+  collection_time_local_only String
   cruise String
-  station String [not null]
-  region String [not null]
-  degrees_latitude Float [not null]
-  degrees_longitude Float [not null]
-  depth_meters Int [not null]
-  depth_category depth_category
-  ctd_bottle_no Int [not null]
-  volume_filtered_ml Int [not null]
-  sample_collection_device sample_collection_device [not null]
-  sample_collection_method sample_collection_method [not null]
-  sample_material_processing String [not null]
-  size_fraction String [not null]
-  env_material String [not null]
-  sample_type sample_type [not null]
-  temperature_celsius Float [not null]
-  ph Float [not null]
-  salinity Float [not null]
-  pressure Int [not null]
-  temp_station String [not null]
-  temp_depth String [not null]
-  ctdoxy Float [not null]
-  oxygen_umol_kg Float [not null]
-  silicate_umol_kg Float [not null]
-  nitrate_umol_kg Float [not null]
-  nitrate_nitrite_umol_kg Float [not null]
-  nh4_umol_kg Float [not null]
-  dic_umol_kg Float [not null]
-  pco2_mea_uatm Float [not null]
-  ph_tot_mea Float [not null]
-  carbonate_umol_kg Float [not null]
-  dna_sample_number Int [not null]
-  plate plate [not null]
-  plate_name String [not null]
-  well_number Int [not null]
-  well_position String [not null]
-  station_depth String [not null]
-  ship_crs_expocode String [not null]
-  woce_sect String [not null]
-  date String [not null]
-  utc_time String [not null]
-  lat_lon String [not null]
-  submitted_to_insdc String [not null]
-  investigation_type String [not null]
-  samp_mat_process String [not null]
-  target_gene target_gene [not null]
+  station String
+  region String
+  degrees_latitude Float
+  degrees_longitude Float
+  depth_meters Int
+  depth_category String
+  ctd_bottle_no Int
+  volume_filtered_ml Int
+  sample_collection_device String
+  sample_collection_method String
+  sample_material_processing String
+  size_fraction String
+  env_material String
+  sample_type String
+  temperature_celsius Float
+  ph Float
+  salinity Float
+  pressure Int
+  temp_station String
+  temp_depth String
+  ctdoxy Float
+  oxygen_umol_kg Float
+  phosphate_umol_kg Float
+  silicate_umol_kg Float
+  nitrate_umol_kg Float
+  nitrite_umol_kg Float
+  nitrate_nitrite_umol_kg Float
+  nh4_umol_kg Float
+  dic_umol_kg Float
+  pco2_mea_uatm Float
+  ph_tot_mea Float
+  carbonate_umol_kg Float
+  dna_sample_number Int
+  plate String
+  plate_name String
+  well_number Int
+  well_position String
+  station_depth String
+  ship_crs_expocode String
+  woce_sect String
+  date String
+  utc_time String
+  lat_lon String
+  submitted_to_insdc String
+  investigation_type String
+  samp_mat_process String
+  target_gene String
   additional_notes String
   notes_on_bottle_metadata String
 }
@@ -707,8 +709,6 @@ Ref: Analysis_Data.Study_DataId - Study_Data.id
 Ref: Measurement_Metadata.Study_DataId - Study_Data.id
 
 Ref: Feature.TaxonomyId > Taxonomy.id
-
-Ref: Occurrence.FeatureId > Feature.id
 
 Ref: Occurrence.SampleMetadataId > SampleMetadata.id
 
