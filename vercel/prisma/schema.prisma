@@ -779,35 +779,72 @@ model Measurement_Metadata {
 }
 
 // Tourmaline
-model Taxonomy {
+model Run {
     id String @id @default(cuid())
 
     // Relations
-    Features Feature[]
+    Assignments Assignment[]
 
-    stringIdentifier String  @unique
-    domain           String?
-    kingdom          String?
-    supergroup       String?
-    division         String?
-    phylum           String?
-    subdivison       String?
-    taxonClass       String? @map("class")
-    order            String?
-    family           String?
-    genus            String?
-    species          String?
+    //parameters unique to a given run
 }
 
 model Feature {
     id String @id @default(cuid())
 
     // Relations
+    featureId           String
+    Assignments         Assignment[]
+    consensusTaxonomyId String?
+    consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [id])
+}
+
+model Taxonomy {
+    id String @id @default(cuid())
+
+    // Relations
+    Assignments         Assignment[]
+    Feature             Feature[]
+    taxonomyStructureId String?
+    TaxonomyStructure   TaxonomyStructure? @relation(fields: [taxonomyStructureId], references: [id])
+
+    stringIdentifier String @unique
+    // domain              String?
+    // kingdom             String?
+    // supergroup          String?
+    // division            String?
+    // phylum              String?
+    // subdivison          String?
+    // taxonClass          String?            @map("class")
+    // order               String?
+    // family              String?
+    // genus               String?
+    // species             String?
+}
+
+model TaxonomyStructure {
+    id String @id @default(cuid())
+
+    // Relations
+    Taxonomies Taxonomy[]
+
+    ranks  String[]
+    labels String[]
+
+    @@unique([ranks, labels])
+}
+
+model Assignment {
+    id String @id @default(cuid())
+
+    // Relations
     TaxonomyId String
     Taxonomy   Taxonomy @relation(fields: [TaxonomyId], references: [id])
+    featureId  String
+    Feature    Feature  @relation(fields: [featureId], references: [id])
+    runId      String
+    Run        Run      @relation(fields: [runId], references: [id])
     // Occurrences Occurrence[]
 
-    featureId  String @unique
     confidence Float
 }
 
@@ -824,8 +861,6 @@ model Occurrence {
     Study_Data       Study_Data?    @relation(fields: [Study_DataId], references: [id])
 
     organismQuantity Int
-    // Feature          Feature? @relation(fields: [featureId], references: [id])
-    featureId        String?
 }
 
 model SampleMetadata {
