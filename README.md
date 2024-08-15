@@ -81,4 +81,3 @@ npx prisma generate
 ```
 
 To create an Entity Relationship Diagram (ERD) for the current version of the database, copy and paste the contents of the schema.dbml file in `frontend/prisma/dbml` to: [DB Diagram](https://dbdiagram.io/d)
-test
