@@ -23,6 +23,7 @@ export default function Header() {
 					<TabButton tabName='Home' route='/' />
 					<TabButton tabName='Tourmaline' route='/tourmaline' />
 					<TabButton tabName='About' route='/about' />
+					<TabButton tabName='Test Data' route='/testData' />
 				</div>
 				</div>
 				<div className="navbar-center hidden lg:flex">

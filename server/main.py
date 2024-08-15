@@ -3,6 +3,9 @@ import jwt
 from time import time
 import tldextract
 from quart_cors import cors
+import csv
+import traceback
+import pandas as pd
 
 from quart import Quart, request
 app = Quart(__name__)
@@ -58,25 +61,208 @@ async def admin():
 		return { "error": "Server could not handle the request" }
 
 
-
 @app.route("/tourmalineReceive", methods=["POST"])
 async def tourmaline_receive():
-  try:
-    # Directly read and print the raw request body for debugging
-    raw_body = await request.get_data()
-    print("Raw request body:", raw_body)
-		
-    form_fields = await request.form
-    print("Form data received:")
-    for name, value in form_fields.items():						
-      print(f"Field name: {name}, value: {value}")
-    
-    files = await request.files
-    print("Files received:")
-    for file_name, file in files.items():
-      print(f"File name: {file_name}, file: {file.filename}")
+	try:
+		# Directly read and print the raw request body for debugging
+		raw_body = await request.get_data()
+		print("Raw request body:", raw_body)
 
-    return{"message": "Form data received successfully"}	
-  except Exception as e:  # Added to catch and print the exception
-    print(f"Error processing request: {e}")
-    return {"error": "Server could not handle the request"}, 500
+		form_fields = await request.form
+		print("Form data received:")
+		for name, value in form_fields.items():
+			print(f"Field name: {name}, value: {value}")
+
+		files = await request.files
+		print("Files received:")
+		for file_name, file in files.items():
+			print(f"File name: {file_name}, file: {file.filename}")
+
+		return{"message": "Form data received successfully"}	
+	except Exception as e:  # Added to catch and print the exception
+		print(f"Error processing request: {e}")
+		return {"error": "Server could not handle the request"}, 500
+
+
+@app.route("/testTaxon", methods=["POST"])
+async def testData():
+	print("testing taxon and feature data")
+	try:
+		async with Prisma() as prisma:
+			featuresDF = pd.read_csv("prisma/features.csv")
+
+			#add taxonomies to db
+			taxons = featuresDF["Taxon"].unique()
+			taxonomyOrder = ["domain", "kingdom", "supergroup", "division", "phylum", "subdivison", "taxonClass", "order", "family", "genus", "species"]
+			for t in taxons:
+				#build taxon query
+				taxonData = {
+					"stringIdentifier": t
+				}
+				split = list(filter(None, t.split(";")))
+				for i, tName in enumerate(taxonomyOrder):
+					taxonData[tName] = split[i] if i < len(split) else None
+
+				#build feature-createMany nested query
+				taxonDF = featuresDF.loc[featuresDF["Taxon"] == t]
+				taxonData["Feature"] =  {
+					"createMany": {
+						"data": taxonDF.apply(lambda row: {
+							"featureId": row["Feature ID"],
+							"confidence": float(row["Confidence"])
+						}, axis=1).to_list()
+					}
+				}
+
+				await prisma.taxonomy.upsert(
+					where = { "stringIdentifier": t },
+					data = {
+						"create": taxonData,
+						"update": {
+							"Feature": taxonData["Feature"]
+						}
+					}
+				)
+
+		print("success")
+		return {"message": "Test successful"}
+	except Exception:
+		print(traceback.format_exc())
+		return {"error": "Error"}
+
+
+@app.route("/deleteTestTaxon", methods=["POST"])
+async def deleteTestData():
+	try:
+		print("deleting")
+		async with Prisma() as prisma:
+			await prisma.samplemetadata.delete_many()
+			await prisma.feature.delete_many()
+			await prisma.taxonomy.delete_many()
+		print("deleted")
+
+		return {"message": "Deletion successful"}
+	except:
+		print(traceback.format_exc())
+		return {"error": "Error"}
+
+
+@app.route("/testMetadata", methods=["POST"])
+async def testMetadata():
+	print("testing metadata")
+	try:
+		async with Prisma() as prisma:
+			metadataDF = pd.read_csv("prisma/metadata.csv").replace(float("nan"), None)
+			await prisma.samplemetadata.create_many(
+				data = metadataDF.to_dict("records")
+			)
+
+		print("success")
+		return {"message": "Test successful"}
+	except:
+		print(traceback.format_exc())
+		return {"error": "Error"}
+
+
+@app.route("/deleteTestOccurrences", methods=["POST"])
+async def deleteTestOccurrences():
+	try:
+		print("deleting")
+		async with Prisma() as prisma:
+			await prisma.occurrence.delete_many()
+		print("deleted")
+
+		return {"message": "Deletion successful"}
+	except:
+		print(traceback.format_exc())
+		return {"error": "Error"}
+
+
+@app.route("/testOccurrences", methods=["POST"])
+async def testOccurrences():
+	print("testing occurrences data")
+	try:
+		async with Prisma() as prisma:
+			occurrencesDF = pd.read_csv("prisma/occurrences.csv")
+			occurrences = occurrencesDF.to_dict()
+			featureIds = occurrences.pop("featureId")
+			for sample, row in occurrences.items():
+				newOccs = []
+				for i, quantity in row.items():
+					newOccs.append({
+						"organismQuantity": int(quantity),
+						"Feature": featureIds[i]
+					})
+
+				await prisma.samplemetadata.update(
+					where = {
+						"sample_name": sample
+					},
+					data = {
+						"Occurrence": {
+							"createMany": {
+								"data": newOccs
+							}
+						}
+					}
+				)
+				break
+
+			# INEFFICIENT
+			# for i, featureRow in enumerate(occurrences):
+			# 	featureId = featureRow.pop("featureId")
+			# 	data += [{
+			# 		"organismQuantity": quantity,
+			# 		"Feature": {
+			# 			"connect": {
+			# 				"featureId": featureId
+			# 			}
+			# 		},
+			# 		"SampleMetadata": {
+			# 			"connect": {
+			# 				"sample_name": sample
+			# 			}
+			# 		}
+			# 	} for sample, quantity in featureRow.items() if quantity != 0]
+				# for entry in data:
+				# 	await prisma.occurrence.create(
+				# 		data = entry
+				# 	)
+
+			# for i, row in enumerate(split["data"]):
+			# 	for j, cell in enumerate(row):
+			# 		data.append({
+			# 			"organismQuantity": cell
+			# 			"Feature": {
+			# 				"connect": {
+			# 					"featureId": 
+			# 				}
+			# 			}
+			# 		})
+
+			# with open("prisma/occurrences.csv", newline="") as f:
+			# 	reader = csv.DictReader(f)
+			# 	data = []
+			# 	for row in reader:
+			# 		featureId = row.pop("featureId")
+			# 		for sample, quantity in row.items():
+			# 			print(featureId)
+			# 			data.append({
+			# 				"organismQuantity": quantity,
+			# 				"Feature": {
+			# 					"connect": {
+			# 						"featureId": featureId
+			# 					}
+			# 				},
+			# 				"SampleMetadata": {
+			# 					"connect": {
+			# 						"sample_name": sample
+			# 					}
+			# 				}
+			# 			})
+
+		print("success")
+		return {"message": "Test successful"}
+	except:
+		print(traceback.format_exc())
+		return {"error": "Error"}
