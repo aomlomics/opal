@@ -36,13 +36,13 @@ There are helpful `.sh` scripts you can run with the `bash` command in `server/s
 The `restart.sh` script will restart the gunicorn process to allow you to view changes to code.
 The `start.sh` script will run the gunicorn process in a screen. Behavior is the same as when you run `attach.sh`.
 
-# vercel
+# frontend
 
-The front-end must be handled outside of the Docker container.
+The frontend must be handled outside of the Docker container.
 
 ## Helpful commands
 
-All of these commands must be executed from inside `/vercel`.
+All of these commands must be executed from inside `/frontend`.
 
 Install all node dependencies from package.json
 
@@ -62,13 +62,13 @@ Open the Prisma database view
 npx prisma studio
 ```
 
-Push schema changes to database (all database migrations should be done in `/vercel`)
+Push schema changes to database (all database migrations should be done in `/frontend`)
 
 ```bash
 npx prisma migrate dev --name "<insert migration name>"
 ```
 
-Pull schema changes from database (must be done in `/server` after creating a migration in `/vercel`)
+Pull schema changes from database (must be done in `/server` after creating a migration in `/frontend`)
 
 ```bash
 prisma db pull
@@ -80,4 +80,4 @@ Generate Prisma Client
 npx prisma generate
 ```
 
-To create an Entity Relationship Diagram (ERD) for the current version of the database, copy and paste the contents of the schema.dbml file in `vercel/prisma/dbml` to: [DB Diagram](https://dbdiagram.io/d)
+To create an Entity Relationship Diagram (ERD) for the current version of the database, copy and paste the contents of the schema.dbml file in `frontend/prisma/dbml` to: [DB Diagram](https://dbdiagram.io/d)
