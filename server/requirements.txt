@@ -6,3 +6,4 @@ Werkzeug==3.0.3
 pyjwt==2.8.0
 tldextract==5.1.1
 quart-cors==0.7.0
+pandas==2.2.2
