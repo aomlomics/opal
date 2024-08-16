@@ -5,17 +5,17 @@ export async function fetcher(url: string) {
 }
 
 export function getBaseUrl() {
-	if (process.env.NODE_ENV === "development") {
+	// if (process.env.NODE_ENV === "development") {
 		return "http://localhost:3000";
-	}
-	return "https://opal-ochre.vercel.app";
+	// }
+	// return "https://opal-ochre.vercel.app";
 }
 
 export function getRemoteUrl() {
-	if (process.env.NODE_ENV === "development") {
+	// if (process.env.NODE_ENV === "development") {
 		return "http://localhost:8080";
-	}
-	return "https://opalserver-qnwedardvq-uc.a.run.app";
+	// }
+	// return "https://opalserver-qnwedardvq-uc.a.run.app";
 }
 
 export function isEmpty(obj: Object) {
