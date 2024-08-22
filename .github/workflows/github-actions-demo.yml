@@ -1,18 +1,56 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
-
 on: [push]
 
 jobs:
-  build-frontend:
+  build-server:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.SERVER_FULL_ENV }}" > $GITHUB_ENV
+          echo "${{ secrets.SERVER_FULL_ENV }}" > .env
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.12.4"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
+        run: |
+          pytest
+
+  deploy-server:
+    needs: build-server
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - name: test
+        run: echo server
+
+  build-frontend:
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -22,14 +60,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Create .env file
         run: |
-          echo "${{ secrets.PROD_FULL_ENV }}" > $GITHUB_ENV
-          echo "${{ secrets.PROD_FULL_ENV }}" > .env
-      - name: Use Node.js ${{ matrix.node-version }}
+          echo "${{ secrets.FRONTEND_FULL_ENV }}" > $GITHUB_ENV
+          echo "${{ secrets.FRONTEND_FULL_ENV }}" > .env
+      - name: Use Node.js 20.16.0
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
+          node-version: "20.16.0"
       - run: npm ci
       - run: npm run build --if-present
 
@@ -44,4 +80,4 @@ jobs:
 
     steps:
       - name: test
-        run: echo "deploying frontend..."
+        run: echo frontend
