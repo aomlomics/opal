@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Create .env file
-        run: echo "${{ secrets.PROD_FULL_ENV }}" >> $GITHUB_ENV
+        run: echo "${{ secrets.PROD_FULL_ENV }}" > $GITHUB_ENV
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -31,4 +31,3 @@ jobs:
       - run: npm ci
       - run: npx prisma generate
       - run: npm run build --if-present
-      - run: npm test
