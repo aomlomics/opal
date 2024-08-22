@@ -38,6 +38,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: /home/node/opal/server
+
     steps:
       - name: test
         run: |
@@ -69,6 +73,10 @@ jobs:
     needs: build-frontend
 
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: /home/node/opal/frontend
 
     steps:
       - name: test
