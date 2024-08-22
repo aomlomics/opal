@@ -9,7 +9,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./server
+        working-directory: server
 
     steps:
       - uses: actions/checkout@v4
@@ -17,7 +17,7 @@ jobs:
         run: |
           echo "${{ secrets.SERVER_FULL_ENV }}" > $GITHUB_ENV
           echo "${{ secrets.SERVER_FULL_ENV }}" > .env
-      - name: Set up Python 3.10
+      - name: Set up Python 3.12.4
         uses: actions/setup-python@v3
         with:
           python-version: "3.12.4"
@@ -43,7 +43,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./server
+        working-directory: server
 
     steps:
       - name: test
@@ -54,7 +54,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: frontend
 
     steps:
       - uses: actions/checkout@v4
@@ -76,7 +76,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./frontend
+        working-directory: frontend
 
     steps:
       - name: test
