@@ -23,7 +23,7 @@ jobs:
       - name: Create .env file
         run: echo "${{ secrets.PROD_FULL_ENV }}" > .env
       - name: Check env
-        run: echo .env
+        run: cat .env
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
