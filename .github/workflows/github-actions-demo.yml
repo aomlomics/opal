@@ -11,16 +11,21 @@ jobs:
       run:
         working-directory: server
 
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
+
     steps:
       - uses: actions/checkout@v4
       - name: Create .env file
         run: |
           echo "${{ secrets.SERVER_FULL_ENV }}" > $GITHUB_ENV
           echo "${{ secrets.SERVER_FULL_ENV }}" > .env
-      - name: Set up Python 3.12.4
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
-          python-version: "3.12.4"
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
