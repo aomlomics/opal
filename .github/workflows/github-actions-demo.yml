@@ -13,10 +13,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Create .env file
+      - name: Populate environment with secrets
         run: |
           echo "${{ secrets.SERVER_FULL_ENV }}" > $GITHUB_ENV
-          echo "${{ secrets.SERVER_FULL_ENV }}" > .env
       - name: Set up Python 3.12
         uses: actions/setup-python@v3
         with:
@@ -42,7 +41,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Create .env file
+      - name: Populate environment with secrets
         run: |
           echo "${{ secrets.FRONTEND_FULL_ENV }}" > $GITHUB_ENV
       - name: Use Node.js 20.16.0
@@ -50,7 +49,7 @@ jobs:
         with:
           node-version: "20.16.0"
       - run: npm ci
-      - run: npm run build --if-present
+      - run: npm run build
 
   # pull-repo:
   #   needs: [test-server, build-frontend]
