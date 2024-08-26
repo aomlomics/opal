@@ -31,7 +31,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: /home/node/opal/frontend
+        working-directory: frontend
 
     steps:
       - uses: actions/checkout@v4
@@ -45,15 +45,23 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-  # pull-repo:
-  #   needs: [test-server, build-frontend]
+  deploy:
+    needs: [test-server, build-frontend]
 
-  #   runs-on: self-hosted
+    runs-on: self-hosted
 
-  #   defaults:
-  #     run:
-  #       working-directory: /home/node/opal
-
-  #   steps:
-  #     - name: Pull repository
-  #       run: git pull
+    steps:
+      - name: Pull repository
+        working-directory: /home/node/opal
+        run: git pull
+      - name: Build server
+        working-directory: /home/node/opal/server
+        run: |
+          echo "${{ secrets.SERVER_FULL_ENV }}" > .env
+          pip install -r requirements.txt
+      - name: Build frontend
+        working-directory: /home/node/opal/frontend
+        run: |
+          echo "${{ secrets.FRONTEND_FULL_ENV }}" > .env
+          npm ci
+          npm run build
