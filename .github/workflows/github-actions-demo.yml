@@ -40,13 +40,14 @@ jobs:
 
     defaults:
       run:
-        working-directory: /home/node/opal/server
+        working-directory: /var/temp
 
     steps:
       - name: test
         run: |
           pwd
           ls -a
+          mkdir test
 
   build-frontend:
     runs-on: self-hosted
