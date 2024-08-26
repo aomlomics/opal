@@ -4,8 +4,8 @@
 on: [push]
 
 jobs:
-  build-server:
-    runs-on: self-hosted
+  test-server:
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -34,7 +34,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
   deploy-server:
-    needs: build-server
+    needs: test-server
 
     runs-on: self-hosted
 
