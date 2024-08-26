@@ -31,7 +31,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: frontend
+        working-directory: /home/node/opal/frontend
 
     steps:
       - uses: actions/checkout@v4
