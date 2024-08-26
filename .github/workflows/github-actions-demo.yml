@@ -38,16 +38,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: /local/node
+    # defaults:
+    #   run:
+    #     working-directory: /local/node
 
     steps:
       - name: test
         run: |
+          whoami
           pwd
           ls -a
-          mkdir test
 
   build-frontend:
     runs-on: ubuntu-latest
