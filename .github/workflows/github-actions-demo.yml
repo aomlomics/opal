@@ -33,23 +33,6 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  deploy-server:
-    needs: test-server
-
-    runs-on: self-hosted
-
-    defaults:
-      run:
-        working-directory: /local/node
-
-    steps:
-      - name: test
-        run: |
-          whoami
-          pwd
-          ls -a
-          mkdir test
-
   build-frontend:
     runs-on: self-hosted
 
@@ -69,15 +52,16 @@ jobs:
           node-version: "20.16.0"
       - run: npm ci
       - run: npm run build --if-present
+      - run: pwd
 
-  deploy-frontend:
-    needs: build-frontend
+  pull-repo:
+    needs: [test-server, build-frontend]
 
     runs-on: self-hosted
 
     defaults:
       run:
-        working-directory: /home/node/opal/frontend
+        working-directory: /home/node/opal
 
     steps:
       - name: test
