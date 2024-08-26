@@ -5,7 +5,7 @@ on: [push]
 
 jobs:
   build-server:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -36,11 +36,11 @@ jobs:
   deploy-server:
     needs: build-server
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: /var/temp
+        working-directory: /local/node
 
     steps:
       - name: test
@@ -50,7 +50,7 @@ jobs:
           mkdir test
 
   build-frontend:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -75,7 +75,7 @@ jobs:
   deploy-frontend:
     needs: build-frontend
 
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     defaults:
       run:
