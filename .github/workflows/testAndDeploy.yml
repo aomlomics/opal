@@ -1,4 +1,4 @@
-name: Opal CI/CD
+name: Opal CI/CD workflow
 
 on: push
 
