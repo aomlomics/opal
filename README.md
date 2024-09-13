@@ -1,4 +1,4 @@
-![example workflow](https://github.com/github/docs/actions/workflows/testAndDeploy.yml/badge.svg)
+![example workflow](https://github.com/aomlomics/opal/actions/workflows/testAndDeploy.yml/badge.svg)
 
 # To run using Docker:
 
