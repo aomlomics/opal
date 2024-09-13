@@ -1,3 +1,5 @@
+![example workflow](https://github.com/github/docs/actions/workflows/testAndDeploy.yml/badge.svg)
+
 # To run using Docker:
 
 Build the image and run the image in a container using
