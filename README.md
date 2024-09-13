@@ -1,4 +1,4 @@
-![example workflow](https://github.com/aomlomics/opal/actions/workflows/testAndDeploy.yml/badge.svg)
+![Opal CI/CD workflow](https://github.com/aomlomics/opal/actions/workflows/testAndDeploy.yml/badge.svg)
 
 # To run using Docker:
 
