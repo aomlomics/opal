@@ -40,6 +40,7 @@ jobs:
       - name: Populate environment with secrets
         run: |
           echo "${{ secrets.FRONTEND_FULL_ENV }}" > $GITHUB_ENV
+          echo "${{ secrets.FRONTEND_FULL_ENV }}" > .env
       - name: Use Node.js 20.16.0
         uses: actions/setup-node@v4
         with:
