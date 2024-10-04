@@ -9,9 +9,8 @@ generator dbml {
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("POSTGRES_PRISMA_URL")
-    directUrl = env("POSTGRES_URL_NON_POOLING")
+    provider = "postgresql"
+    url      = env("POSTGRES_PRISMA_URL")
 }
 
 // Enums
@@ -231,7 +230,7 @@ model Project {
     id String @id @default(cuid())
 
     //Relations
-    Step1 Step1[]
+    Sample Sample[]
 
     project_name           String
     project_id_external    String
@@ -263,12 +262,12 @@ model Project {
     project_proposal       String?
 }
 
-model Step1_Metadata {
+model Sample_Metadata {
     //Only 1 per project (run?)
     id String @id @default(cuid())
 
     //Relations
-    Step1 Step1[]
+    Sample Sample[]
 
     //Nucleic_Acid_Extraction
     nucl_acid_ext        String?
@@ -292,16 +291,14 @@ model Step1_Metadata {
     seq_method_additional String?
 }
 
-model Step1 {
+model Sample {
     id String @id @default(cuid())
 
     //Relations
-    Step2_16S        Step2_16S[]
-    Step2_18S        Step2_18S[]
-    Project          Project        @relation(fields: [projectId], references: [id])
-    projectId        String
-    Step1_Metadata   Step1_Metadata @relation(fields: [step1_MetadataId], references: [id])
-    step1_MetadataId String
+    Step2_16S Step2_16S[]
+    Step2_18S Step2_18S[]
+    Project   Project     @relation(fields: [projectId], references: [id])
+    projectId String
 
     //Sample_Collection
     sample_name                    String
@@ -368,10 +365,13 @@ model Step1 {
     sterilise_method String?
 
     //Sample_Storage
-    samp_store_dur  String? //duration (time) string?
-    samp_store_loc  String?
-    samp_store_temp Float? //units (string)?
-    samp_store_sol  String?
+    samp_store_dur    String? //duration (time) string?
+    samp_store_loc    String?
+    samp_store_temp   Float? //units (string)?
+    samp_store_sol    String?
+    Sample_Metadata   Sample_Metadata? @relation(fields: [sample_MetadataId], references: [id])
+    sample_MetadataId String?
+    Occurrence        Occurrence[]
 }
 
 model Step2_Metadata {
@@ -386,8 +386,8 @@ model Step2_16S {
 
     //Relations
     Bioinformatics Bioinformatics[]
-    Step1          Step1            @relation(fields: [step1Id], references: [id])
-    step1Id        String
+    Sample         Sample           @relation(fields: [SampleId], references: [id])
+    SampleId       String
 
     //PCR
 
@@ -401,8 +401,8 @@ model Step2_18S {
 
     //Relations
     Bioinformatics Bioinformatics[]
-    Step1          Step1            @relation(fields: [step1Id], references: [id])
-    step1Id        String
+    Sample         Sample           @relation(fields: [SampleId], references: [id])
+    SampleId       String
 
     //PCR
 
@@ -436,7 +436,9 @@ model Measurement {
 
 // Tourmaline
 model Run {
-    id String @id @default(cuid())
+    id           String @id @default(cuid())
+    uploadedBy   String
+    dateModified String //ISO 8601 string
 
     // Relations
     Assignments Assignment[]
@@ -448,45 +450,29 @@ model Feature {
     id String @id @default(cuid())
 
     // Relations
-    featureId           String
     Assignments         Assignment[]
     consensusTaxonomyId String?
     consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [id])
+
+    featureId String
+    sequence  String
 }
 
 model Taxonomy {
     id String @id @default(cuid())
 
     // Relations
-    Assignments         Assignment[]
-    Feature             Feature[]
-    taxonomyStructureId String?
-    TaxonomyStructure   TaxonomyStructure? @relation(fields: [taxonomyStructureId], references: [id])
+    Assignments Assignment[]
+    Feature     Feature[]
 
-    stringIdentifier String @unique
-    // domain              String?
-    // kingdom             String?
-    // supergroup          String?
-    // division            String?
-    // phylum              String?
-    // subdivison          String?
-    // taxonClass          String?            @map("class")
-    // order               String?
-    // family              String?
-    // genus               String?
-    // species             String?
-}
-
-model TaxonomyStructure {
-    id String @id @default(cuid())
-
-    // Relations
-    Taxonomies Taxonomy[]
-
-    ranks  String[]
-    labels String[]
-
-    @@unique([ranks, labels])
+    stringIdentifier String  @unique
+    kingdom          String?
+    phylum           String?
+    taxonClass       String? @map("class")
+    order            String?
+    family           String?
+    genus            String?
+    species          String?
 }
 
 model Assignment {
@@ -510,7 +496,9 @@ model Occurrence {
     // Relations
     // FeatureId        String
     // Feature          Feature        @relation(fields: [FeatureId], references: [id])
-    Feature String
+    Feature  String
+    Sample   Sample @relation(fields: [sampleId], references: [id])
+    sampleId String
 
     organismQuantity Int
 }

@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 
 const sharedTheme = {
-	primary: "#0483CB", //Lochmara
-	secondary: "#043484", //Catalina Blue
+	primary: "#72ACAF", //Lochmara
+	secondary: "#03646A", //Catalina Blue
 	accent: "#79BCE4", //Seagull
 	neutral: "#BFD0E5", //Periwinkle Gray
 	"neutral-content": "whitesmoke",

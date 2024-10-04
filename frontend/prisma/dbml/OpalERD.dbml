@@ -2,16 +2,9 @@
 //// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 //// ------------------------------------------------------
 
-Table Study_Data {
+Table Project {
   id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  Water_Sample_Data Water_Sample_Data [not null]
-  Measurement_Metadata Measurement_Metadata
-  Occurrences Occurrence [not null]
-  Amplicon_PrepData Amplicon_PrepData
-  Metag_Prep_Data Metag_Prep_Data
-  Analysis_Data Analysis_Data
+  Step1 Step1 [not null]
   project_name String [not null]
   project_id_external String [not null]
   project_id_internal String
@@ -24,7 +17,7 @@ Table Study_Data {
   grant_number Int
   grant_title String
   grant_agency String
-  recordedBy String[] [not null]
+  recordedBy String
   recordedByID String
   institution String
   institutionID String
@@ -35,11 +28,16 @@ Table Study_Data {
   informationWithheld String
   dataGeneralizations String
   bibliographicCitation String
-  associated_resource String[] [not null]
+  associated_resource String
   experimental_factor String
   detection_type String
   citation String
   project_proposal String
+}
+
+Table Step1_Metadata {
+  id String [pk]
+  Step1 Step1 [not null]
   nucl_acid_ext String
   nucl_acid_ext_kit String
   nucl_acid_ext_modify String
@@ -48,25 +46,27 @@ Table Study_Data {
   dna_cleanup_method String
   concentration_method String
   seq_kit String
-  lib_layout lib_layout [not null]
+  lib_layout String [not null]
   adapter_forward String
   adapter_reverse String
   seq_facility String
   lib_screen String
-  platform platform [not null]
-  instrument_model instrument_model [not null]
+  platform String [not null]
+  instrument_model String [not null]
+  seq_meth String
+  seq_method_additional String
 }
 
-Table Water_Sample_Data {
+Table Step1 {
   id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  Study_DataId String [not null]
-  Study_Data Study_Data [not null]
-  OtherData OtherData [not null]
-  BARCODE_prep_per_library BARCODE_prep_per_library
-  Metag_Individual_Data Metag_Individual_Data
+  Step2_16S Step2_16S [not null]
+  Step2_18S Step2_18S [not null]
+  Project Project [not null]
+  projectId String [not null]
+  Step1_Metadata Step1_Metadata [not null]
+  step1_MetadataId String [not null]
   sample_name String [not null]
+  sample_name_original String [not null]
   sample_type sample_type
   serial_number String
   cruise_id String
@@ -93,272 +93,59 @@ Table Water_Sample_Data {
   decimalLongitude Float
   collection_method String
   samp_collect_device String
-  samp_size String
+  samp_size Float
   samp_size_unit String
   extract_number String
   samp_mat_process String
   filter_passive_active_0_1 String
   filter_onsite_dur String
   size_frac String
+  samp_vol_we_dna_ext String
+  samp_vol_ext_unit Float
   sample_title String
   bioproject_accession String
   biosample_accession String
   organism String [not null]
   description String
   amplicon_sequenced String
-  metagenome_sequence String
-  samp_vol_we_dna_ext String
-  samp_vol_ext_unit String
+  metagenome_sequenced String
   sterilise_method String
   samp_store_dur String
   samp_store_loc String
-  samp_store_temp String
+  samp_store_temp Float
   samp_store_sol String
-
-  indexes {
-    (id, sample_name) [unique]
-  }
 }
 
-Table BARCODE_prep_per_library {
+Table Step2_Metadata {
+  id String [pk]
+}
+
+Table Step2_16S {
+  id String [pk]
+  Bioinformatics Bioinformatics [not null]
+  Step1 Step1 [not null]
+  step1Id String [not null]
+}
+
+Table Step2_18S {
+  id String [pk]
+  Bioinformatics Bioinformatics [not null]
+  Step1 Step1 [not null]
+  step1Id String [not null]
+}
+
+Table Bioinformatics {
+  id String [pk]
+  Step2_18S Step2_18S
+  step2_18SId String
+  Step2_16S Step2_16S
+  step2_16SId String
+}
+
+Table Measurement {
   id String [pk]
   date_modified DateTime [not null]
   uploadedBy String [not null]
-  Water_Sample_DataId String [not null]
-  sample_name String [not null]
-  Water_Sample_Data Water_Sample_Data [not null]
-  BARCODE_prep_all_librariesId String [not null]
-  BARCODE_prep_all_libraries BARCODE_prep_all_libraries [not null]
-  library_id String [not null]
-  title String [not null]
-  design_description String [not null]
-  filetype filetype [not null]
-  filename String [not null]
-  filename2 String
-  biosample_accession String
-  sra_accession String
-  mid_forward String
-  mid_reverse String
-  pool_dna_0_1 String
-  pool_dna_num String
-  date_dna_extracted String
-  extraction_personnel String
-  date_pcr String
-  pcr_personnel String
-
-  indexes {
-    (Water_Sample_DataId, sample_name) [unique]
-  }
-}
-
-Table BARCODE_prep_all_libraries {
-  id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  BARCODE_prep_per_library BARCODE_prep_per_library [not null]
-  pos_cont_type String
-  neg_cont_type String
-  nucl_acid_amp String
-  pcr_cond String
-  annealingTemp String
-  amplificationReactionVolume String
-  pcr_rep String
-  pcr_analysis_software String
-  pcr_primer_forward String
-  pcr_primer_reverse String
-  pcr_primer_name_forward String
-  pcr_primer_name_reverse String
-  pcr_primer_reference_forward String
-  pcr_primer_reference_reverse String
-  target_taxa_pcr String
-  target_taxa_study String
-  target_gene String
-  target_subfragment String
-  target_gene_size String
-  pcr_method_additional String
-  sop_bioinformatics String
-  code_repo String
-  trim_method String
-  trim_param String
-  demux_tool String
-  demux_max_mismatch String
-  merge_tool String
-  merge_min_overlap String
-  min_len_0_1 String
-  min_len_cutoff String
-  min_len_tool String
-  min_reads_0_1 String
-  min_reads_cutoff String
-  min_reads_cutoff_unit String
-  min_reads_tool String
-  error_rate_0_1 String
-  error_rate_tool String
-  error_rate_type String
-  error_rate_cutoff String
-  chimera_check_0_1 String
-  chimera_check_method String
-  chimera_check_param String
-  otu_clust_0_1 String
-  otu_clust_tool String
-  otu_clust_cutoff String
-  curation_0_1 String
-  curation_tool String
-  curation_param String
-  otu_db String
-  otu_db_custom String
-  otu_seq_comp_appr String
-  tax_class_id_cutoff String
-  tax_class_query_cutoff String
-  tax_class_collapse String
-  tax_class_param_other String
-  tax_class String
-  screen_contam_0_1 String
-  screen_contam_method String
-  screen_geograph_0_1 String
-  screen_geograph_method String
-  screen_nontarget_0_1 String
-  screen_nontarget_method String
-  screen_other String
-  bioinfo_method_additional String
-}
-
-Table Metag_Individual_Data {
-  id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  Water_Sample_DataId String [not null]
-  sample_name String [not null]
-  Water_Sample_Data Water_Sample_Data [not null]
-  library_id String [not null]
-  title String [not null]
-  design_description String [not null]
-  filetype filetype [not null]
-  filename String [not null]
-  filename2 String
-  drive_location String
-  biosample_accession String
-  sra_accession String
-  mid_barcode String
-
-  indexes {
-    (Water_Sample_DataId, sample_name) [unique]
-  }
-}
-
-Table Amplicon_PrepData {
-  id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  Study_DataId String [unique, not null]
-  Study_Data Study_Data [not null]
-  sample_name String [not null]
-  library_id String [not null]
-  title String [not null]
-  library_strategy library_strategy [not null]
-  library_source library_source [not null]
-  library_selection library_selection [not null]
-  lib_layout lib_layout [not null]
-  platform String [not null]
-  instrument_model String [not null]
-  design_description String [not null]
-  filetype filetype [not null]
-  filename String [not null]
-  filename2 String
-  drive_location String [not null]
-  biosample_accession String
-  sra_accession String
-  date_dna_extracted String [not null]
-  extraction_personnel String [not null]
-  date_pcr String [not null]
-  pcr_personnel String [not null]
-  seq_facility String
-  seq_meth String
-  nucl_acid_ext String
-  amplicon_sequenced String
-  target_gene String
-  target_subfragment String
-  pcr_primer_forward String
-  pcr_primer_reverse String
-  pcr_primer_name_forward String
-  pcr_primer_name_reverse String
-  pcr_primer_reference String
-  pcr_cond String
-  nucl_acid_amp String
-  adapters String
-  mid_barcode String
-}
-
-Table Metag_Prep_Data {
-  id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  Study_DataId String [unique, not null]
-  Study_Data Study_Data [not null]
-  sample_name String [not null]
-  library_id String [not null]
-  title String [not null]
-  library_strategy library_strategy [not null]
-  library_source library_source [not null]
-  library_selection library_selection [not null]
-  lib_layout lib_layout [not null]
-  platform String [not null]
-  instrument_model String [not null]
-  design_description String [not null]
-  filetype filetype [not null]
-  filename String [not null]
-  filename2 String
-  drive_location String [not null]
-  biosample_accession String
-  sra_accession String
-  seq_facility String
-  nucl_acid_ext String
-  nucl_acid_amp String
-  adapters String
-  mid_barcode String
-  seq_meth String
-  tax_class String
-}
-
-Table Analysis_Data {
-  id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  Study_DataId String [unique, not null]
-  Study_Data Study_Data [not null]
-  amplicon_sequenced String [not null]
-  ampliconSize Int
-  trim_method String
-  cluster_method String
-  pid_clustering String
-  taxa_class_method String [not null]
-  taxa_ref_db String [not null]
-  assembly_qual String
-  assembly_software String
-  annot String
-  number_contig Int
-  code_repo String [not null]
-  sop String
-  identificationReferences String [not null]
-  controls_used String
-  compl_score String
-  compl_software String
-  compl_appr String
-  contam_score String
-  contam_screen_input String
-  contam_screen_param String
-  decontam_software String
-  bin_param String
-  bin_software String
-  reassembly_bin String
-  mag_cov_software String
-}
-
-Table Measurement_Metadata {
-  id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  Study_DataId String [unique, not null]
-  Study_Data Study_Data [not null]
   aoml_term String [unique, not null]
   aoml_file String [not null]
   measurementType String
@@ -367,16 +154,27 @@ Table Measurement_Metadata {
   measurementUnitID String
 }
 
+Table Run {
+  id String [pk]
+  Assignments Assignment [not null]
+}
+
+Table Feature {
+  id String [pk]
+  Assignments Assignment [not null]
+  consensusTaxonomyId String
+  consensusTaxonomy Taxonomy
+  featureId String [not null]
+  sequence String [not null]
+}
+
 Table Taxonomy {
   id String [pk]
-  Features Feature [not null]
+  Assignments Assignment [not null]
+  Feature Feature [not null]
   stringIdentifier String [unique, not null]
-  domain String
   kingdom String
-  supergroup String
-  division String
   phylum String
-  subdivison String
   taxonClass String
   order String
   family String
@@ -384,101 +182,25 @@ Table Taxonomy {
   species String
 }
 
-Table Feature {
+Table Assignment {
   id String [pk]
   TaxonomyId String [not null]
   Taxonomy Taxonomy [not null]
-  featureId String [unique, not null]
+  featureId String [not null]
+  Feature Feature [not null]
+  runId String [not null]
+  Run Run [not null]
   confidence Float [not null]
 }
 
 Table Occurrence {
   id String [pk]
   Feature String [not null]
-  SampleMetadataId String [not null]
-  SampleMetadata SampleMetadata [not null]
-  Study_DataId String
-  Study_Data Study_Data
   organismQuantity Int [not null]
-  featureId String
 }
 
-Table SampleMetadata {
+Table GenericData {
   id String [pk]
-  Occurrences Occurrence [not null]
-  OtherData OtherData [not null]
-  sample_name String [unique, not null]
-  replicate String
-  serial_number String
-  extract_number String
-  seqid_16s_xxx String
-  seqid_18s_xxx String
-  seqid_12s_xxx String
-  project_id String
-  project_title String
-  project_description String
-  project_proposal String
-  notes String
-  collection_date_only String
-  collection_time_local_only String
-  cruise String
-  station String
-  region String
-  degrees_latitude Float
-  degrees_longitude Float
-  depth_meters Int
-  depth_category String
-  ctd_bottle_no Int
-  volume_filtered_ml Int
-  sample_collection_device String
-  sample_collection_method String
-  sample_material_processing String
-  size_fraction String
-  env_material String
-  sample_type String
-  temperature_celsius Float
-  ph Float
-  salinity Float
-  pressure Int
-  temp_station String
-  temp_depth String
-  ctdoxy Float
-  oxygen_umol_kg Float
-  phosphate_umol_kg Float
-  silicate_umol_kg Float
-  nitrate_umol_kg Float
-  nitrite_umol_kg Float
-  nitrate_nitrite_umol_kg Float
-  nh4_umol_kg Float
-  dic_umol_kg Float
-  pco2_mea_uatm Float
-  ph_tot_mea Float
-  carbonate_umol_kg Float
-  dna_sample_number Int
-  plate String
-  plate_name String
-  well_number Int
-  well_position String
-  station_depth String
-  ship_crs_expocode String
-  woce_sect String
-  date String
-  utc_time String
-  lat_lon String
-  submitted_to_insdc String
-  investigation_type String
-  samp_mat_process String
-  target_gene String
-  additional_notes String
-  notes_on_bottle_metadata String
-}
-
-Table OtherData {
-  id String [pk]
-  SampleMetadataId String
-  SampleMetadata SampleMetadata
-  Water_Sample_DataId String
-  Water_Sample_Data Water_Sample_Data
   key String [not null]
   value String [not null]
 }
@@ -692,28 +414,22 @@ Enum target_gene {
   sixteen_s_rrna_18s_rrna
 }
 
-Ref: Water_Sample_Data.Study_DataId > Study_Data.id
+Ref: Step1.projectId > Project.id
 
-Ref: BARCODE_prep_per_library.(Water_Sample_DataId, sample_name) - Water_Sample_Data.(id, sample_name)
+Ref: Step1.step1_MetadataId > Step1_Metadata.id
 
-Ref: BARCODE_prep_per_library.BARCODE_prep_all_librariesId > BARCODE_prep_all_libraries.id
+Ref: Step2_16S.step1Id > Step1.id
 
-Ref: Metag_Individual_Data.(Water_Sample_DataId, sample_name) - Water_Sample_Data.(id, sample_name)
+Ref: Step2_18S.step1Id > Step1.id
 
-Ref: Amplicon_PrepData.Study_DataId - Study_Data.id
+Ref: Bioinformatics.step2_18SId > Step2_18S.id
 
-Ref: Metag_Prep_Data.Study_DataId - Study_Data.id
+Ref: Bioinformatics.step2_16SId > Step2_16S.id
 
-Ref: Analysis_Data.Study_DataId - Study_Data.id
+Ref: Feature.consensusTaxonomyId > Taxonomy.id
 
-Ref: Measurement_Metadata.Study_DataId - Study_Data.id
+Ref: Assignment.TaxonomyId > Taxonomy.id
 
-Ref: Feature.TaxonomyId > Taxonomy.id
+Ref: Assignment.featureId > Feature.id
 
-Ref: Occurrence.SampleMetadataId > SampleMetadata.id
-
-Ref: Occurrence.Study_DataId > Study_Data.id
-
-Ref: OtherData.SampleMetadataId > SampleMetadata.id
-
-Ref: OtherData.Water_Sample_DataId > Water_Sample_Data.id
+Ref: Assignment.runId > Run.id
