@@ -266,3 +266,19 @@ async def testOccurrences():
 	except:
 		print(traceback.format_exc())
 		return {"error": "Error"}
+	
+
+@app.route("/testTourmaline2", methods=["POST"])
+async def testTourmaline2():
+	print("Testing Tourmaline 2 data")
+	try:
+		async with Prisma() as prisma:
+			exampleDF = pd.read_table("prisma/exampleData.tsv")
+			example = exampleDF.to_dict()
+			print(example)
+
+		print("success")
+		return {"message": "Test successful"}
+	except:
+		print(traceback.format_exc())
+		return {"error": "Error"}
