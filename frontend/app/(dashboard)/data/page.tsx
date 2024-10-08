@@ -1,4 +1,5 @@
 import ProjectCatalogue from "@/components/ProjectCatalogue";
+import Search from "@/components/Search";
 import { getRemoteUrl } from "@/helpers/utils";
 import dynamic from "next/dynamic";
 const Map = dynamic(() => import("@/components/Map"), {
@@ -17,7 +18,7 @@ export default async function Dashboard() {
 
 	return (
 		<main className="flex flex-col z-40 m-5 gap-5">
-			<input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto bg-neutral-content" />
+			<Search placeholder="Search"></Search>
 			<div className="flex-grow">
 				<Map></Map>
 			</div>

@@ -1,42 +1,19 @@
-import { authMiddleware } from "@clerk/nextjs";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default authMiddleware({
-	publicRoutes: (request) => {
-		return !(request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/api/admin") 
-		|| request.nextUrl.pathname.startsWith("/tourmaline") || request.nextUrl.pathname.startsWith("/api/tourmaline"))
-	},
-});
+const isProtectedRoute = createRouteMatcher(["/admin(.*)", "/api/admin(.*)", "/tourmaline(.*)", "/api/tourmaline(.*)"]);
+
+export default clerkMiddleware(
+	(auth, req) => {
+		if (isProtectedRoute(req)) auth().protect()
+	}, 
+	//{ debug: true }
+);
 
 export const config = {
-  	matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
-};
-
-// import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
-// import { NextResponse } from "next/server";
- 
-// export default authMiddleware({
-// 	publicRoutes: (request) => {
-// 		return !(request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/api/admin"));
-// 	},
-// 	afterAuth(auth, req, evt) {
-// 		// Handle users who aren't authenticated
-// 		if (!auth.userId && !auth.isPublicRoute) {
-// 			return redirectToSignIn({ returnBackUrl: req.url });
-// 		}
-// 		// Redirect logged in users to organization selection page if they are not active in an organization
-// 		if (
-// 			auth.userId &&
-// 			!auth.orgId &&
-// 			req.nextUrl.pathname !== "/org-selection"
-// 		) {
-// 			const orgSelection = new URL("/org-selection", req.url);
-// 			return NextResponse.redirect(orgSelection);
-// 		}
-// 		// If the user is logged in and trying to access a protected route, allow them to access route
-// 		if (auth.userId && !auth.isPublicRoute) {
-// 			return NextResponse.next();
-// 		}
-// 		// Allow users visiting public routes to access them
-// 		return NextResponse.next();
-// 	},
-// });
+	matcher: [
+		// Skip Next.js internals and all static files, unless found in search params
+		"/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+		// Always run for API routes
+		"/(api|trpc)(.*)",
+	],
+}

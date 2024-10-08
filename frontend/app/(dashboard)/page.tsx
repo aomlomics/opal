@@ -3,7 +3,7 @@ import Image from "next/image";
 export default async function Dashboard() {
 	return (
 		<main className="flex flex-col gap-5 grow">
-			<Image src="/images/beautiful-photo-sea-waves_58702-11300.avif" alt="" className="fixed z-0 object-cover min-h-full w-full" width={1920} height={500}/>
+			<Image priority={true} src="/images/beautiful-photo-sea-waves_58702-11300.avif" alt="" className="fixed z-0 object-cover min-h-full w-full" width={1920} height={500}/>
 			<div className="z-30 mx-20 my-10">
 				<div className="carousel w-full">
 					<div id="slide1" className="carousel-item relative w-full">
@@ -53,7 +53,26 @@ export default async function Dashboard() {
 				</div>
 			</div>
 			<div className="z-30 bg-base-100 px-20 grow">
-				test
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
+				<div>test</div>
 			</div>
 		</main>
 	);
