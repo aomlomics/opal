@@ -4,7 +4,7 @@
 
 Table Project {
   id String [pk]
-  Step1 Step1 [not null]
+  Sample Sample [not null]
   project_name String [not null]
   project_id_external String [not null]
   project_id_internal String
@@ -35,9 +35,9 @@ Table Project {
   project_proposal String
 }
 
-Table Step1_Metadata {
+Table Sample_Metadata {
   id String [pk]
-  Step1 Step1 [not null]
+  Sample Sample [not null]
   nucl_acid_ext String
   nucl_acid_ext_kit String
   nucl_acid_ext_modify String
@@ -57,14 +57,12 @@ Table Step1_Metadata {
   seq_method_additional String
 }
 
-Table Step1 {
+Table Sample {
   id String [pk]
   Step2_16S Step2_16S [not null]
   Step2_18S Step2_18S [not null]
   Project Project [not null]
   projectId String [not null]
-  Step1_Metadata Step1_Metadata [not null]
-  step1_MetadataId String [not null]
   sample_name String [not null]
   sample_name_original String [not null]
   sample_type sample_type
@@ -114,6 +112,9 @@ Table Step1 {
   samp_store_loc String
   samp_store_temp Float
   samp_store_sol String
+  Sample_Metadata Sample_Metadata
+  sample_MetadataId String
+  Occurrence Occurrence [not null]
 }
 
 Table Step2_Metadata {
@@ -123,15 +124,15 @@ Table Step2_Metadata {
 Table Step2_16S {
   id String [pk]
   Bioinformatics Bioinformatics [not null]
-  Step1 Step1 [not null]
-  step1Id String [not null]
+  Sample Sample [not null]
+  SampleId String [not null]
 }
 
 Table Step2_18S {
   id String [pk]
   Bioinformatics Bioinformatics [not null]
-  Step1 Step1 [not null]
-  step1Id String [not null]
+  Sample Sample [not null]
+  SampleId String [not null]
 }
 
 Table Bioinformatics {
@@ -156,6 +157,8 @@ Table Measurement {
 
 Table Run {
   id String [pk]
+  uploadedBy String [not null]
+  dateModified String [not null]
   Assignments Assignment [not null]
 }
 
@@ -196,6 +199,8 @@ Table Assignment {
 Table Occurrence {
   id String [pk]
   Feature String [not null]
+  Sample Sample [not null]
+  sampleId String [not null]
   organismQuantity Int [not null]
 }
 
@@ -414,13 +419,13 @@ Enum target_gene {
   sixteen_s_rrna_18s_rrna
 }
 
-Ref: Step1.projectId > Project.id
+Ref: Sample.projectId > Project.id
 
-Ref: Step1.step1_MetadataId > Step1_Metadata.id
+Ref: Sample.sample_MetadataId > Sample_Metadata.id
 
-Ref: Step2_16S.step1Id > Step1.id
+Ref: Step2_16S.SampleId > Sample.id
 
-Ref: Step2_18S.step1Id > Step1.id
+Ref: Step2_18S.SampleId > Sample.id
 
 Ref: Bioinformatics.step2_18SId > Step2_18S.id
 
@@ -433,3 +438,5 @@ Ref: Assignment.TaxonomyId > Taxonomy.id
 Ref: Assignment.featureId > Feature.id
 
 Ref: Assignment.runId > Run.id
+
+Ref: Occurrence.sampleId > Sample.id

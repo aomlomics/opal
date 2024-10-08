@@ -18,8 +18,8 @@ export default async function ProjectCatalogue() {
 		<div className="p-5 bg-primary rounded-xl">
 			<h1 className="text-3xl font-bold border-b-2 border-black mb-5">Projects:</h1>
 			<div className="flex flex-col gap-3">
-				{projects.map((proj) => (
-					<Link key={proj.id} href={`${getBaseUrl()}/data/projects/${proj.project_id}`}>
+				{projects.map((proj, i) => (
+					<Link key={i} href={`${getBaseUrl()}/data/projects/${proj.project_id}`}>
 						<div className="card bg-neutral-content">
 							<div className="card-body">
 								<h2 className="card-title">{proj.project_name}</h2>
