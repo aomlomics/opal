@@ -45,7 +45,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
 		const params = new URLSearchParams(searchParams);
 
 		//replace the last word with the clicked on suggestion
-		let splitSearch = params.get("q")!.match(/\w+:?/g)!; //match on any word (\w+) with an optional trailing colon (:?). ! to assert existence since we know they both exist, otherwise you couldn't click on the div
+		let splitSearch = params.get("q")!.match(/\w+:?/g)!; //match on any word (\w+) with an optional trailing colon (:?). ! to assert existence since we know they both exist, otherwise the div wouldn't exist
 		const lastLen = splitSearch[splitSearch.length-1].length;
 		const newVal = params.get("q")!.trim().slice(0, -lastLen) + (e.target as HTMLElement).innerText + " ";
 		params.set("q", newVal); //TS can't detect the type of e.target properly, so we assert it inline
