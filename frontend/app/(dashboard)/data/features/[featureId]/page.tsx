@@ -11,7 +11,7 @@ export default async function FeatureId({ params }: { params: { featureId: strin
 	const headers = lines[0].split("\t");
 
 	for (let i = 1; i < lines.length; i++) {
-		const obj = {};
+		const obj = {} as { featureid: String, species: String };
 		const currentline = lines[i].split("\t");
 
 		for (let j = 0; j < headers.length; j++) {
@@ -21,7 +21,7 @@ export default async function FeatureId({ params }: { params: { featureId: strin
 
     	result.push(obj);
  	}
-	const feature = result.find((f) => f.featureid === params.featureId);
+	const feature = result.find((f) => f.featureid === params.featureId) as { featureid: String, species: String };
 	//const records = parse(content, { bom: true, columns: true });
 	//console.log(records)
 

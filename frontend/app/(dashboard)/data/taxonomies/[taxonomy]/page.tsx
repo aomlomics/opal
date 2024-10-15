@@ -11,7 +11,7 @@ export default async function FeatureId({ params }: { params: { taxonomy: string
 	const headers = lines[0].split("\t");
 
 	for (let i = 1; i < lines.length; i++) {
-		const obj = {};
+		const obj = {} as { featureid: String, species: String };
 		const currentline = lines[i].split("\t");
 
 		for (let j = 0; j < headers.length; j++) {
@@ -31,8 +31,8 @@ export default async function FeatureId({ params }: { params: { taxonomy: string
 			{/*<h2>{features[0]}</h2>*/}
 			<div>
 				<h2>Features:</h2>
-				{features.map((f) => (
-					<Link key={f.featureid} href={`${getBaseUrl()}/data/features/${f.featureid}`}>
+				{features.map((f, i) => (
+					<Link key={i} href={`${getBaseUrl()}/data/features/${f.featureid}`}>
 						<div className="card bg-neutral-content m-3">
 							<div className="card-body p-5">
 								{f.featureid}
