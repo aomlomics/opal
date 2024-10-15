@@ -6,7 +6,7 @@ export default function TabButton({ tabName, route }: { tabName: string; route: 
   const router = useRouter();
   const pathname = usePathname();
 
-  const isActive = pathname === route; // Need this so we can have the current tab have white text
+  const isActive = "/" + pathname.split("/")[1] == route; // Need this so we can have the current tab have white text
 
   const handleRedirect = () => {
     router.push(route); // Does the redirect
