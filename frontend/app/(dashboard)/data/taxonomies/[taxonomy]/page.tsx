@@ -11,7 +11,7 @@ export default async function FeatureId({ params }: { params: { taxonomy: string
 	const headers = lines[0].split("\t");
 
 	for (let i = 1; i < lines.length; i++) {
-		const obj = {} as { featureid: String, species: String };
+		const obj = {} as { featureid: string, species: string };
 		const currentline = lines[i].split("\t");
 
 		for (let j = 0; j < headers.length; j++) {

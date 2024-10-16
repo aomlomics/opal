@@ -454,7 +454,7 @@ model Feature {
     consensusTaxonomyId String?
     consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [id])
 
-    featureId String
+    featureId String @unique
     sequence  String
 }
 

@@ -167,7 +167,7 @@ Table Feature {
   Assignments Assignment [not null]
   consensusTaxonomyId String
   consensusTaxonomy Taxonomy
-  featureId String [not null]
+  featureId String [unique, not null]
   sequence String [not null]
 }
 
