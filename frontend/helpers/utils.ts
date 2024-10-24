@@ -5,10 +5,10 @@ export async function fetcher(url: string) {
 }
 
 export function getBaseUrl() {
-	// if (process.env.NODE_ENV === "development") {
+	 if (process.env.NODE_ENV === "development") {
 		return "http://localhost:3000";
-	// }
-	// return "https://opal-ochre.vercel.app";
+	 }
+	 return "https://opaldb.vercel.app/";
 }
 
 export function getRemoteUrl() {

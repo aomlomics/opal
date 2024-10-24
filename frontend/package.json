@@ -11,7 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^5.7.1",
     "@hookform/resolvers": "^3.9.0",
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^5.21.1",
     "@types/node": "22.7.4",
     "@types/react": "18.3.11",
     "@types/react-dom": "18.3.0",
@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/leaflet": "^1.9.12",
     "daisyui": "^4.12.12",
-    "prisma": "^5.20.0",
+    "prisma": "^5.21.1",
     "prisma-dbml-generator": "^0.12.0"
   }
 }

@@ -2,180 +2,72 @@
 //// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 //// ------------------------------------------------------
 
-Table Project {
-  id String [pk]
-  Sample Sample [not null]
-  project_name String [not null]
-  project_id_external String [not null]
-  project_id_internal String
-  projectContact String [not null]
-  projectContactID String
-  project_description String [not null]
-  study_area_description String
-  sampling_description String
-  keywords String
-  grant_number Int
-  grant_title String
-  grant_agency String
-  recordedBy String
-  recordedByID String
-  institution String
-  institutionID String
-  associated_parties String
-  license String [not null]
-  rightsHolder String
-  accessRights String
-  informationWithheld String
-  dataGeneralizations String
-  bibliographicCitation String
-  associated_resource String
-  experimental_factor String
-  detection_type String
-  citation String
-  project_proposal String
-}
-
-Table Sample_Metadata {
-  id String [pk]
-  Sample Sample [not null]
-  nucl_acid_ext String
-  nucl_acid_ext_kit String
-  nucl_acid_ext_modify String
-  precip_method_ext String
-  dna_cleanup_0_1 String
-  dna_cleanup_method String
-  concentration_method String
-  seq_kit String
-  lib_layout String [not null]
-  adapter_forward String
-  adapter_reverse String
-  seq_facility String
-  lib_screen String
-  platform String [not null]
-  instrument_model String [not null]
-  seq_meth String
-  seq_method_additional String
+Table Study {
+  project_id String [pk]
+  Samples Sample [not null]
 }
 
 Table Sample {
-  id String [pk]
-  Step2_16S Step2_16S [not null]
-  Step2_18S Step2_18S [not null]
-  Project Project [not null]
-  projectId String [not null]
-  sample_name String [not null]
-  sample_name_original String [not null]
-  sample_type sample_type
-  serial_number String
-  cruise_id String
-  line_id String
-  station String
-  locationID String
-  habitat_natural_artificial_0_1 String
-  ctd_bottle_no String
-  sample_replicate String
-  source_material_id String
-  biological_replicates String
-  notes_sampling String
-  verbatimEventDate String
-  eventDate String [not null]
-  minimumDepthInMeters Float
-  maximumDepthInMeters Float
-  env_broad_scale String [not null]
-  env_local_scale String [not null]
-  env_medium String [not null]
-  geo_loc_name String [not null]
-  waterBody String
-  country String
-  decimalLatitude Float
-  decimalLongitude Float
-  collection_method String
-  samp_collect_device String
-  samp_size Float
-  samp_size_unit String
-  extract_number String
-  samp_mat_process String
-  filter_passive_active_0_1 String
-  filter_onsite_dur String
-  size_frac String
-  samp_vol_we_dna_ext String
-  samp_vol_ext_unit Float
-  sample_title String
-  bioproject_accession String
-  biosample_accession String
-  organism String [not null]
-  description String
-  amplicon_sequenced String
-  metagenome_sequenced String
-  sterilise_method String
-  samp_store_dur String
-  samp_store_loc String
-  samp_store_temp Float
-  samp_store_sol String
-  Sample_Metadata Sample_Metadata
-  sample_MetadataId String
-  Occurrence Occurrence [not null]
+  samp_name String [pk]
+  Study Study [not null]
+  studyId String [not null]
+  Markers Marker [not null]
 }
 
-Table Step2_Metadata {
-  id String [pk]
-}
-
-Table Step2_16S {
-  id String [pk]
-  Bioinformatics Bioinformatics [not null]
+Table Marker {
+  assay_name String [pk]
   Sample Sample [not null]
-  SampleId String [not null]
+  sampleId String [not null]
+  Libraries Library [not null]
 }
 
-Table Step2_18S {
-  id String [pk]
-  Bioinformatics Bioinformatics [not null]
-  Sample Sample [not null]
-  SampleId String [not null]
-}
-
-Table Bioinformatics {
-  id String [pk]
-  Step2_18S Step2_18S
-  step2_18SId String
-  Step2_16S Step2_16S
-  step2_16SId String
-}
-
-Table Measurement {
-  id String [pk]
-  date_modified DateTime [not null]
-  uploadedBy String [not null]
-  aoml_term String [unique, not null]
-  aoml_file String [not null]
-  measurementType String
-  measurementUnit String
-  measurementTypeID String
-  measurementUnitID String
+Table Library {
+  library_id String [pk]
+  Marker Marker [not null]
+  markerId String [not null]
+  Runs Run [not null]
 }
 
 Table Run {
-  id String [pk]
+  id Int [pk, increment]
   uploadedBy String [not null]
   dateModified String [not null]
-  Assignments Assignment [not null]
+  Library Library [not null]
+  libraryId String [not null]
+  Occurrences Occurrence [not null]
+}
+
+Table Occurrence {
+  id Int [pk, increment]
+  runId Int
+  Run Run
+  featureId String [not null]
+  Feature Feature [not null]
+  organismQuantity Int [not null]
 }
 
 Table Feature {
-  id String [pk]
+  seq_id String [pk]
+  Occurrences Occurrence [not null]
   Assignments Assignment [not null]
   consensusTaxonomyId String
   consensusTaxonomy Taxonomy
-  featureId String [not null]
   sequence String [not null]
 }
 
-Table Taxonomy {
-  id String [pk]
-  Assignments Assignment [not null]
+Table Assignment {
+  id Int [pk, increment]
+  featureId String [not null]
   Feature Feature [not null]
-  stringIdentifier String [unique, not null]
+  taxonomyId String [not null]
+  Taxonomy Taxonomy [not null]
+  confidence Float [not null]
+}
+
+Table Taxonomy {
+  stringIdentifier String [pk]
+  Assignments Assignment [not null]
+  Features Feature [not null]
   kingdom String
   phylum String
   taxonClass String
@@ -185,258 +77,26 @@ Table Taxonomy {
   species String
 }
 
-Table Assignment {
-  id String [pk]
-  TaxonomyId String [not null]
-  Taxonomy Taxonomy [not null]
-  featureId String [not null]
-  Feature Feature [not null]
-  runId String [not null]
-  Run Run [not null]
-  confidence Float [not null]
-}
-
-Table Occurrence {
-  id String [pk]
-  Feature String [not null]
-  Sample Sample [not null]
-  sampleId String [not null]
-  organismQuantity Int [not null]
-}
-
 Table GenericData {
-  id String [pk]
+  id Int [pk, increment]
   key String [not null]
   value String [not null]
 }
 
-Enum sample_type {
-  seawater
-  sediment
-  extraction_blank
-  distilled_water_blank
-  rtsf_blank
-  mock_community
-  positive_control
-  pcr_no_template_control
-  bead_cleanup_blank
-  mock
-  pcr_blank
-}
+Ref: Sample.studyId > Study.project_id
 
-Enum oxy_stat_samp {
-  aerobic
-  anaerobic
-}
+Ref: Marker.sampleId > Sample.samp_name
 
-Enum rel_to_oxy {
-  aerobe
-  anaerobe
-  facultative
-  microaerophilic
-  microanaerobe
-  obligate_aerobe
-  obligate_anaerobe
-  missing
-  not_applicable
-  not_collected
-  not_provided
-  restricted_access
-}
+Ref: Library.markerId > Marker.assay_name
 
-Enum tidal_stage {
-  low
-  high
-}
+Ref: Run.libraryId > Library.library_id
 
-Enum library_strategy {
-  wga
-  wgs
-  wxs
-  rna_seq
-  mirna_seq
-  wcs
-  clone
-  poolclone
-  amplicon
-  cloneend
-  finishing
-  chip_seq
-  mnase_seq
-  dnase_hypersensitivity
-  bisulfite_seq
-  tn_seq
-  est
-  fl_cdna
-  cts
-  mre_seq
-  medip_seq
-  mdb_seq
-  synthetic_long_read
-  atac_seq
-  chia_pet
-  faire_seq
-  hi_c
-  ncrna_seq
-  rad_seq
-  rip_seq
-  selex
-  ssrna_seq
-  targeted_capture
-  tethered_chromatin_conformation_capture
-  other
-}
+Ref: Occurrence.runId > Run.id
 
-Enum library_source {
-  genomic
-  transcriptomic
-  metagenomic
-  metatranscriptomic
-  synthetic
-  viral_rna
-  genomic_single_cell
-  transcriptomic_single_cell
-  other
-}
+Ref: Occurrence.featureId > Feature.seq_id
 
-Enum library_selection {
-  random
-  pcr
-  random_pcr
-  rt_pcr
-  hmpr
-  mf
-  cf_s
-  cf_m
-  cf_h
-  cf_t
-  mda
-  msll
-  cdna
-  chip
-  mnase
-  dnase
-  hybrid_selection
-  reduced_representation
-  restriction_digest
-  five_methylcytidine_antibody
-  mbd2_protein_methyl_cpg_binding_domain
-  cage
-  race
-  size_fractionation
-  padlock_probes_capture_method
-  other
-  unspecified
-  cnda_oligo_dt
-  cdna_randomprinting
-  inverse_rrna
-  oligo_dt
-  polya
-  repeat_fractionation
-}
+Ref: Feature.consensusTaxonomyId > Taxonomy.stringIdentifier
 
-Enum lib_layout {
-  paired
-  single
-}
+Ref: Assignment.featureId > Feature.seq_id
 
-Enum platform {
-  underscore_ls454
-  abi_solid
-  bgiseq
-  capillary
-  complete_genomics
-  helicos
-  illumina
-  ion_torrent
-  oxford_nanopore
-  pacbio_smrt
-}
-
-Enum instrument_model {
-  bgiseq_500
-  dnbseq_g400
-  dnbseq_t7
-  dnbseq_g50
-  mgiseq_2000rs
-}
-
-Enum filetype {
-  bam
-  srf
-  sff
-  fastq
-  fourfivefour_native
-  helicos_native
-  solid_native
-  pacbio_hdf5
-  completegenomics_native
-  oxfordnanopore_native
-}
-
-Enum replicate {
-  a
-  b
-  c
-}
-
-Enum depth_category {
-  dcm
-  deep
-  diw
-  sediment
-  surface
-}
-
-Enum sample_collection_device {
-  extraction_filter
-  milliq_carboy
-  niskin_bottle
-  pcr_negative_control
-  positive_control_16s
-  sediment_core_aqueous_layer
-}
-
-Enum sample_collection_method {
-  ctd_rosette
-  extraction_filter
-  milliq_carboy
-  pcr_negative_control
-  positive_control_16s
-  sediment_core_aqueous_layer
-}
-
-Enum plate {
-  plate1
-  plate2
-  plate3
-  plate4
-  plate5
-  plate6
-}
-
-Enum target_gene {
-  sixteen_s_rrna_18s_rrna
-}
-
-Ref: Sample.projectId > Project.id
-
-Ref: Sample.sample_MetadataId > Sample_Metadata.id
-
-Ref: Step2_16S.SampleId > Sample.id
-
-Ref: Step2_18S.SampleId > Sample.id
-
-Ref: Bioinformatics.step2_18SId > Step2_18S.id
-
-Ref: Bioinformatics.step2_16SId > Step2_16S.id
-
-Ref: Feature.consensusTaxonomyId > Taxonomy.id
-
-Ref: Assignment.TaxonomyId > Taxonomy.id
-
-Ref: Assignment.featureId > Feature.id
-
-Ref: Assignment.runId > Run.id
-
-Ref: Occurrence.sampleId > Sample.id
+Ref: Assignment.taxonomyId > Taxonomy.stringIdentifier

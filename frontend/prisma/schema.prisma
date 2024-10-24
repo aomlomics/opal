@@ -13,498 +13,108 @@ datasource db {
     url      = env("POSTGRES_PRISMA_URL")
 }
 
-// Enums
-enum sample_type {
-    seawater
-    sediment
-    extraction_blank        @map("extraction blank")
-    distilled_water_blank   @map("distilled water blank")
-    rtsf_blank              @map("RTSF blank")
-    mock_community          @map("mock community")
-    positive_control        @map("positive control")
-    pcr_no_template_control @map("PCR no-template control")
-    bead_cleanup_blank      @map("bead cleanup blank")
-    mock
-    pcr_blank
-}
-
-enum oxy_stat_samp {
-    aerobic
-    anaerobic
-}
-
-enum rel_to_oxy {
-    aerobe
-    anaerobe
-    facultative
-    microaerophilic
-    microanaerobe
-    obligate_aerobe   @map("obligate aerobe")
-    obligate_anaerobe @map("obligate anaerobe")
-    missing
-    not_applicable    @map("not applicable")
-    not_collected     @map("not collected")
-    not_provided      @map("not provided")
-    restricted_access @map("restricted access")
-}
-
-enum tidal_stage {
-    low
-    high
-}
-
-enum library_strategy {
-    wga
-    wgs
-    wxs
-    rna_seq                                 @map("RNA-Seq")
-    mirna_seq                               @map("miRNA-Seq")
-    wcs
-    clone
-    poolclone
-    amplicon
-    cloneend
-    finishing
-    chip_seq                                @map("ChIP-Seq")
-    mnase_seq                               @map("MNase-Seq")
-    dnase_hypersensitivity                  @map("DNase-Hypersensitivity")
-    bisulfite_seq                           @map("Bisulfite-Seq")
-    tn_seq                                  @map("Tn-Seq")
-    est
-    fl_cdna                                 @map("FL-cDNA")
-    cts
-    mre_seq                                 @map("MRE-Seq")
-    medip_seq                               @map("MeDIP-Seq")
-    mdb_seq                                 @map("MDB-Seq")
-    synthetic_long_read                     @map("Synthetic-Long-Read")
-    atac_seq                                @map("ATAC-seq") //why is seq not Seq?
-    chia_pet                                @map("ChIA-PET")
-    faire_seq                               @map("FAIRE-seq") //why is seq not Seq?
-    hi_c                                    @map("Hi-C")
-    ncrna_seq                               @map("ncRNA-Seq")
-    rad_seq                                 @map("RAD-Seq")
-    rip_seq                                 @map("RIP-Seq")
-    selex
-    ssrna_seq
-    targeted_capture                        @map("Targeted-Capture")
-    tethered_chromatin_conformation_capture @map("Tethered Chromatin Conformation Capture")
-    other
-}
-
-enum library_source {
-    genomic
-    transcriptomic
-    metagenomic
-    metatranscriptomic
-    synthetic
-    viral_rna                  @map("VIRAL RNA")
-    genomic_single_cell        @map("GENOMIC SINGLE CELL")
-    transcriptomic_single_cell @map("TRANSCRIPTOMIC SINGLE CELL")
-    other
-}
-
-enum library_selection {
-    random
-    pcr
-    random_pcr                             @map("RANDOM PCR")
-    rt_pcr                                 @map("RT-PCR")
-    hmpr
-    mf
-    cf_s                                   @map("CF-S")
-    cf_m                                   @map("CF-M")
-    cf_h                                   @map("CF-H")
-    cf_t                                   @map("CF-T")
-    mda
-    msll
-    cdna
-    chip
-    mnase
-    dnase
-    hybrid_selection                       @map("Hybrid Selection")
-    reduced_representation                 @map("Reduced Representation")
-    restriction_digest                     @map("Restriction Digest")
-    five_methylcytidine_antibody           @map("5-methylcytidine antibody")
-    mbd2_protein_methyl_cpg_binding_domain @map("MBD2 protein methyl-CpG binding domain")
-    cage
-    race
-    size_fractionation                     @map("size fractionation")
-    padlock_probes_capture_method          @map("Padlock probes capture method")
-    other
-    unspecified
-    cnda_oligo_dt
-    cdna_randomprinting
-    inverse_rrna                           @map("Inverse rRNA")
-    oligo_dt                               @map("Oligo-dT")
-    polya
-    repeat_fractionation                   @map("repeat fractionation")
-}
-
-enum lib_layout {
-    paired
-    single
-}
-
-// will have to change from enum
-enum platform {
-    underscore_ls454  @map("_LS454")
-    abi_solid
-    bgiseq
-    capillary
-    complete_genomics
-    helicos
-    illumina
-    ion_torrent
-    oxford_nanopore
-    pacbio_smrt
-}
-
-// instrument model is dependant on platform
-enum instrument_model {
-    bgiseq_500    @map("BGISEQ-500")
-    dnbseq_g400   @map("DNBSEQ-G400")
-    dnbseq_t7     @map("DNBSEQ-T7")
-    dnbseq_g50    @map("DNBSEQ-G50")
-    mgiseq_2000rs @map("MGISEQ-2000RS")
-}
-
-enum filetype {
-    bam
-    srf
-    sff
-    fastq
-    fourfivefour_native     @map("454_native")
-    helicos_native
-    solid_native
-    pacbio_hdf5
-    completegenomics_native
-    oxfordnanopore_native
-}
-
-enum replicate {
-    a
-    b
-    c
-}
-
-enum depth_category {
-    dcm
-    deep
-    diw
-    sediment
-    surface
-}
-
-enum sample_collection_device {
-    extraction_filter           @map("Extraction filter")
-    milliq_carboy               @map("MilliQ carboy")
-    niskin_bottle               @map("Niskin bottle")
-    pcr_negative_control        @map("PCR negative control")
-    positive_control_16s        @map("Positive control (16S)")
-    sediment_core_aqueous_layer @map("Sediment core (aqueous layer)")
-}
-
-enum sample_collection_method {
-    ctd_rosette                 @map("CTD rosette")
-    extraction_filter           @map("Extraction filter")
-    milliq_carboy               @map("MilliQ carboy")
-    pcr_negative_control        @map("PCR negative control")
-    positive_control_16s        @map("Positive control (16S)")
-    sediment_core_aqueous_layer @map("Sediment core (aqueous layer)")
-}
-
-enum plate {
-    plate1
-    plate2
-    plate3
-    plate4
-    plate5
-    plate6
-}
-
-enum target_gene {
-    sixteen_s_rrna_18s_rrna @map("{16S rRNA, 18S rRNA}")
-}
-
 // Models
-model Project {
-    id String @id @default(cuid())
+model Study {
+    project_id String @id @unique
 
-    //Relations
-    Sample Sample[]
-
-    project_name           String
-    project_id_external    String
-    project_id_internal    String?
-    projectContact         String
-    projectContactID       String?
-    project_description    String
-    study_area_description String?
-    sampling_description   String?
-    keywords               String?
-    grant_number           Int?
-    grant_title            String?
-    grant_agency           String?
-    recordedBy             String?
-    recordedByID           String?
-    institution            String?
-    institutionID          String?
-    associated_parties     String? //array?
-    license                String
-    rightsHolder           String?
-    accessRights           String?
-    informationWithheld    String? //array?
-    dataGeneralizations    String? //array?
-    bibliographicCitation  String?
-    associated_resource    String?
-    experimental_factor    String?
-    detection_type         String?
-    citation               String?
-    project_proposal       String?
-}
-
-model Sample_Metadata {
-    //Only 1 per project (run?)
-    id String @id @default(cuid())
-
-    //Relations
-    Sample Sample[]
-
-    //Nucleic_Acid_Extraction
-    nucl_acid_ext        String?
-    nucl_acid_ext_kit    String?
-    nucl_acid_ext_modify String?
-    precip_method_ext    String?
-    dna_cleanup_0_1      String?
-    dna_cleanup_method   String?
-    concentration_method String?
-
-    //Library_Preparation_Sequencing
-    seq_kit               String?
-    lib_layout            String
-    adapter_forward       String?
-    adapter_reverse       String?
-    seq_facility          String?
-    lib_screen            String?
-    platform              String
-    instrument_model      String
-    seq_meth              String?
-    seq_method_additional String?
+    // Relations
+    Samples Sample[]
 }
 
 model Sample {
-    id String @id @default(cuid())
+    samp_name String @id @unique
 
-    //Relations
-    Step2_16S Step2_16S[]
-    Step2_18S Step2_18S[]
-    Project   Project     @relation(fields: [projectId], references: [id])
-    projectId String
-
-    //Sample_Collection
-    sample_name                    String
-    sample_name_original           String
-    sample_type                    sample_type?
-    serial_number                  String?
-    cruise_id                      String? //type?
-    line_id                        String? //type?
-    station                        String?
-    locationID                     String? //type?
-    habitat_natural_artificial_0_1 String? //type?
-    ctd_bottle_no                  String? //type?
-    sample_replicate               String? //type?
-    source_material_id             String?
-    biological_replicates          String?
-    notes_sampling                 String?
-    verbatimEventDate              String? //ISO 8601 string
-    eventDate                      String //ISO 8601 string
-    minimumDepthInMeters           Float?
-    maximumDepthInMeters           Float?
-    env_broad_scale                String
-    env_local_scale                String
-    env_medium                     String
-    geo_loc_name                   String
-    waterBody                      String?
-    country                        String?
-    decimalLatitude                Float?
-    decimalLongitude               Float?
-    collection_method              String?
-    samp_collect_device            String?
-    samp_size                      Float?
-    samp_size_unit                 String?
-
-    //Sample_Preparation
-    extract_number            String? //type?
-    samp_mat_process          String?
-    filter_passive_active_0_1 String?
-    filter_onsite_dur         String? //duration (time) string?
-    size_frac                 String? //fraction (float)?
-
-    //Environment
-
-    //Nucleic_Acid_Extraction
-    samp_vol_we_dna_ext String?
-    samp_vol_ext_unit   Float?
-
-    //BioSample
-
-    //source_material_id
-
-    //Uncategorized
-    //NCBI - potentially a separate table for mapping fields to NCBI fields
-    sample_title         String?
-    bioproject_accession String?
-    biosample_accession  String?
-    organism             String
-    description          String?
-
-    //PCR
-    amplicon_sequenced   String?
-    metagenome_sequenced String?
-
-    //Quality_Assurance
-    sterilise_method String?
-
-    //Sample_Storage
-    samp_store_dur    String? //duration (time) string?
-    samp_store_loc    String?
-    samp_store_temp   Float? //units (string)?
-    samp_store_sol    String?
-    Sample_Metadata   Sample_Metadata? @relation(fields: [sample_MetadataId], references: [id])
-    sample_MetadataId String?
-    Occurrence        Occurrence[]
+    // Relations
+    Study   Study    @relation(fields: [studyId], references: [project_id])
+    studyId String
+    Markers Marker[]
 }
 
-model Step2_Metadata {
-    //Only 1 per project (run?)
-    id String @id @default(cuid())
+model Marker {
+    assay_name String @id @unique
 
-    //Relations
+    // Relations
+    Sample    Sample    @relation(fields: [sampleId], references: [samp_name])
+    sampleId  String
+    Libraries Library[]
 }
 
-model Step2_16S {
-    id String @id @default(cuid())
+model Library {
+    library_id String @id @unique
 
-    //Relations
-    Bioinformatics Bioinformatics[]
-    Sample         Sample           @relation(fields: [SampleId], references: [id])
-    SampleId       String
-
-    //PCR
-
-    //Library_Preparation_Sequencing
-
-    //SRA
+    // Relations
+    Marker   Marker @relation(fields: [markerId], references: [assay_name])
+    markerId String
+    Runs     Run[]
 }
 
-model Step2_18S {
-    id String @id @default(cuid())
-
-    //Relations
-    Bioinformatics Bioinformatics[]
-    Sample         Sample           @relation(fields: [SampleId], references: [id])
-    SampleId       String
-
-    //PCR
-
-    //Library_Preparation_Sequencing
-
-    //SRA
-}
-
-model Bioinformatics {
-    id String @id @default(cuid())
-
-    //Relations
-    Step2_18S   Step2_18S? @relation(fields: [step2_18SId], references: [id])
-    step2_18SId String?
-    Step2_16S   Step2_16S? @relation(fields: [step2_16SId], references: [id])
-    step2_16SId String?
-}
-
-model Measurement {
-    id            String   @id @default(cuid())
-    date_modified DateTime @updatedAt
-    uploadedBy    String
-
-    aoml_term         String  @unique
-    aoml_file         String //should be a reference to table type
-    measurementType   String?
-    measurementUnit   String?
-    measurementTypeID String?
-    measurementUnitID String?
-}
-
-// Tourmaline
 model Run {
-    id           String @id @default(cuid())
+    id           Int    @id @default(autoincrement())
     uploadedBy   String
     dateModified String //ISO 8601 string
 
     // Relations
-    Assignments Assignment[]
-
-    //parameters unique to a given run
+    Library     Library      @relation(fields: [libraryId], references: [library_id])
+    libraryId   String
+    Occurrences Occurrence[]
 }
 
-model Feature {
-    id String @id @default(cuid())
-
-    // Relations
-    Assignments         Assignment[]
-    consensusTaxonomyId String?
-    consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [id])
-
-    featureId String
-    sequence  String
-}
-
-model Taxonomy {
-    id String @id @default(cuid())
-
-    // Relations
-    Assignments Assignment[]
-    Feature     Feature[]
-
-    stringIdentifier String  @unique
-    kingdom          String?
-    phylum           String?
-    taxonClass       String? @map("class")
-    order            String?
-    family           String?
-    genus            String?
-    species          String?
-}
-
-model Assignment {
-    id String @id @default(cuid())
-
-    // Relations
-    TaxonomyId String
-    Taxonomy   Taxonomy @relation(fields: [TaxonomyId], references: [id])
-    featureId  String
-    Feature    Feature  @relation(fields: [featureId], references: [id])
-    runId      String
-    Run        Run      @relation(fields: [runId], references: [id])
-    // Occurrences Occurrence[]
-
-    confidence Float
-}
-
+// ASVs
 model Occurrence {
-    id String @id @default(cuid())
+    id Int @id @default(autoincrement())
 
     // Relations
-    // FeatureId        String
-    // Feature          Feature        @relation(fields: [FeatureId], references: [id])
-    Feature  String
-    Sample   Sample @relation(fields: [sampleId], references: [id])
-    sampleId String
+    runId     Int?
+    Run       Run?    @relation(fields: [runId], references: [id])
+    featureId String
+    Feature   Feature @relation(fields: [featureId], references: [seq_id])
 
     organismQuantity Int
 }
 
+model Feature {
+    seq_id String @id @unique
+
+    // Relations
+    Occurrences         Occurrence[]
+    Assignments         Assignment[]
+    consensusTaxonomyId String?
+    consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [stringIdentifier])
+
+    sequence String
+}
+
+model Assignment {
+    id Int @id @default(autoincrement())
+
+    // Relations
+    featureId  String
+    Feature    Feature  @relation(fields: [featureId], references: [seq_id])
+    taxonomyId String
+    Taxonomy   Taxonomy @relation(fields: [taxonomyId], references: [stringIdentifier])
+
+    confidence Float
+}
+
+model Taxonomy {
+    stringIdentifier String @id @unique
+
+    // Relations
+    Assignments Assignment[]
+    Features    Feature[]
+
+    kingdom    String?
+    phylum     String?
+    taxonClass String? @map("class")
+    order      String?
+    family     String?
+    genus      String?
+    species    String?
+}
+
+//Other
 model GenericData {
-    id String @id @default(cuid())
+    id Int @id @default(autoincrement())
 
     // Relations
 
