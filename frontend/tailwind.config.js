@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 
 const sharedTheme = {
-	primary: "#72ACAF", //Lochmara
-	secondary: "#03646A", //Catalina Blue
-	accent: "#79BCE4", //Seagull
-	neutral: "#BFD0E5", //Periwinkle Gray
+	// primary: "#72ACAF", //NOAA Lochmara
+	//secondary: "#03646A", // NGI Teal
+	primary: "#64ABDC", //NODE Custom Light blue
+	secondary: "#000000", // Black
+	accent: "#79BCE4", // NOAA Seagull
+	neutral: "#BFD0E5", // NOAA Periwinkle grey 
 	"neutral-content": "whitesmoke",
 };
 
