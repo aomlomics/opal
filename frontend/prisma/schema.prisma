@@ -25,17 +25,21 @@ model Sample {
     samp_name String @id @unique
 
     // Relations
-    Study   Study    @relation(fields: [studyId], references: [project_id])
-    studyId String
-    Markers Marker[]
+    Study      Study        @relation(fields: [studyId], references: [project_id])
+    studyId    String
+    markerId   String
+    Marker     Marker       @relation(fields: [markerId], references: [assay_name])
+    Occurrence Occurrence[]
+
+    decimalLatitude  Float
+    decimalLongitude Float
 }
 
 model Marker {
     assay_name String @id @unique
 
     // Relations
-    Sample    Sample    @relation(fields: [sampleId], references: [samp_name])
-    sampleId  String
+    Samples   Sample[]
     Libraries Library[]
 }
 
@@ -49,9 +53,7 @@ model Library {
 }
 
 model Run {
-    id           Int    @id @default(autoincrement())
-    uploadedBy   String
-    dateModified String //ISO 8601 string
+    id Int @id @default(autoincrement())
 
     // Relations
     Library     Library      @relation(fields: [libraryId], references: [library_id])
@@ -66,6 +68,8 @@ model Occurrence {
     // Relations
     runId     Int?
     Run       Run?    @relation(fields: [runId], references: [id])
+    sampleId  String
+    Sample    Sample  @relation(fields: [sampleId], references: [samp_name])
     featureId String
     Feature   Feature @relation(fields: [featureId], references: [seq_id])
 

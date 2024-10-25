@@ -11,13 +11,16 @@ Table Sample {
   samp_name String [pk]
   Study Study [not null]
   studyId String [not null]
-  Markers Marker [not null]
+  markerId String [not null]
+  Marker Marker [not null]
+  Occurrence Occurrence [not null]
+  decimalLatitude Float [not null]
+  decimalLongitude Float [not null]
 }
 
 Table Marker {
   assay_name String [pk]
-  Sample Sample [not null]
-  sampleId String [not null]
+  Samples Sample [not null]
   Libraries Library [not null]
 }
 
@@ -30,8 +33,6 @@ Table Library {
 
 Table Run {
   id Int [pk, increment]
-  uploadedBy String [not null]
-  dateModified String [not null]
   Library Library [not null]
   libraryId String [not null]
   Occurrences Occurrence [not null]
@@ -41,6 +42,8 @@ Table Occurrence {
   id Int [pk, increment]
   runId Int
   Run Run
+  sampleId String [not null]
+  Sample Sample [not null]
   featureId String [not null]
   Feature Feature [not null]
   organismQuantity Int [not null]
@@ -85,13 +88,15 @@ Table GenericData {
 
 Ref: Sample.studyId > Study.project_id
 
-Ref: Marker.sampleId > Sample.samp_name
+Ref: Sample.markerId > Marker.assay_name
 
 Ref: Library.markerId > Marker.assay_name
 
 Ref: Run.libraryId > Library.library_id
 
 Ref: Occurrence.runId > Run.id
+
+Ref: Occurrence.sampleId > Sample.samp_name
 
 Ref: Occurrence.featureId > Feature.seq_id
 
