@@ -8,9 +8,11 @@ export default function AsvUpload() {
 
 	return (
 		<form action={formAction}>
-			<input type="file" name="asvFile" className="file-input file-input-bordered w-full max-w-xs" />
+			<input type="text" name="projectId" placeholder="Sample ID" required className="input input-bordered w-full max-w-xs" />
+			<input type="file" name="asvFile" required className="file-input file-input-bordered w-full max-w-xs" />
+			<input type="file" name="samplesFile" required className="file-input file-input-bordered w-full max-w-xs" />
 			<button className="btn">Submit</button>
-			<span>{state.message}</span>
+			<span>{state.message} {state.error}</span>
 		</form>
 	);
 }
