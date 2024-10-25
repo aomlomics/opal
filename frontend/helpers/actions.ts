@@ -49,7 +49,7 @@ export async function asvUploadAction(prevState: FormState, formData: FormData) 
 		sampleLines.splice(0, 6);
 		const sampleHeaders = sampleLines[0].split("\t");
 		for (let i = 1; i < sampleLines.length; i++) {
-			const obj = {} as any; //some headers are sampleIds and can't be known ahead of time
+			const obj = {} as any;
 			const currentline = sampleLines[i].split("\t");
 
 			for (let j = 0; j < sampleHeaders.length; j++) {
