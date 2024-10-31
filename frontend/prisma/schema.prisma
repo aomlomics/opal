@@ -1,127 +1,277 @@
 generator js {
-    provider = "prisma-client-js"
+	provider = "prisma-client-js"
 }
 
 //Used for automatic Entity Relationship Diagram of the DB schema
 generator dbml {
-    provider   = "prisma-dbml-generator"
-    outputName = "OpalERD.dbml"
+	provider   = "prisma-dbml-generator"
+	outputName = "OpalERD.dbml"
+}
+
+generator zod {
+  	provider         		 = "zod-prisma-types"
+    createInputTypes 		 = false
+	addIncludeType   		 = false
+	addSelectType    		 = false
+	writeNullishInModelTypes = true
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("POSTGRES_PRISMA_URL")
+	provider = "postgresql"
+	url      = env("POSTGRES_PRISMA_URL")
 }
 
 // Models
 model Study {
-    project_id String @id @unique
+	project_id String @id @unique
 
-    // Relations
-    Samples Sample[]
+	// Relations
+	Samples Sample[]
+	GenericData GenericData[]
 }
 
 model Sample {
-    samp_name String @id @unique
+	samp_name String @id @unique
 
-    // Relations
-    Study      Study        @relation(fields: [studyId], references: [project_id])
-    studyId    String
-    markerId   String
-    Marker     Marker       @relation(fields: [markerId], references: [assay_name])
-    Occurrence Occurrence[]
+	// Relations
+	project_id    String
+	Study      Study        @relation(fields: [project_id], references: [project_id])
+	assay_name   String
+	Marker     Marker       @relation(fields: [assay_name], references: [assay_name])
+	Occurrence Occurrence[]
+	GenericData GenericData[]
 
-    decimalLatitude  Float
-    decimalLongitude Float
+	// Sample Collection
+	samp_category String
+	decimalLatitude Float
+	decimalLongitude Float
+	verbatimLatitude String?
+	verbatimLongitude String?
+	verbatimCoordinateSystem String?
+	verbatimSRS String?
+	geo_loc_name String
+	eventDate String
+	eventDurationValue Int?
+	eventDurationUnit String?
+	verbatimEventDate String?
+	verbatimEventTime String?
+	verbatimDateEnd String?
+	verbatimTimeEnd String?
+	env_broad_scale String
+	env_local_scale String
+	env_medium String
+	habitat_natural_artificial_0_1 Boolean?
+	samp_collect_method String?
+	samp_collect_device String?
+	samp_size Float?
+	samp_size_unit String?
+
+	// Sample Storage
+	samp_store_temp String?
+	samp_store_sol String?
+	samp_store_dur String?
+	samp_store_method_additional String?
+
+	//Sample Preparation
+	samp_mat_process String?
+	filter_passive_active_0_1 Boolean?
+	filter_onsite_dur String?
+	size_frac_low Float?
+	size_frac Float?
+	filter_diameter Float?
+	filter_surface_area Float?
+	filter_material String?
+	filter_name String?
+	precip_chem_prep String?
+	precip_force_prep Float?
+	precip_time_prep Float?
+	precip_temp_prep Float?
+	prepped_samp_store_temp String?
+	prepped_samp_store_sol String?
+	prepped_samp_store_dur Float?
+	prep_method_additional String?
+
+	// Quality Assurrance
+	rel_cont_id String?
+
+	// Sample Relations
+	sample_derived_from String?
+	sample_composed_of String?
+	biological_rep_relation String?
+
+	//Nucleic Acid Extraction
+	samp_vol_we_dna_ext Float?
+	samp_vol_we_dna_ext_unit String?
+	nucl_acid_ext_lysis String?
+	nucl_acid_ext_sep String?
+	nucl_acid_ext String?
+	nucl_acid_ext_kit String?
+	nucl_acid_ext_modify String?
+	dna_cleanup_0_1 Boolean?
+	dna_cleanup_method String?
+	concentration Float?
+	concentration_method String?
+	ratioOfAbsorbance260_280 Float?
+	pool_dna_num Float?
+	nucl_acid_ext_method_additional String?
+
+	// Bioinformatics
+	input_read_count Int?
+	output_read_count Int?
+	output_otu_num Int?
+	otu_num_tax_assgined Int?
+
+	// Environment
+	samp_weather String?
+	minimumDepthInMeters Float?
+	maximumDepthInMeters Float?
+	tot_depth_water_col Float?
+	elev Float?
+	temp Float?
+	chlorophyll Float?
+	light_intensity Float?
+	misc_param Float?
+	ph Float?
+	ph_meth String?
+	salinity Float?
+	suspend_part_matter Float?
+	tidal_stage String?
+	turbidity Float?
+	water_current Float?
+	solar_irradiance String?
+	wind_direction String?
+	wind_speed Float?
+	diss_inorg_carb Float?
+	diss_inorg_nitro Float?
+	diss_org_carb Float?
+	diss_org_nitro Float?
+	diss_oxygen Float?
+	tot_diss_nitro Float?
+	tot_inorg_nitro Float?
+	tot_nitro Float?
+	tot_part_carb Float?
+	tot_org_carb Float?
+	tot_org_c_meth Float?
+	tot_nitro_content Float?
+	tot_nitro_cont_meth Float?
+	tot_carb Float?
+	part_org_carb Float?
+	part_org_nitro Float?
+	nitrate Float?
+	nitrite Float?
+	nitro Float?
+	org_carb Float?
+	org_matter Float?
+	org_nitro Float?
 }
 
 model Marker {
-    assay_name String @id @unique
+	assay_name String @id @unique
 
-    // Relations
-    Samples   Sample[]
-    Libraries Library[]
+	// Relations
+	Samples   Sample[]
+	Libraries Library[]
+	GenericData GenericData[]
+
+	pcr_plate_id String?
 }
 
 model Library {
-    library_id String @id @unique
+	library_id String @id @unique
 
-    // Relations
-    Marker   Marker @relation(fields: [markerId], references: [assay_name])
-    markerId String
-    Runs     Run[]
+	// Relations
+	assay_name String
+	Marker   Marker @relation(fields: [assay_name], references: [assay_name])
+	Runs     Run[]
+	GenericData GenericData[]
+
+	mid_forward String?
+	mid_reverse String?
+	filename String?
+	filename2 String?
 }
 
 model Run {
-    id Int @id @default(autoincrement())
+	id Int @id @default(autoincrement())
 
-    // Relations
-    Library     Library      @relation(fields: [libraryId], references: [library_id])
-    libraryId   String
-    Occurrences Occurrence[]
+	// Relations
+	library_id   String
+	Library     Library      @relation(fields: [library_id], references: [library_id])
+	Occurrences Occurrence[]
+	GenericData GenericData[]
 }
 
 // ASVs
 model Occurrence {
-    id Int @id @default(autoincrement())
+	id Int @id @default(autoincrement())
 
-    // Relations
-    runId     Int?
-    Run       Run?    @relation(fields: [runId], references: [id])
-    sampleId  String
-    Sample    Sample  @relation(fields: [sampleId], references: [samp_name])
-    featureId String
-    Feature   Feature @relation(fields: [featureId], references: [seq_id])
+	// Relations
+	runId     Int?
+	Run       Run?    @relation(fields: [runId], references: [id])
+	samp_name  String
+	Sample    Sample  @relation(fields: [samp_name], references: [samp_name])
+	featureid String
+	Feature   Feature @relation(fields: [featureid], references: [featureid])
 
-    organismQuantity Int
+	organismQuantity Int
 }
 
 model Feature {
-    seq_id String @id @unique
+	featureid String @id @unique
 
-    // Relations
-    Occurrences         Occurrence[]
-    Assignments         Assignment[]
-    consensusTaxonomyId String?
-    consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [stringIdentifier])
+	// Relations
+	Occurrences         Occurrence[]
+	Assignments         Assignment[]
+	consensusTaxonomyId String?
+	consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [taxonomy])
 
-    sequence String
+	sequence String
 }
 
 model Assignment {
-    id Int @id @default(autoincrement())
+	id Int @id @default(autoincrement())
 
-    // Relations
-    featureId  String
-    Feature    Feature  @relation(fields: [featureId], references: [seq_id])
-    taxonomyId String
-    Taxonomy   Taxonomy @relation(fields: [taxonomyId], references: [stringIdentifier])
+	// Relations
+	featureid  String
+	Feature    Feature  @relation(fields: [featureid], references: [featureid])
+	taxonomy String
+	Taxonomy   Taxonomy @relation(fields: [taxonomy], references: [taxonomy])
 
-    confidence Float
+	confidence Float
 }
 
 model Taxonomy {
-    stringIdentifier String @id @unique
+	taxonomy String @id @unique
 
-    // Relations
-    Assignments Assignment[]
-    Features    Feature[]
+	// Relations
+	Assignments Assignment[]
+	Features    Feature[]
 
-    kingdom    String?
-    phylum     String?
-    taxonClass String? @map("class")
-    order      String?
-    family     String?
-    genus      String?
-    species    String?
+	kingdom    String?
+	phylum     String?
+	taxonClass String? @map("class")
+	order      String?
+	family     String?
+	genus      String?
+	species    String?
 }
 
 //Other
 model GenericData {
-    id Int @id @default(autoincrement())
+	id Int @id @default(autoincrement())
 
-    // Relations
+	// Relations
+	project_id String
+	Study Study @relation(fields: [project_id], references: [project_id])
+	samp_name String
+	Sample Sample @relation(fields: [samp_name], references: [samp_name])
+	assay_name String
+	Marker Marker @relation(fields: [assay_name], references: [assay_name])
+	library_id String
+	Library Library @relation(fields: [library_id], references: [library_id])
+	runId Int
+	Run Run @relation(fields: [runId], references: [id])
 
-    key   String
-    value String
+	key   String
+	value String
 }
