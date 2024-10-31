@@ -1,8 +1,9 @@
 import Image from "next/image";
 
-export default async function Dashboard() {
+export default async function Home() {
 	return (
 		<main className="flex flex-col gap-5 grow">
+			<HomeHeader></HomeHeader>
 			<Image priority={true} src="/images/beautiful-photo-sea-waves_58702-11300.avif" alt="" className="fixed z-0 object-cover min-h-full w-full" width={1920} height={500}/>
 			<div className="z-30 mx-20 my-10">
 				<div className="carousel w-full">
