@@ -164,6 +164,87 @@ enum eventDurationUnit {
     years
 }
 
+enum samp_size_unit {
+    mL
+    L
+    mg
+    g
+    kg
+    cm2
+    m2
+    cm3
+    m3
+    other
+}
+
+enum samp_store_sol {
+    ethanol
+    sodium_acetate @map("sodium acetate")
+    longmire
+    lysis_buffer   @map("lysis buffer")
+    none
+    other
+}
+
+enum filter_material {
+    cellulose
+    cellulose_ester            @map("cellulose ester")
+    glass_fiber                @map("glass fiber")
+    thermoplastic_membrane     @map("thermoplastic membrane")
+    track_etched_polycarbonate @map("track etched polycarbonate")
+    nylon
+    other
+}
+
+enum precip_chem_prep {
+    ethanol
+    isopropanol
+    sodium_chloride @map("sodium chloride")
+    other
+}
+
+enum prepped_samp_store_sol {
+    ethanol
+    sodium_acetate @map("sodium acetate")
+    longmire
+    lysis_buffer   @map("lysis buffer")
+    none
+    other
+}
+
+enum samp_vol_we_dna_ext_unit {
+    mL
+    L
+    mg
+    g
+    kg
+    cm2
+    m2
+    cm3
+    m3
+    other
+}
+
+enum nucl_acid_ext_lysis {
+    physical
+    chemical
+    enzymatic
+    thermal
+    osmotic
+    other
+}
+
+enum nucl_acid_ext_sep {
+    column_based      @map("column-based")
+    magnetic_beads    @map("magnetic beads")
+    centrifugation
+    precipitation
+    phenol_chloroform @map("phenol chloroform")
+    g
+    electrophoresis
+    other
+}
+
 // Models
 model Study {
     project_id String @id @unique
@@ -234,11 +315,11 @@ model Sample {
     samp_collect_method            String?
     samp_collect_device            String?
     samp_size                      Float?
-    samp_size_unit                 String? // controlled
+    samp_size_unit                 samp_size_unit?
 
     // Sample Storage
     samp_store_temp              String? // numeric or controlled
-    samp_store_sol               String? // controlled
+    samp_store_sol               samp_store_sol?
     samp_store_dur               String? // fixed
     samp_store_method_additional String?
 
@@ -250,14 +331,14 @@ model Sample {
     size_frac                 Float?
     filter_diameter           Float?
     filter_surface_area       Float?
-    filter_material           String? // controlled
+    filter_material           filter_material?
     filter_name               String?
-    precip_chem_prep          String? // controlled
+    precip_chem_prep          precip_chem_prep?
     precip_force_prep         Float?
     precip_time_prep          Float?
     precip_temp_prep          Float?
     prepped_samp_store_temp   String? // numeric or controlled
-    prepped_samp_store_sol    String? // controlled
+    prepped_samp_store_sol    prepped_samp_store_sol?
     prepped_samp_store_dur    Float?
     prep_method_additional    String?
 
@@ -268,9 +349,9 @@ model Sample {
 
     // Nucleic Acid Extraction
     samp_vol_we_dna_ext             Float?
-    samp_vol_we_dna_ext_unit        String? // controlled
-    nucl_acid_ext_lysis             String? // controlled
-    nucl_acid_ext_sep               String? // controlled
+    samp_vol_we_dna_ext_unit        samp_vol_we_dna_ext_unit?
+    nucl_acid_ext_lysis             nucl_acid_ext_lysis?
+    nucl_acid_ext_sep               nucl_acid_ext_sep?
     nucl_acid_ext                   String?
     nucl_acid_ext_kit               String?
     nucl_acid_ext_modify            String?

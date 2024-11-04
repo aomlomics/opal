@@ -94,6 +94,38 @@ export const eventDurationUnitSchema = z.enum(['minutes','hours','days','months'
 
 export type eventDurationUnitType = `${z.infer<typeof eventDurationUnitSchema>}`
 
+export const samp_size_unitSchema = z.enum(['mL','L','mg','g','kg','cm2','m2','cm3','m3','other']);
+
+export type samp_size_unitType = `${z.infer<typeof samp_size_unitSchema>}`
+
+export const samp_store_solSchema = z.enum(['ethanol','sodium_acetate','longmire','lysis_buffer','none','other']);
+
+export type samp_store_solType = `${z.infer<typeof samp_store_solSchema>}`
+
+export const filter_materialSchema = z.enum(['cellulose','cellulose_ester','glass_fiber','thermoplastic_membrane','track_etched_polycarbonate','nylon','other']);
+
+export type filter_materialType = `${z.infer<typeof filter_materialSchema>}`
+
+export const precip_chem_prepSchema = z.enum(['ethanol','isopropanol','sodium_chloride','other']);
+
+export type precip_chem_prepType = `${z.infer<typeof precip_chem_prepSchema>}`
+
+export const prepped_samp_store_solSchema = z.enum(['ethanol','sodium_acetate','longmire','lysis_buffer','none','other']);
+
+export type prepped_samp_store_solType = `${z.infer<typeof prepped_samp_store_solSchema>}`
+
+export const samp_vol_we_dna_ext_unitSchema = z.enum(['mL','L','mg','g','kg','cm2','m2','cm3','m3','other']);
+
+export type samp_vol_we_dna_ext_unitType = `${z.infer<typeof samp_vol_we_dna_ext_unitSchema>}`
+
+export const nucl_acid_ext_lysisSchema = z.enum(['physical','chemical','enzymatic','thermal','osmotic','other']);
+
+export type nucl_acid_ext_lysisType = `${z.infer<typeof nucl_acid_ext_lysisSchema>}`
+
+export const nucl_acid_ext_sepSchema = z.enum(['column_based','magnetic_beads','centrifugation','precipitation','phenol_chloroform','g','electrophoresis','other']);
+
+export type nucl_acid_ext_sepType = `${z.infer<typeof nucl_acid_ext_sepSchema>}`
+
 /////////////////////////////////////////
 // MODELS
 /////////////////////////////////////////
@@ -137,6 +169,14 @@ export const SampleSchema = z.object({
   verbatimCoordinateSystem: verbatimCoordinateSystemSchema.nullish(),
   verbatimSRS: verbatimSRSSchema.nullish(),
   eventDurationUnit: eventDurationUnitSchema.nullish(),
+  samp_size_unit: samp_size_unitSchema.nullish(),
+  samp_store_sol: samp_store_solSchema.nullish(),
+  filter_material: filter_materialSchema.nullish(),
+  precip_chem_prep: precip_chem_prepSchema.nullish(),
+  prepped_samp_store_sol: prepped_samp_store_solSchema.nullish(),
+  samp_vol_we_dna_ext_unit: samp_vol_we_dna_ext_unitSchema.nullish(),
+  nucl_acid_ext_lysis: nucl_acid_ext_lysisSchema.nullish(),
+  nucl_acid_ext_sep: nucl_acid_ext_sepSchema.nullish(),
   samp_name: z.string(),
   project_id: z.string(),
   decimalLatitude: z.number(),
@@ -157,9 +197,7 @@ export const SampleSchema = z.object({
   samp_collect_method: z.string().nullish(),
   samp_collect_device: z.string().nullish(),
   samp_size: z.number().nullish(),
-  samp_size_unit: z.string().nullish(),
   samp_store_temp: z.string().nullish(),
-  samp_store_sol: z.string().nullish(),
   samp_store_dur: z.string().nullish(),
   samp_store_method_additional: z.string().nullish(),
   samp_mat_process: z.string().nullish(),
@@ -169,23 +207,17 @@ export const SampleSchema = z.object({
   size_frac: z.number().nullish(),
   filter_diameter: z.number().nullish(),
   filter_surface_area: z.number().nullish(),
-  filter_material: z.string().nullish(),
   filter_name: z.string().nullish(),
-  precip_chem_prep: z.string().nullish(),
   precip_force_prep: z.number().nullish(),
   precip_time_prep: z.number().nullish(),
   precip_temp_prep: z.number().nullish(),
   prepped_samp_store_temp: z.string().nullish(),
-  prepped_samp_store_sol: z.string().nullish(),
   prepped_samp_store_dur: z.number().nullish(),
   prep_method_additional: z.string().nullish(),
   sample_derived_from: z.string().nullish(),
   sample_composed_of: z.string().nullish(),
   biological_rep_relation: z.string().nullish(),
   samp_vol_we_dna_ext: z.number().nullish(),
-  samp_vol_we_dna_ext_unit: z.string().nullish(),
-  nucl_acid_ext_lysis: z.string().nullish(),
-  nucl_acid_ext_sep: z.string().nullish(),
   nucl_acid_ext: z.string().nullish(),
   nucl_acid_ext_kit: z.string().nullish(),
   nucl_acid_ext_modify: z.string().nullish(),
