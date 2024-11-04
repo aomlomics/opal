@@ -277,7 +277,7 @@ model Study {
     seq_archive           String?
     code_repo             String?
 
-    // Uncategorized
+    // User Defined
     expedition_id String?
 }
 
@@ -292,6 +292,17 @@ model Sample {
     GenericData GenericData[]
 
     // Data
+    // User Defined
+    serial_number     String?
+    source_mat_id     String?
+    materialSampleID  String?
+    line_id           String?
+    station_id        String?
+    ctd_cast_number   String?
+    ctd_bottle_number String?
+    replicate_number  String?
+    extract_id        String?
+
     // Sample Collection
     samp_category                  samp_category
     /// @zod.custom.use(z.coerce.number())
@@ -459,9 +470,6 @@ model Sample {
     org_nitro            Float?
 
     // User Defined
-    serial_number String?
-    cruise_id     String?
-    station       String?
     phaeopigments String?
     ammonium      String?
     phosphate     String?
@@ -547,6 +555,9 @@ model Library {
     GenericData GenericData[]
 
     //Data
+    //User Defined
+    eventID String?
+
     // Library Preparation Sequencing
     barcoding_pcr_appr    barcoding_pcr_appr?
     platform              platform?
