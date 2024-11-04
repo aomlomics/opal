@@ -7,12 +7,51 @@ export default function AsvUpload() {
 	const [state, formAction] = useFormState(asvUploadAction, { message: "" });
 
 	return (
-		<form action={formAction}>
-			<input type="text" name="projectId" placeholder="Sample ID" required className="input input-bordered w-full max-w-xs" />
-			<input type="file" name="asvFile" required className="file-input file-input-bordered w-full max-w-xs" />
-			<input type="file" name="samplesFile" required className="file-input file-input-bordered w-full max-w-xs" />
-			<button className="btn">Submit</button>
-			<span>{state.message} {state.error}</span>
+		<form className="card-body" action={formAction}>
+			<label className="form-control w-full max-w-xs">
+				<div className="label">
+					<span className="label-text text-neutral-content">Study File:</span>
+				</div>
+				<input id="samplesFile" type="file" name="studyFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
+			</label>
+			<label className="form-control w-full max-w-xs">
+				<div className="label">
+					<span className="label-text text-neutral-content">Samples File:</span>
+				</div>
+				<input id="samplesFile" type="file" name="samplesFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
+			</label>
+			<label className="form-control w-full max-w-xs">
+				<div className="label">
+					<span className="label-text text-neutral-content">Library File:</span>
+				</div>
+				<input id="samplesFile" type="file" name="libraryFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
+			</label>
+			<label className="form-control w-full max-w-xs">
+				<div className="label">
+					<span className="label-text text-neutral-content">16S ASV:</span>
+				</div>
+				<input id="asvFile" type="file" name="16sAsvFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
+			</label>
+			<label className="form-control w-full max-w-xs">
+				<div className="label">
+					<span className="label-text text-neutral-content">16S Occurrences:</span>
+				</div>
+				<input id="asvFile" type="file" name="16sOccFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
+			</label>
+			<label className="form-control w-full max-w-xs">
+				<div className="label">
+					<span className="label-text text-neutral-content">18S ASV:</span>
+				</div>
+				<input id="asvFile" type="file" name="18sAsvFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
+			</label>
+			<label className="form-control w-full max-w-xs">
+				<div className="label">
+					<span className="label-text text-neutral-content">18S Occurrences:</span>
+				</div>
+				<input id="asvFile" type="file" name="18sOccFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
+			</label>
+			<button className="btn btn-secondary">Submit</button>
+			<span className="text-neutral-content">{state.message} {state.error}</span>
 		</form>
 	);
 }
