@@ -13,7 +13,7 @@ Table Sample {
   project_id String [not null]
   Study Study [not null]
   assay_name String [not null]
-  Marker Marker [not null]
+  Assay Assay [not null]
   Occurrence Occurrence [not null]
   GenericData GenericData [not null]
   samp_category String [not null]
@@ -125,7 +125,7 @@ Table Sample {
   org_nitro Float
 }
 
-Table Marker {
+Table Assay {
   assay_name String [pk]
   Samples Sample [not null]
   Libraries Library [not null]
@@ -136,8 +136,8 @@ Table Marker {
 Table Library {
   library_id String [pk]
   assay_name String [not null]
-  Marker Marker [not null]
-  Runs Run [not null]
+  Assay Assay [not null]
+  Analysiss Analysis [not null]
   GenericData GenericData [not null]
   mid_forward String
   mid_reverse String
@@ -145,7 +145,7 @@ Table Library {
   filename2 String
 }
 
-Table Run {
+Table Analysis {
   id Int [pk, increment]
   library_id String [not null]
   Library Library [not null]
@@ -155,17 +155,17 @@ Table Run {
 
 Table Occurrence {
   id Int [pk, increment]
-  runId Int
-  Run Run
+  analysisId Int
+  Analysis Analysis
   samp_name String [not null]
   Sample Sample [not null]
-  seq_id String [not null]
+  featureid String [not null]
   Feature Feature [not null]
   organismQuantity Int [not null]
 }
 
 Table Feature {
-  seq_id String [pk]
+  featureid String [pk]
   Occurrences Occurrence [not null]
   Assignments Assignment [not null]
   consensusTaxonomyId String
@@ -175,7 +175,7 @@ Table Feature {
 
 Table Assignment {
   id Int [pk, increment]
-  seq_id String [not null]
+  featureid String [not null]
   Feature Feature [not null]
   taxonomy String [not null]
   Taxonomy Taxonomy [not null]
@@ -186,7 +186,12 @@ Table Taxonomy {
   taxonomy String [pk]
   Assignments Assignment [not null]
   Features Feature [not null]
+  verbatimIdentification String [not null]
+  domain String
   kingdom String
+  supergroup String
+  division String
+  subdivision String
   phylum String
   taxonClass String
   order String
@@ -202,32 +207,32 @@ Table GenericData {
   samp_name String [not null]
   Sample Sample [not null]
   assay_name String [not null]
-  Marker Marker [not null]
+  Assay Assay [not null]
   library_id String [not null]
   Library Library [not null]
-  runId Int [not null]
-  Run Run [not null]
+  analysisId Int [not null]
+  Analysis Analysis [not null]
   key String [not null]
   value String [not null]
 }
 
 Ref: Sample.project_id > Study.project_id
 
-Ref: Sample.assay_name > Marker.assay_name
+Ref: Sample.assay_name > Assay.assay_name
 
-Ref: Library.assay_name > Marker.assay_name
+Ref: Library.assay_name > Assay.assay_name
 
-Ref: Run.library_id > Library.library_id
+Ref: Analysis.library_id > Library.library_id
 
-Ref: Occurrence.runId > Run.id
+Ref: Occurrence.analysisId > Analysis.id
 
 Ref: Occurrence.samp_name > Sample.samp_name
 
-Ref: Occurrence.seq_id > Feature.seq_id
+Ref: Occurrence.featureid > Feature.featureid
 
 Ref: Feature.consensusTaxonomyId > Taxonomy.taxonomy
 
-Ref: Assignment.seq_id > Feature.seq_id
+Ref: Assignment.featureid > Feature.featureid
 
 Ref: Assignment.taxonomy > Taxonomy.taxonomy
 
@@ -235,8 +240,8 @@ Ref: GenericData.project_id > Study.project_id
 
 Ref: GenericData.samp_name > Sample.samp_name
 
-Ref: GenericData.assay_name > Marker.assay_name
+Ref: GenericData.assay_name > Assay.assay_name
 
 Ref: GenericData.library_id > Library.library_id
 
-Ref: GenericData.runId > Run.id
+Ref: GenericData.analysisId > Analysis.id
