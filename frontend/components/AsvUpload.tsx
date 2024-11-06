@@ -16,15 +16,15 @@ export default function AsvUpload() {
 			</label>
 			<label className="form-control w-full max-w-xs">
 				<div className="label">
-					<span className="label-text text-neutral-content">Samples File:</span>
-				</div>
-				<input id="samplesFile" type="file" name="samplesFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
-			</label>
-			<label className="form-control w-full max-w-xs">
-				<div className="label">
 					<span className="label-text text-neutral-content">Library File:</span>
 				</div>
 				<input id="samplesFile" type="file" name="libraryFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
+			</label>
+			<label className="form-control w-full max-w-xs">
+				<div className="label">
+					<span className="label-text text-neutral-content">Samples File:</span>
+				</div>
+				<input id="samplesFile" type="file" name="samplesFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
 			</label>
 			<label className="form-control w-full max-w-xs">
 				<div className="label">

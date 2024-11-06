@@ -262,7 +262,7 @@ model Study {
     institutionID   String?
     project_name    String?
     study_factor    String?
-    detection_type  detection_type
+    detection_type  String
 
     // Data Management
     license               String?
@@ -272,7 +272,8 @@ model Study {
     dataGeneralizations   String?
     bibliographicCitation String? // DOI
     associated_resource   String?
-    mod_date              String? // fixed
+    mod_date              DateTime? // fixed
+    /// @zod.custom.use(z.coerce.number())
     checkls_ver           Float
     seq_archive           String?
     code_repo             String?
@@ -294,7 +295,6 @@ model Sample {
     // Data
     // User Defined
     serial_number     String?
-    source_mat_id     String?
     materialSampleID  String?
     line_id           String?
     station_id        String?
@@ -304,20 +304,20 @@ model Sample {
     extract_id        String?
 
     // Sample Collection
-    samp_category                  samp_category
+    samp_category                  String
     /// @zod.custom.use(z.coerce.number())
     decimalLatitude                Float
     /// @zod.custom.use(z.coerce.number())
     decimalLongitude               Float
     verbatimLatitude               String?
     verbatimLongitude              String?
-    verbatimCoordinateSystem       verbatimCoordinateSystem?
-    verbatimSRS                    verbatimSRS?
+    verbatimCoordinateSystem       String?
+    verbatimSRS                    String?
     geo_loc_name                   String // fixed
     eventDate                      String // fixed
     /// @zod.custom.use(z.coerce.number())
     eventDurationValue             Float?
-    eventDurationUnit              eventDurationUnit?
+    eventDurationUnit              String?
     verbatimEventDate              String?
     verbatimEventTime              String?
     verbatimDateEnd                String?
@@ -331,11 +331,11 @@ model Sample {
     samp_collect_device            String?
     /// @zod.custom.use(z.coerce.number())
     samp_size                      Float?
-    samp_size_unit                 samp_size_unit?
+    samp_size_unit                 String?
 
     // Sample Storage
-    samp_store_temp              String? // numeric or controlled
-    samp_store_sol               samp_store_sol?
+    samp_store_temp              Float?
+    samp_store_sol               String?
     samp_store_dur               String? // fixed
     samp_store_method_additional String?
 
@@ -352,17 +352,17 @@ model Sample {
     filter_diameter           Float?
     /// @zod.custom.use(z.coerce.number())
     filter_surface_area       Float?
-    filter_material           filter_material?
+    filter_material           String?
     filter_name               String?
-    precip_chem_prep          precip_chem_prep?
+    precip_chem_prep          String?
     /// @zod.custom.use(z.coerce.number())
     precip_force_prep         Float?
     /// @zod.custom.use(z.coerce.number())
     precip_time_prep          Float?
     /// @zod.custom.use(z.coerce.number())
     precip_temp_prep          Float?
-    prepped_samp_store_temp   String? // numeric or controlled
-    prepped_samp_store_sol    prepped_samp_store_sol?
+    prepped_samp_store_temp   Float?
+    prepped_samp_store_sol    String?
     /// @zod.custom.use(z.coerce.number())
     prepped_samp_store_dur    Float?
     prep_method_additional    String?
@@ -374,9 +374,9 @@ model Sample {
 
     // Nucleic Acid Extraction
     samp_vol_we_dna_ext             Float?
-    samp_vol_we_dna_ext_unit        samp_vol_we_dna_ext_unit?
-    nucl_acid_ext_lysis             nucl_acid_ext_lysis?
-    nucl_acid_ext_sep               nucl_acid_ext_sep?
+    samp_vol_we_dna_ext_unit        String?
+    nucl_acid_ext_lysis             String?
+    nucl_acid_ext_sep               String?
     nucl_acid_ext                   String?
     nucl_acid_ext_kit               String?
     nucl_acid_ext_modify            String?
@@ -481,12 +481,13 @@ model Assay {
 
     // Relations
     Samples     Sample[]
+    Analysis    Analysis[]
     Libraries   Library[]
     GenericData GenericData[]
 
     // Data
     // Quality Assurance
-    neg_cont_type    neg_cont_type
+    neg_cont_type    String
     pos_cont_type    String
     sterilise_method String?
 
@@ -499,7 +500,7 @@ model Assay {
     assay_validation             String?
     targetTaxonomicAssay         String
     targetTaxonomicScope         String?
-    target_gene                  target_gene?
+    target_gene                  String?
     target_subfragment           String?
     /// @zod.custom.use(z.coerce.number())
     ampliconSize                 Float?
@@ -518,7 +519,7 @@ model Assay {
     /// @zod.custom.use(z.coerce.number())
     pcr_primer_conc_reverse      Float?
     probeReporter                String?
-    probeQuencher                probeQuencher?
+    probeQuencher                String?
     probe_seq                    String?
     probe_ref                    String?
     /// @zod.custom.use(z.coerce.number())
@@ -555,15 +556,12 @@ model Library {
     GenericData GenericData[]
 
     //Data
-    //User Defined
-    eventID String?
-
     // Library Preparation Sequencing
-    barcoding_pcr_appr    barcoding_pcr_appr?
-    platform              platform?
+    barcoding_pcr_appr    String?
+    platform              String?
     instrument            String? // fixed
     seq_kit               String?
-    lib_layout            lib_layout?
+    lib_layout            String?
     sequencing_location   String?
     adapter_forward       String?
     adapter_reverse       String?
@@ -577,15 +575,20 @@ model Library {
     filename2           String?
     seq_run_id          String?
     biosample_accession String?
-    sra_accession       String?
     /// @zod.custom.use(z.coerce.number().int())
     input_read_count    Int?
+
+    // User Defined (library)
+    seq_samp_id   String?
+    sra_accession String?
 }
 
 model Analysis {
     id Int @id @default(autoincrement())
 
     // Relations
+    assay_name  String
+    Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
     library_id  String
     Library     Library       @relation(fields: [library_id], references: [library_id])
     Occurrences Occurrence[]
@@ -607,7 +610,7 @@ model Analysis {
     min_len_cutoff            Int?
     min_len_tool              String?
     error_rate_tool           String?
-    error_rate_type           error_rate_type?
+    error_rate_type           String?
     /// @zod.custom.use(z.coerce.number())
     error_rate_cutoff         Float?
     chimera_check_method      String?
@@ -617,11 +620,11 @@ model Analysis {
     otu_clust_cutoff          Float?
     /// @zod.custom.use(z.coerce.number())
     min_reads_cutoff          Float?
-    min_reads_cutoff_unit     min_reads_cutoff_unit?
+    min_reads_cutoff_unit     String?
     min_reads_tool            String?
     otu_db                    String?
     otu_db_custom             String?
-    tax_assign_cat            tax_assign_cat?
+    tax_assign_cat            String?
     otu_seq_comp_appr         String?
     /// @zod.custom.use(z.coerce.number())
     tax_class_id_cutoff       Float?
