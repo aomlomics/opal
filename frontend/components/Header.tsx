@@ -6,7 +6,7 @@ import TabButton from "@/components/TabButton";
 
 export default function Header() {
 	return (
-		<header className="sticky top-0 z-50 bg-secondary border-b-4 border-primary h-14">
+		<header className="sticky top-0 z-50 bg-secondary border-b-4 border-primary h-24">
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logo section */}
 				<div className="flex items-center">

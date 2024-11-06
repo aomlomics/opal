@@ -44,8 +44,6 @@ export default function HomeHeader() {
 						</SignedIn>
 						<SignedOut>
 							<SignInButton>
-								{/* We eventually need a consistent Button component to use across the site */}
-								{/* This code is repeated in the Header.tsx file */}
 								<button className="btn bg-primary text-white hover:bg-primary/80">Sign In</button>
 							</SignInButton>
 						</SignedOut>
