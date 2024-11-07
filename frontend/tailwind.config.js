@@ -4,6 +4,7 @@ const sharedTheme = {
 	// primary: "#72ACAF", //NOAA Lochmara
 	//secondary: "#03646A", // NGI Teal
 	primary: "#64ABDC", //NODE Custom Light blue
+	dark_blue: "#233D7F", //NODE Custom Dark blue
 	secondary: "#000000", // Black
 	accent: "#79BCE4", // NOAA Seagull
 	neutral: "#BFD0E5", // NOAA Periwinkle grey 

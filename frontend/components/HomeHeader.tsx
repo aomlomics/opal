@@ -4,15 +4,24 @@ import { getBaseUrl } from "@/helpers/utils";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import TabButton from "@/components/TabButton";
 
-export default function Header() {
+{/* This push is a test */}
+export default function HomeHeader() {
 	return (
 		<header className="sticky top-0 z-50 bg-secondary border-b-4 border-primary h-24">
 			<div className="relative h-full flex justify-between items-center">
-				{/* Logo section */}
+				{/* Logos section - unchanged */}
 				<div className="flex items-center">
+					{/* First (main) logo */}
 					<Link className="pl-2 normal-case text-xl h-20 w-48 bg-secondary rounded-3xl lg:rounded-l-none pr-4" href={`${getBaseUrl()}`}>
 						<div className="avatar w-full h-full">
 							<Image src="/images/node_logo_main.png" alt="" fill={true} style={{objectFit: "contain"}} sizes="(max-width: 768px) 100vw, 33vw"/>
+						</div>
+					</Link>
+
+					{/* Second (smaller) logo */}
+					<Link className="py-4 px-2 h-full" href="#">
+						<div className="h-12 w-32 relative">
+							<Image src="/images/node_logo_full_text.png" alt="" fill={true} style={{objectFit: "contain"}}/>
 						</div>
 					</Link>
 				</div>
@@ -36,7 +45,7 @@ export default function Header() {
 						</SignedIn>
 						<SignedOut>
 							<SignInButton>
-								<button className="btn bg-primary text-white hover:bg-primary/80">Sign In</button>   
+								<button className="btn bg-primary text-white hover:bg-primary/80">Sign In</button>
 							</SignInButton>
 						</SignedOut>
 					</div>
