@@ -82,7 +82,7 @@ O	numeric		Bioinformatics	25.0	error_rate_cutoff
 O	free text		Bioinformatics	denovo, uchime v4.1	chimera_check_method
 O	free text		Bioinformatics	? parameter >=1	chimera_check_param
 O	free text		Bioinformatics	q2-dada2 2019.1.0	otu_clust_tool	Tourmaline; qiime2-2021.2; dada2
-O	numeric		Bioinformatics	97.0	otu_clust_cutoff	ASV
+O	numeric		Bioinformatics	97.0	otu_clust_cutoff	97.0
 O	numeric or controlled vocabulary	numeric value | noise detected in blanks | other	Bioinformatics	5.0	min_reads_cutoff
 O	controlled vocabulary	reads | % | other	Bioinformatics	%	min_reads_cutoff_unit
 O	free text		Bioinformatics	DADA2 1.26	min_reads_tool

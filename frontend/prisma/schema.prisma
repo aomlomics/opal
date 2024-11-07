@@ -14,14 +14,25 @@ generator dbml {
 }
 
 generator zod {
-    provider                 = "zod-prisma-types"
-    createInputTypes         = false
-    addIncludeType           = false
-    addSelectType            = false
-    writeNullishInModelTypes = true
+    provider                         = "zod-prisma-types"
+    createInputTypes                 = false
+    addIncludeType                   = false
+    addSelectType                    = false
+    writeNullishInModelTypes         = true
+    createOptionalDefaultValuesTypes = true
+    createPartialTypes               = true
 }
 
 // Enums
+enum DeadBoolean {
+    zero           @map("0")
+    one            @map("1")
+    not_applicable @map("not applicable")
+    not_collected  @map("not collected")
+    not_provided   @map("not provided")
+    missing
+}
+
 enum detection_type {
     targeted_taxon_detection @map("targeted taxon detection")
     multi_taxon_detection    @map("multi taxon detection")
@@ -481,8 +492,8 @@ model Assay {
 
     // Relations
     Samples     Sample[]
-    Analysis    Analysis[]
     Libraries   Library[]
+    Analysis    Analysis[]
     GenericData GenericData[]
 
     // Data
@@ -579,8 +590,8 @@ model Library {
     input_read_count    Int?
 
     // User Defined (library)
-    seq_samp_id   String?
-    sra_accession String?
+    seq_samp_id         String?
+    associatedSequences String?
 }
 
 model Analysis {
@@ -589,8 +600,7 @@ model Analysis {
     // Relations
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
-    library_id  String
-    Library     Library       @relation(fields: [library_id], references: [library_id])
+    Libraries   Library[]
     Occurrences Occurrence[]
     Assignments Assignment[]
     GenericData GenericData[]
@@ -644,13 +654,12 @@ model Occurrence {
     id Int @id @default(autoincrement())
 
     // Relations
-    /// @zod.custom.use(z.coerce.number().int())
-    analysisId Int?
-    Analysis   Analysis? @relation(fields: [analysisId], references: [id])
+    analysisId Int
+    Analysis   Analysis @relation(fields: [analysisId], references: [id])
     samp_name  String
-    Sample     Sample    @relation(fields: [samp_name], references: [samp_name])
+    Sample     Sample   @relation(fields: [samp_name], references: [samp_name])
     featureid  String
-    Feature    Feature   @relation(fields: [featureid], references: [featureid])
+    Feature    Feature  @relation(fields: [featureid], references: [featureid])
 
     // Data
     /// @zod.custom.use(z.coerce.number().int())
@@ -667,14 +676,13 @@ model Feature {
     consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [taxonomy])
 
     // Data
-    sequence String
+    dna_sequence String
 }
 
 model Assignment {
     id Int @id @default(autoincrement())
 
     // Relations
-    /// @zod.custom.use(z.coerce.number().int())
     analysisId Int
     Analysis   Analysis @relation(fields: [analysisId], references: [id])
     featureid  String
@@ -684,7 +692,7 @@ model Assignment {
 
     // Data
     /// @zod.custom.use(z.coerce.number())
-    confidence Float
+    Confidence Float
 }
 
 model Taxonomy {
@@ -722,7 +730,6 @@ model GenericData {
     Assay      Assay    @relation(fields: [assay_name], references: [assay_name])
     library_id String
     Library    Library  @relation(fields: [library_id], references: [library_id])
-    /// @zod.custom.use(z.coerce.number().int())
     analysisId Int
     Analysis   Analysis @relation(fields: [analysisId], references: [id])
 
