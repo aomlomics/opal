@@ -124,7 +124,7 @@ export default function StudyUpload() {
 					</label>
 					<label className="form-control w-full max-w-xs">
 						<div className="label">
-							<span className="label-text text-neutral-content">16S ASV:</span>
+							<span className="label-text text-neutral-content">16S Features:</span>
 						</div>
 						<input
 							type="file"
@@ -146,7 +146,7 @@ export default function StudyUpload() {
 					</label>
 					<label className="form-control w-full max-w-xs">
 						<div className="label">
-							<span className="label-text text-neutral-content">18S ASV:</span>
+							<span className="label-text text-neutral-content">18S Features:</span>
 						</div>
 						<input
 							type="file"

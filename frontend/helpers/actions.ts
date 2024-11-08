@@ -295,8 +295,6 @@ export async function studyUploadAction(formData: FormData) {
 			}
 		}
 
-		return { response: "Success" };
-
 		//Feature files
 		const features = [] as Prisma.FeatureCreateManyInput[];
 		const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
@@ -310,6 +308,8 @@ export async function studyUploadAction(formData: FormData) {
 			feat16sFileLines = (await (await fetch(analysisFiles["16sFeatFile"].url)).text()).split("\n");
 			feat18sFileLines = (await (await fetch(analysisFiles["18sFeatFile"].url)).text()).split("\n");
 		}
+
+		return { response: "Success" };
 
 		const featFiles = {
 			ssu16sv4v5: {
