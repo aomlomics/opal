@@ -263,7 +263,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				}
 			}
 		}
-		return { message: "Success" };
 
 		//Sample file
 		const samples = [] as Prisma.SampleCreateInput[];
@@ -303,6 +302,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				//TODO: add rel_cont_id to assays
 			}
 		}
+		return { message: "Success" };
 
 		//ASV files
 		const features = [] as Prisma.FeatureCreateManyInput[];
