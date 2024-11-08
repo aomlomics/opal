@@ -4,16 +4,16 @@ import { studyUploadAction } from "@/helpers/actions";
 import { useFormState } from "react-dom";
 
 export default function StudyUpload() {
-	//const [state, formAction] = useFormState(studyUploadAction, { message: "" });
-	const state = {
-		message: "",
-		error: ""
-	}
+	const [state, formAction] = useFormState(studyUploadAction, { message: "" });
+	//const state = {
+	//	message: "",
+	//	error: ""
+	//}
 
-	function formAction(formData: FormData) {
-		console.log("test")
-		studyUploadAction(state, formData);
-	}
+	//function formAction(formData: FormData) {
+	//	console.log("test")
+	//	studyUploadAction(state, formData);
+	//}
 
 	return (
 		<form className="card-body" action={formAction}>
