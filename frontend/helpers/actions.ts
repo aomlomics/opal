@@ -82,8 +82,6 @@ function replaceDead(
 
 export async function studyUploadAction(prevState: FormState, formData: FormData) {
 	console.log("start");
-	const studyFileLines = (await (formData.get("studyFile") as File).text()).split("\n");
-	return { message: "Success" };
 	try {
 		//Study file
 		const studyCol = {} as Record<string, string>;
@@ -179,6 +177,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				}
 			}
 		}
+		return { message: "Success" };
 		const study = StudySchema.parse(studyCol, {
 			errorMap: (error, ctx) => {
 				return { message: `StudySchema: ${ctx.defaultError}` };
