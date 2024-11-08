@@ -73,7 +73,13 @@ npx prisma migrate dev --name "<insert migration name>"
 Pull schema changes from database (must be done in `/server` after creating a migration in `/frontend`)
 
 ```bash
-prisma db pull
+npx prisma db pull
+```
+
+Clear the database of all entries
+
+```bash
+npx prisma db push --force-reset
 ```
 
 Generate Prisma Client

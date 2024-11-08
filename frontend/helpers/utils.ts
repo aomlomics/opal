@@ -22,3 +22,8 @@ export function isEmpty(obj: Object) {
 	for (const x in obj) { if (obj.hasOwnProperty(x))  return false; }
    	return true;
 }
+
+export function isDeadValue(val: string) {
+	const deadValues = ["not applicable", "not collected", "not given", "missing"];
+	return deadValues.includes(val);
+}
