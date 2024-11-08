@@ -4,7 +4,14 @@ import { studyUploadAction } from "@/helpers/actions";
 import { useFormState, useFormStatus } from "react-dom";
 
 export default function StudyUpload() {
-	const [state, formAction] = useFormState(studyUploadAction, { message: "" });
+	let state = {} as { message: string; error?: string };
+	let formAction;
+	if (process.env.NODE_ENV === "development") {
+		[state, formAction] = useFormState(studyUploadAction, { message: "" });
+	} else {
+		//upload to blob storage
+		console.log("uploading to blob storage");
+	}
 	const { pending } = useFormStatus();
 
 	return (
@@ -93,15 +100,7 @@ export default function StudyUpload() {
 					className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 				/>
 			</label>
-			<button
-				onClick={() => {
-					state.message = "";
-					state.error = "";
-				}}
-				className="btn btn-secondary"
-			>
-				Submit
-			</button>
+			<button className="btn btn-secondary">Submit</button>
 			{pending && <span className="text-neutral-content">Loading...</span>}
 			<span className="text-neutral-content">
 				{state.message} {state.error}
