@@ -309,8 +309,6 @@ export async function studyUploadAction(formData: FormData) {
 			feat18sFileLines = (await (await fetch(analysisFiles["18sFeatFile"].url)).text()).split("\n");
 		}
 
-		return { response: "Success" };
-
 		const featFiles = {
 			ssu16sv4v5: {
 				lines: feat16sFileLines,
@@ -411,6 +409,8 @@ export async function studyUploadAction(formData: FormData) {
 				headers: occ18sFileLines[0].split("\t")
 			}
 		};
+
+		return { response: "Success" };
 
 		await prisma.$transaction(
 			async (tx) => {
