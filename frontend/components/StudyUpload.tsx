@@ -42,53 +42,47 @@ export default function StudyUpload() {
 		//const occFiles = formData.getAll("occFile");
 		//formData.delete("occFile");
 
-		if (process.env.NODE_ENV !== "development") {
-			const analysisFiles = {} as Record<string, PutBlobResult>;
-			async function pushBlob(name: string) {
-				const file = formData.get(name) as File;
-				formData.delete(name);
-				if (file) {
-					analysisFiles[name] = await upload(file.name, file, {
-						access: "public",
-						handleUploadUrl: "/api/analysisFile/upload",
-						multipart: true
-					});
+		const analysisFiles = {} as Record<string, PutBlobResult>;
+		try {
+			if (process.env.NODE_ENV !== "development") {
+				async function pushBlob(name: string) {
+					const file = formData.get(name) as File;
+					formData.delete(name);
+					if (file) {
+						analysisFiles[name] = await upload(file.name, file, {
+							access: "public",
+							handleUploadUrl: "/api/analysisFile/upload",
+							multipart: true
+						});
+					}
 				}
-			}
-			let err;
-			let res;
-			try {
+
 				await pushBlob("16sFeatFile");
 				await pushBlob("16sOccFile");
 				await pushBlob("18sFeatFile");
 				await pushBlob("18sOccFile");
 
 				formData.set("analysisFiles", JSON.stringify(analysisFiles));
-
-				const result = await studyUploadAction(formData);
-				if (result.error) {
-					err = result.error;
-				} else if (result.response) {
-					res = result.response;
-				} else {
-					console.log("?");
-				}
-			} catch (error) {
-				setError(`Error: ${(error as Error).message}. Make sure you are logged into a NOAA or MSU account.`);
-			} finally {
-				for (const blob of Object.values(analysisFiles)) {
-					await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
-						method: "DELETE"
-					});
-				}
-
-				if (err) {
-					setError(err);
-				} else if (res) {
-					setResponse(res);
-				}
-				setLoading(false);
 			}
+
+			const result = await studyUploadAction(formData);
+			if (result.error) {
+				setError(result.error);
+			} else if (result.response) {
+				setResponse(result.response);
+			} else {
+				setError("Unknown error.");
+			}
+		} catch (error) {
+			setError(`Error: ${(error as Error).message}. Make sure you are logged into a NOAA or MSU account.`);
+		} finally {
+			for (const blob of Object.values(analysisFiles)) {
+				await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
+					method: "DELETE"
+				});
+			}
+
+			setLoading(false);
 		}
 	}
 

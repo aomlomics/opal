@@ -301,9 +301,11 @@ export async function studyUploadAction(formData: FormData) {
 		let feat16sFileLines;
 		let feat18sFileLines;
 		if (process.env.NODE_ENV === "development") {
+			//get files from form data
 			feat16sFileLines = (await (formData.get("16sFeatFile") as File).text()).split("\n");
 			feat18sFileLines = (await (formData.get("18sFeatFile") as File).text()).split("\n");
 		} else {
+			//fetch from blob storage
 			const analysisFiles = JSON.parse(formData.get("analysisFiles") as string);
 			feat16sFileLines = (await (await fetch(analysisFiles["16sFeatFile"].url)).text()).split("\n");
 			feat18sFileLines = (await (await fetch(analysisFiles["18sFeatFile"].url)).text()).split("\n");
@@ -390,9 +392,11 @@ export async function studyUploadAction(formData: FormData) {
 		let occ16sFileLines;
 		let occ18sFileLines;
 		if (process.env.NODE_ENV === "development") {
+			//get files from form data
 			occ16sFileLines = (await (formData.get("16sOccFile") as File).text()).split("\n");
 			occ18sFileLines = (await (formData.get("18sOccFile") as File).text()).split("\n");
 		} else {
+			//fetch from blob storage
 			const analysisFiles = JSON.parse(formData.get("analysisFiles") as string);
 			occ16sFileLines = (await (await fetch(analysisFiles["16sOccFile"].url)).text()).split("\n");
 			occ18sFileLines = (await (await fetch(analysisFiles["18sOccFile"].url)).text()).split("\n");
