@@ -558,8 +558,8 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		);
 
 		return { message: "Success" };
-	} catch (e) {
-		const error = e as Error;
+	} catch (err) {
+		const error = err as Error;
 		console.log(error.message);
 		return { message: "Error", error: error.message };
 	}
