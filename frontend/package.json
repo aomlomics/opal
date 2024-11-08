@@ -10,8 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node prisma/seed.ts",
-    "postinstall": "prisma generate --generator js"
+    "seed": "node prisma/seed.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.7.1",
