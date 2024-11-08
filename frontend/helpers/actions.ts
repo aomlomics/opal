@@ -263,6 +263,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				}
 			}
 		}
+		return { message: "Success" };
 
 		//Sample file
 		const samples = [] as Prisma.SampleCreateInput[];
@@ -402,7 +403,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 			}
 		};
 
-		return { message: "Success" };
 		await prisma.$transaction(
 			async (tx) => {
 				//study
