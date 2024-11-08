@@ -30,10 +30,6 @@ import {
 	TaxonomySchema
 } from "@/prisma/generated/zod";
 
-type FormState = {
-	message: string;
-};
-
 //this function is barebones, basic, and probably dangerous in some way
 function checkZodType(field: any, type: any) {
 	//constantly call unwrap(), as the zod types are nested inside each other
@@ -80,7 +76,7 @@ function replaceDead(
 	}
 }
 
-export async function studyUploadAction(prevState: FormState, formData: FormData) {
+export async function studyUploadAction(formData: FormData) {
 	try {
 		//Study file
 		const studyCol = {} as Record<string, string>;
@@ -299,19 +295,28 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 			}
 		}
 
-		//ASV files
+		//Feature files
 		const features = [] as Prisma.FeatureCreateManyInput[];
 		const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
-		const asv16sFileLines = (await (formData.get("16sAsvFile") as File).text()).split("\n");
-		const asv18sFileLines = (await (formData.get("18sAsvFile") as File).text()).split("\n");
-		const asvFiles = {
+		let feat16sFileLines;
+		let feat18sFileLines;
+		if (process.env.NODE_ENV === "development") {
+			feat16sFileLines = (await (formData.get("16sFeatFile") as File).text()).split("\n");
+			feat18sFileLines = (await (formData.get("18sFeatFile") as File).text()).split("\n");
+		} else {
+			const analysisFiles = JSON.parse(formData.get("analysisFiles") as string);
+			feat16sFileLines = (await (await fetch(analysisFiles["16sFeatFile"].url)).text()).split("\n");
+			feat18sFileLines = (await (await fetch(analysisFiles["18sFeatFile"].url)).text()).split("\n");
+		}
+
+		const featFiles = {
 			ssu16sv4v5: {
-				lines: asv16sFileLines,
-				headers: asv16sFileLines[0].split("\t")
+				lines: feat16sFileLines,
+				headers: feat16sFileLines[0].split("\t")
 			},
 			ssu18sv9: {
-				lines: asv18sFileLines,
-				headers: asv18sFileLines[0].split("\t")
+				lines: feat18sFileLines,
+				headers: feat18sFileLines[0].split("\t")
 			}
 		};
 		const assignmentsObj = {
@@ -319,22 +324,22 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 			ssu18sv9: []
 		} as Record<string, AssignmentPartial[]>;
 
-		//loop over every ASV file
-		let asvKey: keyof typeof asvFiles;
-		for (asvKey in asvFiles) {
-			for (let i = 1; i < asvFiles[asvKey].lines.length; i++) {
-				const currentLine = asvFiles[asvKey].lines[i].split("\t");
+		//loop over every feature file
+		let featKey: keyof typeof featFiles;
+		for (featKey in featFiles) {
+			for (let i = 1; i < featFiles[featKey].lines.length; i++) {
+				const currentLine = featFiles[featKey].lines[i].split("\t");
 
-				if (currentLine[asvFiles[asvKey].headers.indexOf("featureid")]) {
+				if (currentLine[featFiles[featKey].headers.indexOf("featureid")]) {
 					const featureRow = {} as any;
 					const assignmentRow = {} as any;
 					const taxonomyRow = {} as any;
 
-					for (let j = 0; j < asvFiles[asvKey].headers.length; j++) {
+					for (let j = 0; j < featFiles[featKey].headers.length; j++) {
 						//feature table
 						replaceDead(
 							currentLine[j],
-							asvFiles[asvKey].headers[j],
+							featFiles[featKey].headers[j],
 							featureRow,
 							FeatureSchema,
 							FeatureScalarFieldEnumSchema
@@ -343,7 +348,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 						//assignment table
 						replaceDead(
 							currentLine[j],
-							asvFiles[asvKey].headers[j],
+							featFiles[featKey].headers[j],
 							assignmentRow,
 							AssignmentSchema,
 							AssignmentScalarFieldEnumSchema
@@ -352,7 +357,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 						//taxonomy table
 						replaceDead(
 							currentLine[j],
-							asvFiles[asvKey].headers[j],
+							featFiles[featKey].headers[j],
 							taxonomyRow,
 							TaxonomySchema,
 							TaxonomyScalarFieldEnumSchema
@@ -362,18 +367,18 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 					features.push(
 						FeatureSchema.parse(featureRow, {
 							errorMap: (error, ctx) => {
-								return { message: `FeatureSchema (${asvKey}): ${ctx.defaultError}` };
+								return { message: `FeatureSchema (${featKey}): ${ctx.defaultError}` };
 							}
 						})
 					);
 
 					//assignments can only be parsed after inserting the analyses
-					assignmentsObj[asvKey].push(assignmentRow);
+					assignmentsObj[featKey].push(assignmentRow);
 
 					taxonomies.push(
 						TaxonomySchema.parse(taxonomyRow, {
 							errorMap: (error, ctx) => {
-								return { message: `TaxonomySchema (${asvKey}): ${ctx.defaultError}` };
+								return { message: `TaxonomySchema (${featKey}): ${ctx.defaultError}` };
 							}
 						})
 					);
@@ -382,9 +387,17 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		}
 
 		//Occurrences files
-		const occ16sFileLines = (await (formData.get("16sOccFile") as File).text()).split("\n");
+		let occ16sFileLines;
+		let occ18sFileLines;
+		if (process.env.NODE_ENV === "development") {
+			occ16sFileLines = (await (formData.get("16sOccFile") as File).text()).split("\n");
+			occ18sFileLines = (await (formData.get("18sOccFile") as File).text()).split("\n");
+		} else {
+			const analysisFiles = JSON.parse(formData.get("analysisFiles") as string);
+			occ16sFileLines = (await (await fetch(analysisFiles["16sOccFile"].url)).text()).split("\n");
+			occ18sFileLines = (await (await fetch(analysisFiles["18sOccFile"].url)).text()).split("\n");
+		}
 		occ16sFileLines.splice(0, 1); //TODO: parse comments out logically instead of hard-coded
-		const occ18sFileLines = (await (formData.get("18sOccFile") as File).text()).split("\n");
 		occ18sFileLines.splice(0, 1); //TODO: parse comments out logically instead of hard-coded
 		const occFiles = {
 			ssu16sv4v5: {
@@ -545,10 +558,10 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 			{ timeout: 60000 }
 		);
 
-		return { message: "Success" };
+		return { response: "Success" };
 	} catch (err) {
 		const error = err as Error;
 		console.error(error.message);
-		return { message: "Error", error: error.message };
+		return { response: "Error", error: error.message };
 	}
 }

@@ -1,8 +1,8 @@
 import { prisma } from "@/helpers/prisma";
-import { getBaseUrl } from "@/helpers/utils";
+//import { getBaseUrl } from "@/helpers/utils";
 import Link from "next/link";
 import { promises as fs } from "fs";
-import { parse }  from "csv-parse/sync";
+import { parse } from "csv-parse/sync";
 
 export default async function FeatureId({ params }: { params: { taxonomy: string } }) {
 	const content = await fs.readFile(`${process.cwd()}/app/exampleData.tsv`, "utf8");
@@ -11,7 +11,7 @@ export default async function FeatureId({ params }: { params: { taxonomy: string
 	const headers = lines[0].split("\t");
 
 	for (let i = 1; i < lines.length; i++) {
-		const obj = {} as { featureid: string, species: string };
+		const obj = {} as { featureid: string; species: string };
 		const currentline = lines[i].split("\t");
 
 		for (let j = 0; j < headers.length; j++) {
@@ -19,8 +19,8 @@ export default async function FeatureId({ params }: { params: { taxonomy: string
 			obj[headers[j]] = currentline[j];
 		}
 
-    	result.push(obj);
- 	}
+		result.push(obj);
+	}
 	const features = result.filter((f) => f.species === params.taxonomy.replace("%20", " "));
 	//const records = parse(content, { bom: true, columns: true });
 	//console.log(records)
@@ -32,11 +32,9 @@ export default async function FeatureId({ params }: { params: { taxonomy: string
 			<div>
 				<h2>Features:</h2>
 				{features.map((f, i) => (
-					<Link key={i} href={`${getBaseUrl()}/data/features/${f.featureid}`}>
+					<Link key={i} href={`/data/features/${f.featureid}`}>
 						<div className="card bg-neutral-content m-3">
-							<div className="card-body p-5">
-								{f.featureid}
-							</div>
+							<div className="card-body p-5">{f.featureid}</div>
 						</div>
 					</Link>
 				))}
