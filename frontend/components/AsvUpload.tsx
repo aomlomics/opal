@@ -50,7 +50,7 @@ export default function AsvUpload() {
 				</div>
 				<input id="asvFile" type="file" name="18sOccFile" required className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs" />
 			</label>
-			<button className="btn btn-secondary">Submit</button>
+			<button onClick={() => { state.message = ""; state.error = "" }} className="btn btn-secondary">Submit</button>
 			<span className="text-neutral-content">{state.message} {state.error}</span>
 		</form>
 	);

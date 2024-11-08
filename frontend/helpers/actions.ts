@@ -1,6 +1,6 @@
 "use server";
 
-import { Prisma } from "@prisma/client";
+import { Analysis, Prisma } from "@prisma/client";
 import { prisma } from "./prisma";
 import { ZodBoolean, ZodEnum, ZodNumber, ZodObject } from "zod";
 import { DeadValue } from "@/types/enums";
@@ -93,6 +93,7 @@ export async function asvUploadAction(prevState: FormState, formData: FormData) 
 		const field_name_i = studyFileHeaders.indexOf("field_name");
 
 		//iterate over each row
+		console.log("study file");
 		for (let i = 1; i < studyFileLines.length; i++) {
 			const currentLine = studyFileLines[i].split("\t");
 
@@ -196,14 +197,16 @@ export async function asvUploadAction(prevState: FormState, formData: FormData) 
 		);
 
 		//Library file
-		const assays = [] as Prisma.AssayCreateManyInput[];
+		const assays = [] as Prisma.AssayCreateInput[];
 		const libraries = [] as Prisma.LibraryCreateManyInput[];
 		const sampToAssay = {} as Record<string, string>; //object to relate samples to their assay_name values
+		const libToAssay = {} as Record<string, string>; //object to relate libraries to their assay_name values
 		//parse file
 		const libraryFileLines = (await (formData.get("libraryFile") as File).text()).split("\n");
 		libraryFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 		const libraryFileHeaders = libraryFileLines[0].split("\t");
 		//iterate over each row
+		console.log("library file");
 		for (let i = 1; i < libraryFileLines.length; i++) {
 			const currentLine = libraryFileLines[i].split("\t");
 
@@ -220,49 +223,54 @@ export async function asvUploadAction(prevState: FormState, formData: FormData) 
 				}
 
 				sampToAssay[currentLine[libraryFileHeaders.indexOf("samp_name")]] = assayRow.assay_name;
+				libToAssay[currentLine[libraryFileHeaders.indexOf("library_id")]] = assayRow.assay_name;
 
-				assays.push(
-					//@ts-ignore Zod enum mapping issue
-					AssaySchema.parse(
-						{
-							//least specific overrides most specific
-							...assayRow,
-							...assayCols[assayRow.assay_name],
-							...studyCol
-						},
-						{
-							errorMap: (error, ctx) => {
-								return { message: `AssaySchema: ${ctx.defaultError}` };
+				if (!assays.some((a) => a.assay_name === assayRow.assay_name)) {
+					assays.push(
+						AssaySchema.parse(
+							{
+								//least specific overrides most specific
+								...assayRow,
+								...assayCols[assayRow.assay_name],
+								...studyCol
+							},
+							{
+								errorMap: (error, ctx) => {
+									return { message: `AssaySchema: ${ctx.defaultError}` };
+								}
 							}
-						}
-					)
-				);
+						)
+					);
+				}
 
-				libraries.push(
-					LibrarySchema.parse(
-						{
-							//least specific overrides most specific
-							...libraryRow,
-							...libraryCols[assayRow.assay_name], //TODO: 10 fields are replicated for every library, inefficient database usage
-							...studyCol
-						},
-						{
-							errorMap: (error, ctx) => {
-								return { message: `LibrarySchema: ${ctx.defaultError}` };
+				if (!libraries.some((lib) => lib.library_id === libraryRow.library_id)) {
+					libraries.push(
+						LibrarySchema.parse(
+							{
+								//least specific overrides most specific
+								...libraryRow,
+								...libraryCols[assayRow.assay_name], //TODO: 10 fields are replicated for every library, inefficient database usage
+								...studyCol
+							},
+							{
+								errorMap: (error, ctx) => {
+									return { message: `LibrarySchema: ${ctx.defaultError}` };
+								}
 							}
-						}
-					)
-				);
+						)
+					);
+				}
 			}
 		}
 
 		//Sample file
-		const samples = [] as Prisma.SampleCreateManyInput[];
+		const samples = [] as Prisma.SampleCreateInput[];
 		//parse file
 		const sampleFileLines = (await (formData.get("samplesFile") as File).text()).split("\n");
 		sampleFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 		const sampleFileHeaders = sampleFileLines[0].split("\t");
 		//iterate over each row
+		console.log("sample file");
 		for (let i = 1; i < sampleFileLines.length; i++) {
 			const currentLine = sampleFileLines[i].split("\t");
 			if (currentLine[sampleFileHeaders.indexOf("samp_name")]) {
@@ -314,6 +322,8 @@ export async function asvUploadAction(prevState: FormState, formData: FormData) 
 			ssu18sv9: []
 		} as Record<string, AssignmentPartial[]>;
 
+		//loop over every ASV file
+		console.log("asv files");
 		let asvKey: keyof typeof asvFiles;
 		for (asvKey in asvFiles) {
 			for (let i = 1; i < asvFiles[asvKey].lines.length; i++) {
@@ -390,65 +400,98 @@ export async function asvUploadAction(prevState: FormState, formData: FormData) 
 				headers: occ18sFileLines[0].split("\t")
 			}
 		};
-		//const occurrencesObj = {
-		//	ssu16sv4v5: [],
-		//	ssu18sv9: []
-		//} as Record<string, OccurrencePartial[]>;
-
-		//let occKey: keyof typeof occFiles;
-		//for (occKey in occFiles) {
-		//	for (let i = 1; i < occFiles[occKey].lines.length; i++) {
-		//		const currentLine = occFiles[occKey].lines[i].split("\t");
-
-		//		if (currentLine[0]) {
-		//			for (let j = 1; j < occFiles[occKey].headers.length; j++) {
-		//				occurrencesObj[occKey].push({
-		//					samp_name: occFiles[occKey].headers[j],
-		//					featureid: currentLine[0],
-		//					organismQuantity: parseInt(currentLine[j])
-		//				});
-		//			}
-		//		}
-		//	}
-		//}
 
 		await prisma.$transaction(
 			async (tx) => {
-				//MANY TO MANY:
-				//sample & assay
-				//library & analysis
-
 				//study
 				console.log("study");
 				await tx.study.create({
 					data: study
 				});
 
+				//assays and samples
+				console.log("assays and samples");
+				for (let a of assays) {
+					const reducedSamples = samples.reduce((filtered, samp) => {
+						if (sampToAssay[samp.samp_name] === a.assay_name) {
+							filtered.push({
+								where: {
+									samp_name: samp.samp_name
+								},
+								create: samp
+							});
+						}
+						return filtered;
+					}, [] as Prisma.SampleCreateOrConnectWithoutAssaysInput[]);
+
+					await tx.assay.upsert({
+						where: {
+							assay_name: a.assay_name
+						},
+						update: {
+							Samples: {
+								connectOrCreate: reducedSamples
+							}
+						},
+						create: {
+							...a,
+							Samples: {
+								connectOrCreate: reducedSamples
+							}
+						}
+					});
+				}
+
 				//assays
-				console.log("assays");
-				await tx.assay.createMany({
-					data: assays,
-					skipDuplicates: true
-				});
+				//console.log("assays");
+				//await tx.assay.createMany({
+				//	data: assays,
+				//	skipDuplicates: true
+				//});
 
 				//samples
-				console.log("samples");
-				await tx.sample.createMany({
-					data: samples
-				});
+				//console.log("samples");
+				//await tx.sample.createMany({
+				//	data: samples
+				//});
+
+				//analyses and libraries
+				console.log("analyses and libraries");
+				const dbAnalyses = [] as Analysis[];
+				for (let a of analyses) {
+					const analysis = await tx.analysis.create({
+						data: {
+							...a,
+							Libraries: {
+								connectOrCreate: libraries.reduce((filtered, lib) => {
+									if (libToAssay[lib.library_id] === a.assay_name) {
+										filtered.push({
+											where: {
+												library_id: lib.library_id
+											},
+											create: lib
+										});
+									}
+									return filtered;
+								}, [] as Prisma.LibraryCreateOrConnectWithoutAnalysisInput[])
+							}
+						}
+					});
+					dbAnalyses.push(analysis);
+				}
 
 				//libraries
-				console.log("libraries");
-				await tx.library.createMany({
-					data: libraries,
-					skipDuplicates: true
-				});
+				//console.log("libraries");
+				//await tx.library.createMany({
+				//	data: libraries,
+				//	skipDuplicates: true
+				//});
 
 				//analyses
-				console.log("analyses");
-				const dbAnalyses = await tx.analysis.createManyAndReturn({
-					data: analyses
-				});
+				//console.log("analyses");
+				//const dbAnalyses = await tx.analysis.createManyAndReturn({
+				//	data: analyses
+				//});
 
 				//features
 				console.log("features");
