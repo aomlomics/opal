@@ -177,7 +177,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				}
 			}
 		}
-		return { message: "Success" };
 		const study = StudySchema.parse(studyCol, {
 			errorMap: (error, ctx) => {
 				return { message: `StudySchema: ${ctx.defaultError}` };
@@ -403,6 +402,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 			}
 		};
 
+		return { message: "Success" };
 		await prisma.$transaction(
 			async (tx) => {
 				//study
