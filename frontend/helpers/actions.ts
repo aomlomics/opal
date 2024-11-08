@@ -295,6 +295,8 @@ export async function studyUploadAction(formData: FormData) {
 			}
 		}
 
+		return { response: "Success" };
+
 		//Feature files
 		const features = [] as Prisma.FeatureCreateManyInput[];
 		const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
