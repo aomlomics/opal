@@ -1,4 +1,4 @@
-import StudyUpload from "@/components/studyUpload";
+import StudyUpload from "@/components/StudyUpload";
 import ProjectCatalogue from "@/components/ProjectCatalogue";
 import Search from "@/components/Search";
 import dynamic from "next/dynamic";
