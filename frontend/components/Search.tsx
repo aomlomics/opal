@@ -26,7 +26,11 @@ export default function Search({ placeholder }: { placeholder: string }) {
 
 			const splitSearch = search.match(/\w+/g); //match on any word (\w+) with an optional trailing colon (:?)
 			//set to array of keys that match entire search
-			//setSearchFieldSuggs(Object.keys(testArr[0]).filter((e) => e.toLowerCase().includes(splitSearch[splitSearch.length-1].toLowerCase())));
+			setSearchFieldSuggs(Object.keys(testArr[0]).filter((e) => e.toLowerCase().includes(splitSearch[splitSearch.length-1].toLowerCase())));
+			//set to array of objects where any value in the object matches the entire search
+			//setSearchSuggs(testArr.filter((e) => {
+			//	return Object.values(e).filter((e2) => e2.toLowerCase().includes(search.toLowerCase())).length;
+			//}));
 
 		} else {
 			params.delete("q");
@@ -38,18 +42,18 @@ export default function Search({ placeholder }: { placeholder: string }) {
 	}, 300);
 
 	function suggClick(e: React.MouseEvent) {
-		//const params = new URLSearchParams(searchParams);
+		const params = new URLSearchParams(searchParams);
 
-		////replace the last word with the clicked on suggestion
-		//let splitSearch = params.get("q")!.match(/\w+:?/g)!; //match on any word (\w+) with an optional trailing colon (:?). ! to assert existence since we know they both exist, otherwise the div wouldn't exist
-		//const lastLen = splitSearch[splitSearch.length-1].length;
-		//const newVal = params.get("q")!.trim().slice(0, -lastLen) + (e.target as HTMLElement).innerText + " ";
-		//params.set("q", newVal); //TS can't detect the type of e.target properly, so we assert it inline
-		//replace(`${pathname}?${params.toString()}`);
+		//replace the last word with the clicked on suggestion
+		let splitSearch = params.get("q")!.match(/\w+:?/g)!; //match on any word (\w+) with an optional trailing colon (:?). ! to assert existence since we know they both exist, otherwise the div wouldn't exist
+		const lastLen = splitSearch[splitSearch.length-1].length;
+		const newVal = params.get("q")!.trim().slice(0, -lastLen) + (e.target as HTMLElement).innerText + " ";
+		params.set("q", newVal); //TS can't detect the type of e.target properly, so we assert it inline
+		replace(`${pathname}?${params.toString()}`);
 
-		//const inp = document.getElementById("searchInput")! as HTMLInputElement;
-		//inp.focus();
-		//inp.value = newVal;
+		const inp = document.getElementById("searchInput")! as HTMLInputElement;
+		inp.focus();
+		inp.value = newVal;
 
 		setSearchFieldSuggs([]);
 	}
@@ -62,9 +66,9 @@ export default function Search({ placeholder }: { placeholder: string }) {
 					type="text"
 					className="grow"
 					placeholder={placeholder}
-					//onChange={(e) => {
-					//	handleSearch(e.target.value);
-					//}}
+					onChange={(e) => {
+						handleSearch(e.target.value);
+					}}
 					defaultValue={searchParams.get("q")?.toString()}
 				/>
 				<svg

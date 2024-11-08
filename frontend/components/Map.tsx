@@ -19,25 +19,25 @@ export default function MyMap() {
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
 
 	//jsx element to display markers where the user clicks on the map
-	//function LocationMarkers() {
-	//	useMapEvent("click", (e) => {
-	//		setMarkers((prevValue) => [...prevValue, e.latlng]);
-	//	});
+	function LocationMarkers() {
+		useMapEvent("click", (e) => {
+			setMarkers((prevValue) => [...prevValue, e.latlng]);
+		});
 
-	//	return (
-	//		<>
-	//			{markers.map((marker) => {
-	//				return (
-	//					<Marker key={marker.toString()} icon={ICON} position={marker}>
-	//						<Popup>
-	//							A pretty CSS3 popup. <br /> Easily customizable.
-	//						</Popup>
-	//					</Marker>
-	//				);
-	//			})}
-	//		</>
-	//	);
-	//}
+		return (
+			<>
+				{markers.map((marker) => {
+					return (
+						<Marker key={marker.toString()} icon={ICON} position={marker}>
+							<Popup>
+								A pretty CSS3 popup. <br /> Easily customizable.
+							</Popup>
+						</Marker>
+					);
+				})}
+			</>
+		);
+	}
 
 	//jsx element to reset display markers (DOES NOT WORK WITH LocationMarkers INTERCEPTING CLICK EVENT)
 	function ResetMarkersButton() {
@@ -63,7 +63,7 @@ export default function MyMap() {
 					attribution="&copy; <a href='http://www.openseamap.org'></a>"
 					url="https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png"
 				/>{*/}
-				{/*<LocationMarkers></LocationMarkers>*/}
+				<LocationMarkers></LocationMarkers>
 				{/* <ResetMarkersButton></ResetMarkersButton> */}
 			</MapContainer>
 		</div>
