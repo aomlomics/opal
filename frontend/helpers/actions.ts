@@ -80,7 +80,7 @@ function replaceDead(
 	}
 }
 
-export async function asvUploadAction(prevState: FormState, formData: FormData) {
+export async function studyUploadAction(prevState: FormState, formData: FormData) {
 	try {
 		//Study file
 		const studyCol = {} as Record<string, string>;

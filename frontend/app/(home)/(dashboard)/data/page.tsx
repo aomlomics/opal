@@ -1,4 +1,4 @@
-import AsvUpload from "@/components/AsvUpload";
+import StudyUpload from "@/components/studyUpload";
 import ProjectCatalogue from "@/components/ProjectCatalogue";
 import Search from "@/components/Search";
 import dynamic from "next/dynamic";
@@ -18,7 +18,7 @@ export default async function Dashboard() {
 
 	return (
 		<main className="flex flex-col z-40 m-5 gap-5">
-			<AsvUpload></AsvUpload>
+			<StudyUpload></StudyUpload>
 			<Search placeholder="Search"></Search>
 			<div className="flex-grow">
 				<Map></Map>

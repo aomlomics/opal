@@ -1,10 +1,10 @@
 "use client";
 
-import { asvUploadAction } from "@/helpers/actions";
+import { studyUploadAction } from "@/helpers/actions";
 import { useFormState } from "react-dom";
 
-export default function AsvUpload() {
-	const [state, formAction] = useFormState(asvUploadAction, { message: "" });
+export default function StudyUpload() {
+	const [state, formAction] = useFormState(studyUploadAction, { message: "" });
 
 	return (
 		<form className="card-body" action={formAction}>
