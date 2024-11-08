@@ -82,7 +82,6 @@ function replaceDead(
 
 export async function studyUploadAction(prevState: FormState, formData: FormData) {
 	console.log("start");
-	return { message: "Success" };
 	try {
 		//Study file
 		const studyCol = {} as Record<string, string>;
