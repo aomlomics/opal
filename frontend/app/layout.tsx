@@ -14,7 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<body className={inter.className}>
 				<ClerkProvider appearance={{ elements: { footer: "hidden" } }}>
-					{children}
+					<body className="bg-secondary text-white">
+						{children}
+					</body>
 				</ClerkProvider>
 			</body>
 		</html>

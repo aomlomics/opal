@@ -4,10 +4,9 @@ import { getBaseUrl } from "@/helpers/utils";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import TabButton from "@/components/TabButton";
 
-{/* This push is a test */}
 export default function HomeHeader() {
 	return (
-		<header className="sticky top-0 z-50 bg-secondary border-b-4 border-primary h-24">
+		<header className="sticky top-0 z-200 bg-secondary border-b-4 border-primary h-24">
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logos section - unchanged */}
 				<div className="flex items-center">

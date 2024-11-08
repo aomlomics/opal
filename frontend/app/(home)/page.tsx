@@ -1,79 +1,49 @@
 import Image from "next/image";
 import HomeHeader from "@/components/HomeHeader";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("@/components/Map"), {
+	ssr: false,
+});
 
 export default async function Home() {
 	return (
-		<main className="flex flex-col gap-5 grow">
-			<HomeHeader></HomeHeader>
-			<Image priority={true} src="/images/hero_image.png" alt="" className="fixed z-0 object-cover min-h-full w-full" width={1920} height={500}/>
-			{/* <div className="z-30 mx-20 my-10">
-				<div className="carousel w-full">
-					<div id="slide1" className="carousel-item relative w-full">
-						<Image
-						src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
-						alt=""
-						width={1920} height={500}
-						className="w-full" />
-						<div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-							<a href="#slide4" className="btn btn-circle">❮</a>
-							<a href="#slide2" className="btn btn-circle">❯</a>
-						</div>
+		<main className="flex flex-col grow bg-secondary text-white">
+			<HomeHeader />
+			<div className="relative w-full h-[500px] bg-black overflow-hidden">
+				<Image
+					src="/images/hero_image.png"
+					alt="Hero Image"
+					width={1920}
+					height={600}
+					priority
+					className="w-full h-full object-cover brightness-110 saturate-150 blur-sm"
+				/>
+				<div className="absolute inset-0 bg-black/40"></div>
+				<div className="absolute z-10 text-left text-white px-4 sm:px-6 lg:px-8 top-1/2 -translate-y-2/3">
+					<h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight">
+						<span className="block text-primary animate-slide-in">Welcome</span>
+					</h1>
+					<div className="pl-1 text-lg sm:text-xl md:text-2xl mb-6 text-white">
+							<span className="block text-3xl sm:text-4xl md:text-5xl">
+								to the <span className="text-primary">NOAA Ocean DNA Explorer</span> <span className="text-white">(NODE)</span>
+							</span>
+							<div className="flex flex-wrap">
+								<span>NODE is a data sharing platform, search engine, and visualization and analysis tool</span>
+								<span> for ocean environmental DNA (eDNA) data</span>
+							</div>
 					</div>
-					<div id="slide2" className="carousel-item relative w-full">
-						<Image
-						src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
-						alt=""
-						width={1920} height={500}
-						className="w-full" />
-						<div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-							<a href="#slide1" className="btn btn-circle">❮</a>
-							<a href="#slide3" className="btn btn-circle">❯</a>
-						</div>
-					</div>
-					<div id="slide3" className="carousel-item relative w-full">
-						<Image
-						src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
-						alt=""
-						width={1920} height={500}
-						className="w-full" />
-						<div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-							<a href="#slide2" className="btn btn-circle">❮</a>
-							<a href="#slide4" className="btn btn-circle">❯</a>
-						</div>
-					</div>
-					<div id="slide4" className="carousel-item relative w-full">
-						<Image
-						src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
-						alt=""
-						width={1920} height={500}
-						className="w-full" />
-						<div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-							<a href="#slide3" className="btn btn-circle">❮</a>
-							<a href="#slide1" className="btn btn-circle">❯</a>
-						</div>
-					</div>
+					<a href="/search" className="btn bg-primary text-white hover:bg-primary/80 px-6 py-3 rounded-full shadow-lg transition-transform transform hover:scale-105">
+						Start Searching
+					</a>
 				</div>
-			</div> */}
-			<div className="z-30 bg-base-100 px-20 grow">
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
-				<div>test</div>
+			</div>
+			<div className="z-30 bg-secondary px-10 grow h-[500px]">
+				<div className="flex h-full">
+					<div className="w-3/4 h-full">
+						<Map></Map>
+					</div>
+					<div className="w-1/2">Data Summary</div>
+				</div>
 				<div>test</div>
 			</div>
 		</main>

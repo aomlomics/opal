@@ -51,11 +51,11 @@ export default function MyMap() {
 	}
 
 	return (
-		<div className="flex flex-col items-start h-80 w-3/5">
-			<button className="btn btn-accent" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
-			<MapContainer className="w-full grow" center={centerStart} zoom={ZOOM_LEVEL}>
+		<div className="flex flex-col items-start h-full w-full">
+			<MapContainer className="w-full h-full grow" center={centerStart} zoom={ZOOM_LEVEL}>
 				<TileLayer
-					attribution='Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri &mdash; Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>'
+					/* attribution='Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri &mdash; Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>' */
+					attribution='Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>'
 					url={`https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`}
 				/>
 				{/*}
@@ -66,6 +66,7 @@ export default function MyMap() {
 				<LocationMarkers></LocationMarkers>
 				{/* <ResetMarkersButton></ResetMarkersButton> */}
 			</MapContainer>
+			<button className="btn btn-accent" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
 		</div>
 	);
 };

@@ -20,7 +20,7 @@ export default async function Dashboard() {
 		<main className="flex flex-col z-40 m-5 gap-5">
 			<AsvUpload></AsvUpload>
 			<Search placeholder="Search"></Search>
-			<div className="flex-grow">
+			<div className="flex-grow h-[500px]">
 				<Map></Map>
 			</div>
 			<ProjectCatalogue></ProjectCatalogue>

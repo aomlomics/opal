@@ -26,7 +26,34 @@ module.exports = {
 					"-0.3px 0.3px 0 rgba(0,0,0,0.5)",
 					"0.3px 0.3px 0 rgba(0,0,0,0.5)"
 				]
-			}
+			},
+			animation: {
+				'slide-in': 'slide-in 1s ease-out forwards',
+			},
+			keyframes: {
+				'slide-in': {
+					'0%': { transform: 'translateY(-20px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' },
+				},
+			},
+			theme: {
+				extend: {
+				  animation: {
+					cursor: 'cursor 1s infinite',
+					typing: 'typing 2s steps(40) forwards'
+				  },
+				  keyframes: {
+					cursor: {
+					  '0%, 100%': { opacity: 1 },
+					  '50%': { opacity: 0 }
+					},
+					typing: {
+					  '0%': { width: '0' },
+					  '100%': { width: '100%' }
+					}
+				  }
+				}
+			  },
 		}
 	},
   	plugins: [

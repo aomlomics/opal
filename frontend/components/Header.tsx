@@ -6,7 +6,7 @@ import TabButton from "@/components/TabButton";
 
 export default function Header() {
 	return (
-		<header className="sticky top-0 z-50 bg-secondary border-b-4 border-primary h-24">
+		<header className="sticky top-0 z-200 bg-secondary border-b-4 border-primary h-24">
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logo section */}
 				<div className="flex items-center">
@@ -19,14 +19,13 @@ export default function Header() {
 
 				{/* Right side elements */}
 				<div className="flex items-center gap-4">
-					{/* Tabs with placeholder routes */}
 					<div className="absolute bottom-0 right-[240px] hidden lg:flex space-x-4">
 						<TabButton tabName='Home' route='/' />
 						<TabButton tabName='Advanced Search' route='/data' />
-						<TabButton tabName='Explore' route='/data' /> {/* Placeholder */}
-						<TabButton tabName='Submit' route='/data' /> {/* Placeholder */}
+						<TabButton tabName='Explore' route='/explore' /> 
+						<TabButton tabName='Submit' route='/submit' /> 
 						<TabButton tabName='Tourmaline' route='/tourmaline' />
-						<TabButton tabName='API' route='/data' /> {/* Placeholder */}
+						<TabButton tabName='API' route='/api' /> 
 						<TabButton tabName='About' route='/about' />
 					</div>
 					
