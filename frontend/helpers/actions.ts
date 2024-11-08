@@ -81,7 +81,6 @@ function replaceDead(
 }
 
 export async function studyUploadAction(prevState: FormState, formData: FormData) {
-	console.log("start");
 	try {
 		//Study file
 		const studyCol = {} as Record<string, string>;
@@ -93,7 +92,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		const studyFileHeaders = studyFileLines[0].split("\t");
 		const field_name_i = studyFileHeaders.indexOf("field_name");
 
-		console.log("study file");
 		//iterate over each row
 		for (let i = 1; i < studyFileLines.length; i++) {
 			const currentLine = studyFileLines[i].split("\t");
@@ -206,7 +204,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		const libraryFileLines = (await (formData.get("libraryFile") as File).text()).split("\n");
 		libraryFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 		const libraryFileHeaders = libraryFileLines[0].split("\t");
-		console.log("library file");
 		//iterate over each row
 		for (let i = 1; i < libraryFileLines.length; i++) {
 			const currentLine = libraryFileLines[i].split("\t");
@@ -270,7 +267,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		const sampleFileLines = (await (formData.get("samplesFile") as File).text()).split("\n");
 		sampleFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 		const sampleFileHeaders = sampleFileLines[0].split("\t");
-		console.log("sample file");
 		//iterate over each row
 		for (let i = 1; i < sampleFileLines.length; i++) {
 			const currentLine = sampleFileLines[i].split("\t");
@@ -302,7 +298,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				//TODO: add rel_cont_id to assays
 			}
 		}
-		return { message: "Success" };
 
 		//ASV files
 		const features = [] as Prisma.FeatureCreateManyInput[];
@@ -324,7 +319,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 			ssu18sv9: []
 		} as Record<string, AssignmentPartial[]>;
 
-		console.log("asv files");
 		//loop over every ASV file
 		let asvKey: keyof typeof asvFiles;
 		for (asvKey in asvFiles) {
@@ -406,13 +400,11 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		await prisma.$transaction(
 			async (tx) => {
 				//study
-				console.log("study");
 				await tx.study.create({
 					data: study
 				});
 
 				//assays and samples
-				console.log("assays and samples");
 				for (let a of assays) {
 					const reducedSamples = samples.reduce((filtered, samp) => {
 						if (sampToAssay[samp.samp_name] === a.assay_name) {
@@ -445,7 +437,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				}
 
 				//analyses and libraries
-				console.log("analyses and libraries");
 				const dbAnalyses = [] as Analysis[];
 				for (let a of analyses) {
 					const analysis = await tx.analysis.create({
@@ -470,14 +461,12 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				}
 
 				//features
-				console.log("features");
 				await tx.feature.createMany({
 					data: features,
 					skipDuplicates: true
 				});
 
 				//occurrences
-				console.log("occurrences");
 				const occurrences = [] as Prisma.OccurrenceCreateManyInput[];
 				let occKey: keyof typeof occFiles;
 				for (occKey in occFiles) {
@@ -520,14 +509,12 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				});
 
 				//taxonomies
-				console.log("taxonomies");
 				await tx.taxonomy.createMany({
 					data: taxonomies,
 					skipDuplicates: true
 				});
 
 				//assignments
-				console.log("assignments");
 				const assignments = [] as Prisma.AssignmentCreateManyInput[];
 				//associate the assignment to its analysis
 				for (let assay_name in assignmentsObj) {
@@ -561,7 +548,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		return { message: "Success" };
 	} catch (err) {
 		const error = err as Error;
-		console.log(error.message);
+		console.error(error.message);
 		return { message: "Error", error: error.message };
 	}
 }
