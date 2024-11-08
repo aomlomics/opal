@@ -55,6 +55,8 @@ export default function StudyUpload() {
 					});
 				}
 			}
+			let err;
+			let res;
 			try {
 				await pushBlob("16sFeatFile");
 				await pushBlob("16sOccFile");
@@ -63,11 +65,11 @@ export default function StudyUpload() {
 
 				formData.set("analysisFiles", JSON.stringify(analysisFiles));
 
-				const res = await studyUploadAction(formData);
-				if (res.error) {
-					setError(res.error);
-				} else if (res.response) {
-					setResponse(res.response);
+				const result = await studyUploadAction(formData);
+				if (result.error) {
+					err = result.error;
+				} else if (result.response) {
+					res = result.response;
 				} else {
 					console.log("?");
 				}
@@ -78,6 +80,12 @@ export default function StudyUpload() {
 					await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
 						method: "DELETE"
 					});
+				}
+
+				if (err) {
+					setError(err);
+				} else if (res) {
+					setResponse(res);
 				}
 				setLoading(false);
 			}

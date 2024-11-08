@@ -410,8 +410,6 @@ export async function studyUploadAction(formData: FormData) {
 			}
 		};
 
-		return { response: "Success" };
-
 		await prisma.$transaction(
 			async (tx) => {
 				//study
