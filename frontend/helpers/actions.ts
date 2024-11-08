@@ -299,67 +299,70 @@ export async function studyMetadataUploadAction(formData: FormData) {
 
 		const dbAnalyses = [] as { id: number; assay_name: string }[];
 
-		await prisma.$transaction(async (tx) => {
-			//study
-			await tx.study.create({
-				data: study
-			});
-
-			//assays and samples
-			for (let a of assays) {
-				const reducedSamples = samples.reduce((filtered, samp) => {
-					if (sampToAssay[samp.samp_name] === a.assay_name) {
-						filtered.push({
-							where: {
-								samp_name: samp.samp_name
-							},
-							create: samp
-						});
-					}
-					return filtered;
-				}, [] as Prisma.SampleCreateOrConnectWithoutAssaysInput[]);
-
-				await tx.assay.upsert({
-					where: {
-						assay_name: a.assay_name
-					},
-					update: {
-						Samples: {
-							connectOrCreate: reducedSamples
-						}
-					},
-					create: {
-						...a,
-						Samples: {
-							connectOrCreate: reducedSamples
-						}
-					}
+		await prisma.$transaction(
+			async (tx) => {
+				//study
+				await tx.study.create({
+					data: study
 				});
-			}
 
-			//analyses and libraries
-			for (let a of analyses) {
-				const analysis = await tx.analysis.create({
-					data: {
-						...a,
-						Libraries: {
-							connectOrCreate: libraries.reduce((filtered, lib) => {
-								if (libToAssay[lib.library_id] === a.assay_name) {
-									filtered.push({
-										where: {
-											library_id: lib.library_id
-										},
-										create: lib
-									});
-								}
-								return filtered;
-							}, [] as Prisma.LibraryCreateOrConnectWithoutAnalysisInput[])
+				//assays and samples
+				for (let a of assays) {
+					const reducedSamples = samples.reduce((filtered, samp) => {
+						if (sampToAssay[samp.samp_name] === a.assay_name) {
+							filtered.push({
+								where: {
+									samp_name: samp.samp_name
+								},
+								create: samp
+							});
 						}
-					}
-				});
-				dbAnalyses.push({ id: analysis.id, assay_name: analysis.assay_name });
-			}
-		});
+						return filtered;
+					}, [] as Prisma.SampleCreateOrConnectWithoutAssaysInput[]);
+
+					await tx.assay.upsert({
+						where: {
+							assay_name: a.assay_name
+						},
+						update: {
+							Samples: {
+								connectOrCreate: reducedSamples
+							}
+						},
+						create: {
+							...a,
+							Samples: {
+								connectOrCreate: reducedSamples
+							}
+						}
+					});
+				}
+
+				//analyses and libraries
+				for (let a of analyses) {
+					const analysis = await tx.analysis.create({
+						data: {
+							...a,
+							Libraries: {
+								connectOrCreate: libraries.reduce((filtered, lib) => {
+									if (libToAssay[lib.library_id] === a.assay_name) {
+										filtered.push({
+											where: {
+												library_id: lib.library_id
+											},
+											create: lib
+										});
+									}
+									return filtered;
+								}, [] as Prisma.LibraryCreateOrConnectWithoutAnalysisInput[])
+							}
+						}
+					});
+					dbAnalyses.push({ id: analysis.id, assay_name: analysis.assay_name });
+				}
+			},
+			{ timeout: 30000 }
+		);
 
 		return { response: "Success", dbAnalyses };
 	} catch (err) {
