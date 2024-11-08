@@ -93,7 +93,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		const field_name_i = studyFileHeaders.indexOf("field_name");
 
 		//iterate over each row
-		console.log("study file");
 		for (let i = 1; i < studyFileLines.length; i++) {
 			const currentLine = studyFileLines[i].split("\t");
 
@@ -206,7 +205,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		libraryFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 		const libraryFileHeaders = libraryFileLines[0].split("\t");
 		//iterate over each row
-		console.log("library file");
 		for (let i = 1; i < libraryFileLines.length; i++) {
 			const currentLine = libraryFileLines[i].split("\t");
 
@@ -270,7 +268,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		sampleFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 		const sampleFileHeaders = sampleFileLines[0].split("\t");
 		//iterate over each row
-		console.log("sample file");
 		for (let i = 1; i < sampleFileLines.length; i++) {
 			const currentLine = sampleFileLines[i].split("\t");
 			if (currentLine[sampleFileHeaders.indexOf("samp_name")]) {
@@ -323,7 +320,6 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		} as Record<string, AssignmentPartial[]>;
 
 		//loop over every ASV file
-		console.log("asv files");
 		let asvKey: keyof typeof asvFiles;
 		for (asvKey in asvFiles) {
 			for (let i = 1; i < asvFiles[asvKey].lines.length; i++) {
@@ -404,13 +400,11 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		await prisma.$transaction(
 			async (tx) => {
 				//study
-				console.log("study");
 				await tx.study.create({
 					data: study
 				});
 
 				//assays and samples
-				console.log("assays and samples");
 				for (let a of assays) {
 					const reducedSamples = samples.reduce((filtered, samp) => {
 						if (sampToAssay[samp.samp_name] === a.assay_name) {
@@ -442,21 +436,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 					});
 				}
 
-				//assays
-				//console.log("assays");
-				//await tx.assay.createMany({
-				//	data: assays,
-				//	skipDuplicates: true
-				//});
-
-				//samples
-				//console.log("samples");
-				//await tx.sample.createMany({
-				//	data: samples
-				//});
-
 				//analyses and libraries
-				console.log("analyses and libraries");
 				const dbAnalyses = [] as Analysis[];
 				for (let a of analyses) {
 					const analysis = await tx.analysis.create({
@@ -480,28 +460,13 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 					dbAnalyses.push(analysis);
 				}
 
-				//libraries
-				//console.log("libraries");
-				//await tx.library.createMany({
-				//	data: libraries,
-				//	skipDuplicates: true
-				//});
-
-				//analyses
-				//console.log("analyses");
-				//const dbAnalyses = await tx.analysis.createManyAndReturn({
-				//	data: analyses
-				//});
-
 				//features
-				console.log("features");
 				await tx.feature.createMany({
 					data: features,
 					skipDuplicates: true
 				});
 
 				//occurrences
-				console.log("occurrences");
 				const occurrences = [] as Prisma.OccurrenceCreateManyInput[];
 				let occKey: keyof typeof occFiles;
 				for (occKey in occFiles) {
@@ -544,14 +509,12 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 				});
 
 				//taxonomies
-				console.log("taxonomies");
 				await tx.taxonomy.createMany({
 					data: taxonomies,
 					skipDuplicates: true
 				});
 
 				//assignments
-				console.log("assignments");
 				const assignments = [] as Prisma.AssignmentCreateManyInput[];
 				//associate the assignment to its analysis
 				for (let assay_name in assignmentsObj) {
@@ -585,7 +548,7 @@ export async function studyUploadAction(prevState: FormState, formData: FormData
 		return { message: "Success" };
 	} catch (e) {
 		const error = e as Error;
-		//console.log(error.message);
+		console.log(error.message);
 		return { message: "Error", error: error.message };
 	}
 }
