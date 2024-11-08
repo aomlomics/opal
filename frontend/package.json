@@ -11,7 +11,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "node prisma/seed.ts",
-    "postinstall": "prisma generate --generator js; prisma generate --generator zod"
+    "postinstall": "prisma generate --generator js; prisma generate --generator zod; prisma db push"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.7.1",
