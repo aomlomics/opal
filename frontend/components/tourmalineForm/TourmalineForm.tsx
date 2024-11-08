@@ -1,4 +1,4 @@
-"use client"
+"use client";
 /*
 ---TODO---
 
@@ -12,64 +12,67 @@
 
 */
 
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { getRemoteUrl } from '@/helpers/utils';
-import { serialize } from 'object-to-formdata';
-import InfoButton from '@/components/tourmalineForm/InfoButton';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+//import { getRemoteUrl } from '@/helpers/utils';
+import { serialize } from "object-to-formdata";
+import InfoButton from "@/components/tourmalineForm/InfoButton";
 import { schema, SchemaData } from "@/components/tourmalineForm/schema";
 
-import DenoiseMethodTab from '@/components/tourmalineForm/FormTabs/DenoiseMethodTab';
-import AboutTab from '@/components/tourmalineForm/FormTabs/AboutTab';
-import TaxonomicTab from '@/components/tourmalineForm/FormTabs/TaxonomicTab';
-import MsaTab from '@/components/tourmalineForm/FormTabs/MsaTab';
-import OutlierDetectionTab from '@/components/tourmalineForm/FormTabs/OutlierDetectionTab';
+import DenoiseMethodTab from "@/components/tourmalineForm/FormTabs/DenoiseMethodTab";
+import AboutTab from "@/components/tourmalineForm/FormTabs/AboutTab";
+import TaxonomicTab from "@/components/tourmalineForm/FormTabs/TaxonomicTab";
+import MsaTab from "@/components/tourmalineForm/FormTabs/MsaTab";
+import OutlierDetectionTab from "@/components/tourmalineForm/FormTabs/OutlierDetectionTab";
 import SubsamplingTab from "@/components/tourmalineForm/FormTabs/SubsamplingTab";
-import BetaGroupTab from '@/components/tourmalineForm/FormTabs/BetaGroupTab';
-import DeicodeBetaTab from '@/components/tourmalineForm/FormTabs/DeicodeBetaTab';
-import ThreadsTab from '@/components/tourmalineForm/FormTabs/ThreadsTab';
-import ReportThemeTab from '@/components/tourmalineForm/FormTabs/ReportThemeTab';
-import FilteringTab from '@/components/tourmalineForm/FormTabs/FilteringTab';
-import MetadataTab from '@/components/tourmalineForm/FormTabs/MetadataTab';
-
-
+import BetaGroupTab from "@/components/tourmalineForm/FormTabs/BetaGroupTab";
+import DeicodeBetaTab from "@/components/tourmalineForm/FormTabs/DeicodeBetaTab";
+import ThreadsTab from "@/components/tourmalineForm/FormTabs/ThreadsTab";
+import ReportThemeTab from "@/components/tourmalineForm/FormTabs/ReportThemeTab";
+import FilteringTab from "@/components/tourmalineForm/FormTabs/FilteringTab";
+import MetadataTab from "@/components/tourmalineForm/FormTabs/MetadataTab";
 
 export default function TourmalineForm() {
-	const [activeTab, setActiveTab] = useState('About'); // Initial active tab
+	const [activeTab, setActiveTab] = useState("About"); // Initial active tab
 	const [formSubmitted, setFormSubmitted] = useState(false);
 
 	//Array of tab order for page navigation buttons
 	const tabOrder = [
-		'About',
-		'Denoise',
-		'Taxonomic Level',
-		'Multiple Sequence Alignment',
-		'Outlier Detection',
-		'Subsampling (Rarefaction)',
-		'Beta Group Significance',
-		'Deicode Beta Diversity',
-		'Report Theme',
-		'Filtering',
-		'Metadata',
-		'Submit'
+		"About",
+		"Denoise",
+		"Taxonomic Level",
+		"Multiple Sequence Alignment",
+		"Outlier Detection",
+		"Subsampling (Rarefaction)",
+		"Beta Group Significance",
+		"Deicode Beta Diversity",
+		"Report Theme",
+		"Filtering",
+		"Metadata",
+		"Submit"
 	];
 
-	function nextTab(){
+	function nextTab() {
 		const currentIndex = tabOrder.indexOf(activeTab);
 		const nextIndex = (currentIndex + 1) % tabOrder.length;
 		setActiveTab(tabOrder[nextIndex]);
 	}
 
-	function prevTab(){
+	function prevTab() {
 		const currentIndex = tabOrder.indexOf(activeTab);
 		const previousIndex = (currentIndex - 1 + tabOrder.length) % tabOrder.length;
 		setActiveTab(tabOrder[previousIndex]);
 	}
 
-	const { register, handleSubmit, formState: { isValid, errors }, watch } = useForm<SchemaData>({
-    	resolver: zodResolver(schema),
-    	mode: 'onBlur',
+	const {
+		register,
+		handleSubmit,
+		formState: { isValid, errors },
+		watch
+	} = useForm<SchemaData>({
+		resolver: zodResolver(schema),
+		mode: "onBlur",
 		//All default values can be set here
 		defaultValues: {
 			dada2pe_trunc_len_f: 240,
@@ -126,7 +129,7 @@ export default function TourmalineForm() {
 
 			report_theme: "github",
 
-			filtering_election: "unfiltered",
+			filtering_election: "unfiltered"
 
 			/*
 			dada2pe_threads: 8,
@@ -142,13 +145,13 @@ export default function TourmalineForm() {
 	});
 
 	// Watch for changes to the denoiseMethod field
-	const selectedDenoiseMethod = watch('denoiseMethod');
+	const selectedDenoiseMethod = watch("denoiseMethod");
 
 	//Watch for msaMethod to render the muscle_iters field
-	const selectedMsaMethod = watch('msaMethod');
+	const selectedMsaMethod = watch("msaMethod");
 
 	//Watch for rendering infobutton text based on taxonomic classifier method
-	const selectedTaxClassifier = watch('taxClassMethod')
+	const selectedTaxClassifier = watch("taxClassMethod");
 
 	// Manually register the file input field for metadata file
 	// React.useEffect(() => {
@@ -156,8 +159,8 @@ export default function TourmalineForm() {
 	// }, [register]);
 
 	async function onSubmit(data: SchemaData) {
-		console.log(data)
-		const body = serialize(data) // convert SchemaData object to FormData
+		console.log(data);
+		const body = serialize(data); // convert SchemaData object to FormData
 		// formData.append('denoiseMethod', data.denoiseMethod); // Append denoiseMethod to FormData
 		// if(data.taxonomicLevel !== undefined) { // Ensure taxonomicLevel is defined before appending
 		//   formData.append('taxonomicLevel', data.taxonomicLevel.toString()); // Convert taxonomicLevel to string and append
@@ -169,7 +172,7 @@ export default function TourmalineForm() {
 		// }
 
 		try {
-			const response = await fetch(`${getRemoteUrl()}/tourmalineReceive`, {
+			const response = await fetch(`/tourmalineReceive`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "multipart/form-data"
@@ -185,76 +188,73 @@ export default function TourmalineForm() {
 			const result = await response.json();
 			console.log(result); // Log the server response
 		} catch (error) {
-			console.error('Submission error:', error); // Log any errors
+			console.error("Submission error:", error); // Log any errors
 			setFormSubmitted(false); // Optionally reset formSubmitted to allow resubmission
 		}
-  	};
+	}
 
 	return (
 		<div className="flex w-full bg-neutral rounded-2xl">
 			<ul className="menu bg-white w-1/4 rounded-2xl">
-				<li className={activeTab === 'About' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('About')}>About</a>
+				<li className={activeTab === "About" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("About")}>About</a>
 				</li>
-				<li className={activeTab === 'Denoise' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Denoise')}>Denoise</a>
+				<li className={activeTab === "Denoise" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Denoise")}>Denoise</a>
 				</li>
-				<li className={activeTab === 'Taxonomic Level' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Taxonomic Level')}>Taxonomic Classification</a>
+				<li className={activeTab === "Taxonomic Level" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Taxonomic Level")}>Taxonomic Classification</a>
 				</li>
-				<li className={activeTab === 'Multiple Sequence Alignment' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Multiple Sequence Alignment')}>Multiple Sequence Alignment</a>
+				<li className={activeTab === "Multiple Sequence Alignment" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Multiple Sequence Alignment")}>Multiple Sequence Alignment</a>
 				</li>
-				<li className={activeTab === 'Outlier Detection' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Outlier Detection')}>Outlier Detection</a>
+				<li className={activeTab === "Outlier Detection" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Outlier Detection")}>Outlier Detection</a>
 				</li>
-				<li className={activeTab === 'Subsampling (Rarefaction)' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Subsampling (Rarefaction)')}>Subsampling (Rarefaction)</a>
+				<li className={activeTab === "Subsampling (Rarefaction)" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Subsampling (Rarefaction)")}>Subsampling (Rarefaction)</a>
 				</li>
-				<li className={activeTab === 'Beta Group Significance' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Beta Group Significance')}>Beta Group Significance</a>
+				<li className={activeTab === "Beta Group Significance" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Beta Group Significance")}>Beta Group Significance</a>
 				</li>
-				<li className={activeTab === 'Deicode Beta Diversity' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Deicode Beta Diversity')}>Deicode Beta Diversity</a>
+				<li className={activeTab === "Deicode Beta Diversity" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Deicode Beta Diversity")}>Deicode Beta Diversity</a>
 				</li>
-				<li className={activeTab === 'Report Theme' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Report Theme')}>Report Theme</a>
+				<li className={activeTab === "Report Theme" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Report Theme")}>Report Theme</a>
 				</li>
-				<li className={activeTab === 'Filtering' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Filtering')}>Filtering</a>
+				<li className={activeTab === "Filtering" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Filtering")}>Filtering</a>
 				</li>
 				{/* <li className={activeTab === 'Threads' ? 'bg-secondary text-white rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Threads')}>Threads</a>
 				</li> */}
-				<li className={activeTab === 'Metadata' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Metadata')}>Metadata</a>
+				<li className={activeTab === "Metadata" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Metadata")}>Metadata</a>
 				</li>
-				<li className={activeTab === 'Submit' ? 'bg-secondary text-white rounded-2xl' : ''}>
-					<a onClick={() => setActiveTab('Submit')}>Submit</a>
+				<li className={activeTab === "Submit" ? "bg-secondary text-white rounded-2xl" : ""}>
+					<a onClick={() => setActiveTab("Submit")}>Submit</a>
 				</li>
 			</ul>
 			<div className="flex-grow p-1 flex flex-col items-center">
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col w-full max-w-md h-full justify-between">
-
 					{/* Tab rendering */}
-					{activeTab === 'About' && (
-						<AboutTab></AboutTab>
-					)}
-					{activeTab === 'Denoise' && (
+					{activeTab === "About" && <AboutTab></AboutTab>}
+					{activeTab === "Denoise" && (
 						<DenoiseMethodTab
 							register={register}
 							errors={errors}
 							selectedDenoiseMethod={selectedDenoiseMethod}
 						></DenoiseMethodTab>
 					)}
-					{activeTab === 'Taxonomic Level' && (
+					{activeTab === "Taxonomic Level" && (
 						<TaxonomicTab
 							register={register}
 							errors={errors}
 							selectedTaxClassifier={selectedTaxClassifier} // Add the selectedTaxClassifier prop
 						></TaxonomicTab>
 					)}
-					{activeTab === 'Multiple Sequence Alignment' && (
+					{activeTab === "Multiple Sequence Alignment" && (
 						<>
 							<MsaTab
 								register={register}
@@ -263,55 +263,28 @@ export default function TourmalineForm() {
 							/>
 						</>
 					)}
-					{activeTab === 'Outlier Detection' && (
-						<OutlierDetectionTab
-							register={register}
-							errors={errors}
-						></OutlierDetectionTab>
+					{activeTab === "Outlier Detection" && (
+						<OutlierDetectionTab register={register} errors={errors}></OutlierDetectionTab>
 					)}
-					{activeTab === 'Subsampling (Rarefaction)' && (
-						<SubsamplingTab
-							register={register}
-							errors={errors}
-						></SubsamplingTab>
+					{activeTab === "Subsampling (Rarefaction)" && (
+						<SubsamplingTab register={register} errors={errors}></SubsamplingTab>
 					)}
-					{activeTab === 'Beta Group Significance' && (
-						<BetaGroupTab
-							register={register}
-							errors={errors}
-						></BetaGroupTab>
+					{activeTab === "Beta Group Significance" && <BetaGroupTab register={register} errors={errors}></BetaGroupTab>}
+					{activeTab === "Deicode Beta Diversity" && (
+						<DeicodeBetaTab register={register} errors={errors}></DeicodeBetaTab>
 					)}
-					{activeTab === 'Deicode Beta Diversity' && (
-						<DeicodeBetaTab
-							register={register}
-							errors={errors}
-						></DeicodeBetaTab>
-					)}
-					{activeTab === 'Report Theme' && (
-						<ReportThemeTab
-							register={register}
-							errors={errors}
-						></ReportThemeTab>
-					)}
-					{activeTab === 'Filtering' && (
-						<FilteringTab
-							register={register}
-							errors={errors}
-						></FilteringTab>
-					)}
+					{activeTab === "Report Theme" && <ReportThemeTab register={register} errors={errors}></ReportThemeTab>}
+					{activeTab === "Filtering" && <FilteringTab register={register} errors={errors}></FilteringTab>}
 					{/* {activeTab === 'Threads' && (
 						//write me the 8 fields for threads
 						<ThreadsTab register={register} errors={errors}></ThreadsTab>
 					)} */}
-					{activeTab === 'Metadata' && (
-						<MetadataTab
-							register={register}
-							errors={errors}
-						></MetadataTab>
-					)}
-					{activeTab === 'Submit' && (
-						<div className='pt-24'>
-							<p className="text-md text-center text-secondary">Please carefully check all of your inputs before submitting. Remember: garbage in, garbage out.</p>
+					{activeTab === "Metadata" && <MetadataTab register={register} errors={errors}></MetadataTab>}
+					{activeTab === "Submit" && (
+						<div className="pt-24">
+							<p className="text-md text-center text-secondary">
+								Please carefully check all of your inputs before submitting. Remember: garbage in, garbage out.
+							</p>
 							<div className="flex justify-center p-4">
 								<button
 									type="submit"
@@ -325,11 +298,14 @@ export default function TourmalineForm() {
 							</div>
 						</div>
 					)}
-					<div className='flex justify-center space-x-2 mt-4'>
-						<button type='button' className='btn btn-primary' onClick={prevTab}>«</button>
-						<button type='button' className='btn btn-primary' onClick={nextTab}>»</button>
+					<div className="flex justify-center space-x-2 mt-4">
+						<button type="button" className="btn btn-primary" onClick={prevTab}>
+							«
+						</button>
+						<button type="button" className="btn btn-primary" onClick={nextTab}>
+							»
+						</button>
 					</div>
-
 				</form>
 			</div>
 		</div>
