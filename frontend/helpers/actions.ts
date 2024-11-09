@@ -82,13 +82,13 @@ export async function studyMetadataUploadAction(formData: FormData) {
 		const assays = [] as Prisma.AssayCreateManyInput[];
 		const libraries = [] as Prisma.LibraryCreateManyInput[];
 		const samples = [] as Prisma.SampleCreateManyInput[];
-		let analyses = [] as Prisma.AnalysisCreateManyInput[];
+		//let analyses = [] as Prisma.AnalysisCreateManyInput[];
 
 		//Study file
 		const studyCol = {} as Record<string, string>;
 		const assayCols = {} as Record<string, Record<string, string>>;
 		const libraryCols = {} as Record<string, Record<string, string>>;
-		const analysisCols = {} as Record<string, Record<string, string>>;
+		//const analysisCols = {} as Record<string, Record<string, string>>;
 		//parse file
 		const studyFileLines = (await (formData.get("studyFile") as File).text()).split("\n");
 		const studyFileHeaders = studyFileLines[0].split("\t");
@@ -164,16 +164,16 @@ export async function studyMetadataUploadAction(formData: FormData) {
 					);
 
 					//Analyses
-					if (!analysisCols[studyFileHeaders[i]]) {
-						analysisCols[studyFileHeaders[i]] = {};
-					}
-					replaceDead(
-						currentLine[i],
-						currentLine[field_name_i],
-						analysisCols[studyFileHeaders[i]],
-						AnalysisSchema,
-						AnalysisScalarFieldEnumSchema
-					);
+					//if (!analysisCols[studyFileHeaders[i]]) {
+					//	analysisCols[studyFileHeaders[i]] = {};
+					//}
+					//replaceDead(
+					//	currentLine[i],
+					//	currentLine[field_name_i],
+					//	analysisCols[studyFileHeaders[i]],
+					//	AnalysisSchema,
+					//	AnalysisScalarFieldEnumSchema
+					//);
 				}
 			}
 		}
@@ -182,20 +182,20 @@ export async function studyMetadataUploadAction(formData: FormData) {
 				return { message: `StudySchema: ${ctx.defaultError}` };
 			}
 		});
-		analyses = Object.entries(analysisCols).map(([assay_name, col]) =>
-			AnalysisOptionalDefaultsSchema.parse(
-				{
-					...col,
-					...studyCol,
-					assay_name
-				},
-				{
-					errorMap: (error, ctx) => {
-						return { message: `AnalysisSchema: ${ctx.defaultError}` };
-					}
-				}
-			)
-		);
+		//analyses = Object.entries(analysisCols).map(([assay_name, col]) =>
+		//	AnalysisOptionalDefaultsSchema.parse(
+		//		{
+		//			...col,
+		//			...studyCol,
+		//			assay_name
+		//		},
+		//		{
+		//			errorMap: (error, ctx) => {
+		//				return { message: `AnalysisSchema: ${ctx.defaultError}` };
+		//			}
+		//		}
+		//	)
+		//);
 
 		//Library file
 		const sampToAssay = {} as Record<string, string>; //object to relate samples to their assay_name values
@@ -297,7 +297,7 @@ export async function studyMetadataUploadAction(formData: FormData) {
 			}
 		}
 
-		const dbAnalyses = [] as { id: number; assay_name: string }[];
+		//const dbAnalyses = [] as { id: number; assay_name: string }[];
 
 		await prisma.$transaction(
 			async (tx) => {
@@ -338,33 +338,40 @@ export async function studyMetadataUploadAction(formData: FormData) {
 					});
 				}
 
+				//libraries
+				await tx.library.createMany({
+					data: libraries,
+					skipDuplicates: true
+				});
+
 				//analyses and libraries
-				for (let a of analyses) {
-					const analysis = await tx.analysis.create({
-						data: {
-							...a,
-							Libraries: {
-								connectOrCreate: libraries.reduce((filtered, lib) => {
-									if (libToAssay[lib.library_id] === a.assay_name) {
-										filtered.push({
-											where: {
-												library_id: lib.library_id
-											},
-											create: lib
-										});
-									}
-									return filtered;
-								}, [] as Prisma.LibraryCreateOrConnectWithoutAnalysisInput[])
-							}
-						}
-					});
-					dbAnalyses.push({ id: analysis.id, assay_name: analysis.assay_name });
-				}
+				//TODO: move analyses out of metadata
+				//for (let a of analyses) {
+				//	const analysis = await tx.analysis.create({
+				//		data: {
+				//			...a,
+				//			Libraries: {
+				//				connectOrCreate: libraries.reduce((filtered, lib) => {
+				//					if (libToAssay[lib.library_id] === a.assay_name) {
+				//						filtered.push({
+				//							where: {
+				//								library_id: lib.library_id
+				//							},
+				//							create: lib
+				//						});
+				//					}
+				//					return filtered;
+				//				}, [] as Prisma.LibraryCreateOrConnectWithoutAnalysisInput[])
+				//			}
+				//		}
+				//	});
+				//	dbAnalyses.push({ id: analysis.id, assay_name: analysis.assay_name });
+				//}
 			},
 			{ timeout: 30000 }
 		);
 
-		return { response: "Success", dbAnalyses };
+		return { response: "Success" };
 	} catch (err) {
 		const error = err as Error;
 		console.error(error.message);
@@ -374,7 +381,8 @@ export async function studyMetadataUploadAction(formData: FormData) {
 
 export async function analysisUploadAction(formData: FormData) {
 	try {
-		const analysis = JSON.parse(formData.get("analysis") as string) as { id: number; assay_name: string };
+		//TODO: parse analysis
+		//const analysis = JSON.parse(formData.get("analysis") as string) as { id: number; assay_name: string };
 
 		const features = [] as Prisma.FeatureCreateManyInput[];
 		const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
@@ -538,7 +546,7 @@ export async function analysisUploadAction(formData: FormData) {
 					data: assignments
 				});
 			},
-			{ timeout: 60000 }
+			{ timeout: 120000 }
 		);
 
 		return { response: "Success" };

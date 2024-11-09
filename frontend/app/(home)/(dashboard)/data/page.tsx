@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 const Map = dynamic(() => import("@/components/Map"), {
 	ssr: false
 });
-export const maxDuration = 120;
+export const maxDuration = 300;
 
 export default async function Dashboard() {
 	return (
