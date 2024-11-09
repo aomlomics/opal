@@ -1,9 +1,9 @@
-import Header from "@/components/Header";
+import Header from "@/components/header/Header";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<div>
-			<Header/>
+			<Header />
 			{children}
 		</div>
 	);
