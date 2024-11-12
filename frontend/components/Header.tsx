@@ -25,7 +25,7 @@ export default function Header() {
 						<TabButton tabName='Explore' route='/explore' /> 
 						<TabButton tabName='Submit' route='/submit' /> 
 						<TabButton tabName='Tourmaline' route='/tourmaline' />
-						<TabButton tabName='API' route='/api' /> 
+						<TabButton tabName='API' route='/data' />  {/* Placeholder route, talk to Carter */}
 						<TabButton tabName='About' route='/about' />
 					</div>
 					

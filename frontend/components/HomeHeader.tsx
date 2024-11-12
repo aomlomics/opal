@@ -31,10 +31,10 @@ export default function HomeHeader() {
 					<div className="absolute bottom-0 right-[240px] hidden lg:flex space-x-4">
 						<TabButton tabName='Home' route='/' />
 						<TabButton tabName='Advanced Search' route='/data' />
-						<TabButton tabName='Explore' route='/data' /> {/* Placeholder */}
-						<TabButton tabName='Submit' route='/data' /> {/* Placeholder */}
+						<TabButton tabName='Explore' route='/explore' />
+						<TabButton tabName='Submit' route='/submit' /> 
 						<TabButton tabName='Tourmaline' route='/tourmaline' />
-						<TabButton tabName='API' route='/data' /> {/* Placeholder */}
+						<TabButton tabName='API' route='/data' />  {/* Placeholder route, talk to Carter */}
 						<TabButton tabName='About' route='/about' />
 					</div>
 					

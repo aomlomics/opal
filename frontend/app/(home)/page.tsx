@@ -37,6 +37,11 @@ export default async function Home() {
 					</a>
 				</div>
 			</div>
+			<div className="flex flex-col grow bg-secondary">
+				<h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight">
+					<span className="block text-primary animate-slide-in">Data summary</span>
+				</h1>
+			</div>
 			<div className="z-30 bg-secondary px-10 grow h-[500px]">
 				<div className="flex h-full">
 					<div className="w-3/4 h-full">
