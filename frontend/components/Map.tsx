@@ -14,7 +14,16 @@ export default function MyMap() {
 	const centerStart = { lat: 25.7617, lng: -80.8918 };
 	const ZOOM_LEVEL = 5
 
-	const [markers, setMarkers] = useState([centerStart]);
+	const initialMarkers = [
+		centerStart,
+		{ lat: 28.3852, lng: -65.7218 }, // North Atlantic
+		{ lat: 22.4937, lng: -72.8340 }, // Caribbean
+		{ lat: 32.1451, lng: -77.3428 }, // Gulf Stream
+		{ lat: 19.8968, lng: -84.9472 }, // Western Caribbean
+		{ lat: 26.7459, lng: -88.2437 }  // Gulf of Mexico
+	];
+
+	const [markers, setMarkers] = useState(initialMarkers);
 
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
 
@@ -39,34 +48,15 @@ export default function MyMap() {
 		);
 	}
 
-	//jsx element to reset display markers (DOES NOT WORK WITH LocationMarkers INTERCEPTING CLICK EVENT)
-	function ResetMarkersButton() {
-		return (
-			<div className="leaflet-left leaflet-bottom">
-				<div className="leaflet-bar leaflet-control">
-					<button className="text-black bg-white p-1" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
-				</div>
-			</div>
-		);
-	}
-
 	return (
 		<div className="flex flex-col items-start h-full w-full">
 			<MapContainer className="w-full h-full grow" center={centerStart} zoom={ZOOM_LEVEL}>
 				<TileLayer
-					/* attribution='Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri &mdash; Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>' */
 					attribution='Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>'
 					url={`https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`}
 				/>
-				{/*}
-				<TileLayer
-					attribution="&copy; <a href='http://www.openseamap.org'></a>"
-					url="https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png"
-				/>{*/}
-				<LocationMarkers></LocationMarkers>
-				{/* <ResetMarkersButton></ResetMarkersButton> */}
+				<LocationMarkers />
 			</MapContainer>
-			<button className="btn btn-accent" onClick={() => setMarkers([centerStart])}>Reset Markers</button>
 		</div>
 	);
 };

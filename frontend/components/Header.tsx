@@ -6,7 +6,7 @@ import TabButton from "@/components/TabButton";
 
 export default function Header() {
 	return (
-		<header className="sticky top-0 z-200 bg-secondary border-b-4 border-primary h-24">
+		<header className="top-0 z-header bg-secondary border-b-4 border-primary h-24">
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logo section */}
 				<div className="flex items-center">
@@ -18,26 +18,26 @@ export default function Header() {
 				</div>
 
 				{/* Right side elements */}
-				<div className="flex items-center gap-4">
-					<div className="absolute bottom-0 right-[240px] hidden lg:flex space-x-4">
-						<TabButton tabName='Home' route='/' />
-						<TabButton tabName='Advanced Search' route='/data' />
-						<TabButton tabName='Explore' route='/explore' /> 
-						<TabButton tabName='Submit' route='/submit' /> 
-						<TabButton tabName='Tourmaline' route='/tourmaline' />
-						<TabButton tabName='API' route='/data' />  {/* Placeholder route, talk to Carter */}
-						<TabButton tabName='About' route='/about' />
-					</div>
-					
-					<div className="mr-5">
+				<div className="flex flex-col items-end mr-4 h-full">
+					<div className="z-header pt-2">
 						<SignedIn>
 							<UserButton />
 						</SignedIn>
 						<SignedOut>
 							<SignInButton>
-								<button className="btn bg-primary text-white hover:bg-primary/80">Sign In</button>   
+								<button className="btn btn-sm btn-secondary bg-primary outline-none text-white hover:bg-primary/80">Sign In</button>   
 							</SignInButton>
 						</SignedOut>
+					</div>
+					
+					<div className="hidden lg:flex space-x-4 z-header mt-auto mb-0">
+						<TabButton tabName='Home' route='/' />
+						<TabButton tabName='Advanced Search' route='/data' />
+						<TabButton tabName='Explore' route='/explore' />
+						<TabButton tabName='Submit' route='/submit' />
+						<TabButton tabName='Tourmaline' route='/tourmaline' />
+						<TabButton tabName='API' route='/data' />
+						<TabButton tabName='About' route='/about' />
 					</div>
 				</div>
 			</div>

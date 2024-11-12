@@ -19,6 +19,7 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			// This is for darkening the Hero Image
 			dropShadow: {
 				full: [
 					"-0.3px -0.3px 0 rgba(0,0,0,0.5)",
@@ -27,6 +28,7 @@ module.exports = {
 					"0.3px 0.3px 0 rgba(0,0,0,0.5)"
 				]
 			},
+			// Example of a CSS animation for the 'Welcome' text. Good for future reference
 			animation: {
 				'slide-in': 'slide-in 1s ease-out forwards',
 			},
@@ -36,24 +38,28 @@ module.exports = {
 					'100%': { transform: 'translateY(0)', opacity: '1' },
 				},
 			},
-			theme: {
-				extend: {
-				  animation: {
-					cursor: 'cursor 1s infinite',
-					typing: 'typing 2s steps(40) forwards'
-				  },
-				  keyframes: {
-					cursor: {
-					  '0%, 100%': { opacity: 1 },
-					  '50%': { opacity: 0 }
-					},
-					typing: {
-					  '0%': { width: '0' },
-					  '100%': { width: '100%' }
-					}
-				  }
-				}
-			  },
+			// Standardized z-index values for layer priority
+			zIndex: {
+				// Base layer for default content
+				'base': '1',
+				
+				// Content layers
+				'content': '10', // Regular content
+				'content-overlay': '20', // Overlays on content, like images or text overlays
+				
+				// UI elements
+				'header': '100', // Header component
+				'footer': '90', // Footer component
+				'dropdown': '200', // Dropdown menus
+				
+				// Modals and overlays
+				'modal': '1000', // Modal dialogs
+				'modal-overlay': '999', // Overlay behind modals
+				
+				// Notifications
+				'toast': '2000', // Toast notifications (usually in bottom right) 
+				'alert': '2100', // Alerts or other high-priority notifications
+			},
 		}
 	},
   	plugins: [
