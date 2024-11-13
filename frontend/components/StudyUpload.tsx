@@ -36,25 +36,35 @@ export default function StudyUpload() {
 
 		const formData = new FormData(event.currentTarget);
 
+		async function pushBlob(name: string) {
+			const file = formData.get(name) as File;
+			formData.delete(name);
+			const fileObj = await upload(file.name, file, {
+				access: "public",
+				handleUploadUrl: "/api/analysisFile/upload",
+				multipart: true
+			});
+			formData.set(name, JSON.stringify(fileObj));
+			return fileObj;
+		}
+
 		const blobs = [];
+
 		try {
 			if (process.env.NODE_ENV !== "development") {
 				for (const a of analyses) {
-					async function pushBlob(name: string) {
-						const file = formData.get(name) as File;
-						formData.delete(name);
-						const fileObj = await upload(file.name, file, {
-							access: "public",
-							handleUploadUrl: "/api/analysisFile/upload",
-							multipart: true
-						});
-						formData.set(name, JSON.stringify(fileObj));
-						return fileObj;
-					}
-
 					blobs.push(await pushBlob(`${a}_feat`));
 					blobs.push(await pushBlob(`${a}_occ`));
 				}
+			}
+
+			const result = await studyUploadAction(formData);
+			if (result.error) {
+				setError(result.error);
+			} else if (result.response) {
+				setResponse(result.response);
+			} else {
+				setError("Unknown error.");
 			}
 		} catch (error) {
 			setError(`Error: ${(error as Error).message}. Make sure you are logged into a NOAA or MSU account.`);
@@ -66,15 +76,6 @@ export default function StudyUpload() {
 					});
 				}
 			}
-		}
-
-		const result = await studyUploadAction(formData);
-		if (result.error) {
-			setError(result.error);
-		} else if (result.response) {
-			setResponse(result.response);
-		} else {
-			setError("Unknown error.");
 		}
 
 		setLoading(false);

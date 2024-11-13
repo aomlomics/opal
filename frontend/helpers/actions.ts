@@ -306,7 +306,7 @@ export async function studyUploadAction(formData: FormData) {
 		const assignmentsObj = {} as Record<string, AssignmentPartial[]>;
 		const occurrencesObj = {} as Record<string, OccurrencePartial[]>;
 
-		//parsefiles for each analysis
+		//parse files for each analysis
 		for (const { assay_name } of analyses) {
 			assignmentsObj[assay_name] = [];
 			occurrencesObj[assay_name] = [];
