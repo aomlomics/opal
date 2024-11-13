@@ -507,7 +507,11 @@ export async function studyUploadAction(formData: FormData) {
 				const occurrences = [] as Prisma.OccurrenceCreateManyInput[];
 				//associate the occurrence to its analysis
 				for (const { id, assay_name } of dbAnalyses) {
+					console.log("occurrences ", assay_name);
+					let i = 0;
 					for (let occ of occurrencesObj[assay_name]) {
+						if (i % 100000) console.log(`${assay_name}, ${occ.featureid}, ${occ.samp_name}`);
+						i++;
 						//parse the occurrence, including the associated analysis
 						occurrences.push(
 							OccurrenceOptionalDefaultsSchema.parse(
@@ -543,7 +547,10 @@ export async function studyUploadAction(formData: FormData) {
 				const assignments = [] as Prisma.AssignmentCreateManyInput[];
 				//associate the assignment to its analysis
 				for (const { id, assay_name } of dbAnalyses) {
+					console.log("assignments ", assay_name);
+					let i = 0;
 					for (let a of assignmentsObj[assay_name]) {
+						if (i % 10000) console.log(`${assay_name}, ${a.featureid}, ${a.Confidence}`);
 						//parse the assignment, including the associated analysis
 						assignments.push(
 							AssignmentOptionalDefaultsSchema.parse(
