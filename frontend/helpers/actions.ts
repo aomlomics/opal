@@ -580,7 +580,7 @@ export async function studyUploadAction(formData: FormData) {
 					data: assignments
 				});
 			},
-			{ timeout: 3 * 60 * 1000 } //3 minutes
+			{ timeout: 4 * 60 * 1000 } //3 minutes
 		);
 
 		return { response: "Success" };
