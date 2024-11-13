@@ -188,7 +188,8 @@ export async function studyUploadAction(formData: FormData) {
 				{
 					...col,
 					...studyCol,
-					assay_name
+					assay_name,
+					project_id: study.project_id
 				},
 				{
 					errorMap: (error, ctx) => {
@@ -305,7 +306,7 @@ export async function studyUploadAction(formData: FormData) {
 		const assignmentsObj = {} as Record<string, AssignmentPartial[]>;
 		const occurrencesObj = {} as Record<string, OccurrencePartial[]>;
 
-		//parse each analysis
+		//parsefiles for each analysis
 		for (const { assay_name } of analyses) {
 			assignmentsObj[assay_name] = [];
 			occurrencesObj[assay_name] = [];
@@ -487,7 +488,7 @@ export async function studyUploadAction(formData: FormData) {
 										});
 									}
 									return filtered;
-								}, [] as Prisma.LibraryCreateOrConnectWithoutAnalysisInput[])
+								}, [] as Prisma.LibraryCreateOrConnectWithoutAnalysesInput[])
 							}
 						}
 					});

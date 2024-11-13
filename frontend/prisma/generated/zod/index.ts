@@ -20,7 +20,7 @@ export const AssayScalarFieldEnumSchema = z.enum(['assay_name','neg_cont_type','
 
 export const LibraryScalarFieldEnumSchema = z.enum(['library_id','assay_name','barcoding_pcr_appr','platform','instrument','seq_kit','lib_layout','sequencing_location','adapter_forward','adapter_reverse','lib_screen','seq_method_additional','mid_forward','mid_reverse','filename','filename2','seq_run_id','biosample_accession','input_read_count','seq_samp_id','associatedSequences']);
 
-export const AnalysisScalarFieldEnumSchema = z.enum(['id','assay_name','sop_bioinformatics','trim_method','trim_param','demux_tool','demux_max_mismatch','merge_tool','merge_min_overlap','min_len_cutoff','min_len_tool','error_rate_tool','error_rate_type','error_rate_cutoff','chimera_check_method','chimera_check_param','otu_clust_tool','otu_clust_cutoff','min_reads_cutoff','min_reads_cutoff_unit','min_reads_tool','otu_db','otu_db_custom','tax_assign_cat','otu_seq_comp_appr','tax_class_id_cutoff','tax_class_query_cutoff','tax_class_collapse','tax_class_other','screen_contam_method','screen_geograph_method','screen_nontarget_method','screen_other','bioinfo_method_additional']);
+export const AnalysisScalarFieldEnumSchema = z.enum(['id','project_id','assay_name','sop_bioinformatics','trim_method','trim_param','demux_tool','demux_max_mismatch','merge_tool','merge_min_overlap','min_len_cutoff','min_len_tool','error_rate_tool','error_rate_type','error_rate_cutoff','chimera_check_method','chimera_check_param','otu_clust_tool','otu_clust_cutoff','min_reads_cutoff','min_reads_cutoff_unit','min_reads_tool','otu_db','otu_db_custom','tax_assign_cat','otu_seq_comp_appr','tax_class_id_cutoff','tax_class_query_cutoff','tax_class_collapse','tax_class_other','screen_contam_method','screen_geograph_method','screen_nontarget_method','screen_other','bioinfo_method_additional']);
 
 export const OccurrenceScalarFieldEnumSchema = z.enum(['id','analysisId','samp_name','featureid','organismQuantity']);
 
@@ -438,6 +438,7 @@ export type LibraryOptionalDefaults = z.infer<typeof LibraryOptionalDefaultsSche
 
 export const AnalysisSchema = z.object({
   id: z.number().int(),
+  project_id: z.string(),
   assay_name: z.string(),
   sop_bioinformatics: z.string().nullish(),
   trim_method: z.string().nullish(),

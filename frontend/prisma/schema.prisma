@@ -262,6 +262,7 @@ model Study {
 
     // Relations
     Samples     Sample[]
+    Analyses    Analysis[]
     GenericData GenericData[]
 
     // Data
@@ -493,7 +494,7 @@ model Assay {
     // Relations
     Samples     Sample[]
     Libraries   Library[]
-    Analysis    Analysis[]
+    Analyses    Analysis[]
     GenericData GenericData[]
 
     // Data
@@ -563,7 +564,7 @@ model Library {
     // Relations
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
-    Analysis    Analysis[]
+    Analyses    Analysis[]
     GenericData GenericData[]
 
     //Data
@@ -598,6 +599,8 @@ model Analysis {
     id Int @id @default(autoincrement())
 
     // Relations
+    project_id  String
+    Study       Study         @relation(fields: [project_id], references: [project_id])
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
     Libraries   Library[]
