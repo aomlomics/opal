@@ -18,6 +18,7 @@ import {
 	FeatureSchema,
 	LibraryScalarFieldEnumSchema,
 	LibrarySchema,
+	ObservationSchema,
 	OccurrenceOptionalDefaultsSchema,
 	OccurrencePartial,
 	OccurrenceScalarFieldEnumSchema,
@@ -304,6 +305,7 @@ export async function studyUploadAction(formData: FormData) {
 		const features = [] as Prisma.FeatureCreateManyInput[];
 		const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
 		const assignmentsObj = {} as Record<string, AssignmentPartial[]>;
+		const observations = [] as Prisma.ObservationCreateManyInput[];
 		const occurrencesObj = {} as Record<string, OccurrencePartial[]>;
 
 		//parse files for each analysis
@@ -405,23 +407,27 @@ export async function studyUploadAction(formData: FormData) {
 						const organismQuantity = parseInt(currentLine[j]);
 
 						if (organismQuantity) {
-							occurrencesObj[assay_name].push(
-								//OccurrenceOptionalDefaultsSchema.parse(
-								{
-									//analysisId,
-									samp_name,
-									featureid,
-									organismQuantity
-								}
-								//{
-								//	errorMap: (error, ctx) => {
-								//		return {
-								//			message: `OccurrenceSchema (${assay_name}, ${featureid}, ${samp_name}): ${ctx.defaultError}`
-								//		};
-								//	}
-								//}
-								//)
+							//observation table
+							observations.push(
+								ObservationSchema.parse(
+									{
+										id: `${samp_name}:${featureid}`,
+										samp_name,
+										featureid
+									},
+									{
+										errorMap: (error, ctx) => {
+											return { message: `ObservationSchema: ${ctx.defaultError}` };
+										}
+									}
+								)
 							);
+
+							//occurrence table
+							occurrencesObj[assay_name].push({
+								observationId: `${samp_name}:${featureid}`,
+								organismQuantity
+							});
 						}
 					}
 				}
@@ -502,16 +508,19 @@ export async function studyUploadAction(formData: FormData) {
 					skipDuplicates: true
 				});
 
+				//observations
+				console.log("observations");
+				await tx.observation.createMany({
+					data: observations,
+					skipDuplicates: true
+				});
+
 				//occurrences
 				console.log("occurrences");
 				const occurrences = [] as Prisma.OccurrenceCreateManyInput[];
 				//associate the occurrence to its analysis
 				for (const { id, assay_name } of dbAnalyses) {
-					console.log("occurrences ", assay_name);
-					let i = 0;
 					for (let occ of occurrencesObj[assay_name]) {
-						if (i % 100000 === 0) console.log(`${assay_name}, ${occ.featureid}, ${occ.samp_name}`);
-						i++;
 						//parse the occurrence, including the associated analysis
 						occurrences.push(
 							OccurrenceOptionalDefaultsSchema.parse(
@@ -522,7 +531,7 @@ export async function studyUploadAction(formData: FormData) {
 								{
 									errorMap: (error, ctx) => {
 										return {
-											message: `OccurrenceSchema (${assay_name}, ${occ.featureid}, ${occ.samp_name}): ${ctx.defaultError}`
+											message: `OccurrenceSchema (${assay_name}, ${occ.observationId}): ${ctx.defaultError}`
 										};
 									}
 								}
@@ -547,10 +556,7 @@ export async function studyUploadAction(formData: FormData) {
 				const assignments = [] as Prisma.AssignmentCreateManyInput[];
 				//associate the assignment to its analysis
 				for (const { id, assay_name } of dbAnalyses) {
-					console.log("assignments ", assay_name);
-					let i = 0;
 					for (let a of assignmentsObj[assay_name]) {
-						if (i % 10000 === 0) console.log(`${assay_name}, ${a.featureid}, ${a.Confidence}`);
 						//parse the assignment, including the associated analysis
 						assignments.push(
 							AssignmentOptionalDefaultsSchema.parse(

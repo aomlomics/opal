@@ -298,11 +298,11 @@ model Sample {
     samp_name String @id @unique
 
     // Relations
-    project_id  String
-    Study       Study         @relation(fields: [project_id], references: [project_id])
-    Assays      Assay[]
-    Occurrence  Occurrence[]
-    GenericData GenericData[]
+    project_id   String
+    Study        Study         @relation(fields: [project_id], references: [project_id])
+    Assays       Assay[]
+    Observations Observation[]
+    GenericData  GenericData[]
 
     // Data
     // User Defined
@@ -653,30 +653,43 @@ model Analysis {
 }
 
 // ASVs
+model Observation {
+    id String @id
+
+    // Relations
+    samp_name   String
+    Sample      Sample       @relation(fields: [samp_name], references: [samp_name])
+    featureid   String
+    Feature     Feature      @relation(fields: [featureid], references: [featureid])
+    Occurrences Occurrence[]
+
+    @@unique([samp_name, featureid])
+}
+
 model Occurrence {
     id Int @id @default(autoincrement())
 
     // Relations
-    analysisId Int
-    Analysis   Analysis @relation(fields: [analysisId], references: [id])
-    samp_name  String
-    Sample     Sample   @relation(fields: [samp_name], references: [samp_name])
-    featureid  String
-    Feature    Feature  @relation(fields: [featureid], references: [featureid])
+    analysisId    Int
+    Analysis      Analysis    @relation(fields: [analysisId], references: [id])
+    observationId String
+    Observation   Observation @relation(fields: [observationId], references: [id])
 
     // Data
     /// @zod.custom.use(z.coerce.number().int())
     organismQuantity Int
+
+    @@unique([analysisId, observationId])
 }
 
 model Feature {
     featureid String @id @unique
 
     // Relations
-    Occurrences         Occurrence[]
+    Observations        Observation[]
     Assignments         Assignment[]
     consensusTaxonomyId String?
-    consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [taxonomy])
+    consensusTaxonomy   Taxonomy?     @relation(fields: [consensusTaxonomyId], references: [taxonomy])
 
     // Data
     dna_sequence String
