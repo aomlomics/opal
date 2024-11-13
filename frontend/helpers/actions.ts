@@ -510,7 +510,7 @@ export async function studyUploadAction(formData: FormData) {
 					console.log("occurrences ", assay_name);
 					let i = 0;
 					for (let occ of occurrencesObj[assay_name]) {
-						if (i % 100000) console.log(`${assay_name}, ${occ.featureid}, ${occ.samp_name}`);
+						if (i % 100000 === 0) console.log(`${assay_name}, ${occ.featureid}, ${occ.samp_name}`);
 						i++;
 						//parse the occurrence, including the associated analysis
 						occurrences.push(
@@ -550,7 +550,7 @@ export async function studyUploadAction(formData: FormData) {
 					console.log("assignments ", assay_name);
 					let i = 0;
 					for (let a of assignmentsObj[assay_name]) {
-						if (i % 10000) console.log(`${assay_name}, ${a.featureid}, ${a.Confidence}`);
+						if (i % 10000 === 0) console.log(`${assay_name}, ${a.featureid}, ${a.Confidence}`);
 						//parse the assignment, including the associated analysis
 						assignments.push(
 							AssignmentOptionalDefaultsSchema.parse(
