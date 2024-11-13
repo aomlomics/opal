@@ -654,8 +654,6 @@ model Analysis {
 
 // ASVs
 model Observation {
-    id String @id
-
     // Relations
     samp_name   String
     Sample      Sample       @relation(fields: [samp_name], references: [samp_name])
@@ -663,23 +661,22 @@ model Observation {
     Feature     Feature      @relation(fields: [featureid], references: [featureid])
     Occurrences Occurrence[]
 
-    @@unique([samp_name, featureid])
+    @@id(name: "id", [samp_name, featureid])
 }
 
 model Occurrence {
-    id Int @id @default(autoincrement())
-
     // Relations
-    analysisId    Int
-    Analysis      Analysis    @relation(fields: [analysisId], references: [id])
-    observationId String
-    Observation   Observation @relation(fields: [observationId], references: [id])
+    analysisId  Int
+    Analysis    Analysis    @relation(fields: [analysisId], references: [id])
+    samp_name   String
+    featureid   String
+    Observation Observation @relation(fields: [samp_name, featureid], references: [samp_name, featureid])
 
     // Data
     /// @zod.custom.use(z.coerce.number().int())
     organismQuantity Int
 
-    @@unique([analysisId, observationId])
+    @@id(name: "id", [analysisId, samp_name, featureid])
 }
 
 model Feature {
@@ -696,8 +693,6 @@ model Feature {
 }
 
 model Assignment {
-    id Int @id @default(autoincrement())
-
     // Relations
     analysisId Int
     Analysis   Analysis @relation(fields: [analysisId], references: [id])
@@ -709,6 +704,8 @@ model Assignment {
     // Data
     /// @zod.custom.use(z.coerce.number())
     Confidence Float
+
+    @@id(name: "id", [analysisId, featureid, taxonomy])
 }
 
 model Taxonomy {
@@ -738,16 +735,16 @@ model GenericData {
     id Int @id @default(autoincrement())
 
     // Relations
-    project_id String
-    Study      Study    @relation(fields: [project_id], references: [project_id])
-    samp_name  String
-    Sample     Sample   @relation(fields: [samp_name], references: [samp_name])
-    assay_name String
-    Assay      Assay    @relation(fields: [assay_name], references: [assay_name])
-    library_id String
-    Library    Library  @relation(fields: [library_id], references: [library_id])
-    analysisId Int
-    Analysis   Analysis @relation(fields: [analysisId], references: [id])
+    project_id String?
+    Study      Study?    @relation(fields: [project_id], references: [project_id])
+    samp_name  String?
+    Sample     Sample?   @relation(fields: [samp_name], references: [samp_name])
+    assay_name String?
+    Assay      Assay?    @relation(fields: [assay_name], references: [assay_name])
+    library_id String?
+    Library    Library?  @relation(fields: [library_id], references: [library_id])
+    analysisId Int?
+    Analysis   Analysis? @relation(fields: [analysisId], references: [id])
 
     // Data
     key   String

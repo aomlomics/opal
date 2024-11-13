@@ -314,7 +314,7 @@ export async function studyUploadAction(formData: FormData) {
 			occurrencesObj[assay_name] = [];
 
 			//Feature file
-			console.log(`${assay_name}_feat`);
+			console.log(`${assay_name}_feat file`);
 			let featFileLines;
 			if (process.env.NODE_ENV === "development") {
 				//get files from form data
@@ -378,7 +378,7 @@ export async function studyUploadAction(formData: FormData) {
 			}
 
 			//Occurrence file
-			console.log(`${assay_name}_occ`);
+			console.log(`${assay_name}_occ file`);
 			let occFileLines;
 			if (process.env.NODE_ENV === "development") {
 				//get files from form data
@@ -411,7 +411,6 @@ export async function studyUploadAction(formData: FormData) {
 							observations.push(
 								ObservationSchema.parse(
 									{
-										id: `${samp_name}:${featureid}`,
 										samp_name,
 										featureid
 									},
@@ -425,7 +424,8 @@ export async function studyUploadAction(formData: FormData) {
 
 							//occurrence table
 							occurrencesObj[assay_name].push({
-								observationId: `${samp_name}:${featureid}`,
+								samp_name,
+								featureid,
 								organismQuantity
 							});
 						}
@@ -523,7 +523,7 @@ export async function studyUploadAction(formData: FormData) {
 					for (let occ of occurrencesObj[assay_name]) {
 						//parse the occurrence, including the associated analysis
 						occurrences.push(
-							OccurrenceOptionalDefaultsSchema.parse(
+							OccurrenceSchema.parse(
 								{
 									...occ,
 									analysisId: id
@@ -531,7 +531,7 @@ export async function studyUploadAction(formData: FormData) {
 								{
 									errorMap: (error, ctx) => {
 										return {
-											message: `OccurrenceSchema (${assay_name}, ${occ.observationId}): ${ctx.defaultError}`
+											message: `OccurrenceSchema (${assay_name}, ${occ.samp_name}, ${occ.featureid}): ${ctx.defaultError}`
 										};
 									}
 								}
@@ -559,7 +559,7 @@ export async function studyUploadAction(formData: FormData) {
 					for (let a of assignmentsObj[assay_name]) {
 						//parse the assignment, including the associated analysis
 						assignments.push(
-							AssignmentOptionalDefaultsSchema.parse(
+							AssignmentSchema.parse(
 								{
 									...a,
 									analysisId: id

@@ -22,13 +22,13 @@ export const LibraryScalarFieldEnumSchema = z.enum(['library_id','assay_name','b
 
 export const AnalysisScalarFieldEnumSchema = z.enum(['id','project_id','assay_name','sop_bioinformatics','trim_method','trim_param','demux_tool','demux_max_mismatch','merge_tool','merge_min_overlap','min_len_cutoff','min_len_tool','error_rate_tool','error_rate_type','error_rate_cutoff','chimera_check_method','chimera_check_param','otu_clust_tool','otu_clust_cutoff','min_reads_cutoff','min_reads_cutoff_unit','min_reads_tool','otu_db','otu_db_custom','tax_assign_cat','otu_seq_comp_appr','tax_class_id_cutoff','tax_class_query_cutoff','tax_class_collapse','tax_class_other','screen_contam_method','screen_geograph_method','screen_nontarget_method','screen_other','bioinfo_method_additional']);
 
-export const ObservationScalarFieldEnumSchema = z.enum(['id','samp_name','featureid']);
+export const ObservationScalarFieldEnumSchema = z.enum(['samp_name','featureid']);
 
-export const OccurrenceScalarFieldEnumSchema = z.enum(['id','analysisId','observationId','organismQuantity']);
+export const OccurrenceScalarFieldEnumSchema = z.enum(['analysisId','samp_name','featureid','organismQuantity']);
 
 export const FeatureScalarFieldEnumSchema = z.enum(['featureid','consensusTaxonomyId','dna_sequence']);
 
-export const AssignmentScalarFieldEnumSchema = z.enum(['id','analysisId','featureid','taxonomy','Confidence']);
+export const AssignmentScalarFieldEnumSchema = z.enum(['analysisId','featureid','taxonomy','Confidence']);
 
 export const TaxonomyScalarFieldEnumSchema = z.enum(['taxonomy','verbatimIdentification','domain','kingdom','supergroup','division','subdivision','phylum','taxonClass','order','family','genus','species']);
 
@@ -500,7 +500,6 @@ export type AnalysisOptionalDefaults = z.infer<typeof AnalysisOptionalDefaultsSc
 /////////////////////////////////////////
 
 export const ObservationSchema = z.object({
-  id: z.string(),
   samp_name: z.string(),
   featureid: z.string(),
 })
@@ -528,9 +527,9 @@ export type ObservationOptionalDefaults = z.infer<typeof ObservationOptionalDefa
 /////////////////////////////////////////
 
 export const OccurrenceSchema = z.object({
-  id: z.number().int(),
   analysisId: z.number().int(),
-  observationId: z.string(),
+  samp_name: z.string(),
+  featureid: z.string(),
   organismQuantity: z.coerce.number().int(),
 })
 
@@ -548,7 +547,6 @@ export type OccurrencePartial = z.infer<typeof OccurrencePartialSchema>
 //------------------------------------------------------
 
 export const OccurrenceOptionalDefaultsSchema = OccurrenceSchema.merge(z.object({
-  id: z.number().int().optional(),
 }))
 
 export type OccurrenceOptionalDefaults = z.infer<typeof OccurrenceOptionalDefaultsSchema>
@@ -586,7 +584,6 @@ export type FeatureOptionalDefaults = z.infer<typeof FeatureOptionalDefaultsSche
 /////////////////////////////////////////
 
 export const AssignmentSchema = z.object({
-  id: z.number().int(),
   analysisId: z.number().int(),
   featureid: z.string(),
   taxonomy: z.string(),
@@ -607,7 +604,6 @@ export type AssignmentPartial = z.infer<typeof AssignmentPartialSchema>
 //------------------------------------------------------
 
 export const AssignmentOptionalDefaultsSchema = AssignmentSchema.merge(z.object({
-  id: z.number().int().optional(),
 }))
 
 export type AssignmentOptionalDefaults = z.infer<typeof AssignmentOptionalDefaultsSchema>
@@ -656,11 +652,11 @@ export type TaxonomyOptionalDefaults = z.infer<typeof TaxonomyOptionalDefaultsSc
 
 export const GenericDataSchema = z.object({
   id: z.number().int(),
-  project_id: z.string(),
-  samp_name: z.string(),
-  assay_name: z.string(),
-  library_id: z.string(),
-  analysisId: z.number().int(),
+  project_id: z.string().nullish(),
+  samp_name: z.string().nullish(),
+  assay_name: z.string().nullish(),
+  library_id: z.string().nullish(),
+  analysisId: z.number().int().nullish(),
   key: z.string(),
   value: z.string(),
 })
