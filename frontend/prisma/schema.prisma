@@ -8,10 +8,10 @@ generator js {
     provider = "prisma-client-js"
 }
 
-generator dbml {
-    provider   = "prisma-dbml-generator"
-    outputName = "OpalERD.dbml"
-}
+//generator dbml {
+//    provider   = "prisma-dbml-generator"
+//    outputName = "OpalERD.dbml"
+//}
 
 generator zod {
     provider                         = "zod-prisma-types"
