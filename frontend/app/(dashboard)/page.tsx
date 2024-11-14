@@ -1,5 +1,6 @@
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 const Map = dynamic(() => import("@/app/components/Map"), {
 	ssr: false
 });
@@ -41,21 +42,23 @@ export default async function Home() {
 					</div>
 				</div>
 			</div>
+
 			<div className="bg-base-300 h-[200px] relative">
-				<div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-modal animate-bounce">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						className="h-8 w-8"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-					</svg>
-				</div>
+				<Link href="#dataSummary">
+					<div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-modal animate-bounce">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="h-8 w-8"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+						</svg>
+					</div>
+				</Link>
 			</div>
-			<div className="bg-base-300 h-100vh"></div>
-			<div className="z-content bg-base-300 px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+			<div id="dataSummary" className="z-content bg-base-300 px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
 					<div className="bg-primary/20 p-6 rounded-lg text-center border-2 border-primary">
 						<h3 className="text-base-content text-lg mb-2">Studies</h3>

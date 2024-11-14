@@ -1,6 +1,3 @@
-import Link from "next/link";
-import Image from "next/image";
-//import { getBaseUrl } from "@/app/helpers/utils";
 import Nav from "./Nav";
 import LoginButton from "./LoginButton";
 import Logo from "./Logo";
