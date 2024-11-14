@@ -193,43 +193,43 @@ export default function TourmalineForm() {
 	return (
 		<div className="flex w-full bg-neutral rounded-2xl">
 			<ul className="menu bg-white w-1/4 rounded-2xl">
-				<li className={activeTab === 'About' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'About' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('About')}>About</a>
 				</li>
-				<li className={activeTab === 'Denoise' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Denoise' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Denoise')}>Denoise</a>
 				</li>
-				<li className={activeTab === 'Taxonomic Level' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Taxonomic Level' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Taxonomic Level')}>Taxonomic Classification</a>
 				</li>
-				<li className={activeTab === 'Multiple Sequence Alignment' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Multiple Sequence Alignment' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Multiple Sequence Alignment')}>Multiple Sequence Alignment</a>
 				</li>
-				<li className={activeTab === 'Outlier Detection' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Outlier Detection' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Outlier Detection')}>Outlier Detection</a>
 				</li>
-				<li className={activeTab === 'Subsampling (Rarefaction)' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Subsampling (Rarefaction)' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Subsampling (Rarefaction)')}>Subsampling (Rarefaction)</a>
 				</li>
-				<li className={activeTab === 'Beta Group Significance' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Beta Group Significance' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Beta Group Significance')}>Beta Group Significance</a>
 				</li>
-				<li className={activeTab === 'Deicode Beta Diversity' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Deicode Beta Diversity' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Deicode Beta Diversity')}>Deicode Beta Diversity</a>
 				</li>
-				<li className={activeTab === 'Report Theme' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Report Theme' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Report Theme')}>Report Theme</a>
 				</li>
-				<li className={activeTab === 'Filtering' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Filtering' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Filtering')}>Filtering</a>
 				</li>
 				{/* <li className={activeTab === 'Threads' ? 'bg-secondary text-white rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Threads')}>Threads</a>
 				</li> */}
-				<li className={activeTab === 'Metadata' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Metadata' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Metadata')}>Metadata</a>
 				</li>
-				<li className={activeTab === 'Submit' ? 'bg-secondary text-white rounded-2xl' : ''}>
+				<li className={activeTab === 'Submit' ? 'bg-primary text-base-content rounded-2xl' : ''}>
 					<a onClick={() => setActiveTab('Submit')}>Submit</a>
 				</li>
 			</ul>

@@ -7,7 +7,7 @@ const Map = dynamic(() => import("@/components/Map"), {
 
 export default async function Home() {
 	return (
-		<main className="flex flex-col grow bg-secondary text-white">
+		<main className="flex flex-col grow bg-base-200 text-base-content">
 			<HomeHeader />
 			<div className="relative w-full h-[450px] bg-black overflow-hidden z-content-overlay">
 				<Image
@@ -23,11 +23,11 @@ export default async function Home() {
 					<h1 className="text-5xl sm:text-6xl md:text-7xl mb-2">
 						<span className="block text-primary animate-slide-in">Welcome</span>
 					</h1>
-					<div className="text-gray-300">
+					<div className="text-base-content">
 						<span className="block text-3xl sm:text-4xl md:text-5xl mb-2">
 							to the <span className="text-primary">NOAA Ocean DNA Explorer</span>
 						</span>
-						<div className="text-lg sm:text-xl mb-6">
+						<div className="text-lg sm:text-xl mb-6 text-base-content">
 							<span>NODE is a data sharing platform, search engine, and visualization and analysis tool</span>
 							<span> for ocean environmental DNA (eDNA) data</span>
 						</div>
@@ -43,18 +43,18 @@ export default async function Home() {
 					</div>
 				</div>
 			</div>
-			<div className="bg-secondary h-[200px] relative">
+			<div className="bg-base-300 h-[200px] relative">
 				<div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-modal animate-bounce">
-					<svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="white">
+					<svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
 					</svg>
 				</div>
 			</div>
-			<div className="bg-secondary h-100vh"></div>
-			<div className="z-content bg-secondary px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+			<div className="bg-base-300 h-100vh"></div>
+			<div className="z-content bg-base-300 px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
 					<div className="bg-primary/20 p-6 rounded-lg text-center border-2 border-primary">
-						<h3 className="text-white text-lg mb-2">Studies</h3>
+						<h3 className="text-base-content text-lg mb-2">Studies</h3>
 						<p className="text-primary text-3xl font-bold">53</p>
 					</div>
 					{/* These will need to be components once they use actual data */}
@@ -75,7 +75,7 @@ export default async function Home() {
 				
 				{/* Funding Institutes Section */}
 				<div className="mt-32 mb-24 text-center">
-					<h2 className="text-3xl text-gray-300 font-semibold mb-12">Funding Institutes???</h2>
+					<h2 className="text-3xl text-gray-300 font-semibold mb-12">Supported By:</h2>
 					
 					<div className="max-w-4xl mx-auto text-lg text-gray-300 mb-16">
 						<p>
@@ -98,8 +98,8 @@ export default async function Home() {
 						</p>
 					</div>
 
-					<div className="flex justify-center items-center gap-16">
-						<div className="relative h-16 w-48">
+					<div className="flex justify-center items-center gap-20">
+						<div className="relative h-24 w-64">
 							<Image 
 								src="/images/Noaa_exploration_light.svg"
 								alt="NOAA Exploration Logo"
@@ -107,11 +107,12 @@ export default async function Home() {
 								style={{objectFit: "contain"}}
 							/>
 						</div>
-						<div className="relative h-24 w-72">
+						<div>
 							<Image 
-								src="/images/MSU_NGI_white_logo.svg"
+								src="/images/HORIZONTAL_WEB_white_maroon.svg"
 								alt="MSU NGI Logo"
-								fill={true}
+								width={500}
+								height={300}
 								style={{objectFit: "contain"}}
 							/>
 						</div>

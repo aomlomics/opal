@@ -59,7 +59,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
 	}
 
 	return (
-		<div className="relative flex flex-1 flex-shrink-0 relative inline-block">
+		<div className="relative flex flex-1 flex-shrink-0">
 			<label className="input input-bordered flex items-center gap-2 bg-neutral-content w-full">
 				<input
 					id="searchInput"

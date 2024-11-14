@@ -3,15 +3,16 @@ import Image from "next/image";
 import { getBaseUrl } from "@/helpers/utils";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import TabButton from "@/components/TabButton";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Header() {
 	return (
-		<header className="top-0 z-header bg-secondary border-b-4 border-primary h-24">
+		<header className="top-0 z-header bg-base-200 border-b-4 border-primary h-24">
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logo section */}
 				<div className="flex items-center">
 					<div className="flex flex-col -space-y-4">
-						<Link className="pl-1 normal-case text-xl h-16 w-48 bg-secondary rounded-3xl lg:rounded-l-none pr-4" href={`${getBaseUrl()}`}>
+						<Link className="pl-1 normal-case text-xl h-16 w-48 bg-base-200 rounded-3xl lg:rounded-l-none pr-4" href={`${getBaseUrl()}`}>
 							<div className="avatar w-full h-full">
 								<Image 
 									src="/images/node_logo_main.png" 
@@ -38,7 +39,8 @@ export default function Header() {
 
 				{/* Right side elements */}
 				<div className="flex flex-col items-end mr-4 h-full">
-					<div className="z-header pt-2">
+					<div className="z-header pt-2 flex items-center gap-2">
+						<ThemeToggle />
 						<SignedIn>
 							<UserButton />
 						</SignedIn>
