@@ -10,11 +10,30 @@ export default function Header() {
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logo section */}
 				<div className="flex items-center">
-					<Link className="pl-2 normal-case text-xl h-20 w-48 bg-secondary rounded-3xl lg:rounded-l-none pr-4" href={`${getBaseUrl()}`}>
-						<div className="avatar w-full h-full">
-							<Image src="/images/node_logo_main.png" alt="" fill={true} style={{objectFit: "contain"}} sizes="(max-width: 768px) 100vw, 33vw"/>
-						</div>
-					</Link>
+					<div className="flex flex-col -space-y-4">
+						<Link className="pl-1 normal-case text-xl h-16 w-48 bg-secondary rounded-3xl lg:rounded-l-none pr-4" href={`${getBaseUrl()}`}>
+							<div className="avatar w-full h-full">
+								<Image 
+									src="/images/node_logo_main.png" 
+									alt="NODE Logo" 
+									fill={true} 
+									style={{objectFit: "contain"}} 
+									sizes="(max-width: 768px) 100vw, 33vw"
+								/>
+							</div>
+						</Link>
+
+						<Link className="pl-2" href="#">
+							<div className="h-8 w-48 relative">
+								<Image 
+									src="/images/NOAA_TEXT_LOGO_HORIZONTAL.png" 
+									alt="NOAA Text Logo" 
+									fill={true} 
+									style={{objectFit: "contain"}}
+								/>
+							</div>
+						</Link>
+					</div>
 				</div>
 
 				{/* Right side elements */}
@@ -36,7 +55,7 @@ export default function Header() {
 						<TabButton tabName='Explore' route='/explore' />
 						<TabButton tabName='Submit' route='/submit' />
 						<TabButton tabName='Tourmaline' route='/tourmaline' />
-						<TabButton tabName='API' route='/data' />
+						<TabButton tabName='API' route='/api' />
 						<TabButton tabName='About' route='/about' />
 					</div>
 				</div>

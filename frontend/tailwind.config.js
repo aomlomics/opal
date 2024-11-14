@@ -1,8 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
 const sharedTheme = {
-	// primary: "#72ACAF", //NOAA Lochmara
-	//secondary: "#03646A", // NGI Teal
 	primary: "#64ABDC", //NODE Custom Light blue
 	dark_blue: "#233D7F", //NODE Custom Dark blue
 	secondary: "#000000", // Black
@@ -12,6 +10,7 @@ const sharedTheme = {
 };
 
 module.exports = {
+	darkMode: 'class',
 	content: [
 		'./pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -60,6 +59,47 @@ module.exports = {
 				'toast': '2000', // Toast notifications (usually in bottom right) 
 				'alert': '2100', // Alerts or other high-priority notifications
 			},
+
+			// New typography system
+			fontSize: {
+                // Main display text (like "Welcome")
+                'display': ['4.5rem', { // 72px
+                    lineHeight: '1.1',
+                    letterSpacing: '-0.02em',
+                    fontWeight: '700'
+                }],
+                
+                // Headers
+                'h1': ['3rem', {        // 48px
+                    lineHeight: '1.2',
+                    letterSpacing: '-0.01em',
+                    fontWeight: '700'
+                }],
+                'h2': ['2rem', {        // 32px
+                    lineHeight: '1.3',
+                    fontWeight: '500'
+                }],
+                'h3': ['1.5rem', {      // 24px
+                    lineHeight: '1.4',
+                    fontWeight: '500'
+                }],
+                
+                // Body text
+                'body-lg': ['1.125rem', { // 18px
+                    lineHeight: '1.6',
+                    fontWeight: '400'
+                }],
+                'body': ['1rem', {      // 16px
+                    lineHeight: '1.6',
+                    fontWeight: '400'
+                }],
+                
+                // UI elements (buttons, labels, etc)
+                'ui': ['0.875rem', {    // 14px
+                    lineHeight: '1.4',
+                    fontWeight: '500'
+                }],
+            },
 		}
 	},
   	plugins: [

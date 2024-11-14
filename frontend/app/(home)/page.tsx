@@ -20,12 +20,12 @@ export default async function Home() {
 				/>
 				<div className="absolute inset-0 bg-black/40"></div>
 				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-[30%]">
-					<h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-2">
+					<h1 className="text-5xl sm:text-6xl md:text-7xl mb-2">
 						<span className="block text-primary animate-slide-in">Welcome</span>
 					</h1>
 					<div className="text-gray-300">
 						<span className="block text-3xl sm:text-4xl md:text-5xl mb-2">
-							to the <span className="text-primary">NOAA Ocean DNA Explorer</span> (NODE)
+							to the <span className="text-primary">NOAA Ocean DNA Explorer</span>
 						</span>
 						<div className="text-lg sm:text-xl mb-6">
 							<span>NODE is a data sharing platform, search engine, and visualization and analysis tool</span>
@@ -37,9 +37,9 @@ export default async function Home() {
 						<a href="/data" className="btn btn-lg btn-secondary bg-primary outline-none text-white hover:bg-primary/80">
 							Start Searching
 						</a>
-						<span className="text-lg sm:text-xl text-gray-300">
+						{/* <span className="text-lg sm:text-xl text-gray-300">
 							Or <span className="font-bold text-white">scroll down</span> to explore our data overview
-						</span>
+						</span> */}
 					</div>
 				</div>
 			</div>
@@ -75,7 +75,7 @@ export default async function Home() {
 				
 				{/* Funding Institutes Section */}
 				<div className="mt-32 mb-24 text-center">
-					<h2 className="text-3xl text-gray-300 font-semibold mb-12">Funding Institutes</h2>
+					<h2 className="text-3xl text-gray-300 font-semibold mb-12">Funding Institutes???</h2>
 					
 					<div className="max-w-4xl mx-auto text-lg text-gray-300 mb-16">
 						<p>

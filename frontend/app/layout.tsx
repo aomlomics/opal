@@ -1,8 +1,12 @@
 import "@/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Inter } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] })
+const openSans = Open_Sans({
+	weight: ['300', '400', '500', '600', '700', '800'],
+	subsets: ['latin'],
+	display: 'swap',
+});
 
 export const metadata = {
 	title: "Opal",
@@ -11,8 +15,8 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
-			<body className={inter.className}>
+		<html lang="en" suppressHydrationWarning>
+			<body className={openSans.className}>
 				<ClerkProvider appearance={{ elements: { footer: "hidden" } }}>
 					<body className="bg-secondary text-white">
 						{children}
