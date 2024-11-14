@@ -1,7 +1,7 @@
 "use server";
 
 import { Analysis, Prisma } from "@prisma/client";
-import { prisma } from "./prisma";
+import { prisma } from "@/helpers/prisma";
 import { ZodBoolean, ZodEnum, ZodNumber, ZodObject } from "zod";
 import { DeadValue } from "@/types/enums";
 import {
@@ -570,7 +570,7 @@ export async function analysisUploadAction(formData: FormData) {
 				let i = 0;
 				await tx.occurrence.createMany({
 					data: occurrences.map((occ) => {
-						if (i % 100000 === 0) console.log(occ);
+						if (i % 100000 === 0) console.log(i, occurrences.length, occ);
 						i++;
 						return OccurrenceSchema.parse(
 							{
@@ -615,7 +615,7 @@ export async function analysisUploadAction(formData: FormData) {
 					)
 				});
 			},
-			{ timeout: 2 * 60 * 1000 } //2 minutes
+			{ timeout: 3 * 60 * 1000 } //2 minutes
 		);
 
 		return { response: "Success" };

@@ -1,9 +1,8 @@
 "use client";
 
-import { analysisUploadAction } from "@/helpers/actions";
+import { analysisUploadAction } from "@/app/api/actions/uploads";
 import { PutBlobResult } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
-import { useSearchParams } from "next/navigation";
 import { useState, ChangeEvent, FormEvent } from "react";
 
 export default function Analysis() {
@@ -86,6 +85,10 @@ export default function Analysis() {
 				await fetch(`/api/analysisFile/delete?url=${occBlob.url}`, {
 					method: "DELETE"
 				});
+			}
+
+			if (error) {
+				break;
 			}
 		}
 		setLoading(false);
