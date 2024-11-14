@@ -65,6 +65,8 @@ export default function AnalysisUpload() {
 					formData.set(`${a}_feat`, allFormData.get(`${a}_feat`) as File);
 					formData.set(`${a}_occ`, allFormData.get(`${a}_occ`) as File);
 				}
+				allFormData.delete(`${a}_feat`);
+				allFormData.delete(`${a}_occ`);
 
 				const result = await analysisUploadAction(formData);
 				if (result.error) {
