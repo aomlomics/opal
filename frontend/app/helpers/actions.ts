@@ -1,7 +1,7 @@
 "use server";
 
-import { Analysis, Prisma } from "@prisma/client";
-import { prisma } from "@/helpers/prisma";
+import { Prisma } from "@prisma/client";
+import { prisma } from "@/app/helpers/prisma";
 import { ZodBoolean, ZodEnum, ZodNumber, ZodObject } from "zod";
 import { DeadValue } from "@/types/enums";
 import {

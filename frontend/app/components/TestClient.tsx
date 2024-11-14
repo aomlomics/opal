@@ -1,7 +1,7 @@
 "use client";
 
 //import { fetcher, getBaseUrl } from "@/helpers/utils";
-import { fetcher } from "@/helpers/utils";
+import { fetcher } from "@/app/helpers/utils";
 import useSWR from "swr";
 
 export default function TestClient() {
