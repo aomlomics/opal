@@ -323,7 +323,7 @@ export async function studyUploadAction(formData: FormData) {
 					skipDuplicates: true
 				});
 			},
-			{ timeout: 1 * 60 * 1000 } //1 minute
+			{ timeout: 0.5 * 60 * 1000 } //30 seconds
 		);
 
 		return { response: "Success" };
@@ -615,7 +615,7 @@ export async function analysisUploadAction(formData: FormData) {
 					)
 				});
 			},
-			{ timeout: 3 * 60 * 1000 } //2 minutes
+			{ timeout: 1 * 60 * 1000 } //1 minute
 		);
 
 		return { response: "Success" };
