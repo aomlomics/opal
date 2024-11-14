@@ -3,7 +3,13 @@
   "prettier": {
     "printWidth": 120,
     "trailingComma": "none",
-    "useTabs": true
+    "useTabs": true,
+    "semi": true,
+    "singleQuote": false,
+    "jsxSingleQuote": false,
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "endOfLine": "lf"
   },
   "scripts": {
     "dev": "next dev",
