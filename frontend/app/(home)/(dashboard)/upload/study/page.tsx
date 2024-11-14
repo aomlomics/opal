@@ -29,7 +29,7 @@ export default function Study() {
 				setError("Unknown error.");
 			}
 		} catch (error) {
-			setError(`Error: ${(error as Error).message}. Make sure you are logged into a NOAA or MSU account.`);
+			setError(`Error: ${(error as Error).message}.`);
 		}
 
 		setLoading(false);
