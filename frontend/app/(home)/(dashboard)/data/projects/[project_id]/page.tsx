@@ -2,7 +2,7 @@ import { prisma } from "@/helpers/prisma";
 //import { getBaseUrl } from "@/helpers/utils";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-const Map = dynamic(() => import("@/app/components/Map"), {
+const Map = dynamic(() => import("@/components/Map"), {
 	ssr: false
 });
 

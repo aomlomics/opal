@@ -1,5 +1,5 @@
 import Link from "next/link";
-import TourmalineForm from "@/app/components/tourmalineForm/TourmalineForm";
+import TourmalineForm from "@/components/tourmalineForm/TourmalineForm";
 
 export default function Tourmaline() {
 	return (

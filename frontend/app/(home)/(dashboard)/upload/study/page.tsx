@@ -1,6 +1,6 @@
 export const maxDuration = 120;
 
-import StudyUpload from "@/app/components/StudyUpload";
+import StudyUpload from "@/components/StudyUpload";
 
 export default function Study() {
 	return <StudyUpload />;
