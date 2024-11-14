@@ -567,9 +567,12 @@ export async function analysisUploadAction(formData: FormData) {
 
 				//occurrences
 				console.log("occurrences");
+				let i = 0;
 				await tx.occurrence.createMany({
-					data: occurrences.map((occ) =>
-						OccurrenceSchema.parse(
+					data: occurrences.map((occ) => {
+						if (i % 100000 === 0) console.log(occ);
+						i++;
+						return OccurrenceSchema.parse(
 							{
 								...occ,
 								analysisId: dbAnalysis.id
@@ -581,8 +584,8 @@ export async function analysisUploadAction(formData: FormData) {
 									};
 								}
 							}
-						)
-					)
+						);
+					})
 				});
 
 				//taxonomies
