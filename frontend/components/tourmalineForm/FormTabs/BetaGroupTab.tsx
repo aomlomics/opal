@@ -1,7 +1,7 @@
 import { FieldErrors } from "react-hook-form/dist/types/errors";
-import InfoButton from "@/app/components/tourmalineForm/InfoButton";
-import TextField from "@/app/components/tourmalineForm/TextField";
-import ErrorMessage from "@/app/components/tourmalineForm/ErrorMessage";
+import InfoButton from "@/components/tourmalineForm/InfoButton";
+import TextField from "@/components/tourmalineForm/TextField";
+import ErrorMessage from "@/components/tourmalineForm/ErrorMessage";
 
 export default function BetaGroupTab({ register, errors }: { register: any; errors: FieldErrors<any> }) {
 	return (

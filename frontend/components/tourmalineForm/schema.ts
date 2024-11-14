@@ -6,7 +6,7 @@ import {
 	numWithMin1,
 	numWithMinNeg1,
 	numWithMin0Max100
-} from "@/app/components/tourmalineForm/validationHelper";
+} from "@/components/tourmalineForm/validationHelper";
 
 // Define the form schema using Zod
 export const schema = z.object({

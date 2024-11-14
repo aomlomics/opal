@@ -1,7 +1,7 @@
-import ProjectCatalogue from "@/app/components/ProjectCatalogue";
-import Search from "@/app/components/Search";
+import ProjectCatalogue from "@/components/ProjectCatalogue";
+import Search from "@/components/Search";
 import dynamic from "next/dynamic";
-const Map = dynamic(() => import("@/app/components/Map"), {
+const Map = dynamic(() => import("@/components/Map"), {
 	ssr: false
 });
 

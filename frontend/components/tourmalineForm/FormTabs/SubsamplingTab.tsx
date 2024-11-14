@@ -1,7 +1,7 @@
 import { FieldErrors } from "react-hook-form/dist/types/errors";
-import InfoButton from "@/app/components/tourmalineForm/InfoButton";
-import ErrorMessage from "@/app/components/tourmalineForm/ErrorMessage";
-import TextField from "@/app/components/tourmalineForm/TextField";
+import InfoButton from "@/components/tourmalineForm/InfoButton";
+import ErrorMessage from "@/components/tourmalineForm/ErrorMessage";
+import TextField from "@/components/tourmalineForm/TextField";
 
 export default function SubsamplingTab({ register, errors }: { register: any; errors: FieldErrors<any> }) {
 	return (

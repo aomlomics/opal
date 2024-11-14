@@ -1,6 +1,6 @@
 "use client";
 
-import studyUploadAction from "@/app/helpers/actions/studyUpload";
+import studyUploadAction from "@/helpers/actions/studyUpload";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 //import { getBaseUrl } from "@/helpers/utils";

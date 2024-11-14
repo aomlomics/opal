@@ -1,4 +1,4 @@
-import InfoButton from "@/app/components/tourmalineForm/InfoButton";
+import InfoButton from "@/components/tourmalineForm/InfoButton";
 import { FieldErrors } from "react-hook-form/dist/types/errors";
 
 export default function ThreadsTab({ register, errors }: { register: any; errors: FieldErrors<any> }) {

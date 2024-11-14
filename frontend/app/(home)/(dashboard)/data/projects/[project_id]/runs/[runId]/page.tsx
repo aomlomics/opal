@@ -1,7 +1,7 @@
-import { prisma } from "@/app/helpers/prisma";
+import { prisma } from "@/helpers/prisma";
 //import { getBaseUrl } from "@/helpers/utils";
 import Link from "next/link";
-import Catalogue from "@/app/components/Catalogue";
+import Catalogue from "@/components/Catalogue";
 
 export default async function RunId({ params }: { params: { project_id: string; runId: string } }) {
 	return (
