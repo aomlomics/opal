@@ -1,13 +1,10 @@
-import {FieldErrors} from "react-hook-form/dist/types/errors";
-import InfoButton from "@/components/tourmalineForm/InfoButton";
-import ErrorMessage from "@/components/tourmalineForm/ErrorMessage";
-import TextField from "@/components/tourmalineForm/TextField";
+import { FieldErrors } from "react-hook-form/dist/types/errors";
+import InfoButton from "@/app/components/tourmalineForm/InfoButton";
+import ErrorMessage from "@/app/components/tourmalineForm/ErrorMessage";
+import TextField from "@/app/components/tourmalineForm/TextField";
 
-export default function OutlierDetectionTab({register, errors}: {
-	register: any,
-	errors: FieldErrors<any>
-}) {
-	return(
+export default function OutlierDetectionTab({ register, errors }: { register: any; errors: FieldErrors<any> }) {
+	return (
 		<div>
 			<div className="text-center my-4">
 				<h1 className="text-3xl font-bold text-secondary">Outlier Detection</h1>
@@ -17,11 +14,18 @@ export default function OutlierDetectionTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Distance Metric</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="Indicating the type of distance metric to be computed."/>
+							<InfoButton infoText="Indicating the type of distance metric to be computed." />
 						</span>
 					</div>
-					<select {...register('odseq_distance_metric')} className={`select select-bordered bg-neutral-content w-full ${errors.odseq_distance_metric && "select-error"}`}>
-						<option value="" disabled selected>Select Distance Metric</option>
+					<select
+						{...register("odseq_distance_metric")}
+						className={`select select-bordered bg-neutral-content w-full ${
+							errors.odseq_distance_metric && "select-error"
+						}`}
+					>
+						<option value="" disabled selected>
+							Select Distance Metric
+						</option>
 						<option value="linear">Linear</option>
 						<option value="affine">Affine</option>
 					</select>
@@ -35,7 +39,9 @@ export default function OutlierDetectionTab({register, errors}: {
 						errors={errors}
 						name="odseq_bootstrap_replicates"
 						label="Bootstrap Replicates"
-						infoButton={<InfoButton infoText="The number of bootstrap replicates to be run. The higher the more robust the detection should be." />}
+						infoButton={
+							<InfoButton infoText="The number of bootstrap replicates to be run. The higher the more robust the detection should be." />
+						}
 						ErrorMessageComponent={ErrorMessage}
 					/>
 				</div>
@@ -48,11 +54,13 @@ export default function OutlierDetectionTab({register, errors}: {
 						errors={errors}
 						name="odseq_threshold"
 						label="Threshold"
-						infoButton={<InfoButton infoText="The probability to be left at the right of the bootstrap scores distribution when computing outliers. This parameter may need some tuning depending on each specific problem." />}
+						infoButton={
+							<InfoButton infoText="The probability to be left at the right of the bootstrap scores distribution when computing outliers. This parameter may need some tuning depending on each specific problem." />
+						}
 						ErrorMessageComponent={ErrorMessage}
 					/>
 				</div>
 			</div>
 		</div>
-	)
+	);
 }

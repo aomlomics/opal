@@ -1,13 +1,10 @@
-import {FieldErrors} from "react-hook-form/dist/types/errors";
-import InfoButton from "@/components/tourmalineForm/InfoButton";
-import ErrorMessage from "@/components/tourmalineForm/ErrorMessage";
-import TextField from "@/components/tourmalineForm/TextField";
+import { FieldErrors } from "react-hook-form/dist/types/errors";
+import InfoButton from "@/app/components/tourmalineForm/InfoButton";
+import ErrorMessage from "@/app/components/tourmalineForm/ErrorMessage";
+import TextField from "@/app/components/tourmalineForm/TextField";
 
-export default function SubsamplingTab({register, errors}: {
-	register: any,
-	errors: FieldErrors<any>
-}) {
-	return(
+export default function SubsamplingTab({ register, errors }: { register: any; errors: FieldErrors<any> }) {
+	return (
 		<div>
 			<div className="text-center my-4">
 				<h1 className="text-3xl font-bold text-secondary">Subsampling (Rarefaction)</h1>
@@ -38,5 +35,5 @@ export default function SubsamplingTab({register, errors}: {
 				</div>
 			</div>
 		</div>
-	)
+	);
 }

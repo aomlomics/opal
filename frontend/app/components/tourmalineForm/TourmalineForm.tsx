@@ -17,21 +17,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 //import { getRemoteUrl } from '@/helpers/utils';
 import { serialize } from "object-to-formdata";
-import InfoButton from "@/components/tourmalineForm/InfoButton";
-import { schema, SchemaData } from "@/components/tourmalineForm/schema";
+import InfoButton from "@/app/components/tourmalineForm/InfoButton";
+import { schema, SchemaData } from "@/app/components/tourmalineForm/schema";
 
-import DenoiseMethodTab from "@/components/tourmalineForm/FormTabs/DenoiseMethodTab";
-import AboutTab from "@/components/tourmalineForm/FormTabs/AboutTab";
-import TaxonomicTab from "@/components/tourmalineForm/FormTabs/TaxonomicTab";
-import MsaTab from "@/components/tourmalineForm/FormTabs/MsaTab";
-import OutlierDetectionTab from "@/components/tourmalineForm/FormTabs/OutlierDetectionTab";
-import SubsamplingTab from "@/components/tourmalineForm/FormTabs/SubsamplingTab";
-import BetaGroupTab from "@/components/tourmalineForm/FormTabs/BetaGroupTab";
-import DeicodeBetaTab from "@/components/tourmalineForm/FormTabs/DeicodeBetaTab";
-import ThreadsTab from "@/components/tourmalineForm/FormTabs/ThreadsTab";
-import ReportThemeTab from "@/components/tourmalineForm/FormTabs/ReportThemeTab";
-import FilteringTab from "@/components/tourmalineForm/FormTabs/FilteringTab";
-import MetadataTab from "@/components/tourmalineForm/FormTabs/MetadataTab";
+import DenoiseMethodTab from "@/app/components/tourmalineForm/FormTabs/DenoiseMethodTab";
+import AboutTab from "@/app/components/tourmalineForm/FormTabs/AboutTab";
+import TaxonomicTab from "@/app/components/tourmalineForm/FormTabs/TaxonomicTab";
+import MsaTab from "@/app/components/tourmalineForm/FormTabs/MsaTab";
+import OutlierDetectionTab from "@/app/components/tourmalineForm/FormTabs/OutlierDetectionTab";
+import SubsamplingTab from "@/app/components/tourmalineForm/FormTabs/SubsamplingTab";
+import BetaGroupTab from "@/app/components/tourmalineForm/FormTabs/BetaGroupTab";
+import DeicodeBetaTab from "@/app/components/tourmalineForm/FormTabs/DeicodeBetaTab";
+import ThreadsTab from "@/app/components/tourmalineForm/FormTabs/ThreadsTab";
+import ReportThemeTab from "@/app/components/tourmalineForm/FormTabs/ReportThemeTab";
+import FilteringTab from "@/app/components/tourmalineForm/FormTabs/FilteringTab";
+import MetadataTab from "@/app/components/tourmalineForm/FormTabs/MetadataTab";
 
 export default function TourmalineForm() {
 	const [activeTab, setActiveTab] = useState("About"); // Initial active tab

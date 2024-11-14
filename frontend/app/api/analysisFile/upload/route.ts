@@ -1,8 +1,7 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
-import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
-export async function POST(request: Request): Promise<NextResponse> {
+export async function POST(request: Request) {
 	const body = (await request.json()) as HandleUploadBody;
 
 	try {
@@ -47,22 +46,22 @@ export async function POST(request: Request): Promise<NextResponse> {
 					// const { userId } = JSON.parse(tokenPayload);
 					// await db.update({ avatar: blob.url, userId });
 				} catch (error) {
-					throw new Error("Could not update user");
+					throw new Error("Error");
 				}
 			}
 		});
 
-		return NextResponse.json(jsonResponse);
+		return Response.json(jsonResponse);
 	} catch (err) {
 		const error = err as Error;
 
 		//TODO: doesn't work, need a way to detect status codes on client
 		if (error.message === "Unauthorized") {
-			return NextResponse.json({ error: error.message }, { status: 401 });
+			return Response.json({ error: error.message }, { status: 401 });
 		} else if (error.message === "Forbidden") {
-			return NextResponse.json({ error: error.message }, { status: 403 });
+			return Response.json({ error: error.message }, { status: 403 });
 		}
-		return NextResponse.json(
+		return Response.json(
 			{ error: error.message },
 			{ status: 400 } // The webhook will retry 5 times waiting for a 200
 		);

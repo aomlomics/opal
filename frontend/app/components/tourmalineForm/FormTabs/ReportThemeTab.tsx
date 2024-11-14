@@ -1,11 +1,8 @@
-import {FieldErrors} from "react-hook-form/dist/types/errors";
-import InfoButton from "@/components/tourmalineForm/InfoButton";
+import { FieldErrors } from "react-hook-form/dist/types/errors";
+import InfoButton from "@/app/components/tourmalineForm/InfoButton";
 
-export default function ReportThemeTab({register, errors}: {
-	register: any,
-	errors: FieldErrors<any>
-}) {
-	return(
+export default function ReportThemeTab({ register, errors }: { register: any; errors: FieldErrors<any> }) {
+	return (
 		<div>
 			<div className="text-center my-4">
 				<h1 className="text-3xl font-bold text-secondary">Report Theme</h1>
@@ -15,11 +12,16 @@ export default function ReportThemeTab({register, errors}: {
 					<div className="label pb-0">
 						<span className="label-text">Report Theme</span>
 						<span className="label-text-alt">
-							<InfoButton infoText="Report theme for your HTML report."/>
+							<InfoButton infoText="Report theme for your HTML report." />
 						</span>
 					</div>
-					<select {...register('report_theme')} className={`select select-bordered bg-neutral-content w-full ${errors.report_theme && "select-error"}`}>
-						<option value="" disabled selected>Select Report Theme</option>
+					<select
+						{...register("report_theme")}
+						className={`select select-bordered bg-neutral-content w-full ${errors.report_theme && "select-error"}`}
+					>
+						<option value="" disabled selected>
+							Select Report Theme
+						</option>
 						<option value="github">Github</option>
 						<option value="gothic">Gothic</option>
 						<option value="newsprint">Newsprint</option>
@@ -30,5 +32,5 @@ export default function ReportThemeTab({register, errors}: {
 				</label>
 			</div>
 		</div>
-	)
+	);
 }
