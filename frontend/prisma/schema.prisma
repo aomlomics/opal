@@ -8,10 +8,10 @@ generator js {
     provider = "prisma-client-js"
 }
 
-generator dbml {
-    provider   = "prisma-dbml-generator"
-    outputName = "OpalERD.dbml"
-}
+//generator dbml {
+//    provider   = "prisma-dbml-generator"
+//    outputName = "OpalERD.dbml"
+//}
 
 generator zod {
     provider                         = "zod-prisma-types"
@@ -20,7 +20,6 @@ generator zod {
     addSelectType                    = false
     writeNullishInModelTypes         = true
     createOptionalDefaultValuesTypes = true
-    createPartialTypes               = true
 }
 
 // Enums
@@ -262,6 +261,7 @@ model Study {
 
     // Relations
     Samples     Sample[]
+    Analyses    Analysis[]
     GenericData GenericData[]
 
     // Data
@@ -297,11 +297,11 @@ model Sample {
     samp_name String @id @unique
 
     // Relations
-    project_id  String
-    Study       Study         @relation(fields: [project_id], references: [project_id])
-    Assays      Assay[]
-    Occurrence  Occurrence[]
-    GenericData GenericData[]
+    project_id   String
+    Study        Study         @relation(fields: [project_id], references: [project_id])
+    Assays       Assay[]
+    Observations Observation[]
+    GenericData  GenericData[]
 
     // Data
     // User Defined
@@ -493,7 +493,7 @@ model Assay {
     // Relations
     Samples     Sample[]
     Libraries   Library[]
-    Analysis    Analysis[]
+    Analyses    Analysis[]
     GenericData GenericData[]
 
     // Data
@@ -563,7 +563,7 @@ model Library {
     // Relations
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
-    Analysis    Analysis[]
+    Analyses    Analysis[]
     GenericData GenericData[]
 
     //Data
@@ -598,6 +598,8 @@ model Analysis {
     id Int @id @default(autoincrement())
 
     // Relations
+    project_id  String
+    Study       Study         @relation(fields: [project_id], references: [project_id])
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
     Libraries   Library[]
@@ -650,38 +652,46 @@ model Analysis {
 }
 
 // ASVs
-model Occurrence {
-    id Int @id @default(autoincrement())
-
+model Observation {
     // Relations
-    analysisId Int
-    Analysis   Analysis @relation(fields: [analysisId], references: [id])
-    samp_name  String
-    Sample     Sample   @relation(fields: [samp_name], references: [samp_name])
-    featureid  String
-    Feature    Feature  @relation(fields: [featureid], references: [featureid])
+    samp_name   String
+    Sample      Sample       @relation(fields: [samp_name], references: [samp_name])
+    featureid   String
+    Feature     Feature      @relation(fields: [featureid], references: [featureid])
+    Occurrences Occurrence[]
+
+    @@id(name: "id", [samp_name, featureid])
+}
+
+model Occurrence {
+    // Relations
+    analysisId  Int
+    Analysis    Analysis    @relation(fields: [analysisId], references: [id])
+    samp_name   String
+    featureid   String
+    Observation Observation @relation(fields: [samp_name, featureid], references: [samp_name, featureid])
 
     // Data
     /// @zod.custom.use(z.coerce.number().int())
     organismQuantity Int
+
+    @@id(name: "id", [analysisId, samp_name, featureid])
 }
 
 model Feature {
     featureid String @id @unique
 
     // Relations
-    Occurrences         Occurrence[]
+    Observations        Observation[]
     Assignments         Assignment[]
     consensusTaxonomyId String?
-    consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [taxonomy])
+    consensusTaxonomy   Taxonomy?     @relation(fields: [consensusTaxonomyId], references: [taxonomy])
 
     // Data
     dna_sequence String
 }
 
 model Assignment {
-    id Int @id @default(autoincrement())
-
     // Relations
     analysisId Int
     Analysis   Analysis @relation(fields: [analysisId], references: [id])
@@ -693,6 +703,8 @@ model Assignment {
     // Data
     /// @zod.custom.use(z.coerce.number())
     Confidence Float
+
+    @@id(name: "id", [analysisId, featureid, taxonomy])
 }
 
 model Taxonomy {
@@ -722,16 +734,16 @@ model GenericData {
     id Int @id @default(autoincrement())
 
     // Relations
-    project_id String
-    Study      Study    @relation(fields: [project_id], references: [project_id])
-    samp_name  String
-    Sample     Sample   @relation(fields: [samp_name], references: [samp_name])
-    assay_name String
-    Assay      Assay    @relation(fields: [assay_name], references: [assay_name])
-    library_id String
-    Library    Library  @relation(fields: [library_id], references: [library_id])
-    analysisId Int
-    Analysis   Analysis @relation(fields: [analysisId], references: [id])
+    project_id String?
+    Study      Study?    @relation(fields: [project_id], references: [project_id])
+    samp_name  String?
+    Sample     Sample?   @relation(fields: [samp_name], references: [samp_name])
+    assay_name String?
+    Assay      Assay?    @relation(fields: [assay_name], references: [assay_name])
+    library_id String?
+    Library    Library?  @relation(fields: [library_id], references: [library_id])
+    analysisId Int?
+    Analysis   Analysis? @relation(fields: [analysisId], references: [id])
 
     // Data
     key   String
