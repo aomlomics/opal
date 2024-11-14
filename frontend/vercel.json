@@ -1,6 +1,6 @@
 {
 	"functions": {
-		"api/actions/uploads.ts": {
+		"api/actions/**/*.ts": {
 			"memory": 3009,
 			"maxDuration": 60
 		}
