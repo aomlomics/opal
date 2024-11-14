@@ -49,7 +49,7 @@ All of these commands must be executed from inside `/frontend`.
 Install all node dependencies from package.json
 
 ```bash
-npm install
+npm install --ignore-scripts
 ```
 
 Run the local test server

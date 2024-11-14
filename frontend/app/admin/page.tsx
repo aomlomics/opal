@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-//import { getRemoteUrl } from "@/helpers/utils";
+//import { getRemoteUrl } from "@/app/helpers/utils";
 
 export default async function Admin() {
 	const jwt = cookies().get("__session");
