@@ -10,8 +10,6 @@ import {
 	AnalysisSchema,
 	AssayScalarFieldEnumSchema,
 	AssaySchema,
-	AssignmentOptionalDefaultsSchema,
-	AssignmentPartial,
 	AssignmentScalarFieldEnumSchema,
 	AssignmentSchema,
 	FeatureScalarFieldEnumSchema,
@@ -19,9 +17,6 @@ import {
 	LibraryScalarFieldEnumSchema,
 	LibrarySchema,
 	ObservationSchema,
-	OccurrenceOptionalDefaultsSchema,
-	OccurrencePartial,
-	OccurrenceScalarFieldEnumSchema,
 	OccurrenceSchema,
 	SampleScalarFieldEnumSchema,
 	SampleSchema,
@@ -78,19 +73,18 @@ function replaceDead(
 }
 
 export async function studyUploadAction(formData: FormData) {
+	console.log("study upload");
 	try {
 		let study = {} as Prisma.StudyCreateInput;
 		const assays = [] as Prisma.AssayCreateManyInput[];
 		const libraries = [] as Prisma.LibraryCreateManyInput[];
 		const samples = [] as Prisma.SampleCreateManyInput[];
-		let analyses = [] as Prisma.AnalysisCreateManyInput[];
 
 		//Study file
 		console.log("study file");
 		const studyCol = {} as Record<string, string>;
 		const assayCols = {} as Record<string, Record<string, string>>;
 		const libraryCols = {} as Record<string, Record<string, string>>;
-		const analysisCols = {} as Record<string, Record<string, string>>;
 		//parse file
 		const studyFileLines = (await (formData.get("studyFile") as File).text()).split("\n");
 		const studyFileHeaders = studyFileLines[0].split("\t");
@@ -164,18 +158,6 @@ export async function studyUploadAction(formData: FormData) {
 						LibrarySchema,
 						LibraryScalarFieldEnumSchema
 					);
-
-					//Analyses
-					if (!analysisCols[studyFileHeaders[i]]) {
-						analysisCols[studyFileHeaders[i]] = {};
-					}
-					replaceDead(
-						currentLine[i],
-						currentLine[field_name_i],
-						analysisCols[studyFileHeaders[i]],
-						AnalysisSchema,
-						AnalysisScalarFieldEnumSchema
-					);
 				}
 			}
 		}
@@ -184,21 +166,6 @@ export async function studyUploadAction(formData: FormData) {
 				return { message: `StudySchema: ${ctx.defaultError}` };
 			}
 		});
-		analyses = Object.entries(analysisCols).map(([assay_name, col]) =>
-			AnalysisOptionalDefaultsSchema.parse(
-				{
-					...col,
-					...studyCol,
-					assay_name,
-					project_id: study.project_id
-				},
-				{
-					errorMap: (error, ctx) => {
-						return { message: `AnalysisSchema: ${ctx.defaultError}` };
-					}
-				}
-			)
-		);
 
 		//Library file
 		console.log("library file");
@@ -302,139 +269,13 @@ export async function studyUploadAction(formData: FormData) {
 			}
 		}
 
-		const features = [] as Prisma.FeatureCreateManyInput[];
-		const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
-		const assignmentsObj = {} as Record<string, AssignmentPartial[]>;
-		const observations = [] as Prisma.ObservationCreateManyInput[];
-		const occurrencesObj = {} as Record<string, OccurrencePartial[]>;
-
 		//parse files for each analysis
-		for (const { assay_name } of analyses) {
-			assignmentsObj[assay_name] = [];
-			occurrencesObj[assay_name] = [];
+		//for (const { assay_name } of analyses) {
+		//assignmentsObj[assay_name] = [];
+		//occurrencesObj[assay_name] = [];
+		//}
 
-			//Feature file
-			console.log(`${assay_name}_feat file`);
-			let featFileLines;
-			if (process.env.NODE_ENV === "development") {
-				//get files from form data
-				const file = formData.get(`${assay_name}_feat`) as File;
-				const fileText = await file.text();
-				featFileLines = fileText.split("\n");
-			} else {
-				//fetch from blob storage
-				const url = JSON.parse(formData.get(`${assay_name}_feat`) as string).url;
-				const file = await fetch(url);
-				const fileText = await file.text();
-				featFileLines = fileText.split("\n");
-			}
-			const featFileHeaders = featFileLines[0].split("\t");
-
-			//parse feature file
-			for (let i = 1; i < featFileLines.length; i++) {
-				const currentLine = featFileLines[i].split("\t");
-
-				if (currentLine[featFileHeaders.indexOf("featureid")]) {
-					const featureRow = {} as any;
-					const assignmentRow = {} as any;
-					const taxonomyRow = {} as any;
-
-					for (let j = 0; j < featFileHeaders.length; j++) {
-						//feature table
-						replaceDead(currentLine[j], featFileHeaders[j], featureRow, FeatureSchema, FeatureScalarFieldEnumSchema);
-
-						//assignment table
-						replaceDead(
-							currentLine[j],
-							featFileHeaders[j],
-							assignmentRow,
-							AssignmentSchema,
-							AssignmentScalarFieldEnumSchema
-						);
-
-						//taxonomy table
-						replaceDead(currentLine[j], featFileHeaders[j], taxonomyRow, TaxonomySchema, TaxonomyScalarFieldEnumSchema);
-					}
-
-					features.push(
-						FeatureSchema.parse(featureRow, {
-							errorMap: (error, ctx) => {
-								return { message: `FeatureSchema (${assay_name}): ${ctx.defaultError}` };
-							}
-						})
-					);
-
-					//assignments can only be parsed after inserting the analyses
-					assignmentsObj[assay_name].push(assignmentRow);
-
-					taxonomies.push(
-						TaxonomySchema.parse(taxonomyRow, {
-							errorMap: (error, ctx) => {
-								return { message: `TaxonomySchema (${assay_name}): ${ctx.defaultError}` };
-							}
-						})
-					);
-				}
-			}
-
-			//Occurrence file
-			console.log(`${assay_name}_occ file`);
-			let occFileLines;
-			if (process.env.NODE_ENV === "development") {
-				//get files from form data
-				const file = formData.get(`${assay_name}_occ`) as File;
-				const fileText = await file.text();
-				occFileLines = fileText.split("\n");
-			} else {
-				//fetch from blob storage
-				const url = JSON.parse(formData.get(`${assay_name}_occ`) as string).url;
-				const file = await fetch(url);
-				const fileText = await file.text();
-				occFileLines = fileText.split("\n");
-			}
-			occFileLines.splice(0, 1); //TODO: parse comments out logically instead of hard-coded
-			const occFileHeaders = occFileLines[0].split("\t");
-
-			//parse occurrences file
-			for (let i = 1; i < occFileLines.length; i++) {
-				const currentLine = occFileLines[i].split("\t");
-
-				if (currentLine[0]) {
-					for (let j = 1; j < occFileHeaders.length; j++) {
-						//const analysisId = id;
-						const samp_name = occFileHeaders[j];
-						const featureid = currentLine[0];
-						const organismQuantity = parseInt(currentLine[j]);
-
-						if (organismQuantity) {
-							//observation table
-							observations.push(
-								ObservationSchema.parse(
-									{
-										samp_name,
-										featureid
-									},
-									{
-										errorMap: (error, ctx) => {
-											return { message: `ObservationSchema: ${ctx.defaultError}` };
-										}
-									}
-								)
-							);
-
-							//occurrence table
-							occurrencesObj[assay_name].push({
-								samp_name,
-								featureid,
-								organismQuantity
-							});
-						}
-					}
-				}
-			}
-		}
-
-		console.log("transaction");
+		console.log("study transaction");
 		await prisma.$transaction(
 			async (tx) => {
 				//study
@@ -476,30 +317,239 @@ export async function studyUploadAction(formData: FormData) {
 					});
 				}
 
-				//analyses and libraries
-				console.log("analyses and libraries");
-				const dbAnalyses = [] as { id: number; assay_name: string }[];
-				for (let a of analyses) {
-					const analysis = await tx.analysis.create({
-						data: {
-							...a,
-							Libraries: {
-								connectOrCreate: libraries.reduce((filtered, lib) => {
-									if (libToAssay[lib.library_id] === a.assay_name) {
-										filtered.push({
-											where: {
-												library_id: lib.library_id
-											},
-											create: lib
-										});
-									}
-									return filtered;
-								}, [] as Prisma.LibraryCreateOrConnectWithoutAnalysesInput[])
-							}
-						}
-					});
-					dbAnalyses.push({ id: analysis.id, assay_name: analysis.assay_name });
+				//libraries
+				await tx.library.createMany({
+					data: libraries,
+					skipDuplicates: true
+				});
+			},
+			{ timeout: 1 * 60 * 1000 } //1 minute
+		);
+
+		return { response: "Success" };
+	} catch (err) {
+		const error = err as Error;
+		console.error(error.message);
+		return { response: "Error", error: error.message };
+	}
+}
+
+export async function analysisUploadAction(formData: FormData) {
+	try {
+		let assay_name = formData.get("assay_name") as string;
+		console.log(`${assay_name} analysis upload`);
+
+		//Study file
+		console.log("study file");
+		let analysis = {} as Prisma.AnalysisCreateManyInput;
+		const studyCol = {} as Record<string, string>;
+		const analysisCol = {} as Record<string, string>;
+
+		//parse file
+		const studyFileLines = (await (formData.get("studyFile") as File).text()).split("\n");
+		const studyFileHeaders = studyFileLines[0].split("\t");
+		const field_name_i = studyFileHeaders.indexOf("field_name");
+
+		//iterate over each row
+		for (let i = 1; i < studyFileLines.length; i++) {
+			const currentLine = studyFileLines[i].split("\t");
+
+			//Study Level
+			//analysis table
+			replaceDead(
+				currentLine[studyFileHeaders.indexOf("study_level")],
+				currentLine[field_name_i],
+				studyCol,
+				AnalysisSchema,
+				AnalysisScalarFieldEnumSchema
+			);
+
+			//Assay Levels
+			const analysis_i = studyFileHeaders.indexOf(assay_name);
+			if (currentLine[analysis_i]) {
+				//Analyses
+				replaceDead(
+					currentLine[i],
+					currentLine[field_name_i],
+					analysisCol,
+					AnalysisSchema,
+					AnalysisScalarFieldEnumSchema
+				);
+			}
+		}
+
+		//Library file
+		console.log("library file");
+		const analysisLibs = [] as Prisma.LibraryWhereUniqueInput[];
+		//parse file
+		const libraryFileLines = (await (formData.get("libraryFile") as File).text()).split("\n");
+		libraryFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
+		const libraryFileHeaders = libraryFileLines[0].split("\t");
+		const assay_name_i = libraryFileHeaders.indexOf("assay_name");
+		const library_id_i = libraryFileHeaders.indexOf("library_id");
+		//iterate over each row
+		for (let i = 1; i < libraryFileLines.length; i++) {
+			const currentLine = libraryFileLines[i].split("\t");
+
+			if (currentLine[libraryFileHeaders.indexOf("samp_name")]) {
+				if (currentLine[assay_name_i] === assay_name) {
+					analysisLibs.push({ library_id: currentLine[library_id_i] });
 				}
+			}
+		}
+
+		analysis = AnalysisOptionalDefaultsSchema.parse(
+			{
+				...analysisCol,
+				...studyCol,
+				assay_name
+			},
+			{
+				errorMap: (error, ctx) => {
+					return { message: `AnalysisSchema: ${ctx.defaultError}` };
+				}
+			}
+		);
+
+		const features = [] as Prisma.FeatureCreateManyInput[];
+		const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
+		const assignments = [] as Prisma.AssignmentCreateManyInput[];
+		const observations = [] as Prisma.ObservationCreateManyInput[];
+		const occurrences = [] as Prisma.OccurrenceCreateManyAnalysisInput[];
+
+		//Feature file
+		console.log(`${assay_name}_feat file`);
+		let featFileLines;
+		if (process.env.NODE_ENV === "development") {
+			//get files from form data
+			const file = formData.get(`${assay_name}_feat`) as File;
+			const fileText = await file.text();
+			featFileLines = fileText.split("\n");
+		} else {
+			//fetch from blob storage
+			const url = JSON.parse(formData.get(`${assay_name}_feat`) as string).url;
+			const file = await fetch(url);
+			const fileText = await file.text();
+			featFileLines = fileText.split("\n");
+		}
+		const featFileHeaders = featFileLines[0].split("\t");
+
+		//parse feature file
+		for (let i = 1; i < featFileLines.length; i++) {
+			const currentLine = featFileLines[i].split("\t");
+
+			if (currentLine[featFileHeaders.indexOf("featureid")]) {
+				const featureRow = {} as any;
+				const assignmentRow = {} as any;
+				const taxonomyRow = {} as any;
+
+				for (let j = 0; j < featFileHeaders.length; j++) {
+					//feature table
+					replaceDead(currentLine[j], featFileHeaders[j], featureRow, FeatureSchema, FeatureScalarFieldEnumSchema);
+
+					//assignment table
+					replaceDead(
+						currentLine[j],
+						featFileHeaders[j],
+						assignmentRow,
+						AssignmentSchema,
+						AssignmentScalarFieldEnumSchema
+					);
+
+					//taxonomy table
+					replaceDead(currentLine[j], featFileHeaders[j], taxonomyRow, TaxonomySchema, TaxonomyScalarFieldEnumSchema);
+				}
+
+				features.push(
+					FeatureSchema.parse(featureRow, {
+						errorMap: (error, ctx) => {
+							return { message: `FeatureSchema (${assay_name}): ${ctx.defaultError}` };
+						}
+					})
+				);
+
+				//assignments can only be parsed after inserting the analyses
+				assignments.push(assignmentRow);
+
+				taxonomies.push(
+					TaxonomySchema.parse(taxonomyRow, {
+						errorMap: (error, ctx) => {
+							return { message: `TaxonomySchema (${assay_name}): ${ctx.defaultError}` };
+						}
+					})
+				);
+			}
+		}
+
+		//Occurrence file
+		console.log(`${assay_name}_occ file`);
+		let occFileLines;
+		if (process.env.NODE_ENV === "development") {
+			//get files from form data
+			const file = formData.get(`${assay_name}_occ`) as File;
+			const fileText = await file.text();
+			occFileLines = fileText.split("\n");
+		} else {
+			//fetch from blob storage
+			const url = JSON.parse(formData.get(`${assay_name}_occ`) as string).url;
+			const file = await fetch(url);
+			const fileText = await file.text();
+			occFileLines = fileText.split("\n");
+		}
+		occFileLines.splice(0, 1); //TODO: parse comments out logically instead of hard-coded
+		const occFileHeaders = occFileLines[0].split("\t");
+
+		//parse occurrences file
+		for (let i = 1; i < occFileLines.length; i++) {
+			const currentLine = occFileLines[i].split("\t");
+
+			if (currentLine[0]) {
+				for (let j = 1; j < occFileHeaders.length; j++) {
+					//const analysisId = id;
+					const samp_name = occFileHeaders[j];
+					const featureid = currentLine[0];
+					const organismQuantity = parseInt(currentLine[j]);
+
+					if (organismQuantity) {
+						//observation table
+						observations.push(
+							ObservationSchema.parse(
+								{
+									samp_name,
+									featureid
+								},
+								{
+									errorMap: (error, ctx) => {
+										return { message: `ObservationSchema: ${ctx.defaultError}` };
+									}
+								}
+							)
+						);
+
+						//occurrence table
+						occurrences.push({
+							samp_name,
+							featureid,
+							organismQuantity
+						});
+					}
+				}
+			}
+		}
+
+		console.log(`${assay_name} transaction`);
+		await prisma.$transaction(
+			async (tx) => {
+				//analysis
+				console.log("analysis");
+				const dbAnalysis = await tx.analysis.create({
+					data: {
+						...analysis,
+						Libraries: {
+							connect: analysisLibs
+						}
+					}
+				});
 
 				//features
 				console.log("features");
@@ -517,31 +567,22 @@ export async function studyUploadAction(formData: FormData) {
 
 				//occurrences
 				console.log("occurrences");
-				const occurrences = [] as Prisma.OccurrenceCreateManyInput[];
-				//associate the occurrence to its analysis
-				for (const { id, assay_name } of dbAnalyses) {
-					for (let occ of occurrencesObj[assay_name]) {
-						//parse the occurrence, including the associated analysis
-						occurrences.push(
-							OccurrenceSchema.parse(
-								{
-									...occ,
-									analysisId: id
-								},
-								{
-									errorMap: (error, ctx) => {
-										return {
-											message: `OccurrenceSchema (${assay_name}, ${occ.samp_name}, ${occ.featureid}): ${ctx.defaultError}`
-										};
-									}
-								}
-							)
-						);
-					}
-				}
-
 				await tx.occurrence.createMany({
-					data: occurrences
+					data: occurrences.map((occ) =>
+						OccurrenceSchema.parse(
+							{
+								...occ,
+								analysisId: dbAnalysis.id
+							},
+							{
+								errorMap: (error, ctx) => {
+									return {
+										message: `OccurrenceSchema (${assay_name}, ${occ.samp_name}, ${occ.featureid}): ${ctx.defaultError}`
+									};
+								}
+							}
+						)
+					)
 				});
 
 				//taxonomies
@@ -553,34 +594,25 @@ export async function studyUploadAction(formData: FormData) {
 
 				//assignments
 				console.log("assignments");
-				const assignments = [] as Prisma.AssignmentCreateManyInput[];
-				//associate the assignment to its analysis
-				for (const { id, assay_name } of dbAnalyses) {
-					for (let a of assignmentsObj[assay_name]) {
-						//parse the assignment, including the associated analysis
-						assignments.push(
-							AssignmentSchema.parse(
-								{
-									...a,
-									analysisId: id
-								},
-								{
-									errorMap: (error, ctx) => {
-										return {
-											message: `AssignmentSchema (${assay_name}, ${a.featureid}, ${a.Confidence}): ${ctx.defaultError}`
-										};
-									}
-								}
-							)
-						);
-					}
-				}
-
 				await tx.assignment.createMany({
-					data: assignments
+					data: assignments.map((a) =>
+						AssignmentSchema.parse(
+							{
+								...a,
+								analysisId: dbAnalysis.id
+							},
+							{
+								errorMap: (error, ctx) => {
+									return {
+										message: `AssignmentSchema (${assay_name}, ${a.featureid}, ${a.Confidence}): ${ctx.defaultError}`
+									};
+								}
+							}
+						)
+					)
 				});
 			},
-			{ timeout: 4 * 60 * 1000 } //3 minutes
+			{ timeout: 2 * 60 * 1000 } //2 minutes
 		);
 
 		return { response: "Success" };
@@ -590,181 +622,3 @@ export async function studyUploadAction(formData: FormData) {
 		return { response: "Error", error: error.message };
 	}
 }
-
-//export async function analysisUploadAction(formData: FormData) {
-//	try {
-//		//TODO: parse analysis
-//		const analysis = JSON.parse(formData.get("analysis") as string) as { id: number; assay_name: string };
-
-//		const features = [] as Prisma.FeatureCreateManyInput[];
-//		const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
-//		const assignments = [] as AssignmentPartial[];
-//		const occurrences = [] as Prisma.OccurrenceCreateManyInput[];
-
-//		//Feature file
-//		let featFileLines;
-//		if (process.env.NODE_ENV === "development") {
-//			//get files from form data
-//			const file = formData.get(`${analysis.assay_name}_feat`) as File;
-//			const fileText = await file.text();
-//			featFileLines = fileText.split("\n");
-//		} else {
-//			//fetch from blob storage
-//			const url = JSON.parse(formData.get(`${analysis.assay_name}_feat`) as string).url;
-//			const file = await fetch(url);
-//			const fileText = await file.text();
-//			featFileLines = fileText.split("\n");
-//		}
-//		const featFileHeaders = featFileLines[0].split("\t");
-
-//		for (let i = 1; i < featFileLines.length; i++) {
-//			const currentLine = featFileLines[i].split("\t");
-
-//			if (currentLine[featFileHeaders.indexOf("featureid")]) {
-//				const featureRow = {} as any;
-//				const assignmentRow = {} as any;
-//				const taxonomyRow = {} as any;
-
-//				for (let j = 0; j < featFileHeaders.length; j++) {
-//					//feature table
-//					replaceDead(currentLine[j], featFileHeaders[j], featureRow, FeatureSchema, FeatureScalarFieldEnumSchema);
-
-//					//assignment table
-//					replaceDead(
-//						currentLine[j],
-//						featFileHeaders[j],
-//						assignmentRow,
-//						AssignmentSchema,
-//						AssignmentScalarFieldEnumSchema
-//					);
-
-//					//taxonomy table
-//					replaceDead(currentLine[j], featFileHeaders[j], taxonomyRow, TaxonomySchema, TaxonomyScalarFieldEnumSchema);
-//				}
-
-//				features.push(
-//					FeatureSchema.parse(featureRow, {
-//						errorMap: (error, ctx) => {
-//							return { message: `FeatureSchema (${analysis.assay_name}): ${ctx.defaultError}` };
-//						}
-//					})
-//				);
-
-//				//assignments can only be parsed after inserting the analyses
-//				assignments.push(assignmentRow);
-
-//				taxonomies.push(
-//					TaxonomySchema.parse(taxonomyRow, {
-//						errorMap: (error, ctx) => {
-//							return { message: `TaxonomySchema (${analysis.assay_name}): ${ctx.defaultError}` };
-//						}
-//					})
-//				);
-//			}
-//		}
-
-//		//Occurrences files
-//		let occFileLines;
-//		if (process.env.NODE_ENV === "development") {
-//			//get files from form data
-//			const file = formData.get(`${analysis.assay_name}_occ`) as File;
-//			const fileText = await file.text();
-//			occFileLines = fileText.split("\n");
-//		} else {
-//			//fetch from blob storage
-//			const url = JSON.parse(formData.get(`${analysis.assay_name}_occ`) as string).url;
-//			const file = await fetch(url);
-//			const fileText = await file.text();
-//			occFileLines = fileText.split("\n");
-//		}
-//		occFileLines.splice(0, 1); //TODO: parse comments out logically instead of hard-coded
-//		const occFileHeaders = occFileLines[0].split("\t");
-
-//		for (let i = 1; i < occFileLines.length; i++) {
-//			const currentLine = occFileLines[i].split("\t");
-
-//			if (currentLine[0]) {
-//				for (let j = 1; j < occFileHeaders.length; j++) {
-//					const analysisId = analysis.id;
-//					const samp_name = occFileHeaders[j];
-//					const featureid = currentLine[0];
-//					const organismQuantity = parseInt(currentLine[j]);
-
-//					if (organismQuantity) {
-//						occurrences.push(
-//							OccurrenceOptionalDefaultsSchema.parse(
-//								{
-//									analysisId,
-//									samp_name,
-//									featureid,
-//									organismQuantity
-//								},
-//								{
-//									errorMap: (error, ctx) => {
-//										return {
-//											message: `OccurrenceSchema (${analysis.assay_name}, ${featureid}, ${samp_name}): ${ctx.defaultError}`
-//										};
-//									}
-//								}
-//							)
-//						);
-//					}
-//				}
-//			}
-//		}
-
-//		await prisma.$transaction(
-//			async (tx) => {
-//				//features
-//				await tx.feature.createMany({
-//					data: features,
-//					skipDuplicates: true
-//				});
-
-//				//occurrences
-//				await tx.occurrence.createMany({
-//					data: occurrences
-//				});
-
-//				//taxonomies
-//				await tx.taxonomy.createMany({
-//					data: taxonomies,
-//					skipDuplicates: true
-//				});
-
-//				//assignments
-//				const assignments = [] as Prisma.AssignmentCreateManyInput[];
-//				//associate the assignment to its analysis
-//				for (let a of assignments) {
-//					//parse the assignment, including the associated analysis
-//					assignments.push(
-//						AssignmentOptionalDefaultsSchema.parse(
-//							{
-//								...a,
-//								analysisId: analysis.id
-//							},
-//							{
-//								errorMap: (error, ctx) => {
-//									return {
-//										message: `AssignmentSchema (${analysis.assay_name}, ${a.featureid}, ${a.Confidence}): ${ctx.defaultError}`
-//									};
-//								}
-//							}
-//						)
-//					);
-//				}
-
-//				await tx.assignment.createMany({
-//					data: assignments
-//				});
-//			},
-//			{ timeout: 120000 }
-//		);
-
-//		return { response: "Success" };
-//	} catch (err) {
-//		const error = err as Error;
-//		console.error(error.message);
-//		return { response: "Error", error: error.message };
-//	}
-//}

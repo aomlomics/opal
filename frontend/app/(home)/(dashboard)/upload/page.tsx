@@ -1,7 +1,14 @@
-import StudyUpload from "@/components/StudyUpload";
+import Link from "next/link";
 
-export const maxDuration = 300;
-
-export default async function Upload() {
-	return <StudyUpload></StudyUpload>;
+export default function Upload() {
+	return (
+		<>
+			<Link href={"/upload/study"}>
+				<button className="btn">New Study</button>
+			</Link>
+			<Link href={"/upload/analysis"}>
+				<button className="btn">New Analysis</button>
+			</Link>
+		</>
+	);
 }
