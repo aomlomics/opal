@@ -1,6 +1,6 @@
 {
 	"functions": {
-		"upload/**/*": {
+		"app/upload/**/*": {
 			"memory": 3009,
 			"maxDuration": 120
 		}
