@@ -1,4 +1,4 @@
-import { prisma } from "@/app/helpers/prisma";
+import { prisma } from "@/helpers/prisma";
 import Link from "next/link";
 //import { getBaseUrl } from "@/helpers/utils";
 

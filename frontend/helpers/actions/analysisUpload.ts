@@ -1,8 +1,8 @@
 "use server";
 
 import { Prisma } from "@prisma/client";
-import { prisma } from "@/app/helpers/prisma";
-import { replaceDead } from "@/app/helpers/utils";
+import { prisma } from "@/helpers/prisma";
+import { replaceDead } from "@/helpers/utils";
 import {
 	AnalysisOptionalDefaultsSchema,
 	AnalysisScalarFieldEnumSchema,

@@ -1,8 +1,8 @@
 "use server";
 
 import { Prisma } from "@prisma/client";
-import { prisma } from "@/app/helpers/prisma";
-import { replaceDead } from "@/app/helpers/utils";
+import { prisma } from "@/helpers/prisma";
+import { replaceDead } from "@/helpers/utils";
 import {
 	AnalysisScalarFieldEnumSchema,
 	AnalysisSchema,
@@ -221,12 +221,6 @@ export default async function studyUploadAction(formData: FormData) {
 				}
 			}
 		}
-
-		//parse files for each analysis
-		//for (const { assay_name } of analyses) {
-		//assignmentsObj[assay_name] = [];
-		//occurrencesObj[assay_name] = [];
-		//}
 
 		console.log("study transaction");
 		await prisma.$transaction(

@@ -1,6 +1,6 @@
 "use client";
 
-import analysisUploadAction from "@/app/helpers/actions/analysisUpload";
+import analysisUploadAction from "@/helpers/actions/analysisUpload";
 import { PutBlobResult } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
 import { useState, ChangeEvent, FormEvent } from "react";
