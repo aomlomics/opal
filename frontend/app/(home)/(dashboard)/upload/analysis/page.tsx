@@ -1,4 +1,4 @@
-const maxDuration = 120;
+export const maxDuration = 120;
 
 import AnalysisUpload from "@/components/AnalysisUpload";
 
