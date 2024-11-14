@@ -627,11 +627,8 @@ export async function analysisUploadAction(formData: FormData) {
 
 					//occurrences
 					console.log("occurrences");
-					let i = 0;
 					await tx.occurrence.createMany({
 						data: occurrences.map((occ) => {
-							if (i % 100000 === 0) console.log(i, occurrences.length, occ);
-							i++;
 							return OccurrenceSchema.parse(
 								{
 									...occ,
