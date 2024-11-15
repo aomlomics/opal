@@ -1,21 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 
 const sharedTheme = {
-	"primary": "#64ABDC",  // Your custom blue
-	"secondary": "#233D7F", // Your dark blue/slate
-	"accent": "#37cdbe",
-	"neutral": "#3d4451",
+	"primary": "#64ABDC",  // Custom light blue - main NODE color
+	"secondary": "#233D7F", // Custom dark blue - secondary NODE color
+	"accent": "#37cdbe", // Legacy NGI teal
+	"neutral": "#3d4451", // Nobody should ever remove this please -bayden
+	"button-normal": "#64ABDC",    // Same as primary
+	"button-hover": "#7DBAE5",     // Lighter variant
+	"button-selected": "#4B95C3",  // Darker variant
 }
-
-// Legacy Colors
-// primary: "#64ABDC", //NODE Custom Light blue
-// dark_blue: "#233D7F", //NODE Custom Dark blue
-// secondary: "#000000", // Black
-// accent: "#79BCE4", // NOAA Seagull
-// neutral: "#BFD0E5", // NOAA Periwinkle grey 
-// "neutral-content": "whitesmoke",
-// };
-
 
 module.exports = {
 	darkMode: 'class',
@@ -26,7 +19,41 @@ module.exports = {
 	],
 	theme: {
 		extend: {
-			// This is for darkening the Hero Image
+			// Typography system
+			fontSize: {
+				'display': ['4.5rem', { // 72px
+					lineHeight: '1.1',
+					letterSpacing: '-0.02em',
+					fontWeight: '700'
+				}],
+				'h1': ['3rem', {        // 48px
+					lineHeight: '1.15',  
+					letterSpacing: '-0.01em',
+					fontWeight: '700'
+				}],
+				'h2': ['2rem', {        // 32px
+					lineHeight: '1.2',   
+					fontWeight: '500'
+				}],
+				'h3': ['1.5rem', {      // 24px
+					lineHeight: '1.3', 
+					fontWeight: '500'
+				}],
+				'body-lg': ['1.125rem', { // 18px
+					lineHeight: '1.4',  
+					fontWeight: '400'
+				}],
+				'body': ['1rem', {      // 16px
+					lineHeight: '1.5', 
+					fontWeight: '400'
+				}],
+				'ui': ['0.875rem', {    // 14px
+					lineHeight: '1.3',  
+					fontWeight: '500'
+				}],
+			},
+
+			// Dropshadow can darken / lighten an image (used in hero image)
 			dropShadow: {
 				full: [
 					"-0.3px -0.3px 0 rgba(0,0,0,0.5)",
@@ -67,47 +94,6 @@ module.exports = {
 				'toast': '2000', // Toast notifications (usually in bottom right) 
 				'alert': '2100', // Alerts or other high-priority notifications
 			},
-
-			// New typography system
-			fontSize: {
-				// Main display text (like "Welcome")
-				'display': ['4.5rem', { // 72px
-					lineHeight: '1.1',
-					letterSpacing: '-0.02em',
-					fontWeight: '700'
-				}],
-				
-				// Headers
-				'h1': ['3rem', {        // 48px
-					lineHeight: '1.2',
-					letterSpacing: '-0.01em',
-					fontWeight: '700'
-				}],
-				'h2': ['2rem', {        // 32px
-					lineHeight: '1.3',
-					fontWeight: '500'
-				}],
-				'h3': ['1.5rem', {      // 24px
-					lineHeight: '1.4',
-					fontWeight: '500'
-				}],
-				
-				// Body text
-				'body-lg': ['1.125rem', { // 18px
-					lineHeight: '1.6',
-					fontWeight: '400'
-				}],
-				'body': ['1rem', {      // 16px
-					lineHeight: '1.6',
-					fontWeight: '400'
-				}],
-				
-				// UI elements (buttons, labels, etc)
-				'ui': ['0.875rem', {    // 14px
-					lineHeight: '1.4',
-					fontWeight: '500'
-				}],
-			},
 		}
 	},
   	plugins: [
@@ -119,16 +105,38 @@ module.exports = {
 				light: {
 					...require("daisyui/src/theming/themes")["light"],
 					...sharedTheme,
-					"base-100": "#f8f9fa",  // Very light grey for background
-					"base-content": "#1a1a1a",  // Very dark grey for text
+					
+					// Core backgrounds
+					"background-main": "#FAFAFA",      // Slightly off-white for better eye comfort
+					"div-base": "#F8FAFD",            // Subtle blue tint
+					"div-elevated": "#E8F1FC",        // More noticeable blue tint
+					"div-selected": "#D0E1FF",        // Stronger blue for better visibility
+					
+					// Text colors
+					"text-main": "#2D3748",
+					"text-muted": "#4A5568",
+					"text-inverse": "#FFFFFF",
 				}
 			},
 			{
 				dark: {
 					...require("daisyui/src/theming/themes")["dark"],
 					...sharedTheme,
-					"base-100": "#2a303c",  // Dark grey for background (not pure black)
-					"base-content": "#e9ecef",  // Light grey for text (not pure white)
+					
+					// Background colors for different surface levels
+					"background-main": "#1A1A1A",      // Main page background
+					"background-raised": "#2D3748",    // Elevated elements like cards
+					"background-selected": "#2C5282",  // Selected/active states
+					
+					// Text colors for different purposes
+					"text-main": "#E2E8F0",           // Primary content
+					"text-muted": "#A0AEC0",          // Secondary/supporting text
+					"text-inverse": "#1A1A1A",        // Text on light backgrounds
+					
+					// Interactive element colors
+					"interactive-default": "#2D3748",  // Default button/input state
+					"interactive-hover": "#4A5568",    // Hover states
+					"interactive-active": "#718096",   // Pressed states
 				}
 			}
 		]
