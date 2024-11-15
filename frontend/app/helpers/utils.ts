@@ -52,7 +52,7 @@ function checkZodType(field: any, type: any) {
 export function replaceDead(
 	field: string,
 	fieldName: string,
-	obj: Record<string, string | number>,
+	obj: Record<string, string | number | boolean | null>,
 	schema: ZodObject<any>,
 	fieldOptionsEnum: ZodEnum<any>
 ) {

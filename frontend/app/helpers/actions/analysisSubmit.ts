@@ -7,12 +7,16 @@ import {
 	AnalysisOptionalDefaultsSchema,
 	AnalysisScalarFieldEnumSchema,
 	AnalysisSchema,
+	AssignmentPartial,
 	AssignmentScalarFieldEnumSchema,
 	AssignmentSchema,
+	FeaturePartial,
 	FeatureScalarFieldEnumSchema,
 	FeatureSchema,
 	ObservationSchema,
+	OccurrencePartial,
 	OccurrenceSchema,
+	TaxonomyPartial,
 	TaxonomyScalarFieldEnumSchema,
 	TaxonomySchema
 } from "@/prisma/generated/zod";
@@ -26,6 +30,8 @@ export default async function analysisSubmitAction(formData: FormData) {
 		const analysisCol = {} as Record<string, string>;
 
 		const analysisLibs = [] as Prisma.LibraryWhereUniqueInput[];
+
+		const featToTaxa = {} as Record<string, string>;
 
 		//Study file
 		console.log("study file");
@@ -123,7 +129,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 				{
 					const features = [] as Prisma.FeatureCreateManyInput[];
 					const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
-					const assignments = [] as Prisma.AssignmentCreateManyInput[];
+					const assignments = [] as AssignmentPartial[];
 
 					let featFileLines;
 					if (process.env.NODE_ENV === "development") {
@@ -145,9 +151,9 @@ export default async function analysisSubmitAction(formData: FormData) {
 						const currentLine = featFileLines[i].split("\t");
 
 						if (currentLine[featFileHeaders.indexOf("featureid")]) {
-							const featureRow = {} as any;
-							const assignmentRow = {} as any;
-							const taxonomyRow = {} as any;
+							const featureRow = {} as FeaturePartial;
+							const assignmentRow = {} as AssignmentPartial;
+							const taxonomyRow = {} as TaxonomyPartial;
 
 							//iterate over each column
 							for (let j = 0; j < featFileHeaders.length; j++) {
@@ -187,6 +193,8 @@ export default async function analysisSubmitAction(formData: FormData) {
 								})
 							);
 
+							featToTaxa[assignmentRow.featureid!] = assignmentRow.taxonomy!;
+
 							//assignments can only be parsed after inserting the analyses
 							assignments.push(assignmentRow);
 
@@ -217,7 +225,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 
 					//assignments
 					console.log("assignments");
-					await tx.assignment.createMany({
+					await tx.assignment.createManyAndReturn({
 						data: assignments.map((a) =>
 							AssignmentSchema.parse(
 								{
@@ -232,7 +240,11 @@ export default async function analysisSubmitAction(formData: FormData) {
 									}
 								}
 							)
-						)
+						),
+						select: {
+							featureid: true,
+							taxonomy: true
+						}
 					});
 				}
 
@@ -242,7 +254,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 				//code block to force garbage collection
 				{
 					const observations = [] as Prisma.ObservationCreateManyInput[];
-					const occurrences = [] as Prisma.OccurrenceCreateManyAnalysisInput[];
+					const occurrences = [] as OccurrencePartial[];
 
 					let occFileLines;
 					if (process.env.NODE_ENV === "development") {
@@ -292,7 +304,8 @@ export default async function analysisSubmitAction(formData: FormData) {
 									occurrences.push({
 										samp_name,
 										featureid,
-										organismQuantity
+										organismQuantity,
+										taxonomy: featToTaxa[featureid]
 									});
 								}
 							}

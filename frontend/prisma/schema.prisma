@@ -20,6 +20,7 @@ generator zod {
     addSelectType                    = false
     writeNullishInModelTypes         = true
     createOptionalDefaultValuesTypes = true
+    createPartialTypes               = true
 }
 
 // Enums
@@ -511,7 +512,7 @@ model Assay {
     assay_validation             String?
     targetTaxonomicAssay         String
     targetTaxonomicScope         String?
-    target_gene                  String?
+    target_gene                  String
     target_subfragment           String?
     /// @zod.custom.use(z.coerce.number())
     ampliconSize                 Float?
@@ -603,7 +604,6 @@ model Analysis {
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
     Libraries   Library[]
-    Occurrences Occurrence[]
     Assignments Assignment[]
     GenericData GenericData[]
 
@@ -660,22 +660,23 @@ model Observation {
     Feature     Feature      @relation(fields: [featureid], references: [featureid])
     Occurrences Occurrence[]
 
-    @@id(name: "id", [samp_name, featureid])
+    @@id([samp_name, featureid])
 }
 
 model Occurrence {
     // Relations
-    analysisId  Int
-    Analysis    Analysis    @relation(fields: [analysisId], references: [id])
     samp_name   String
+    analysisId  Int
     featureid   String
+    taxonomy    String
     Observation Observation @relation(fields: [samp_name, featureid], references: [samp_name, featureid])
+    Assignment  Assignment  @relation(fields: [analysisId, featureid, taxonomy], references: [analysisId, featureid, taxonomy])
 
     // Data
     /// @zod.custom.use(z.coerce.number().int())
     organismQuantity Int
 
-    @@id(name: "id", [analysisId, samp_name, featureid])
+    @@id([analysisId, samp_name, featureid, taxonomy])
 }
 
 model Feature {
@@ -693,18 +694,19 @@ model Feature {
 
 model Assignment {
     // Relations
-    analysisId Int
-    Analysis   Analysis @relation(fields: [analysisId], references: [id])
-    featureid  String
-    Feature    Feature  @relation(fields: [featureid], references: [featureid])
-    taxonomy   String
-    Taxonomy   Taxonomy @relation(fields: [taxonomy], references: [taxonomy])
+    analysisId  Int
+    Analysis    Analysis     @relation(fields: [analysisId], references: [id])
+    Occurrences Occurrence[]
+    featureid   String
+    Feature     Feature      @relation(fields: [featureid], references: [featureid])
+    taxonomy    String
+    Taxonomy    Taxonomy     @relation(fields: [taxonomy], references: [taxonomy])
 
     // Data
     /// @zod.custom.use(z.coerce.number())
     Confidence Float
 
-    @@id(name: "id", [analysisId, featureid, taxonomy])
+    @@id([analysisId, featureid, taxonomy])
 }
 
 model Taxonomy {
