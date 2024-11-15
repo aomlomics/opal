@@ -18,7 +18,8 @@ export default async function DataSummary() {
 		})) as { target_gene: string; count?: number }[];
 
 		for (const a of uniqueAssays) {
-			//assay -> analyses -> assignment -> feature
+			//get count of features that were assigned using a particular target gene
+			//number of assignments = number of features (an assignment has only one feature)
 			const count = await tx.analysis.findFirst({
 				where: {
 					Assay: {
@@ -44,11 +45,11 @@ export default async function DataSummary() {
 	return (
 		<div>
 			<div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-				<DataSummaryItem title="Studies" value={studyCount} href="/studies" />
-				<DataSummaryItem title="Samples" value={sampleCount} href="/samples" />
-				<DataSummaryItem title="Unique Sequence Features" value={featureCount} href="/features" />
+				<DataSummaryItem title="Studies" value={studyCount} href="/explore/studies" />
+				<DataSummaryItem title="Samples" value={sampleCount} href="/explore/samples" />
+				<DataSummaryItem title="Unique Sequence Features" value={featureCount} href="/explore/features" />
 				{uniqueAssays.map((a) => (
-					<DataSummaryItem key={a.target_gene} title={a.target_gene} value={a.count || 0} href="/" />
+					<DataSummaryItem key={a.target_gene} title={a.target_gene} value={a.count || NaN} href="/explore/" />
 				))}
 			</div>
 

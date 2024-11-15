@@ -1,3 +1,3 @@
-export default function Featureid() {
-	return <>featureid</>;
+export default function Featureid({ params }: { params: { featureid: string } }) {
+	return <>featureid {params.featureid}</>;
 }
