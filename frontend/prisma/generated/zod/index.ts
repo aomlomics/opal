@@ -24,7 +24,7 @@ export const AnalysisScalarFieldEnumSchema = z.enum(['id','project_id','assay_na
 
 export const ObservationScalarFieldEnumSchema = z.enum(['samp_name','featureid']);
 
-export const OccurrenceScalarFieldEnumSchema = z.enum(['analysisId','samp_name','featureid','organismQuantity']);
+export const OccurrenceScalarFieldEnumSchema = z.enum(['samp_name','analysisId','featureid','taxonomy','organismQuantity']);
 
 export const FeatureScalarFieldEnumSchema = z.enum(['featureid','consensusTaxonomyId','dna_sequence']);
 
@@ -166,6 +166,14 @@ export const StudySchema = z.object({
 
 export type Study = z.infer<typeof StudySchema>
 
+/////////////////////////////////////////
+// STUDY PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const StudyPartialSchema = StudySchema.partial()
+
+export type StudyPartial = z.infer<typeof StudyPartialSchema>
+
 // STUDY OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
 
@@ -299,6 +307,14 @@ export const SampleSchema = z.object({
 
 export type Sample = z.infer<typeof SampleSchema>
 
+/////////////////////////////////////////
+// SAMPLE PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const SamplePartialSchema = SampleSchema.partial()
+
+export type SamplePartial = z.infer<typeof SamplePartialSchema>
+
 // SAMPLE OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
 
@@ -322,7 +338,7 @@ export const AssaySchema = z.object({
   assay_validation: z.string().nullish(),
   targetTaxonomicAssay: z.string(),
   targetTaxonomicScope: z.string().nullish(),
-  target_gene: z.string().nullish(),
+  target_gene: z.string(),
   target_subfragment: z.string().nullish(),
   ampliconSize: z.coerce.number().nullish(),
   pcr_primer_forward: z.string(),
@@ -355,6 +371,14 @@ export const AssaySchema = z.object({
 })
 
 export type Assay = z.infer<typeof AssaySchema>
+
+/////////////////////////////////////////
+// ASSAY PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const AssayPartialSchema = AssaySchema.partial()
+
+export type AssayPartial = z.infer<typeof AssayPartialSchema>
 
 // ASSAY OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
@@ -393,6 +417,14 @@ export const LibrarySchema = z.object({
 })
 
 export type Library = z.infer<typeof LibrarySchema>
+
+/////////////////////////////////////////
+// LIBRARY PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const LibraryPartialSchema = LibrarySchema.partial()
+
+export type LibraryPartial = z.infer<typeof LibraryPartialSchema>
 
 // LIBRARY OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
@@ -446,6 +478,14 @@ export const AnalysisSchema = z.object({
 
 export type Analysis = z.infer<typeof AnalysisSchema>
 
+/////////////////////////////////////////
+// ANALYSIS PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const AnalysisPartialSchema = AnalysisSchema.partial()
+
+export type AnalysisPartial = z.infer<typeof AnalysisPartialSchema>
+
 // ANALYSIS OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
 
@@ -466,6 +506,14 @@ export const ObservationSchema = z.object({
 
 export type Observation = z.infer<typeof ObservationSchema>
 
+/////////////////////////////////////////
+// OBSERVATION PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const ObservationPartialSchema = ObservationSchema.partial()
+
+export type ObservationPartial = z.infer<typeof ObservationPartialSchema>
+
 // OBSERVATION OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
 
@@ -479,13 +527,22 @@ export type ObservationOptionalDefaults = z.infer<typeof ObservationOptionalDefa
 /////////////////////////////////////////
 
 export const OccurrenceSchema = z.object({
-  analysisId: z.number().int(),
   samp_name: z.string(),
+  analysisId: z.number().int(),
   featureid: z.string(),
+  taxonomy: z.string(),
   organismQuantity: z.coerce.number().int(),
 })
 
 export type Occurrence = z.infer<typeof OccurrenceSchema>
+
+/////////////////////////////////////////
+// OCCURRENCE PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const OccurrencePartialSchema = OccurrenceSchema.partial()
+
+export type OccurrencePartial = z.infer<typeof OccurrencePartialSchema>
 
 // OCCURRENCE OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
@@ -507,6 +564,14 @@ export const FeatureSchema = z.object({
 
 export type Feature = z.infer<typeof FeatureSchema>
 
+/////////////////////////////////////////
+// FEATURE PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const FeaturePartialSchema = FeatureSchema.partial()
+
+export type FeaturePartial = z.infer<typeof FeaturePartialSchema>
+
 // FEATURE OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
 
@@ -527,6 +592,14 @@ export const AssignmentSchema = z.object({
 })
 
 export type Assignment = z.infer<typeof AssignmentSchema>
+
+/////////////////////////////////////////
+// ASSIGNMENT PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const AssignmentPartialSchema = AssignmentSchema.partial()
+
+export type AssignmentPartial = z.infer<typeof AssignmentPartialSchema>
 
 // ASSIGNMENT OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
@@ -558,6 +631,14 @@ export const TaxonomySchema = z.object({
 
 export type Taxonomy = z.infer<typeof TaxonomySchema>
 
+/////////////////////////////////////////
+// TAXONOMY PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const TaxonomyPartialSchema = TaxonomySchema.partial()
+
+export type TaxonomyPartial = z.infer<typeof TaxonomyPartialSchema>
+
 // TAXONOMY OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
 
@@ -582,6 +663,14 @@ export const GenericDataSchema = z.object({
 })
 
 export type GenericData = z.infer<typeof GenericDataSchema>
+
+/////////////////////////////////////////
+// GENERIC DATA PARTIAL SCHEMA
+/////////////////////////////////////////
+
+export const GenericDataPartialSchema = GenericDataSchema.partial()
+
+export type GenericDataPartial = z.infer<typeof GenericDataPartialSchema>
 
 // GENERIC DATA OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------

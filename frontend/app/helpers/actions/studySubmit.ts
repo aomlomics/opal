@@ -6,10 +6,13 @@ import { replaceDead } from "@/app/helpers/utils";
 import {
 	AnalysisScalarFieldEnumSchema,
 	AnalysisSchema,
+	AssayPartial,
 	AssayScalarFieldEnumSchema,
 	AssaySchema,
+	LibraryPartial,
 	LibraryScalarFieldEnumSchema,
 	LibrarySchema,
+	SamplePartial,
 	SampleScalarFieldEnumSchema,
 	SampleSchema,
 	StudyScalarFieldEnumSchema,
@@ -130,9 +133,10 @@ export default async function studySubmitAction(formData: FormData) {
 			for (let i = 1; i < libraryFileLines.length; i++) {
 				const currentLine = libraryFileLines[i].split("\t");
 
-				if (currentLine[libraryFileHeaders.indexOf("samp_name")]) {
-					const assayRow = {} as any;
-					const libraryRow = {} as any;
+				const samp_name = currentLine[libraryFileHeaders.indexOf("samp_name")];
+				if (samp_name) {
+					const assayRow = {} as AssayPartial;
+					const libraryRow = {} as LibraryPartial;
 
 					//iterate over each column
 					for (let j = 0; j < libraryFileHeaders.length; j++) {
@@ -143,43 +147,45 @@ export default async function studySubmitAction(formData: FormData) {
 						replaceDead(currentLine[j], libraryFileHeaders[j], libraryRow, LibrarySchema, LibraryScalarFieldEnumSchema);
 					}
 
-					sampToAssay[currentLine[libraryFileHeaders.indexOf("samp_name")]] = assayRow.assay_name;
-					libToAssay[currentLine[libraryFileHeaders.indexOf("library_id")]] = assayRow.assay_name;
+					if (assayRow.assay_name) {
+						sampToAssay[samp_name] = assayRow.assay_name;
+						libToAssay[currentLine[libraryFileHeaders.indexOf("library_id")]] = assayRow.assay_name;
 
-					//if the assay doesn't exist yet, add it to the assays array
-					if (!assays[assayRow.assay_name]) {
-						//TODO: build assay object from studyMetadata
-						assays[assayRow.assay_name] = AssaySchema.parse(
-							//TODO: use assay_name field, not column header
-							{
-								//least specific overrides most specific
-								...assayRow,
-								...assayCols[assayRow.assay_name],
-								...studyCol
-							},
-							{
-								errorMap: (error, ctx) => {
-									return { message: `AssaySchema: ${ctx.defaultError}` };
+						//if the assay doesn't exist yet, add it to the assays array
+						if (!assays[assayRow.assay_name]) {
+							//TODO: build assay object from studyMetadata
+							assays[assayRow.assay_name] = AssaySchema.parse(
+								//TODO: use assay_name field, not column header
+								{
+									//least specific overrides most specific
+									...assayRow,
+									...assayCols[assayRow.assay_name],
+									...studyCol
+								},
+								{
+									errorMap: (error, ctx) => {
+										return { message: `AssaySchema: ${ctx.defaultError}` };
+									}
 								}
-							}
+							);
+						}
+
+						libraries.push(
+							LibrarySchema.parse(
+								{
+									//least specific overrides most specific
+									...libraryRow,
+									...libraryCols[assayRow.assay_name], //TODO: 10 fields are replicated for every library, inefficient database usage
+									...studyCol
+								},
+								{
+									errorMap: (error, ctx) => {
+										return { message: `LibrarySchema: ${ctx.defaultError}` };
+									}
+								}
+							)
 						);
 					}
-
-					libraries.push(
-						LibrarySchema.parse(
-							{
-								//least specific overrides most specific
-								...libraryRow,
-								...libraryCols[assayRow.assay_name], //TODO: 10 fields are replicated for every library, inefficient database usage
-								...studyCol
-							},
-							{
-								errorMap: (error, ctx) => {
-									return { message: `LibrarySchema: ${ctx.defaultError}` };
-								}
-							}
-						)
-					);
 				}
 			}
 		}
@@ -195,29 +201,31 @@ export default async function studySubmitAction(formData: FormData) {
 			for (let i = 1; i < sampleFileLines.length; i++) {
 				const currentLine = sampleFileLines[i].split("\t");
 				if (currentLine[sampleFileHeaders.indexOf("samp_name")]) {
-					const sampleRow = {} as any;
+					const sampleRow = {} as SamplePartial;
 
 					for (let j = 0; j < sampleFileHeaders.length; j++) {
 						//assay table
 						replaceDead(currentLine[j], sampleFileHeaders[j], sampleRow, SampleSchema, SampleScalarFieldEnumSchema);
 					}
 
-					samples.push(
-						//@ts-ignore Zod enum mapping issue
-						SampleSchema.parse(
-							{
-								//construct from least specific to most specific
-								...sampleRow,
-								project_id: studyCol.project_id,
-								assay_name: sampToAssay[sampleRow.samp_name]
-							},
-							{
-								errorMap: (error, ctx) => {
-									return { message: `SampleSchema: ${ctx.defaultError}` };
+					if (sampleRow.samp_name) {
+						samples.push(
+							//@ts-ignore Zod enum mapping issue
+							SampleSchema.parse(
+								{
+									//construct from least specific to most specific
+									...sampleRow,
+									project_id: studyCol.project_id,
+									assay_name: sampToAssay[sampleRow.samp_name]
+								},
+								{
+									errorMap: (error, ctx) => {
+										return { message: `SampleSchema: ${ctx.defaultError}` };
+									}
 								}
-							}
-						)
-					);
+							)
+						);
+					}
 
 					//TODO: add rel_cont_id to assays
 				}
