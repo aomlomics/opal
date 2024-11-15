@@ -17,10 +17,10 @@ import {
 	TaxonomySchema
 } from "@/prisma/generated/zod";
 
-export default async function analysisUploadAction(formData: FormData) {
+export default async function analysisSubmitAction(formData: FormData) {
 	try {
 		let assay_name = formData.get("assay_name") as string;
-		console.log(`${assay_name} analysis upload`);
+		console.log(`${assay_name} analysis submit`);
 
 		const studyCol = {} as Record<string, string>;
 		const analysisCol = {} as Record<string, string>;
