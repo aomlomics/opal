@@ -1,11 +1,11 @@
 "use client";
 
-import analysisUploadAction from "@/app/helpers/actions/analysisUpload";
+import analysisSubmitAction from "@/app/helpers/actions/analysisSubmit";
 import { PutBlobResult } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
 import { useState, ChangeEvent, FormEvent } from "react";
 
-export default function AnalysisUpload() {
+export default function AnalysisSubmit() {
 	const [response, setResponse] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -68,7 +68,7 @@ export default function AnalysisUpload() {
 				allFormData.delete(`${a}_feat`);
 				allFormData.delete(`${a}_occ`);
 
-				const result = await analysisUploadAction(formData);
+				const result = await analysisSubmitAction(formData);
 				if (result.error) {
 					setError(result.error);
 				} else if (result.response) {
@@ -159,9 +159,9 @@ export default function AnalysisUpload() {
 								</div>
 							))}
 						</div>
+						<button className="btn btn-secondary">Submit</button>
 					</>
 				)}
-				<button className="btn btn-secondary">Submit</button>
 			</form>
 			{loading && <span className="text-neutral-content">Loading...</span>}
 			<span className="text-neutral-content">

@@ -1,11 +1,11 @@
 "use client";
 
-import studyUploadAction from "@/app/helpers/actions/studyUpload";
+import studyUploadAction from "@/app/helpers/actions/studySubmit";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 //import { getBaseUrl } from "@/app/helpers/utils";
 
-export default function StudyUpload() {
+export default function StudySubmit() {
 	const router = useRouter();
 	const [response, setResponse] = useState("");
 	const [error, setError] = useState("");
@@ -24,7 +24,7 @@ export default function StudyUpload() {
 			if (result.error) {
 				setError(result.error);
 			} else if (result.response) {
-				router.push("/upload/analysis");
+				router.push("/submit/analysis");
 			} else {
 				setError("Unknown error.");
 			}

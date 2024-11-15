@@ -2,11 +2,11 @@ import Footer from "@/app/components/Footer";
 import Header from "@/app/components/header/Header";
 import Link from "next/link";
 
-export default function About() {
+export default function Help() {
 	return (
 		<div className="flex flex-col text-gray-800">
 			<section className="max-w-2xl mx-auto py-16">
-				<h1 className="text-secondary font-bold text-6xl text-center mb-4">About</h1>
+				<h1 className="text-secondary font-bold text-6xl text-center mb-4">Help</h1>
 				<div className="bg-gray-100 shadow-lg rounded-3xl p-8">
 					<p className="mb-6">
 						Opal is a product of{" "}

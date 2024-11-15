@@ -16,8 +16,8 @@ import {
 	StudySchema
 } from "@/prisma/generated/zod";
 
-export default async function studyUploadAction(formData: FormData) {
-	console.log("study upload");
+export default async function studySubmitAction(formData: FormData) {
+	console.log("study submit");
 	try {
 		const assays = {} as Record<string, Prisma.AssayCreateManyInput>;
 		const libraries = [] as Prisma.LibraryCreateManyInput[];
@@ -148,7 +148,9 @@ export default async function studyUploadAction(formData: FormData) {
 
 					//if the assay doesn't exist yet, add it to the assays array
 					if (!assays[assayRow.assay_name]) {
+						//TODO: build assay object from studyMetadata
 						assays[assayRow.assay_name] = AssaySchema.parse(
+							//TODO: use assay_name field, not column header
 							{
 								//least specific overrides most specific
 								...assayRow,
