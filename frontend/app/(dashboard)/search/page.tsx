@@ -120,10 +120,8 @@ export default async function Dashboard() {
 								</div>
 							</span>
 						</label>
-						<select className="select select-bordered select-primary w-full">
-							<option disabled selected>
-								Pick one
-							</option>
+						<select className="select select-bordered select-primary w-full" defaultValue={"Pick one"}>
+							<option disabled>Pick one</option>
 							<option>Option 1</option>
 							<option>Option 2</option>
 							<option>Option 3</option>
