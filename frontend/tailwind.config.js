@@ -1,14 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 
 const sharedTheme = {
-	"primary": "#64ABDC",  // Custom light blue - main NODE color
-	"secondary": "#233D7F", // Custom dark blue - secondary NODE color
-	"accent": "#37cdbe", // Legacy NGI teal
+	"primary": "#64ABDC",  // Custom light blue - main brand color
+	"secondary": "#233D7F", // Custom dark blue - secondary brand color
 	"neutral": "#3d4451", // Nobody should ever remove this please -bayden
-	"button-normal": "#64ABDC",    // Same as primary
-	"button-hover": "#7DBAE5",     // Lighter variant
-	"button-selected": "#4B95C3",  // Darker variant
 }
+
+
 
 module.exports = {
 	darkMode: 'class',
@@ -121,6 +119,10 @@ module.exports = {
 					"interactive-default": "#EAF2FF",  // More saturated than div-base
 					"interactive-hover": "#D3E4FF",    // More saturated than div-elevated
 					"interactive-active": "#BDD4FF",   // More saturated than div-selected
+
+					"button-hover": "#7DBAE5",     // Lighter variant
+					"button-selected": "#4B95C3",  // Darker variant
+					"button-text": "#E2E8F1",
 				}
 			},
 			{
@@ -136,15 +138,22 @@ module.exports = {
 					
 					// Text colors
 					"text-main": "#E2E8F0",           // Primary content
-					"text-muted": "#A0AEC0",          // Secondary/supporting text
+					// "text-muted": "#A0AEC0",          // Secondary/supporting text
 					"text-inverse": "#1A1A1A",        // Text on light backgrounds
 					
 					// Interactive elements - more saturated navy blues
 					"interactive-default": "#2A3B6A",  // More saturated than div-base
 					"interactive-hover": "#314780",    // More saturated than div-elevated
 					"interactive-active": "#385396",   // More saturated than div-selected
+
+					"button-hover": "#7DBAE5",     // Lighter variant
+					"button-selected": "#4B95C3",  // Darker variant
+					"button-text": "#E2E8F1",
 				}
 			}
-		]
+		],
+		styled: false,  // This will prevent DaisyUI from applying its default styles
+		base: true,     // Keep base styles
+		utils: true,    // Keep utility classes
 	}
 }

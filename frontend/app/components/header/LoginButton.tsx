@@ -8,7 +8,7 @@ export default function LoginButton() {
 			</SignedIn>
 			<SignedOut>
 				<SignInButton>
-					<button className="btn bg-primary text-white hover:bg-primary/80">Sign In</button>
+					<button className="btn bg-primary hover:bg-primary/80 text-white">Sign In</button>
 				</SignInButton>
 			</SignedOut>
 		</div>
