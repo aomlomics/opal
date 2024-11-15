@@ -55,6 +55,7 @@ export default function AnalysisSubmit() {
 
 			let featBlob = {} as PutBlobResult;
 			let occBlob = {} as PutBlobResult;
+			let needToBreak = false;
 			try {
 				if (process.env.NODE_ENV !== "development") {
 					featBlob = await pushBlob(`${a}_feat`);
@@ -71,13 +72,16 @@ export default function AnalysisSubmit() {
 				const result = await analysisSubmitAction(formData);
 				if (result.error) {
 					setError(result.error);
+					needToBreak = true;
 				} else if (result.response) {
 					setResponse(result.response);
 				} else {
 					setError("Unknown error.");
+					needToBreak = true;
 				}
-			} catch (error) {
-				setError(`Error: ${(error as Error).message}.`);
+			} catch (err) {
+				setError(`Error: ${(err as Error).message}.`);
+				needToBreak = true;
 			}
 
 			if (process.env.NODE_ENV !== "development") {
@@ -89,7 +93,7 @@ export default function AnalysisSubmit() {
 				});
 			}
 
-			if (error) {
+			if (needToBreak) {
 				break;
 			}
 		}

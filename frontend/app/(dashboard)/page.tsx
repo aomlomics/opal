@@ -1,9 +1,6 @@
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-const Map = dynamic(() => import("@/app/components/Map"), {
-	ssr: false
-});
+import DataSummary from "../components/DataSummary";
 
 export default async function Home() {
 	return (
@@ -43,7 +40,7 @@ export default async function Home() {
 				</div>
 			</div>
 
-			<div className="bg-base-300 h-[200px] relative">
+			<div className="h-[200px] relative">
 				<Link href="#dataSummary">
 					<div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-modal animate-bounce">
 						<svg
@@ -58,28 +55,8 @@ export default async function Home() {
 					</div>
 				</Link>
 			</div>
-			<div id="dataSummary" className="z-content bg-base-300 px-4 sm:px-6 lg:px-8 pt-8 pb-12">
-				<div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-					<div className="bg-primary/20 p-6 rounded-lg text-center border-2 border-primary">
-						<h3 className="text-base-content text-lg mb-2">Studies</h3>
-						<p className="text-primary text-3xl font-bold">53</p>
-					</div>
-					{/* These will need to be components once they use actual data */}
-					<DataSummaryItem title="Samples" value="1,204" />
-					<DataSummaryItem title="Unique Sequence Features" value="2,345,678" />
-					<DataSummaryItem title="16S ASVs" value="1,234,567" />
-					<DataSummaryItem title="18S ASVs" value="1,111,111" />
-					<DataSummaryItem title="COI ASVs" value="456,789" />
-				</div>
-
-				<div className="mb-4 text-2xl text-gray-300 font-semibold">
-					Showing all <span className="text-primary">Studies</span>
-				</div>
-
-				<div className="h-[500px] rounded-lg overflow-hidden">
-					<Map />
-				</div>
-
+			<div id="dataSummary" className="z-content px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+				<DataSummary />
 				{/* Funding Institutes Section */}
 				<div className="mt-32 mb-24 text-center">
 					<h2 className="text-3xl text-gray-300 font-semibold mb-12">Supported By:</h2>
@@ -148,14 +125,5 @@ export default async function Home() {
 				</div>
 			</div>
 		</main>
-	);
-}
-
-function DataSummaryItem({ title, value }: { title: string; value: string }) {
-	return (
-		<div className="bg-gray-800 p-6 rounded-lg text-center">
-			<h3 className="text-white text-lg mb-2">{title}</h3>
-			<p className="text-primary text-3xl font-bold">{value}</p>
-		</div>
 	);
 }
