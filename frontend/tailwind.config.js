@@ -106,16 +106,21 @@ module.exports = {
 					...require("daisyui/src/theming/themes")["light"],
 					...sharedTheme,
 					
-					// Core backgrounds
+					// Core backgrounds - subtle blue tints
 					"background-main": "#FAFAFA",      // Slightly off-white for better eye comfort
 					"div-base": "#F8FAFD",            // Subtle blue tint
 					"div-elevated": "#E8F1FC",        // More noticeable blue tint
 					"div-selected": "#D0E1FF",        // Stronger blue for better visibility
 					
 					// Text colors
-					"text-main": "#2D3748",
-					"text-muted": "#4A5568",
-					"text-inverse": "#FFFFFF",
+					"text-main": "#2D3748",           // Primary content
+					"text-muted": "#4A5568",          // Secondary/supporting text
+					"text-inverse": "#FFFFFF",        // Text on light backgrounds
+					
+					// Interactive elements - more saturated blues
+					"interactive-default": "#EAF2FF",  // More saturated than div-base
+					"interactive-hover": "#D3E4FF",    // More saturated than div-elevated
+					"interactive-active": "#BDD4FF",   // More saturated than div-selected
 				}
 			},
 			{
@@ -123,20 +128,21 @@ module.exports = {
 					...require("daisyui/src/theming/themes")["dark"],
 					...sharedTheme,
 					
-					// Background colors for different surface levels
-					"background-main": "#1A1A1A",      // Main page background
-					"background-raised": "#2D3748",    // Elevated elements like cards
-					"background-selected": "#2C5282",  // Selected/active states
+					// Core backgrounds - subtle navy tints
+					"background-main": "#1A1A1A",      // Pure dark background
+					"div-base": "#1E2337",            // Subtle navy tint
+					"div-elevated": "#232942",        // More noticeable navy tint
+					"div-selected": "#283154",        // Stronger navy for better visibility
 					
-					// Text colors for different purposes
+					// Text colors
 					"text-main": "#E2E8F0",           // Primary content
 					"text-muted": "#A0AEC0",          // Secondary/supporting text
 					"text-inverse": "#1A1A1A",        // Text on light backgrounds
 					
-					// Interactive element colors
-					"interactive-default": "#2D3748",  // Default button/input state
-					"interactive-hover": "#4A5568",    // Hover states
-					"interactive-active": "#718096",   // Pressed states
+					// Interactive elements - more saturated navy blues
+					"interactive-default": "#2A3B6A",  // More saturated than div-base
+					"interactive-hover": "#314780",    // More saturated than div-elevated
+					"interactive-active": "#385396",   // More saturated than div-selected
 				}
 			}
 		]
