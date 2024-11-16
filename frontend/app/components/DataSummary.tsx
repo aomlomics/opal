@@ -45,9 +45,9 @@ export default async function DataSummary() {
 	return (
 		<div>
 			<div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-				<DataSummaryItem title="Studies" value={studyCount} href="/explore/studies" />
-				<DataSummaryItem title="Samples" value={sampleCount} href="/explore/samples" />
-				<DataSummaryItem title="Unique Sequence Features" value={featureCount} href="/explore/features" />
+				<DataSummaryItem title="Studies" value={studyCount} href="/explore/study" />
+				<DataSummaryItem title="Samples" value={sampleCount} href="/explore/sample" />
+				<DataSummaryItem title="Unique Sequence Features" value={featureCount} href="/explore/feature" />
 				{uniqueAssays.map((a) => (
 					<DataSummaryItem key={a.target_gene} title={a.target_gene} value={a.count || NaN} href="/explore/" />
 				))}

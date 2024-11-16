@@ -4,19 +4,19 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/app/helpers/prisma";
 import { replaceDead } from "@/app/helpers/utils";
 import {
+	AnalysisOptionalDefaultsSchema,
 	AnalysisScalarFieldEnumSchema,
-	AnalysisSchema,
+	AssayOptionalDefaultsSchema,
 	AssayPartial,
 	AssayScalarFieldEnumSchema,
-	AssaySchema,
+	LibraryOptionalDefaultsSchema,
 	LibraryPartial,
 	LibraryScalarFieldEnumSchema,
-	LibrarySchema,
+	SampleOptionalDefaultsSchema,
 	SamplePartial,
 	SampleScalarFieldEnumSchema,
-	SampleSchema,
-	StudyScalarFieldEnumSchema,
-	StudySchema
+	StudyOptionalDefaultsSchema,
+	StudyScalarFieldEnumSchema
 } from "@/prisma/generated/zod";
 
 export default async function studySubmitAction(formData: FormData) {
@@ -51,7 +51,7 @@ export default async function studySubmitAction(formData: FormData) {
 					currentLine[studyFileHeaders.indexOf("study_level")],
 					currentLine[field_name_i],
 					studyCol,
-					StudySchema,
+					StudyOptionalDefaultsSchema,
 					StudyScalarFieldEnumSchema
 				);
 				//assay table
@@ -59,7 +59,7 @@ export default async function studySubmitAction(formData: FormData) {
 					currentLine[studyFileHeaders.indexOf("study_level")],
 					currentLine[field_name_i],
 					studyCol,
-					AssaySchema,
+					AssayOptionalDefaultsSchema,
 					AssayScalarFieldEnumSchema
 				);
 
@@ -68,7 +68,7 @@ export default async function studySubmitAction(formData: FormData) {
 					currentLine[studyFileHeaders.indexOf("study_level")],
 					currentLine[field_name_i],
 					studyCol,
-					LibrarySchema,
+					LibraryOptionalDefaultsSchema,
 					LibraryScalarFieldEnumSchema
 				);
 
@@ -77,7 +77,7 @@ export default async function studySubmitAction(formData: FormData) {
 					currentLine[studyFileHeaders.indexOf("study_level")],
 					currentLine[field_name_i],
 					studyCol,
-					AnalysisSchema,
+					AnalysisOptionalDefaultsSchema,
 					AnalysisScalarFieldEnumSchema
 				);
 
@@ -95,7 +95,7 @@ export default async function studySubmitAction(formData: FormData) {
 							currentLine[i],
 							currentLine[field_name_i],
 							assayCols[studyFileHeaders[i]],
-							AssaySchema,
+							AssayOptionalDefaultsSchema,
 							AssayScalarFieldEnumSchema
 						);
 
@@ -107,7 +107,7 @@ export default async function studySubmitAction(formData: FormData) {
 							currentLine[i],
 							currentLine[field_name_i],
 							libraryCols[studyFileHeaders[i]],
-							LibrarySchema,
+							LibraryOptionalDefaultsSchema,
 							LibraryScalarFieldEnumSchema
 						);
 					}
@@ -115,7 +115,7 @@ export default async function studySubmitAction(formData: FormData) {
 			}
 		}
 
-		const study = StudySchema.parse(studyCol, {
+		const study = StudyOptionalDefaultsSchema.parse(studyCol, {
 			errorMap: (error, ctx) => {
 				return { message: `StudySchema: ${ctx.defaultError}` };
 			}
@@ -141,10 +141,22 @@ export default async function studySubmitAction(formData: FormData) {
 					//iterate over each column
 					for (let j = 0; j < libraryFileHeaders.length; j++) {
 						//assay table
-						replaceDead(currentLine[j], libraryFileHeaders[j], assayRow, AssaySchema, AssayScalarFieldEnumSchema);
+						replaceDead(
+							currentLine[j],
+							libraryFileHeaders[j],
+							assayRow,
+							AssayOptionalDefaultsSchema,
+							AssayScalarFieldEnumSchema
+						);
 
 						//library table
-						replaceDead(currentLine[j], libraryFileHeaders[j], libraryRow, LibrarySchema, LibraryScalarFieldEnumSchema);
+						replaceDead(
+							currentLine[j],
+							libraryFileHeaders[j],
+							libraryRow,
+							LibraryOptionalDefaultsSchema,
+							LibraryScalarFieldEnumSchema
+						);
 					}
 
 					if (assayRow.assay_name) {
@@ -154,7 +166,7 @@ export default async function studySubmitAction(formData: FormData) {
 						//if the assay doesn't exist yet, add it to the assays array
 						if (!assays[assayRow.assay_name]) {
 							//TODO: build assay object from studyMetadata
-							assays[assayRow.assay_name] = AssaySchema.parse(
+							assays[assayRow.assay_name] = AssayOptionalDefaultsSchema.parse(
 								//TODO: use assay_name field, not column header
 								{
 									//least specific overrides most specific
@@ -171,7 +183,7 @@ export default async function studySubmitAction(formData: FormData) {
 						}
 
 						libraries.push(
-							LibrarySchema.parse(
+							LibraryOptionalDefaultsSchema.parse(
 								{
 									//least specific overrides most specific
 									...libraryRow,
@@ -205,13 +217,19 @@ export default async function studySubmitAction(formData: FormData) {
 
 					for (let j = 0; j < sampleFileHeaders.length; j++) {
 						//assay table
-						replaceDead(currentLine[j], sampleFileHeaders[j], sampleRow, SampleSchema, SampleScalarFieldEnumSchema);
+						replaceDead(
+							currentLine[j],
+							sampleFileHeaders[j],
+							sampleRow,
+							SampleOptionalDefaultsSchema,
+							SampleScalarFieldEnumSchema
+						);
 					}
 
 					if (sampleRow.samp_name) {
 						samples.push(
 							//@ts-ignore Zod enum mapping issue
-							SampleSchema.parse(
+							SampleOptionalDefaultsSchema.parse(
 								{
 									//construct from least specific to most specific
 									...sampleRow,
