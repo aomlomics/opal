@@ -6,8 +6,8 @@ import "leaflet/dist/leaflet.css";
 import { icon } from "leaflet";
 
 const ICON = icon({
-	iconUrl: "/images/marker.svg",
-	iconSize: [32, 32]
+	iconUrl: "/images/map_marker.svg",
+	iconSize: [48, 48]
 });
 
 export default function MyMap() {
