@@ -38,10 +38,10 @@ export default function StudySubmit() {
 	return (
 		<>
 			<form className="card-body" onSubmit={handleSubmit}>
-				<h1 className="text-neutral-content">Study Metadata:</h1>
+				<h1 className="text-primary font-semibold">Study Metadata:</h1>
 				<label className="form-control w-full max-w-xs">
 					<div className="label">
-						<span className="label-text text-neutral-content">Study File:</span>
+						<span className="label-text text-base-content">Study File:</span>
 					</div>
 					<input
 						type="file"
@@ -53,7 +53,7 @@ export default function StudySubmit() {
 				</label>
 				<label className="form-control w-full max-w-xs">
 					<div className="label">
-						<span className="label-text text-neutral-content">Samples File:</span>
+						<span className="label-text text-base-content">Samples File:</span>
 					</div>
 					<input
 						type="file"
@@ -65,7 +65,7 @@ export default function StudySubmit() {
 				</label>
 				<label className="form-control w-full max-w-xs">
 					<div className="label">
-						<span className="label-text text-neutral-content">Library File:</span>
+						<span className="label-text text-base-content">Library File:</span>
 					</div>
 					<input
 						type="file"
@@ -75,7 +75,7 @@ export default function StudySubmit() {
 						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 					/>
 				</label>
-				<button className="btn btn-secondary">Submit</button>
+				<button className="btn btn-primary text-base-100">Submit</button>
 			</form>
 			{loading && <span className="text-neutral-content">Loading...</span>}
 			<span className="text-neutral-content">

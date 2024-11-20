@@ -1,52 +1,44 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvent } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { icon } from "leaflet";
+import { icon } from "leaflet"
+import { getMapLocations } from "@/app/helpers/actions/getMapLocations";
+import { DeadValue } from "@/types/enums";
+import { useEffect, useState } from "react";
 
 const ICON = icon({
 	iconUrl: "/images/map_marker.svg",
-	iconSize: [48, 48]
-});
+	iconSize: [32, 32],
+})
 
-export default function MyMap() {
+export default function Map() {
+	const [studyLocations, setStudyLocations] = useState<any[]>([]);
 	const centerStart = { lat: 25.7617, lng: -80.8918 };
 	const ZOOM_LEVEL = 5;
-
-	const initialMarkers = [
-		centerStart,
-		{ lat: 28.3852, lng: -65.7218 }, // North Atlantic
-		{ lat: 22.4937, lng: -72.834 }, // Caribbean
-		{ lat: 32.1451, lng: -77.3428 }, // Gulf Stream
-		{ lat: 19.8968, lng: -84.9472 }, // Western Caribbean
-		{ lat: 26.7459, lng: -88.2437 } // Gulf of Mexico
-	];
-
-	const [markers, setMarkers] = useState(initialMarkers);
-
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
 
-	//jsx element to display markers where the user clicks on the map
-	function LocationMarkers() {
-		useMapEvent("click", (e) => {
-			setMarkers((prevValue) => [...prevValue, e.latlng]);
-		});
+	useEffect(() => {
+		getMapLocations().then(rawLocations => {
+			console.log("Raw locations from DB:", JSON.stringify(rawLocations, null, 2));
+			
+			const processedLocations = rawLocations.map(location => {
+				const processed = {
+					project_id: location.project_id,
+					_avg: {
+						decimalLatitude: location._sum.decimalLatitude! / location._count.decimalLatitude,
+						decimalLongitude: location._sum.decimalLongitude! / location._count.decimalLongitude
+					}
+				};
+				
+				console.log(`Processed location for ${location.project_id}:`, processed);
+				return processed;
+			});
 
-		return (
-			<>
-				{markers.map((marker) => {
-					return (
-						<Marker key={`${marker.lat}:${marker.lng}`} icon={ICON} position={marker}>
-							<Popup>
-								A pretty CSS3 popup. <br /> Easily customizable.
-							</Popup>
-						</Marker>
-					);
-				})}
-			</>
-		);
-	}
+			console.log("Final processed locations:", processedLocations);
+			setStudyLocations(processedLocations);
+		});
+	}, []);
 
 	return (
 		<div className="flex flex-col items-start h-full w-full">
@@ -55,7 +47,25 @@ export default function MyMap() {
 					attribution='Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>'
 					url={`https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`}
 				/>
-				<LocationMarkers />
+				{studyLocations.map((location) => {
+					if (location._avg.decimalLatitude && location._avg.decimalLongitude) {
+						return (
+							<Marker
+								key={location.project_id}
+								icon={ICON}
+								position={{
+									lat: location._avg.decimalLatitude,
+									lng: location._avg.decimalLongitude
+								}}
+							>
+								<Popup>
+									Study ID: {location.project_id}
+								</Popup>
+							</Marker>
+						);
+					}
+					return null;
+				})}
 			</MapContainer>
 		</div>
 	);
