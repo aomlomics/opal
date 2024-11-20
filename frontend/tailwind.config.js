@@ -4,6 +4,7 @@ const sharedTheme = {
 	"primary": "#64ABDC",  // Custom light blue - main brand color
 	"secondary": "#233D7F", // Custom dark blue - secondary brand color
 	"neutral": "#3d4451", // Nobody should ever remove this please -bayden
+	"map-colors": "#FF6B6B" // Used for Map points, map buttons potentially
 }
 
 

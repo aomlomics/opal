@@ -22,7 +22,7 @@ export default function TabButton({ tabName, route }: { tabName: string; route: 
 			className={`px-4 py-2 ${
 				isActive
 					? "bg-primary text-white rounded-t-lg -mb-1"
-					: "text-white hover:bg-base-300 hover:text-base-content rounded-t-lg"
+					: "text-text-main hover:bg-base-300 hover:text-base-content rounded-t-lg"
 			}`}
 		>
 			{tabName}
