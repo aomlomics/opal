@@ -13,7 +13,7 @@ export async function GET(request: Request) {
 			//@ts-ignore
 			const [result, count] = await prisma.$transaction([prisma[table].findMany(findMany), prisma[table].count()]);
 
-			return Response.json({ message: "Success", result, count, skip: findMany.skip });
+			return Response.json({ message: "Success", result, count });
 		} else {
 			return Response.json({ error: "No table specified." }, { status: 400 });
 		}

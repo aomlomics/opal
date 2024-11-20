@@ -91,29 +91,28 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 	};
 
 	const take = searchParams.get("take");
-	if (take) {
-		findMany.take = parseInt(take);
+	if (!take) {
+		throw new Error("Take is required");
 	}
+	findMany.take = parseInt(take);
 
-	const dir = searchParams.get("dir");
-	const skip = searchParams.get("skip");
-	const cursorId = searchParams.get("cursorId");
-	if (skip) {
+	const page = searchParams.get("page");
+	//const cursorId = searchParams.get("cursorId");
+	if (page) {
 		//offset pagination
-		findMany.skip = parseInt(skip);
-		if (dir) {
-			findMany.skip -= findMany.take * 2;
-		}
-	} else if (cursorId) {
-		//cursor pagination
-		findMany.skip = 1;
-		findMany.cursor = {
-			id: parseInt(cursorId)
-		};
-		if (dir) {
-			findMany.take *= parseInt(dir);
-		}
+		findMany.skip = (parseInt(page) - 1) * findMany.take;
 	}
+	//} else if (cursorId) {
+	//	const dir = searchParams.get("dir");
+	//	//cursor pagination
+	//	findMany.skip = 1;
+	//	findMany.cursor = {
+	//		id: parseInt(cursorId)
+	//	};
+	//	if (dir) {
+	//		findMany.take *= parseInt(dir);
+	//	}
+	//}
 
 	return findMany;
 }
