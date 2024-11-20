@@ -6,19 +6,18 @@ import { replaceDead } from "@/app/helpers/utils";
 import {
 	AnalysisOptionalDefaultsSchema,
 	AnalysisScalarFieldEnumSchema,
-	AnalysisSchema,
+	AssignmentOptionalDefaultsSchema,
 	AssignmentPartial,
 	AssignmentScalarFieldEnumSchema,
-	AssignmentSchema,
+	FeatureOptionalDefaultsSchema,
 	FeaturePartial,
 	FeatureScalarFieldEnumSchema,
-	FeatureSchema,
-	ObservationSchema,
+	ObservationOptionalDefaultsSchema,
+	OccurrenceOptionalDefaultsSchema,
 	OccurrencePartial,
-	OccurrenceSchema,
+	TaxonomyOptionalDefaultsSchema,
 	TaxonomyPartial,
-	TaxonomyScalarFieldEnumSchema,
-	TaxonomySchema
+	TaxonomyScalarFieldEnumSchema
 } from "@/prisma/generated/zod";
 
 export default async function analysisSubmitAction(formData: FormData) {
@@ -51,7 +50,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 					currentLine[studyFileHeaders.indexOf("study_level")],
 					currentLine[field_name_i],
 					studyCol,
-					AnalysisSchema,
+					AnalysisOptionalDefaultsSchema,
 					AnalysisScalarFieldEnumSchema
 				);
 
@@ -65,7 +64,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 						currentLine[i],
 						currentLine[field_name_i],
 						analysisCol,
-						AnalysisSchema,
+						AnalysisOptionalDefaultsSchema,
 						AnalysisScalarFieldEnumSchema
 					);
 				}
@@ -162,7 +161,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 									currentLine[j],
 									featFileHeaders[j],
 									featureRow,
-									FeatureSchema,
+									FeatureOptionalDefaultsSchema,
 									FeatureScalarFieldEnumSchema
 								);
 
@@ -171,7 +170,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 									currentLine[j],
 									featFileHeaders[j],
 									assignmentRow,
-									AssignmentSchema,
+									AssignmentOptionalDefaultsSchema,
 									AssignmentScalarFieldEnumSchema
 								);
 
@@ -180,13 +179,13 @@ export default async function analysisSubmitAction(formData: FormData) {
 									currentLine[j],
 									featFileHeaders[j],
 									taxonomyRow,
-									TaxonomySchema,
+									TaxonomyOptionalDefaultsSchema,
 									TaxonomyScalarFieldEnumSchema
 								);
 							}
 
 							features.push(
-								FeatureSchema.parse(featureRow, {
+								FeatureOptionalDefaultsSchema.parse(featureRow, {
 									errorMap: (error, ctx) => {
 										return { message: `FeatureSchema (${assay_name}): ${ctx.defaultError}` };
 									}
@@ -199,7 +198,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 							assignments.push(assignmentRow);
 
 							taxonomies.push(
-								TaxonomySchema.parse(taxonomyRow, {
+								TaxonomyOptionalDefaultsSchema.parse(taxonomyRow, {
 									errorMap: (error, ctx) => {
 										return { message: `TaxonomySchema (${assay_name}): ${ctx.defaultError}` };
 									}
@@ -227,7 +226,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 					console.log("assignments");
 					await tx.assignment.createManyAndReturn({
 						data: assignments.map((a) =>
-							AssignmentSchema.parse(
+							AssignmentOptionalDefaultsSchema.parse(
 								{
 									...a,
 									analysisId: dbAnalysis.id
@@ -287,7 +286,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 								if (organismQuantity) {
 									//observation table
 									observations.push(
-										ObservationSchema.parse(
+										ObservationOptionalDefaultsSchema.parse(
 											{
 												samp_name,
 												featureid
@@ -324,7 +323,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 					console.log("occurrences");
 					await tx.occurrence.createMany({
 						data: occurrences.map((occ) => {
-							return OccurrenceSchema.parse(
+							return OccurrenceOptionalDefaultsSchema.parse(
 								{
 									...occ,
 									analysisId: dbAnalysis.id

@@ -258,7 +258,8 @@ enum nucl_acid_ext_sep {
 
 // Models
 model Study {
-    project_id String @id @unique
+    id         Int    @id @default(autoincrement())
+    project_id String @unique
 
     // Relations
     Samples     Sample[]
@@ -295,7 +296,8 @@ model Study {
 }
 
 model Sample {
-    samp_name String @id @unique
+    id        Int    @id @default(autoincrement())
+    samp_name String @unique
 
     // Relations
     project_id   String
@@ -489,7 +491,8 @@ model Sample {
 }
 
 model Assay {
-    assay_name String @id @unique
+    id         Int    @id @default(autoincrement())
+    assay_name String @unique
 
     // Relations
     Samples     Sample[]
@@ -559,7 +562,8 @@ model Assay {
 }
 
 model Library {
-    library_id String @id @unique
+    id         Int    @id @default(autoincrement())
+    library_id String @unique
 
     // Relations
     assay_name  String
@@ -653,6 +657,8 @@ model Analysis {
 
 // ASVs
 model Observation {
+    id Int @id @default(autoincrement())
+
     // Relations
     samp_name   String
     Sample      Sample       @relation(fields: [samp_name], references: [samp_name])
@@ -660,10 +666,12 @@ model Observation {
     Feature     Feature      @relation(fields: [featureid], references: [featureid])
     Occurrences Occurrence[]
 
-    @@id([samp_name, featureid])
+    @@unique([samp_name, featureid])
 }
 
 model Occurrence {
+    id Int @id @default(autoincrement())
+
     // Relations
     samp_name   String
     analysisId  Int
@@ -676,11 +684,12 @@ model Occurrence {
     /// @zod.custom.use(z.coerce.number().int())
     organismQuantity Int
 
-    @@id([analysisId, samp_name, featureid, taxonomy])
+    @@unique([analysisId, samp_name, featureid, taxonomy])
 }
 
 model Feature {
-    featureid String @id @unique
+    id        Int    @id @default(autoincrement())
+    featureid String @unique
 
     // Relations
     Observations        Observation[]
@@ -693,6 +702,8 @@ model Feature {
 }
 
 model Assignment {
+    id Int @id @default(autoincrement())
+
     // Relations
     analysisId  Int
     Analysis    Analysis     @relation(fields: [analysisId], references: [id])
@@ -706,11 +717,12 @@ model Assignment {
     /// @zod.custom.use(z.coerce.number())
     Confidence Float
 
-    @@id([analysisId, featureid, taxonomy])
+    @@unique([analysisId, featureid, taxonomy])
 }
 
 model Taxonomy {
-    taxonomy String @id @unique
+    id       Int    @id @default(autoincrement())
+    taxonomy String @unique
 
     // Relations
     Assignments Assignment[]

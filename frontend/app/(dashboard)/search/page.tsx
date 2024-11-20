@@ -1,4 +1,5 @@
 import Search from "@/app/components/Search";
+import { Suspense } from "react";
 
 export default async function Dashboard() {
 	const sampleColumns = [
@@ -35,7 +36,9 @@ export default async function Dashboard() {
 
 				{/* Search Bar Section */}
 				<div className="mb-8">
-					<Search placeholder="Search samples..."></Search>
+					<Suspense fallback={null}>
+						<Search placeholder="Search samples..."></Search>
+					</Suspense>
 				</div>
 
 				{/* Sample Search Terms */}
