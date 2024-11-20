@@ -103,10 +103,10 @@ export default function AnalysisSubmit() {
 	return (
 		<>
 			<form className="card-body" onSubmit={handleSubmit}>
-				<h1 className="text-neutral-content">Analysis Metadata:</h1>
+				<h1 className="text-primary">Analysis Metadata:</h1>
 				<label className="form-control w-full max-w-xs">
 					<div className="label">
-						<span className="label-text text-neutral-content">Study File:</span>
+						<span className="label-text text-base-content">Study File:</span>
 					</div>
 					<input
 						type="file"
@@ -121,7 +121,7 @@ export default function AnalysisSubmit() {
 					<>
 						<label className="form-control w-full max-w-xs">
 							<div className="label">
-								<span className="label-text text-neutral-content">Library File:</span>
+								<span className="label-text text-base-content">Library File:</span>
 							</div>
 							<input
 								type="file"
@@ -131,14 +131,14 @@ export default function AnalysisSubmit() {
 								className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 							/>
 						</label>
-						<h1 className="text-neutral-content">Analyses:</h1>
+						<h1 className="text-base-content">Analyses:</h1>
 						<div className="flex gap-5">
 							{analyses.map((a) => (
 								<div key={a}>
-									<h2 className="text-neutral-content">{a}</h2>
+									<h2 className="text-base-content">{a}</h2>
 									<label className="form-control w-full max-w-xs">
 										<div className="label">
-											<span className="label-text text-neutral-content">Features:</span>
+											<span className="label-text text-base-content">Features:</span>
 										</div>
 										<input
 											type="file"
@@ -150,7 +150,7 @@ export default function AnalysisSubmit() {
 									</label>
 									<label className="form-control w-full max-w-xs">
 										<div className="label">
-											<span className="label-text text-neutral-content">Occurrences:</span>
+											<span className="label-text text-base-content">Occurrences:</span>
 										</div>
 										<input
 											type="file"
@@ -163,12 +163,12 @@ export default function AnalysisSubmit() {
 								</div>
 							))}
 						</div>
-						<button className="btn btn-secondary">Submit</button>
+						<button className="btn btn-primary">Submit</button>
 					</>
 				)}
 			</form>
-			{loading && <span className="text-neutral-content">Loading...</span>}
-			<span className="text-neutral-content">
+			{loading && <span className="text-base-content">Loading...</span>}
+			<span className="text-base-content">
 				{response} {error}
 			</span>
 		</>
