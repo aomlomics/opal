@@ -1,4 +1,5 @@
 import { DeadValue } from "@/types/enums";
+import { Prisma } from "@prisma/client";
 import { ZodObject, ZodEnum, ZodNumber, ZodBoolean } from "zod";
 
 export async function fetcher(url: string) {
@@ -75,4 +76,44 @@ export function replaceDead(
 			obj[fieldName] = field;
 		}
 	}
+}
+
+export function parsePaginationParams(searchParams: URLSearchParams) {
+	const findMany = {
+		orderBy: {
+			id: "asc"
+		}
+	} as {
+		orderBy: { id: Prisma.SortOrder };
+		take: number;
+		skip?: number;
+		cursor?: { id: number };
+	};
+
+	const take = searchParams.get("take");
+	if (take) {
+		findMany.take = parseInt(take);
+	}
+
+	const dir = searchParams.get("dir");
+	const skip = searchParams.get("skip");
+	const cursorId = searchParams.get("cursorId");
+	if (skip) {
+		//offset pagination
+		findMany.skip = parseInt(skip);
+		if (dir) {
+			findMany.skip -= findMany.take * 2;
+		}
+	} else if (cursorId) {
+		//cursor pagination
+		findMany.skip = 1;
+		findMany.cursor = {
+			id: parseInt(cursorId)
+		};
+		if (dir) {
+			findMany.take *= parseInt(dir);
+		}
+	}
+
+	return findMany;
 }
