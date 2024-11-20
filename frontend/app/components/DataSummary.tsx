@@ -53,7 +53,7 @@ export default async function DataSummary() {
 				))}
 			</div>
 
-			<div className="mb-4 text-2xl text-gray-300 font-semibold">
+			<div className="mb-4 text-2xl text-base-content">
 				Showing all <span className="text-primary">Studies</span>
 			</div>
 
@@ -65,10 +65,13 @@ export default async function DataSummary() {
 }
 
 function DataSummaryItem({ title, value, href }: { title: string; value: number; href: string }) {
-	return (
-		<Link href={href} className="bg-gray-800 p-6 rounded-lg text-center">
-			<h3 className="text-white text-lg mb-2">{title}</h3>
-			<p className="text-primary text-3xl font-bold">{value.toLocaleString()}</p>
-		</Link>
-	);
+    return (
+        <Link 
+            href={href} 
+            className="bg-div-base hover:bg-interactive-hover active:bg-interactive-active p-6 rounded-lg text-center shadow-md transition-colors"
+        >
+            <h3 className="text-main text-lg mb-2">{title}</h3>
+            <p className="text-primary text-3xl font-bold">{value.toLocaleString()}</p>
+        </Link>
+    );
 }

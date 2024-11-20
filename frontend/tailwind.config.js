@@ -1,13 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 
 const sharedTheme = {
-	"primary": "#64ABDC",  // Custom light blue - main brand color
-	"secondary": "#233D7F", // Custom dark blue - secondary brand color
-	"neutral": "#3d4451", // Nobody should ever remove this please -bayden
-	"map-colors": "#FF6B6B" // Used for Map points, map buttons potentially
+	"primary": "#64ABDC",    // Brand blue
+	"secondary": "#233D7F",  // Dark blue accent
+	"neutral": "#3d4451",    // Required by DaisyUI
+	"map-colors": "#FF6B6B"  // Map accents
 }
-
-
 
 module.exports = {
 	darkMode: 'class',
@@ -105,56 +103,43 @@ module.exports = {
 					...require("daisyui/src/theming/themes")["light"],
 					...sharedTheme,
 					
-					// Core backgrounds - subtle blue tints
-					"background-main": "#FAFAFA",      // Slightly off-white for better eye comfort
-					"div-base": "#F8FAFD",            // Subtle blue tint
-					"div-elevated": "#E8F1FC",        // More noticeable blue tint
-					"div-selected": "#D0E1FF",        // Stronger blue for better visibility
+					"base-100": "#F5F8FF",      // Was background-main
+					"base-200": "#F8FAFD",      // Was div-base
+					"base-300": "#E8F1FC",      // Was div-elevated
+					"base-content": "#2D3748",   // Was text-main
+					"secondary-content": "#4A5568", // Was text-muted
+					"neutral-content": "#FFFFFF",   // Was text-inverse
 					
-					// Text colors
-					"text-main": "#2D3748",           // Primary content
-					"text-muted": "#4A5568",          // Secondary/supporting text
-					"text-inverse": "#FFFFFF",        // Text on light backgrounds
+					"info": "#EAF2FF",          // Was interactive-default
+					"info-content": "#D3E4FF",   // Was interactive-hover
+					"base-400": "#BDD4FF", // Was interactive-active
 					
-					// Interactive elements - more saturated blues
-					"interactive-default": "#EAF2FF",  // More saturated than div-base
-					"interactive-hover": "#D3E4FF",    // More saturated than div-elevated
-					"interactive-active": "#BDD4FF",   // More saturated than div-selected
-
-					"button-hover": "#7DBAE5",     // Lighter variant
-					"button-selected": "#4B95C3",  // Darker variant
-					"button-text": "#E2E8F1",
-				}
+					"accent": "#7DBAE5",        // Was button-hover
+					"accent-focus": "#4B95C3",   // Was button-selected
+					"accent-content": "#E2E8F1", // Was button-text
+				},
 			},
 			{
 				dark: {
 					...require("daisyui/src/theming/themes")["dark"],
 					...sharedTheme,
 					
-					// Core backgrounds - subtle navy tints
-					"background-main": "#1A1A1A",      // Pure dark background
-					"div-base": "#1E2337",            // Subtle navy tint
-					"div-elevated": "#232942",        // More noticeable navy tint
-					"div-selected": "#283154",        // Stronger navy for better visibility
+					"base-100": "#141824",      // Was background-main
+					"base-200": "#1E2337",      // Was div-base
+					"base-300": "#232942",      // Was div-elevated
+					"base-content": "#E2E8F0",   // Was text-main
+					"secondary-content": "#A0AEC0", // Was text-muted
+					"neutral-content": "#1A1A1A",   // Was text-inverse
 					
-					// Text colors
-					"text-main": "#E2E8F0",           // Primary content
-					// "text-muted": "#A0AEC0",          // Secondary/supporting text
-					"text-inverse": "#1A1A1A",        // Text on light backgrounds
+					"info": "#2A3B6A",          // Was interactive-default
+					"info-content": "#314780",   // Was interactive-hover
+					"base-400": "#385396", // Was interactive-active
 					
-					// Interactive elements - more saturated navy blues
-					"interactive-default": "#2A3B6A",  // More saturated than div-base
-					"interactive-hover": "#314780",    // More saturated than div-elevated
-					"interactive-active": "#385396",   // More saturated than div-selected
-
-					"button-hover": "#7DBAE5",     // Lighter variant
-					"button-selected": "#4B95C3",  // Darker variant
-					"button-text": "#E2E8F1",
+					"accent": "#7DBAE5",        // Was button-hover
+					"accent-focus": "#4B95C3",   // Was button-selected
+					"accent-content": "#E2E8F1", // Was button-text
 				}
 			}
-		],
-		styled: false,  // This will prevent DaisyUI from applying its default styles
-		base: true,     // Keep base styles
-		utils: true,    // Keep utility classes
+		]
 	}
 }

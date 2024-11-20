@@ -6,7 +6,7 @@ import TabButton from "./TabButton";
 
 export default function Header() {
 	return (
-		<header className="top-0 z-header bg-div-base border-b-4 border-primary h-24">
+		<header className="top-0 z-header bg-base-100 border-b-4 border-primary h-24"> 
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logo section */}
 				<div className="flex items-center">
