@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { icon } from "leaflet"
+import { icon } from "leaflet";
 import { getMapLocations } from "@/app/helpers/actions/getMapLocations";
 import { DeadValue } from "@/types/enums";
 import { useEffect, useState } from "react";
 
 const ICON = icon({
 	iconUrl: "/images/map_marker.svg",
-	iconSize: [32, 32],
-})
+	iconSize: [32, 32]
+});
 
 export default function Map() {
 	const [studyLocations, setStudyLocations] = useState<any[]>([]);
@@ -19,10 +19,10 @@ export default function Map() {
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
 
 	useEffect(() => {
-		getMapLocations().then(rawLocations => {
+		async function getLocs() {
+			const rawLocations = await getMapLocations();
 			console.log("Raw locations from DB:", JSON.stringify(rawLocations, null, 2));
-			
-			const processedLocations = rawLocations.map(location => {
+			const processedLocations = rawLocations.map((location) => {
 				const processed = {
 					project_id: location.project_id,
 					_avg: {
@@ -30,14 +30,15 @@ export default function Map() {
 						decimalLongitude: location._sum.decimalLongitude! / location._count.decimalLongitude
 					}
 				};
-				
+
 				console.log(`Processed location for ${location.project_id}:`, processed);
 				return processed;
 			});
 
 			console.log("Final processed locations:", processedLocations);
 			setStudyLocations(processedLocations);
-		});
+		}
+		getLocs();
 	}, []);
 
 	return (
@@ -58,9 +59,7 @@ export default function Map() {
 									lng: location._avg.decimalLongitude
 								}}
 							>
-								<Popup>
-									Study ID: {location.project_id}
-								</Popup>
+								<Popup>Study ID: {location.project_id}</Popup>
 							</Marker>
 						);
 					}
