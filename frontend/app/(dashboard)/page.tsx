@@ -1,6 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import DataSummary from "../components/DataSummary";
+import dynamic from "next/dynamic";
+const Map = dynamic(() => import("@/app/components/Map"), {
+	ssr: false
+});
 
 export default async function Home() {
 	return (
@@ -57,6 +61,9 @@ export default async function Home() {
 			</div>
 			<div id="dataSummary" className="z-content px-4 sm:px-6 lg:px-8 pt-8 pb-12">
 				<DataSummary />
+				<div className="h-[500px] rounded-lg overflow-hidden">
+					<Map />
+				</div>
 				{/* Funding Institutes Section */}
 				<div className="mt-32 mb-24 text-center">
 					<h2 className="text-3xl text-primary mb-12">Supported By:</h2>
