@@ -48,10 +48,6 @@ export default async function DataSummary() {
 					<DataSummaryItem key={a.target_gene} title={a.target_gene} value={a.count || NaN} href="/explore/" />
 				))}
 			</div>
-
-			<div className="mb-4 text-2xl text-base-content">
-				Showing all <span className="text-primary">Studies</span>
-			</div>
 		</div>
 	);
 }

@@ -60,10 +60,17 @@ export default async function Home() {
 				</Link>
 			</div>
 			<div id="dataSummary" className="z-content px-4 sm:px-6 lg:px-8 pt-8 pb-12">
-				<DataSummary />
-				<div className="h-[500px] rounded-lg overflow-hidden">
-					<Map />
+			<div className="mb-4 text-2xl text-base-content">Showing all 
+				<span className="text-primary"> Studies</span></div>
+				<div className="flex gap-8">
+					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">
+						<Map />
+					</div>
+					<div className="w-1/2">
+						<DataSummary />
+					</div>
 				</div>
+
 				{/* Funding Institutes Section */}
 				<div className="mt-32 mb-24 text-center">
 					<h2 className="text-3xl text-primary mb-12">Supported By:</h2>

@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { icon } from "leaflet";
 import useSWR from "swr";
 import { fetcher } from "../helpers/utils";
+import Link from "next/link";
 
 const ICON = icon({
 	iconUrl: "/images/map_marker.svg",
@@ -17,6 +18,7 @@ type ProjSampleAvgLocs = {
 		decimalLongitude: number;
 	};
 	project_id: string;
+	id: number;
 };
 
 export default function Map() {
@@ -56,7 +58,30 @@ export default function Map() {
 									lng: location._avg.decimalLongitude
 								}}
 							>
-								<Popup>Study ID: {location.project_id}</Popup>
+								<Popup className="map-popup">
+									<div className="font-sans bg-base-100 p-4 rounded-lg">
+										<h3 className="text-base-content mb-1 pt-1">Study Name (project_id)</h3>
+										<Link 
+											href={`/explore/study/${location.id}`}
+											className="text-info hover:text-info-focus hover:underline transition-colors"
+										>
+											{location.project_id}
+										</Link>
+										<style jsx global>{`
+											.leaflet-popup-content-wrapper {
+												padding: 0;
+												border-radius: 0.5rem;
+											}
+											.leaflet-popup-content {
+												margin: 0;
+											}
+											.leaflet-popup-tip {
+												background: var(--fallback-b1, oklch(var(--b1))) !important;
+												opacity: 1 !important;
+											}
+										`}</style>
+									</div>
+								</Popup>
 							</Marker>
 						);
 					}
