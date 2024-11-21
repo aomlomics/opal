@@ -2,15 +2,7 @@
 
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/app/helpers/prisma";
-import {
-	AssignmentOptionalDefaultsSchema,
-	AssignmentPartial,
-	AssignmentScalarFieldEnumSchema,
-	ObservationOptionalDefaultsSchema,
-	OccurrenceOptionalDefaultsSchema,
-	OccurrencePartial
-} from "@/prisma/generated/zod";
-import { replaceDead } from "../../utils";
+import { ObservationOptionalDefaultsSchema, OccurrenceOptionalDefaultsSchema } from "@/prisma/generated/zod";
 
 export default async function OccSubmitAction(formData: FormData) {
 	try {
@@ -19,65 +11,23 @@ export default async function OccSubmitAction(formData: FormData) {
 
 		const analysisId = parseInt(formData.get("analysisId") as string);
 
-		//assembling featToTaxa
-		const featToTaxa = {} as Record<string, string>;
-		let assignFileLines;
-		if (process.env.NODE_ENV !== "development") {
-			//TODO: flip comparison
-			//get files from form data
-			const file = formData.get(`${assay_name}_assign`) as File;
-			const fileText = await file.text();
-			assignFileLines = fileText.split("\n");
-		} else {
-			//fetch from blob storage
-			const url = JSON.parse(formData.get(`${assay_name}_assign`) as string).url;
-			const file = await fetch(url);
-			const fileText = await file.text();
-			assignFileLines = fileText.split("\n");
-		}
-		const assignFileHeaders = assignFileLines[0].split("\t");
-
-		//iterate over each row
-		for (let i = 1; i < assignFileLines.length; i++) {
-			const currentLine = assignFileLines[i].split("\t");
-
-			if (currentLine[assignFileHeaders.indexOf("featureid")]) {
-				const assignmentRow = {} as AssignmentPartial;
-
-				//iterate over each column
-				for (let j = 0; j < assignFileHeaders.length; j++) {
-					//assignment table
-					replaceDead(
-						currentLine[j],
-						assignFileHeaders[j],
-						assignmentRow,
-						AssignmentOptionalDefaultsSchema,
-						AssignmentScalarFieldEnumSchema
-					);
-				}
-
-				featToTaxa[assignmentRow.featureid!] = assignmentRow.taxonomy!;
-			}
-		}
-
 		//Occurrence file
 		//parsing file inside transaction to reduce memory usage, since this file is large
 		await prisma.$transaction(
 			async (tx) => {
 				const observations = [] as Prisma.ObservationCreateManyInput[];
-				const occurrences = [] as OccurrencePartial[];
+				const occurrences = [] as Prisma.OccurrenceCreateManyInput[];
 
 				console.log(`${assay_name}_occ file`);
 				let occFileLines;
-				if (process.env.NODE_ENV !== "development") {
-					//TODO: flip comparison
+				if (process.env.NODE_ENV === "development") {
 					//get files from form data
-					const file = formData.get(`${assay_name}_occ`) as File;
+					const file = formData.get("file") as File;
 					const fileText = await file.text();
 					occFileLines = fileText.split("\n");
 				} else {
 					//fetch from blob storage
-					const url = JSON.parse(formData.get(`${assay_name}_occ`) as string).url;
+					const url = JSON.parse(formData.get("file") as string).url;
 					const file = await fetch(url);
 					const fileText = await file.text();
 					occFileLines = fileText.split("\n");
@@ -114,12 +64,23 @@ export default async function OccSubmitAction(formData: FormData) {
 								);
 
 								//occurrence table
-								occurrences.push({
-									samp_name,
-									featureid,
-									organismQuantity,
-									taxonomy: featToTaxa[featureid]
-								});
+								occurrences.push(
+									OccurrenceOptionalDefaultsSchema.parse(
+										{
+											samp_name,
+											featureid,
+											organismQuantity,
+											analysisId
+										},
+										{
+											errorMap: (error, ctx) => {
+												return {
+													message: `OccurrenceSchema (${assay_name}, ${samp_name}, ${featureid}): ${ctx.defaultError}`
+												};
+											}
+										}
+									)
+								);
 							}
 						}
 					}
@@ -136,21 +97,7 @@ export default async function OccSubmitAction(formData: FormData) {
 				//occurrences
 				console.log("occurrences");
 				await tx.occurrence.createMany({
-					data: occurrences.map((occ) => {
-						return OccurrenceOptionalDefaultsSchema.parse(
-							{
-								...occ,
-								analysisId
-							},
-							{
-								errorMap: (error, ctx) => {
-									return {
-										message: `OccurrenceSchema (${assay_name}, ${occ.samp_name}, ${occ.featureid}): ${ctx.defaultError}`
-									};
-								}
-							}
-						);
-					})
+					data: occurrences
 				});
 			},
 			{

@@ -57,21 +57,9 @@ export default function AnalysisSubmit() {
 
 		const allFormData = new FormData(event.currentTarget);
 
-		async function pushBlob(name: string) {
-			const file = allFormData.get(name) as File;
-			const fileObj = await upload(file.name, file, {
-				access: "public",
-				handleUploadUrl: "/api/analysisFile/upload",
-				multipart: true
-			});
-			return fileObj;
-		}
-
-		const blobs = {} as Record<string, PutBlobResult>;
-
 		async function analysisFileSubmit(
 			assay_name: string,
-			fileType: string,
+			file: File,
 			fieldsToSet: Record<string, any>,
 			action: typeof assignSubmitAction | typeof occSubmitAction
 		): Promise<{ error?: boolean; result?: Record<string, any> }> {
@@ -88,15 +76,18 @@ export default function AnalysisSubmit() {
 
 			try {
 				//only upload file to the blob server when on a hosted service
-				if (process.env.NODE_ENV !== "development") {
-					//TODO: flip comparison
-					formData.set(`${assay_name}_${fileType}`, allFormData.get(`${assay_name}_${fileType}`) as File);
+				if (process.env.NODE_ENV === "development") {
+					formData.set("file", file);
 				} else {
-					blob = await pushBlob(`${assay_name}_${fileType}`);
-					formData.set(`${assay_name}_${fileType}`, JSON.stringify(blob));
+					blob = await upload(file.name, file, {
+						access: "public",
+						handleUploadUrl: "/api/analysisFile/upload",
+						multipart: true
+					});
+					formData.set("file", JSON.stringify(blob));
 				}
-				allFormData.delete(`${assay_name}_${fileType}`);
 
+				//send request
 				const response = await action(formData);
 				if (response.error) {
 					setError(response.error);
@@ -116,9 +107,10 @@ export default function AnalysisSubmit() {
 			}
 
 			//only delete file on the blob server when on a hosted service
-			if (process.env.NODE_ENV === "development") {
-				//TODO: flip comparison
-				blobs[`${assay_name}_${fileType}`] = blob;
+			if (process.env.NODE_ENV !== "development") {
+				await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
+					method: "DELETE"
+				});
 			}
 
 			return { error, result };
@@ -126,40 +118,35 @@ export default function AnalysisSubmit() {
 
 		for (const a of analyses) {
 			//analysis files
-			const formData = new FormData();
-			formData.set("assay_name", a);
-			formData.set("studyFile", allFormData.get("studyFile") as File);
-			formData.set("libraryFile", allFormData.get("libraryFile") as File);
-
-			let assignFile;
-			if (process.env.NODE_ENV !== "development") {
-				//TODO: flip comparison
-				//need assignment file to construct featToTaxa
-				assignFile = allFormData.get(`${a}_assign`) as File;
-			}
-
 			let analysisId;
-			try {
-				const response = await analysisSubmitAction(formData);
-				if (response.error) {
-					setError(response.error);
-					break;
-				} else if (response.message) {
-					setResponse(response.message);
-					analysisId = response.result!.analysisId;
-				} else {
-					setError("Unknown error.");
+			//code block to force garbage collection
+			{
+				const formData = new FormData();
+				formData.set("assay_name", a);
+				formData.set("studyFile", allFormData.get("studyFile") as File);
+
+				try {
+					const response = await analysisSubmitAction(formData);
+					if (response.error) {
+						setError(response.error);
+						break;
+					} else if (response.message) {
+						setResponse(response.message);
+						analysisId = response.result!.analysisId;
+					} else {
+						setError("Unknown error.");
+						break;
+					}
+				} catch (err) {
+					setError(`Error: ${(err as Error).message}.`);
 					break;
 				}
-			} catch (err) {
-				setError(`Error: ${(err as Error).message}.`);
-				break;
 			}
 
 			//assignments file
 			const { error: assignError, result: assignResult } = await analysisFileSubmit(
 				a,
-				"assign",
+				allFormData.get(`${a}_assign`) as File,
 				{ analysisId },
 				assignSubmitAction
 			);
@@ -168,24 +155,18 @@ export default function AnalysisSubmit() {
 				//remove analysis from database
 				console.log(`${a} analysis delete`);
 				await analysisDelete(analysisId as number);
+
 				break;
 			}
 
 			//occurrences file
-			let occError;
-			if (process.env.NODE_ENV !== "development") {
-				//TODO: flip comparison
-				const result = await analysisFileSubmit(a, "occ", { analysisId, [`${a}_assign`]: assignFile }, occSubmitAction);
-				occError = result.error;
-			} else {
-				const result = await analysisFileSubmit(
-					a,
-					"occ",
-					{ analysisId, [`${a}_assign`]: blobs[`${a}_assign`] },
-					occSubmitAction
-				);
-				occError = result.error;
-			}
+			const { error: occError } = await analysisFileSubmit(
+				a,
+				allFormData.get(`${a}_occ`) as File,
+				{ analysisId },
+				occSubmitAction
+			);
+
 			if (occError) {
 				//remove assignments from database
 				console.log(`${a} assignments delete`);
@@ -208,16 +189,8 @@ export default function AnalysisSubmit() {
 				//remove analysis from database
 				console.log(`${a} analysis delete`);
 				await analysisDelete(analysisId as number);
-				break;
-			}
-		}
 
-		if (process.env.NODE_ENV === "development") {
-			//TODO: flip comparison
-			for (const b of Object.values(blobs)) {
-				await fetch(`/api/analysisFile/delete?url=${b.url}`, {
-					method: "DELETE"
-				});
+				break;
 			}
 		}
 
@@ -243,18 +216,6 @@ export default function AnalysisSubmit() {
 				</label>
 				{!!analyses.length && (
 					<>
-						<label className="form-control w-full max-w-xs">
-							<div className="label">
-								<span className="label-text text-base-content">Library File:</span>
-							</div>
-							<input
-								type="file"
-								name="libraryFile"
-								required
-								accept=".tsv"
-								className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
-							/>
-						</label>
 						<h1 className="text-base-content">Analyses:</h1>
 						<div className="flex gap-5">
 							{analyses.map((a) => (

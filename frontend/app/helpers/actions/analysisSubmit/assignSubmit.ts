@@ -34,15 +34,14 @@ export default async function assignSubmitAction(formData: FormData) {
 
 				console.log(`${assay_name}_assign file`);
 				let assignFileLines;
-				if (process.env.NODE_ENV !== "development") {
-					//TODO: flip comparison
+				if (process.env.NODE_ENV === "development") {
 					//get files from form data
-					const file = formData.get(`${assay_name}_assign`) as File;
+					const file = formData.get("file") as File;
 					const fileText = await file.text();
 					assignFileLines = fileText.split("\n");
 				} else {
 					//fetch from blob storage
-					const url = JSON.parse(formData.get(`${assay_name}_assign`) as string).url;
+					const url = JSON.parse(formData.get("file") as string).url;
 					const file = await fetch(url);
 					const fileText = await file.text();
 					assignFileLines = fileText.split("\n");

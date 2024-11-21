@@ -13,8 +13,6 @@ export default async function analysisSubmitAction(formData: FormData) {
 		const studyCol = {} as Record<string, string>;
 		const analysisCol = {} as Record<string, string>;
 
-		const analysisLibs = [] as Prisma.LibraryWhereUniqueInput[];
-
 		//Study file
 		console.log("study file");
 		//code block to force garbage collection
@@ -54,29 +52,6 @@ export default async function analysisSubmitAction(formData: FormData) {
 			}
 		}
 
-		//Library file
-		console.log("library file");
-		//code block to force garbage collection
-		{
-			//parse file
-			const libraryFileLines = (await (formData.get("libraryFile") as File).text()).split("\n");
-			libraryFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
-			const libraryFileHeaders = libraryFileLines[0].split("\t");
-			const assay_name_i = libraryFileHeaders.indexOf("assay_name");
-			const library_id_i = libraryFileHeaders.indexOf("library_id");
-			//iterate over each row
-			for (let i = 1; i < libraryFileLines.length; i++) {
-				const currentLine = libraryFileLines[i].split("\t");
-
-				//grab the library_ids for this assay_name
-				if (currentLine[libraryFileHeaders.indexOf("samp_name")]) {
-					if (currentLine[assay_name_i] === assay_name) {
-						analysisLibs.push({ library_id: currentLine[library_id_i] });
-					}
-				}
-			}
-		}
-
 		const analysis = AnalysisOptionalDefaultsSchema.parse(
 			{
 				...analysisCol,
@@ -93,12 +68,7 @@ export default async function analysisSubmitAction(formData: FormData) {
 		//analysis
 		console.log("analysis");
 		const dbAnalysis = await prisma.analysis.create({
-			data: {
-				...analysis,
-				Libraries: {
-					connect: analysisLibs
-				}
-			},
+			data: analysis,
 			select: {
 				id: true
 			}
