@@ -24,7 +24,7 @@ export const AnalysisScalarFieldEnumSchema = z.enum(['id','project_id','assay_na
 
 export const ObservationScalarFieldEnumSchema = z.enum(['id','samp_name','featureid']);
 
-export const OccurrenceScalarFieldEnumSchema = z.enum(['id','samp_name','analysisId','featureid','taxonomy','organismQuantity']);
+export const OccurrenceScalarFieldEnumSchema = z.enum(['id','samp_name','analysisId','featureid','organismQuantity']);
 
 export const FeatureScalarFieldEnumSchema = z.enum(['id','featureid','consensusTaxonomyId','dna_sequence']);
 
@@ -541,7 +541,6 @@ export const OccurrenceSchema = z.object({
   samp_name: z.string(),
   analysisId: z.number().int(),
   featureid: z.string(),
-  taxonomy: z.string(),
   organismQuantity: z.coerce.number().int(),
 })
 

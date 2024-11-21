@@ -568,7 +568,6 @@ model Library {
     // Relations
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
-    Analyses    Analysis[]
     GenericData GenericData[]
 
     //Data
@@ -599,6 +598,7 @@ model Library {
     associatedSequences String?
 }
 
+//Analyses
 model Analysis {
     id Int @id @default(autoincrement())
 
@@ -607,7 +607,6 @@ model Analysis {
     Study       Study         @relation(fields: [project_id], references: [project_id])
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
-    Libraries   Library[]
     Assignments Assignment[]
     GenericData GenericData[]
 
@@ -655,7 +654,6 @@ model Analysis {
     bioinfo_method_additional String?
 }
 
-// ASVs
 model Observation {
     id Int @id @default(autoincrement())
 
@@ -676,15 +674,14 @@ model Occurrence {
     samp_name   String
     analysisId  Int
     featureid   String
-    taxonomy    String
     Observation Observation @relation(fields: [samp_name, featureid], references: [samp_name, featureid])
-    Assignment  Assignment  @relation(fields: [analysisId, featureid, taxonomy], references: [analysisId, featureid, taxonomy])
+    Assignment  Assignment  @relation(fields: [analysisId, featureid], references: [analysisId, featureid])
 
     // Data
     /// @zod.custom.use(z.coerce.number().int())
     organismQuantity Int
 
-    @@unique([analysisId, samp_name, featureid, taxonomy])
+    @@unique([analysisId, samp_name, featureid])
 }
 
 model Feature {
@@ -717,7 +714,7 @@ model Assignment {
     /// @zod.custom.use(z.coerce.number())
     Confidence Float
 
-    @@unique([analysisId, featureid, taxonomy])
+    @@unique([analysisId, featureid])
 }
 
 model Taxonomy {
