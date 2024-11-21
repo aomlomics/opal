@@ -22,7 +22,8 @@ export default async function OccSubmitAction(formData: FormData) {
 		//assembling featToTaxa
 		const featToTaxa = {} as Record<string, string>;
 		let assignFileLines;
-		if (process.env.NODE_ENV === "development") {
+		if (process.env.NODE_ENV !== "development") {
+			//TODO: flip comparison
 			//get files from form data
 			const file = formData.get(`${assay_name}_assign`) as File;
 			const fileText = await file.text();
@@ -68,7 +69,8 @@ export default async function OccSubmitAction(formData: FormData) {
 
 				console.log(`${assay_name}_occ file`);
 				let occFileLines;
-				if (process.env.NODE_ENV === "development") {
+				if (process.env.NODE_ENV !== "development") {
+					//TODO: flip comparison
 					//get files from form data
 					const file = formData.get(`${assay_name}_occ`) as File;
 					const fileText = await file.text();

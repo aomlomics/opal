@@ -34,7 +34,8 @@ export default async function assignSubmitAction(formData: FormData) {
 
 				console.log(`${assay_name}_assign file`);
 				let assignFileLines;
-				if (process.env.NODE_ENV === "development") {
+				if (process.env.NODE_ENV !== "development") {
+					//TODO: flip comparison
 					//get files from form data
 					const file = formData.get(`${assay_name}_assign`) as File;
 					const fileText = await file.text();

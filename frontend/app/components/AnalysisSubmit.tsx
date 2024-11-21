@@ -67,6 +67,8 @@ export default function AnalysisSubmit() {
 			return fileObj;
 		}
 
+		const blobs = {} as Record<string, PutBlobResult>;
+
 		async function analysisFileSubmit(
 			assay_name: string,
 			fileType: string,
@@ -87,10 +89,11 @@ export default function AnalysisSubmit() {
 			try {
 				//only upload file to the blob server when on a hosted service
 				if (process.env.NODE_ENV !== "development") {
+					//TODO: flip comparison
+					formData.set(`${assay_name}_${fileType}`, allFormData.get(`${assay_name}_${fileType}`) as File);
+				} else {
 					blob = await pushBlob(`${assay_name}_${fileType}`);
 					formData.set(`${assay_name}_${fileType}`, JSON.stringify(blob));
-				} else {
-					formData.set(`${assay_name}_${fileType}`, allFormData.get(`${assay_name}_${fileType}`) as File);
 				}
 				allFormData.delete(`${assay_name}_${fileType}`);
 
@@ -113,10 +116,9 @@ export default function AnalysisSubmit() {
 			}
 
 			//only delete file on the blob server when on a hosted service
-			if (process.env.NODE_ENV !== "development") {
-				await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
-					method: "DELETE"
-				});
+			if (process.env.NODE_ENV === "development") {
+				//TODO: flip comparison
+				blobs[`${assay_name}_${fileType}`] = blob;
 			}
 
 			return { error, result };
@@ -129,8 +131,12 @@ export default function AnalysisSubmit() {
 			formData.set("studyFile", allFormData.get("studyFile") as File);
 			formData.set("libraryFile", allFormData.get("libraryFile") as File);
 
-			//need assignment file to construct featToTaxa
-			const assignFile = allFormData.get(`${a}_assign`) as File;
+			let assignFile;
+			if (process.env.NODE_ENV !== "development") {
+				//TODO: flip comparison
+				//need assignment file to construct featToTaxa
+				assignFile = allFormData.get(`${a}_assign`) as File;
+			}
 
 			let analysisId;
 			try {
@@ -166,12 +172,20 @@ export default function AnalysisSubmit() {
 			}
 
 			//occurrences file
-			const { error: occError } = await analysisFileSubmit(
-				a,
-				"occ",
-				{ analysisId, [`${a}_assign`]: assignFile },
-				occSubmitAction
-			);
+			let occError;
+			if (process.env.NODE_ENV !== "development") {
+				//TODO: flip comparison
+				const result = await analysisFileSubmit(a, "occ", { analysisId, [`${a}_assign`]: assignFile }, occSubmitAction);
+				occError = result.error;
+			} else {
+				const result = await analysisFileSubmit(
+					a,
+					"occ",
+					{ analysisId, [`${a}_assign`]: blobs[`${a}_assign`] },
+					occSubmitAction
+				);
+				occError = result.error;
+			}
 			if (occError) {
 				//remove assignments from database
 				console.log(`${a} assignments delete`);
@@ -195,6 +209,15 @@ export default function AnalysisSubmit() {
 				console.log(`${a} analysis delete`);
 				await analysisDelete(analysisId as number);
 				break;
+			}
+		}
+
+		if (process.env.NODE_ENV === "development") {
+			//TODO: flip comparison
+			for (const b of Object.values(blobs)) {
+				await fetch(`/api/analysisFile/delete?url=${b.url}`, {
+					method: "DELETE"
+				});
 			}
 		}
 
