@@ -216,6 +216,18 @@ export default function AnalysisSubmit() {
 				</label>
 				{!!analyses.length && (
 					<>
+						<label className="form-control w-full max-w-xs">
+							<div className="label">
+								<span className="label-text text-base-content">Library File:</span>
+							</div>
+							<input
+								type="file"
+								name="libraryFile"
+								required
+								accept=".tsv"
+								className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
+							/>
+						</label>
 						<h1 className="text-base-content">Analyses:</h1>
 						<div className="flex gap-5">
 							{analyses.map((a) => (
@@ -223,7 +235,7 @@ export default function AnalysisSubmit() {
 									<h2 className="text-base-content">{a}</h2>
 									<label className="form-control w-full max-w-xs">
 										<div className="label">
-											<span className="label-text text-base-content">Assignments:</span>
+											<span className="label-text text-base-content">Features:</span>
 										</div>
 										<input
 											type="file"

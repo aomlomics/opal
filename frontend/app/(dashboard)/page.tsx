@@ -4,7 +4,7 @@ import DataSummary from "../components/DataSummary";
 
 export default async function Home() {
 	return (
-		<main className="flex flex-col grow bg-base-200 text-base-content">
+		<main className="flex flex-col grow bg-base-100 text-base-content">
 			<div className="relative w-full h-[450px] bg-black overflow-hidden z-content-overlay">
 				<Image
 					src="/images/hero_image.png"
@@ -20,10 +20,10 @@ export default async function Home() {
 						<span className="block text-primary animate-slide-in">Welcome</span>
 					</h1>
 					<div className="text-base-content">
-						<span className="block text-3xl sm:text-4xl md:text-5xl mb-2">
+						<span className="block text-3xl sm:text-4xl md:text-5xl mb-2 text-gray-400">
 							to the <span className="text-primary">NOAA Ocean DNA Explorer</span>
 						</span>
-						<div className="text-lg sm:text-xl mb-6 text-base-content">
+						<div className="text-lg sm:text-xl mb-6 text-gray-400">
 							<span>NODE is a data sharing platform, search engine, and visualization and analysis tool</span>
 							<span> for ocean environmental DNA (eDNA) data</span>
 						</div>
@@ -59,9 +59,9 @@ export default async function Home() {
 				<DataSummary />
 				{/* Funding Institutes Section */}
 				<div className="mt-32 mb-24 text-center">
-					<h2 className="text-3xl text-gray-300 font-semibold mb-12">Supported By:</h2>
+					<h2 className="text-3xl text-primary mb-12">Supported By:</h2>
 
-					<div className="max-w-4xl mx-auto text-lg text-gray-300 mb-16">
+					<div className="max-w-4xl mx-auto text-lg text-main mb-16">
 						<p>
 							NODE is a product of{" "}
 							<a

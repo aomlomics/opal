@@ -1,21 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 
 const sharedTheme = {
-	"primary": "#64ABDC",  // Your custom blue
-	"secondary": "#233D7F", // Your dark blue/slate
-	"accent": "#37cdbe",
-	"neutral": "#3d4451",
+	"primary": "#64ABDC",    // Brand blue
+	"secondary": "#233D7F",  // Dark blue accent
+	"neutral": "#3d4451",    // Required by DaisyUI
+	"map-colors": "#FF6B6B"  // Map accents
 }
-
-// Legacy Colors
-// primary: "#64ABDC", //NODE Custom Light blue
-// dark_blue: "#233D7F", //NODE Custom Dark blue
-// secondary: "#000000", // Black
-// accent: "#79BCE4", // NOAA Seagull
-// neutral: "#BFD0E5", // NOAA Periwinkle grey 
-// "neutral-content": "whitesmoke",
-// };
-
 
 module.exports = {
 	darkMode: 'class',
@@ -26,7 +16,41 @@ module.exports = {
 	],
 	theme: {
 		extend: {
-			// This is for darkening the Hero Image
+			// Typography system
+			fontSize: {
+				'display': ['4.5rem', { // 72px
+					lineHeight: '1.1',
+					letterSpacing: '-0.02em',
+					fontWeight: '700'
+				}],
+				'h1': ['3rem', {        // 48px
+					lineHeight: '1.15',  
+					letterSpacing: '-0.01em',
+					fontWeight: '700'
+				}],
+				'h2': ['2rem', {        // 32px
+					lineHeight: '1.2',   
+					fontWeight: '500'
+				}],
+				'h3': ['1.5rem', {      // 24px
+					lineHeight: '1.3', 
+					fontWeight: '500'
+				}],
+				'body-lg': ['1.125rem', { // 18px
+					lineHeight: '1.4',  
+					fontWeight: '400'
+				}],
+				'body': ['1rem', {      // 16px
+					lineHeight: '1.5', 
+					fontWeight: '400'
+				}],
+				'ui': ['0.875rem', {    // 14px
+					lineHeight: '1.3',  
+					fontWeight: '500'
+				}],
+			},
+
+			// Dropshadow can darken / lighten an image (used in hero image)
 			dropShadow: {
 				full: [
 					"-0.3px -0.3px 0 rgba(0,0,0,0.5)",
@@ -67,47 +91,6 @@ module.exports = {
 				'toast': '2000', // Toast notifications (usually in bottom right) 
 				'alert': '2100', // Alerts or other high-priority notifications
 			},
-
-			// New typography system
-			fontSize: {
-				// Main display text (like "Welcome")
-				'display': ['4.5rem', { // 72px
-					lineHeight: '1.1',
-					letterSpacing: '-0.02em',
-					fontWeight: '700'
-				}],
-				
-				// Headers
-				'h1': ['3rem', {        // 48px
-					lineHeight: '1.2',
-					letterSpacing: '-0.01em',
-					fontWeight: '700'
-				}],
-				'h2': ['2rem', {        // 32px
-					lineHeight: '1.3',
-					fontWeight: '500'
-				}],
-				'h3': ['1.5rem', {      // 24px
-					lineHeight: '1.4',
-					fontWeight: '500'
-				}],
-				
-				// Body text
-				'body-lg': ['1.125rem', { // 18px
-					lineHeight: '1.6',
-					fontWeight: '400'
-				}],
-				'body': ['1rem', {      // 16px
-					lineHeight: '1.6',
-					fontWeight: '400'
-				}],
-				
-				// UI elements (buttons, labels, etc)
-				'ui': ['0.875rem', {    // 14px
-					lineHeight: '1.4',
-					fontWeight: '500'
-				}],
-			},
 		}
 	},
   	plugins: [
@@ -119,16 +102,42 @@ module.exports = {
 				light: {
 					...require("daisyui/src/theming/themes")["light"],
 					...sharedTheme,
-					"base-100": "#f8f9fa",  // Very light grey for background
-					"base-content": "#1a1a1a",  // Very dark grey for text
-				}
+					
+					"base-100": "#F5F8FF",      // Was background-main
+					"base-200": "#F8FAFD",      // Was div-base
+					"base-300": "#E8F1FC",      // Was div-elevated
+					"base-content": "#2D3748",   // Was text-main
+					"secondary-content": "#4A5568", // Was text-muted
+					"neutral-content": "#FFFFFF",   // Was text-inverse
+					
+					"info": "#EAF2FF",          // Was interactive-default
+					"info-content": "#D3E4FF",   // Was interactive-hover
+					"base-400": "#BDD4FF", // Was interactive-active
+					
+					"accent": "#7DBAE5",        // Was button-hover
+					"accent-focus": "#4B95C3",   // Was button-selected
+					"accent-content": "#E2E8F1", // Was button-text
+				},
 			},
 			{
 				dark: {
 					...require("daisyui/src/theming/themes")["dark"],
 					...sharedTheme,
-					"base-100": "#2a303c",  // Dark grey for background (not pure black)
-					"base-content": "#e9ecef",  // Light grey for text (not pure white)
+					
+					"base-100": "#141824",      // Was background-main
+					"base-200": "#1E2337",      // Was div-base
+					"base-300": "#232942",      // Was div-elevated
+					"base-content": "#E2E8F0",   // Was text-main
+					"secondary-content": "#A0AEC0", // Was text-muted
+					"neutral-content": "#1A1A1A",   // Was text-inverse
+					
+					"info": "#2A3B6A",          // Was interactive-default
+					"info-content": "#314780",   // Was interactive-hover
+					"base-400": "#385396", // Was interactive-active
+					
+					"accent": "#7DBAE5",        // Was button-hover
+					"accent-focus": "#4B95C3",   // Was button-selected
+					"accent-content": "#E2E8F1", // Was button-text
 				}
 			}
 		]
