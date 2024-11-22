@@ -8,17 +8,17 @@ const Map = dynamic(() => import("@/app/components/Map"), {
 
 export default async function Home() {
 	return (
-		<main className="flex flex-col grow bg-base-100 text-base-content">
+		<main className="flex flex-col grow bg-base-400 text-base-content">
 			<div className="relative w-full h-[450px] bg-black overflow-hidden z-content-overlay">
 				<Image
-					src="/images/hero_image.png"
+					src="/images/school_of_fish.jpg"
 					alt="Hero Image"
-					width={1920}
-					height={600}
+					width={1600}
+					height={500}
 					priority
-					className="w-full h-full object-cover brightness-110 saturate-150 blur-sm"
+					className="w-full h-full object-cover saturate-150"
 				/>
-				<div className="absolute inset-0 bg-black/40"></div>
+				<div className="absolute inset-0 bg-black/10"></div>
 				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-[30%]">
 					<h1 className="text-5xl sm:text-6xl md:text-7xl mb-2">
 						<span className="block text-primary animate-slide-in">Welcome</span>
@@ -72,8 +72,8 @@ export default async function Home() {
 				</div>
 
 				{/* Funding Institutes Section */}
-				<div className="mt-32 mb-24 text-center">
-					<h2 className="text-3xl text-primary mb-12">Supported By:</h2>
+				<div className="mt-32 mb-24">
+					<h2 className="text-3xl text-primary mb-12 text-center">Supported By:</h2>
 
 					<div className="max-w-4xl mx-auto text-lg text-main mb-16">
 						<p>
@@ -116,24 +116,25 @@ export default async function Home() {
 							.
 						</p>
 					</div>
-
-					<div className="flex justify-center items-center gap-20">
-						<div className="relative h-24 w-64">
-							<Image
-								src="/images/Noaa_exploration_light.svg"
-								alt="NOAA Exploration Logo"
-								fill={true}
-								style={{ objectFit: "contain" }}
-							/>
-						</div>
-						<div>
-							<Image
-								src="/images/HORIZONTAL_WEB_white_maroon.svg"
-								alt="MSU NGI Logo"
-								width={500}
-								height={300}
-								style={{ objectFit: "contain" }}
-							/>
+					<div className="bg-warning-content shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
+						<div className="flex justify-center items-center gap-20">
+							<div className="relative h-24 w-64">
+								<Image
+									src="/images/noaa_exploration_light_outline.svg"
+									alt="National Oceanic and Atmospheric Administration Exploration Logo"
+									fill={true}
+									style={{ objectFit: "contain" }}
+								/>
+							</div>
+							<div>
+								<Image
+									src="/images/HORIZONTAL_WEB_white_maroon.svg"
+									alt="Mississippi State University, Northern Gulf Institute Logo"
+									width={500}
+									height={300}
+									style={{ objectFit: "contain" }}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
