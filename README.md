@@ -5,6 +5,8 @@ For feature requests, please raise a GitHub issue. To propose a change:
 - Feature branches must be made from **dev** branch [↓ See Development Process](#development-process)
 
 # Quick Start
+
+## Install Dependencies 
 This will only show you the frontend (with no data). You need to setup a local Postgres Database, OR visit the dev or main website to see the website's full functionality.
 
 After cloning the repository locally:
@@ -14,6 +16,12 @@ npm install --ignore-scripts
 npm run dev
 ```
 Note: npm install will fail until you do the Local DB setup. You can view the frontend, but it won't have data and won't be very interesting/useful.
+
+## Configure .env File
+- You need to create an environment file named .env in the `/frontend` directory.
+- This file is required to configure environment variables for the application.
+- __See `/frontend/.env.template` to see the required variables and their format.__
+
 
 # Local Database Setup / Commands
 1. Install Postgres DB via [Prisma Postgres guide](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
@@ -31,7 +39,7 @@ Note: npm install will fail until you do the Local DB setup. You can view the fr
    ```sql
    \l
    ```
-4. Configure your .ENV file. __Please see our Env file section for more info__:
+4. Configure your .ENV file. __Please see our Env file section above for more info__:
    - For the local database: `POSTGRES_PRISMA_URL=postgres://<username>:<password>@localhost/<database_name>?pgbouncer=true&connect_timeout=15`
    - Replace `<username>`, `<password>`, and `<database_name>` with your own.
 
@@ -133,7 +141,7 @@ Open the folder `/app/Opal/server` in the Dev Container.
 
 When opening the first time, VSCode will think every file has been changed (potentially line-termination inconsistencies, not sure). Discard all git changes before starting any work. You should only have to do this once after creating the container.
 
-## server
+## Server
 
 The server must be handled inside the Docker container.
 
