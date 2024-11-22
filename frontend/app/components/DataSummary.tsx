@@ -1,9 +1,5 @@
-import dynamic from "next/dynamic";
 import { prisma } from "../helpers/prisma";
 import Link from "next/link";
-const Map = dynamic(() => import("@/app/components/Map"), {
-	ssr: false
-});
 
 export default async function DataSummary() {
 	const { studyCount, sampleCount, featureCount, uniqueAssays } = await prisma.$transaction(async (tx) => {
@@ -52,26 +48,18 @@ export default async function DataSummary() {
 					<DataSummaryItem key={a.target_gene} title={a.target_gene} value={a.count || NaN} href="/explore/" />
 				))}
 			</div>
-
-			<div className="mb-4 text-2xl text-base-content">
-				Showing all <span className="text-primary">Studies</span>
-			</div>
-
-			<div className="h-[500px] rounded-lg overflow-hidden">
-				<Map />
-			</div>
 		</div>
 	);
 }
 
 function DataSummaryItem({ title, value, href }: { title: string; value: number; href: string }) {
-    return (
-        <Link 
-            href={href} 
-            className="bg-div-base hover:bg-interactive-hover active:bg-interactive-active p-6 rounded-lg text-center shadow-md transition-colors"
-        >
-            <h3 className="text-main text-lg mb-2">{title}</h3>
-            <p className="text-primary text-3xl font-bold">{value.toLocaleString()}</p>
-        </Link>
-    );
+	return (
+		<Link
+			href={href}
+			className="bg-base-200 hover:bg-base-300 active:bg-interactive-active p-6 rounded-lg text-center shadow-md transition-colors"
+		>
+			<h3 className="text-main text-lg mb-2">{title}</h3>
+			<p className="text-primary text-3xl font-bold">{value.toLocaleString()}</p>
+		</Link>
+	);
 }
