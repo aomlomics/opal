@@ -30,8 +30,6 @@ export const AssignmentScalarFieldEnumSchema = z.enum(['id','analysis_run_name',
 
 export const TaxonomyScalarFieldEnumSchema = z.enum(['id','taxonomy','verbatimIdentification','domain','kingdom','supergroup','division','subdivision','phylum','taxonClass','order','family','genus','species']);
 
-export const GenericDataScalarFieldEnumSchema = z.enum(['id','project_id','samp_name','assay_name','library_id','analysis_run_name','key','value']);
-
 export const SortOrderSchema = z.enum(['asc','desc']);
 
 export const QueryModeSchema = z.enum(['default','insensitive']);
@@ -670,37 +668,3 @@ export const TaxonomyOptionalDefaultsSchema = TaxonomySchema.merge(z.object({
 }))
 
 export type TaxonomyOptionalDefaults = z.infer<typeof TaxonomyOptionalDefaultsSchema>
-
-/////////////////////////////////////////
-// GENERIC DATA SCHEMA
-/////////////////////////////////////////
-
-export const GenericDataSchema = z.object({
-  id: z.number().int(),
-  project_id: z.string().nullish(),
-  samp_name: z.string().nullish(),
-  assay_name: z.string().nullish(),
-  library_id: z.string().nullish(),
-  analysis_run_name: z.string().nullish(),
-  key: z.string(),
-  value: z.string(),
-})
-
-export type GenericData = z.infer<typeof GenericDataSchema>
-
-/////////////////////////////////////////
-// GENERIC DATA PARTIAL SCHEMA
-/////////////////////////////////////////
-
-export const GenericDataPartialSchema = GenericDataSchema.partial()
-
-export type GenericDataPartial = z.infer<typeof GenericDataPartialSchema>
-
-// GENERIC DATA OPTIONAL DEFAULTS SCHEMA
-//------------------------------------------------------
-
-export const GenericDataOptionalDefaultsSchema = GenericDataSchema.merge(z.object({
-  id: z.number().int().optional(),
-}))
-
-export type GenericDataOptionalDefaults = z.infer<typeof GenericDataOptionalDefaultsSchema>

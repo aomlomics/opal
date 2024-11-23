@@ -281,9 +281,8 @@ model Study {
     project_id String @unique
 
     // Relations
-    Samples     Sample[]
-    Analyses    Analysis[]
-    GenericData GenericData[]
+    Samples  Sample[]
+    Analyses Analysis[]
 
     // Data
     // Project
@@ -319,12 +318,11 @@ model Sample {
     samp_name String @unique
 
     // Relations
-    project_id  String
-    Study       Study         @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
-    Assays      Assay[]
-    Libraries   Library[]
-    Occurrence  Occurrence[]
-    GenericData GenericData[]
+    project_id String
+    Study      Study        @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+    Assays     Assay[]
+    Libraries  Library[]
+    Occurrence Occurrence[]
 
     // Data
     // User Defined
@@ -515,10 +513,9 @@ model Assay {
     assay_name String @unique
 
     // Relations
-    Samples     Sample[]
-    Libraries   Library[]
-    Analyses    Analysis[]
-    GenericData GenericData[]
+    Samples   Sample[]
+    Libraries Library[]
+    Analyses  Analysis[]
 
     // Data
     // Quality Assurance
@@ -586,11 +583,10 @@ model Library {
     library_id String @unique
 
     // Relations
-    assay_name  String
-    Sample      Sample        @relation(fields: [samp_name], references: [samp_name], onDelete: Cascade)
-    samp_name   String
-    Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
-    GenericData GenericData[]
+    assay_name String
+    Sample     Sample @relation(fields: [samp_name], references: [samp_name], onDelete: Cascade)
+    samp_name  String
+    Assay      Assay  @relation(fields: [assay_name], references: [assay_name])
 
     //Data
     // Library Preparation Sequencing
@@ -627,12 +623,11 @@ model Analysis {
 
     // Relations
     project_id  String
-    Study       Study         @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+    Study       Study        @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
     assay_name  String
-    Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
+    Assay       Assay        @relation(fields: [assay_name], references: [assay_name])
     Occurrence  Occurrence[]
     Assignments Assignment[]
-    GenericData GenericData[]
 
     // Data
     // Bioinformatics
@@ -794,25 +789,4 @@ model Taxonomy {
     family                 String?
     genus                  String?
     species                String?
-}
-
-//Other
-model GenericData {
-    id Int @id @default(autoincrement())
-
-    // Relations
-    project_id        String?
-    Study             Study?    @relation(fields: [project_id], references: [project_id])
-    samp_name         String?
-    Sample            Sample?   @relation(fields: [samp_name], references: [samp_name])
-    assay_name        String?
-    Assay             Assay?    @relation(fields: [assay_name], references: [assay_name])
-    library_id        String?
-    Library           Library?  @relation(fields: [library_id], references: [library_id])
-    analysis_run_name String?
-    Analysis          Analysis? @relation(fields: [analysis_run_name], references: [analysis_run_name])
-
-    // Data
-    key   String
-    value String
 }
