@@ -13,11 +13,11 @@ export default function Footer() {
                 </p>
             </div>
             
-            <div className="flex items-stretch justify-end ml-auto">
-                <div className="bg-info-content rounded-l-lg flex items-center px-6 h-full">
+            <div className="flex items-stretch bg-base-100 justify-end ml-auto">
+                <div className="bg-base-200 rounded-l-sm flex items-center px-6 h-full">
                     <div className="relative h-12 w-32 self-center mb-1">
                         <Image 
-                            src="/images/Noaa_exploration_light.svg"
+                            src="/images/noaa_exploration_light_outline.svg"
                             alt="NOAA Exploration Logo"
                             fill={true}
                             style={{
@@ -28,7 +28,7 @@ export default function Footer() {
                     </div>
                     <div className="pt-3 ml-10 self-center mb-2">
                         <Image 
-                            src="/images/HORIZONTAL_WEB_white_maroon.svg"
+                            src="/images/HORIZONTAL_WEB_white_maroon_outline.svg"
                             alt="MSU NGI Logo"
                             width={250}
                             height={60}

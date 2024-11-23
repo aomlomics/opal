@@ -1,44 +1,44 @@
-"use client"
+"use client";
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { icon } from "leaflet"
-import { getMapLocations } from "@/app/helpers/actions/getMapLocations";
-import { DeadValue } from "@/types/enums";
-import { useEffect, useState } from "react";
+import { icon } from "leaflet";
+import useSWR from "swr";
+import { fetcher } from "../helpers/utils";
+import Link from "next/link";
 
 const ICON = icon({
 	iconUrl: "/images/map_marker.svg",
-	iconSize: [32, 32],
-})
+	iconSize: [32, 32]
+});
+
+type ProjSampleAvgLocs = {
+	_avg: {
+		decimalLatitude: number;
+		decimalLongitude: number;
+	};
+	project_id: string;
+	id: number;
+};
 
 export default function Map() {
-	const [studyLocations, setStudyLocations] = useState<any[]>([]);
 	const centerStart = { lat: 25.7617, lng: -80.8918 };
 	const ZOOM_LEVEL = 5;
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
 
-	useEffect(() => {
-		getMapLocations().then(rawLocations => {
-			console.log("Raw locations from DB:", JSON.stringify(rawLocations, null, 2));
-			
-			const processedLocations = rawLocations.map(location => {
-				const processed = {
-					project_id: location.project_id,
-					_avg: {
-						decimalLatitude: location._sum.decimalLatitude! / location._count.decimalLatitude,
-						decimalLongitude: location._sum.decimalLongitude! / location._count.decimalLongitude
-					}
-				};
-				
-				console.log(`Processed location for ${location.project_id}:`, processed);
-				return processed;
-			});
-
-			console.log("Final processed locations:", processedLocations);
-			setStudyLocations(processedLocations);
-		});
-	}, []);
+	const { data, error, isLoading } = useSWR("/api/sampleLocations", fetcher, {
+		keepPreviousData: true
+	});
+	if (error) return <div>failed to load</div>;
+	if (isLoading)
+		return (
+			<MapContainer className="w-full h-full grow" center={centerStart} zoom={ZOOM_LEVEL}>
+				<TileLayer
+					attribution='Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>'
+					url={`https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`}
+				/>
+			</MapContainer>
+		);
 
 	return (
 		<div className="flex flex-col items-start h-full w-full">
@@ -47,7 +47,7 @@ export default function Map() {
 					attribution='Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>'
 					url={`https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`}
 				/>
-				{studyLocations.map((location) => {
+				{data.rawLocations.map((location: ProjSampleAvgLocs) => {
 					if (location._avg.decimalLatitude && location._avg.decimalLongitude) {
 						return (
 							<Marker
@@ -58,8 +58,29 @@ export default function Map() {
 									lng: location._avg.decimalLongitude
 								}}
 							>
-								<Popup>
-									Study ID: {location.project_id}
+								<Popup className="map-popup">
+									<div className="font-sans bg-base-100 p-4 rounded-lg">
+										<h3 className="text-base-content mb-1 pt-1">Study Name (project_id)</h3>
+										<Link 
+											href={`/explore/study/${location.id}`}
+											className="text-info hover:text-info-focus hover:underline transition-colors"
+										>
+											{location.project_id}
+										</Link>
+										<style jsx global>{`
+											.leaflet-popup-content-wrapper {
+												padding: 0;
+												border-radius: 0.5rem;
+											}
+											.leaflet-popup-content {
+												margin: 0;
+											}
+											.leaflet-popup-tip {
+												background: var(--fallback-b1, oklch(var(--b1))) !important;
+												opacity: 1 !important;
+											}
+										`}</style>
+									</div>
 								</Popup>
 							</Marker>
 						);
