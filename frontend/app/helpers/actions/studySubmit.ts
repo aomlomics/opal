@@ -18,8 +18,9 @@ import {
 	StudyOptionalDefaultsSchema,
 	StudyScalarFieldEnumSchema
 } from "@/prisma/generated/zod";
+import { SubmitActionReturn } from "@/types/types";
 
-export default async function studySubmitAction(formData: FormData) {
+export default async function studySubmitAction(formData: FormData): SubmitActionReturn {
 	console.log("study submit");
 	try {
 		const assays = {} as Record<string, Prisma.AssayCreateManyInput>;
@@ -38,7 +39,7 @@ export default async function studySubmitAction(formData: FormData) {
 		//code block to force garbage collection
 		{
 			//parse file
-			const studyFileLines = (await (formData.get("studyFile") as File).text()).split("\n");
+			const studyFileLines = (await (formData.get("studyFile") as File).text()).replace(/[\r]+/gm, "").split("\n");
 			const studyFileHeaders = studyFileLines[0].split("\t");
 			const field_name_i = studyFileHeaders.indexOf("field_name");
 			//iterate over each row
@@ -126,7 +127,7 @@ export default async function studySubmitAction(formData: FormData) {
 		//code block to force garbage collection
 		{
 			//parse file
-			const libraryFileLines = (await (formData.get("libraryFile") as File).text()).split("\n");
+			const libraryFileLines = (await (formData.get("libraryFile") as File).text()).replace(/[\r]+/gm, "").split("\n");
 			libraryFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 			const libraryFileHeaders = libraryFileLines[0].split("\t");
 			//iterate over each row
@@ -164,6 +165,7 @@ export default async function studySubmitAction(formData: FormData) {
 						libToAssay[currentLine[libraryFileHeaders.indexOf("library_id")]] = assayRow.assay_name;
 
 						//if the assay doesn't exist yet, add it to the assays array
+						//TODO: do not create new assays, as they should ALL already exist in the database
 						if (!assays[assayRow.assay_name]) {
 							//TODO: build assay object from studyMetadata
 							assays[assayRow.assay_name] = AssayOptionalDefaultsSchema.parse(
@@ -206,7 +208,7 @@ export default async function studySubmitAction(formData: FormData) {
 		console.log("sample file");
 		//code block to force garbage collection
 		{
-			const sampleFileLines = (await (formData.get("samplesFile") as File).text()).split("\n");
+			const sampleFileLines = (await (formData.get("samplesFile") as File).text()).replace(/[\r]+/gm, "").split("\n");
 			sampleFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 			const sampleFileHeaders = sampleFileLines[0].split("\t");
 			//iterate over each row
@@ -301,10 +303,10 @@ export default async function studySubmitAction(formData: FormData) {
 			{ timeout: 0.5 * 60 * 1000 } //30 seconds
 		);
 
-		return { response: "Success" };
+		return { message: "Success" };
 	} catch (err) {
 		const error = err as Error;
 		console.error(error.message);
-		return { response: "Error", error: error.message };
+		return { message: "Error", error: error.message };
 	}
 }

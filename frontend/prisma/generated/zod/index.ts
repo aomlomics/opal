@@ -18,21 +18,19 @@ export const SampleScalarFieldEnumSchema = z.enum(['id','samp_name','project_id'
 
 export const AssayScalarFieldEnumSchema = z.enum(['id','assay_name','neg_cont_type','pos_cont_type','sterilise_method','pcr_0_1','thermocycler','amplificationReactionVolume','assay_validation','targetTaxonomicAssay','targetTaxonomicScope','target_gene','target_subfragment','ampliconSize','pcr_primer_forward','pcr_primer_reverse','pcr_primer_name_forward','pcr_primer_name_reverse','pcr_primer_reference_forward','pcr_primer_reference_reverse','pcr_primer_vol_forward','pcr_primer_vol_reverse','pcr_primer_conc_forward','pcr_primer_conc_reverse','probeReporter','probeQuencher','probe_seq','probe_ref','probe_conc','commercial_mm','custom_mm','pcr_dna_vol','pcr_rep','nucl_acid_amp','pcr_cond','annealingTemp','pcr_cycles','pcr_analysis_software','pcr_method_additional','pcr_plate_id','rel_cont_id']);
 
-export const LibraryScalarFieldEnumSchema = z.enum(['id','library_id','assay_name','barcoding_pcr_appr','platform','instrument','seq_kit','lib_layout','sequencing_location','adapter_forward','adapter_reverse','lib_screen','seq_method_additional','mid_forward','mid_reverse','filename','filename2','seq_run_id','biosample_accession','input_read_count','seq_samp_id','associatedSequences']);
+export const LibraryScalarFieldEnumSchema = z.enum(['id','library_id','assay_name','samp_name','barcoding_pcr_appr','platform','instrument','seq_kit','lib_layout','sequencing_location','adapter_forward','adapter_reverse','lib_screen','seq_method_additional','mid_forward','mid_reverse','filename','filename2','seq_run_id','biosample_accession','input_read_count','seq_samp_id','associatedSequences']);
 
-export const AnalysisScalarFieldEnumSchema = z.enum(['id','project_id','assay_name','sop_bioinformatics','trim_method','trim_param','demux_tool','demux_max_mismatch','merge_tool','merge_min_overlap','min_len_cutoff','min_len_tool','error_rate_tool','error_rate_type','error_rate_cutoff','chimera_check_method','chimera_check_param','otu_clust_tool','otu_clust_cutoff','min_reads_cutoff','min_reads_cutoff_unit','min_reads_tool','otu_db','otu_db_custom','tax_assign_cat','otu_seq_comp_appr','tax_class_id_cutoff','tax_class_query_cutoff','tax_class_collapse','tax_class_other','screen_contam_method','screen_geograph_method','screen_nontarget_method','screen_other','bioinfo_method_additional']);
+export const AnalysisScalarFieldEnumSchema = z.enum(['id','analysis_run_name','project_id','assay_name','sop_bioinformatics','trim_method','trim_param','demux_tool','demux_max_mismatch','merge_tool','merge_min_overlap','min_len_cutoff','min_len_tool','error_rate_tool','error_rate_type','error_rate_cutoff','chimera_check_method','chimera_check_param','otu_clust_tool','otu_clust_cutoff','min_reads_cutoff','min_reads_cutoff_unit','min_reads_tool','otu_db','otu_db_custom','tax_assign_cat','otu_seq_comp_appr','tax_class_id_cutoff','tax_class_query_cutoff','tax_class_collapse','tax_class_other','screen_contam_method','screen_geograph_method','screen_nontarget_method','screen_other','bioinfo_method_additional','asv_method','dada2_trunc_len_f','dada2pe_trunc_len_r','dada2_trim_left_f','dada2pe_trim_left_r','dada2_max_ee_f','dada2pe_max_ee_r','dada2_trunc_q','dada2_pooling_method','dada2_chimera_method','dada2_min_fold_parent_over_abundance','dada2_n_reads_learn','deblur_trim_length','deblur_sample_stats','deblur_mean_error','deblur_indel_prob','deblur_indel_max','deblur_min_reads','deblur_min_size','repseq_min_length','repseq_max_length','repseq_min_abundance','repseq_min_prevalence','discard_untrimmed']);
 
-export const ObservationScalarFieldEnumSchema = z.enum(['id','samp_name','featureid']);
-
-export const OccurrenceScalarFieldEnumSchema = z.enum(['id','samp_name','analysisId','featureid','organismQuantity']);
+export const OccurrenceScalarFieldEnumSchema = z.enum(['id','samp_name','analysis_run_name','featureid','organismQuantity']);
 
 export const FeatureScalarFieldEnumSchema = z.enum(['id','featureid','consensusTaxonomyId','dna_sequence']);
 
-export const AssignmentScalarFieldEnumSchema = z.enum(['id','analysisId','featureid','taxonomy','Confidence']);
+export const AssignmentScalarFieldEnumSchema = z.enum(['id','analysis_run_name','featureid','taxonomy','Confidence']);
 
 export const TaxonomyScalarFieldEnumSchema = z.enum(['id','taxonomy','verbatimIdentification','domain','kingdom','supergroup','division','subdivision','phylum','taxonClass','order','family','genus','species']);
 
-export const GenericDataScalarFieldEnumSchema = z.enum(['id','project_id','samp_name','assay_name','library_id','analysisId','key','value']);
+export const GenericDataScalarFieldEnumSchema = z.enum(['id','project_id','samp_name','assay_name','library_id','analysis_run_name','key','value']);
 
 export const SortOrderSchema = z.enum(['asc','desc']);
 
@@ -131,6 +129,18 @@ export type nucl_acid_ext_lysisType = `${z.infer<typeof nucl_acid_ext_lysisSchem
 export const nucl_acid_ext_sepSchema = z.enum(['column_based','magnetic_beads','centrifugation','precipitation','phenol_chloroform','g','electrophoresis','other']);
 
 export type nucl_acid_ext_sepType = `${z.infer<typeof nucl_acid_ext_sepSchema>}`
+
+export const asv_methodSchema = z.enum(['dada2pe','dada2se','deblur','other']);
+
+export type asv_methodType = `${z.infer<typeof asv_methodSchema>}`
+
+export const dada2_pooling_methodSchema = z.enum(['independent','pseudo','standard']);
+
+export type dada2_pooling_methodType = `${z.infer<typeof dada2_pooling_methodSchema>}`
+
+export const dada2_chimera_methodSchema = z.enum(['consensus','none','pooled']);
+
+export type dada2_chimera_methodType = `${z.infer<typeof dada2_chimera_methodSchema>}`
 
 /////////////////////////////////////////
 // MODELS
@@ -402,6 +412,7 @@ export const LibrarySchema = z.object({
   id: z.number().int(),
   library_id: z.string(),
   assay_name: z.string(),
+  samp_name: z.string(),
   barcoding_pcr_appr: z.string().nullish(),
   platform: z.string().nullish(),
   instrument: z.string().nullish(),
@@ -448,6 +459,7 @@ export type LibraryOptionalDefaults = z.infer<typeof LibraryOptionalDefaultsSche
 
 export const AnalysisSchema = z.object({
   id: z.number().int(),
+  analysis_run_name: z.string(),
   project_id: z.string(),
   assay_name: z.string(),
   sop_bioinformatics: z.string().nullish(),
@@ -482,6 +494,30 @@ export const AnalysisSchema = z.object({
   screen_nontarget_method: z.string().nullish(),
   screen_other: z.string().nullish(),
   bioinfo_method_additional: z.string().nullish(),
+  asv_method: z.string().nullish(),
+  dada2_trunc_len_f: z.coerce.number().int().nullish(),
+  dada2pe_trunc_len_r: z.coerce.number().int().nullish(),
+  dada2_trim_left_f: z.coerce.number().int().nullish(),
+  dada2pe_trim_left_r: z.coerce.number().int().nullish(),
+  dada2_max_ee_f: z.coerce.number().int().nullish(),
+  dada2pe_max_ee_r: z.coerce.number().int().nullish(),
+  dada2_trunc_q: z.coerce.number().int().nullish(),
+  dada2_pooling_method: z.string().nullish(),
+  dada2_chimera_method: z.string().nullish(),
+  dada2_min_fold_parent_over_abundance: z.coerce.number().int().nullish(),
+  dada2_n_reads_learn: z.coerce.number().int().nullish(),
+  deblur_trim_length: z.coerce.number().int().nullish(),
+  deblur_sample_stats: z.coerce.boolean().nullish(),
+  deblur_mean_error: z.coerce.number().nullish(),
+  deblur_indel_prob: z.coerce.number().nullish(),
+  deblur_indel_max: z.coerce.number().int().nullish(),
+  deblur_min_reads: z.coerce.number().int().nullish(),
+  deblur_min_size: z.coerce.number().int().nullish(),
+  repseq_min_length: z.coerce.number().int().nullish(),
+  repseq_max_length: z.coerce.number().int().nullish(),
+  repseq_min_abundance: z.coerce.number().nullish(),
+  repseq_min_prevalence: z.coerce.number().nullish(),
+  discard_untrimmed: z.coerce.boolean().nullish(),
 })
 
 export type Analysis = z.infer<typeof AnalysisSchema>
@@ -504,42 +540,13 @@ export const AnalysisOptionalDefaultsSchema = AnalysisSchema.merge(z.object({
 export type AnalysisOptionalDefaults = z.infer<typeof AnalysisOptionalDefaultsSchema>
 
 /////////////////////////////////////////
-// OBSERVATION SCHEMA
-/////////////////////////////////////////
-
-export const ObservationSchema = z.object({
-  id: z.number().int(),
-  samp_name: z.string(),
-  featureid: z.string(),
-})
-
-export type Observation = z.infer<typeof ObservationSchema>
-
-/////////////////////////////////////////
-// OBSERVATION PARTIAL SCHEMA
-/////////////////////////////////////////
-
-export const ObservationPartialSchema = ObservationSchema.partial()
-
-export type ObservationPartial = z.infer<typeof ObservationPartialSchema>
-
-// OBSERVATION OPTIONAL DEFAULTS SCHEMA
-//------------------------------------------------------
-
-export const ObservationOptionalDefaultsSchema = ObservationSchema.merge(z.object({
-  id: z.number().int().optional(),
-}))
-
-export type ObservationOptionalDefaults = z.infer<typeof ObservationOptionalDefaultsSchema>
-
-/////////////////////////////////////////
 // OCCURRENCE SCHEMA
 /////////////////////////////////////////
 
 export const OccurrenceSchema = z.object({
   id: z.number().int(),
   samp_name: z.string(),
-  analysisId: z.number().int(),
+  analysis_run_name: z.string(),
   featureid: z.string(),
   organismQuantity: z.coerce.number().int(),
 })
@@ -599,7 +606,7 @@ export type FeatureOptionalDefaults = z.infer<typeof FeatureOptionalDefaultsSche
 
 export const AssignmentSchema = z.object({
   id: z.number().int(),
-  analysisId: z.number().int(),
+  analysis_run_name: z.string(),
   featureid: z.string(),
   taxonomy: z.string(),
   Confidence: z.coerce.number(),
@@ -674,7 +681,7 @@ export const GenericDataSchema = z.object({
   samp_name: z.string().nullish(),
   assay_name: z.string().nullish(),
   library_id: z.string().nullish(),
-  analysisId: z.number().int().nullish(),
+  analysis_run_name: z.string().nullish(),
   key: z.string(),
   value: z.string(),
 })

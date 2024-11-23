@@ -256,6 +256,25 @@ enum nucl_acid_ext_sep {
     other
 }
 
+enum asv_method {
+    dada2pe
+    dada2se
+    deblur
+    other
+}
+
+enum dada2_pooling_method {
+    independent
+    pseudo
+    standard
+}
+
+enum dada2_chimera_method {
+    consensus
+    none
+    pooled
+}
+
 // Models
 model Study {
     id         Int    @id @default(autoincrement())
@@ -300,11 +319,12 @@ model Sample {
     samp_name String @unique
 
     // Relations
-    project_id   String
-    Study        Study         @relation(fields: [project_id], references: [project_id])
-    Assays       Assay[]
-    Observations Observation[]
-    GenericData  GenericData[]
+    project_id  String
+    Study       Study         @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+    Assays      Assay[]
+    Libraries   Library[]
+    Occurrence  Occurrence[]
+    GenericData GenericData[]
 
     // Data
     // User Defined
@@ -567,6 +587,8 @@ model Library {
 
     // Relations
     assay_name  String
+    Sample      Sample        @relation(fields: [samp_name], references: [samp_name], onDelete: Cascade)
+    samp_name   String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
     GenericData GenericData[]
 
@@ -600,88 +622,123 @@ model Library {
 
 //Analyses
 model Analysis {
-    id Int @id @default(autoincrement())
+    id                Int    @id @default(autoincrement())
+    analysis_run_name String @unique
 
     // Relations
     project_id  String
-    Study       Study         @relation(fields: [project_id], references: [project_id])
+    Study       Study         @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
     assay_name  String
     Assay       Assay         @relation(fields: [assay_name], references: [assay_name])
+    Occurrence  Occurrence[]
     Assignments Assignment[]
     GenericData GenericData[]
 
     // Data
     // Bioinformatics
-    sop_bioinformatics        String?
-    trim_method               String?
-    trim_param                String?
-    demux_tool                String?
+    sop_bioinformatics                   String?
+    trim_method                          String?
+    trim_param                           String?
+    demux_tool                           String?
     /// @zod.custom.use(z.coerce.number().int())
-    demux_max_mismatch        Int?
-    merge_tool                String?
+    demux_max_mismatch                   Int?
+    merge_tool                           String?
     /// @zod.custom.use(z.coerce.number().int())
-    merge_min_overlap         Int?
+    merge_min_overlap                    Int?
     /// @zod.custom.use(z.coerce.number().int())
-    min_len_cutoff            Int?
-    min_len_tool              String?
-    error_rate_tool           String?
-    error_rate_type           String?
+    min_len_cutoff                       Int?
+    min_len_tool                         String?
+    error_rate_tool                      String?
+    error_rate_type                      String?
     /// @zod.custom.use(z.coerce.number())
-    error_rate_cutoff         Float?
-    chimera_check_method      String?
-    chimera_check_param       String?
-    otu_clust_tool            String?
+    error_rate_cutoff                    Float?
+    chimera_check_method                 String?
+    chimera_check_param                  String?
+    otu_clust_tool                       String?
     /// @zod.custom.use(z.coerce.number())
-    otu_clust_cutoff          Float?
+    otu_clust_cutoff                     Float?
     /// @zod.custom.use(z.coerce.number())
-    min_reads_cutoff          Float?
-    min_reads_cutoff_unit     String?
-    min_reads_tool            String?
-    otu_db                    String?
-    otu_db_custom             String?
-    tax_assign_cat            String?
-    otu_seq_comp_appr         String?
+    min_reads_cutoff                     Float?
+    min_reads_cutoff_unit                String?
+    min_reads_tool                       String?
+    otu_db                               String?
+    otu_db_custom                        String?
+    tax_assign_cat                       String?
+    otu_seq_comp_appr                    String?
     /// @zod.custom.use(z.coerce.number())
-    tax_class_id_cutoff       Float?
+    tax_class_id_cutoff                  Float?
     /// @zod.custom.use(z.coerce.number())
-    tax_class_query_cutoff    Float?
-    tax_class_collapse        String?
-    tax_class_other           String?
-    screen_contam_method      String?
-    screen_geograph_method    String?
-    screen_nontarget_method   String?
-    screen_other              String?
-    bioinfo_method_additional String?
-}
-
-model Observation {
-    id Int @id @default(autoincrement())
-
-    // Relations
-    samp_name   String
-    Sample      Sample       @relation(fields: [samp_name], references: [samp_name])
-    featureid   String
-    Feature     Feature      @relation(fields: [featureid], references: [featureid])
-    Occurrences Occurrence[]
-
-    @@unique([samp_name, featureid])
+    tax_class_query_cutoff               Float?
+    tax_class_collapse                   String?
+    tax_class_other                      String?
+    screen_contam_method                 String?
+    screen_geograph_method               String?
+    screen_nontarget_method              String?
+    screen_other                         String?
+    bioinfo_method_additional            String?
+    asv_method                           String?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2_trunc_len_f                    Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2pe_trunc_len_r                  Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2_trim_left_f                    Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2pe_trim_left_r                  Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2_max_ee_f                       Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2pe_max_ee_r                     Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2_trunc_q                        Int?
+    dada2_pooling_method                 String?
+    dada2_chimera_method                 String?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2_min_fold_parent_over_abundance Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    dada2_n_reads_learn                  Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    deblur_trim_length                   Int?
+    /// @zod.custom.use(z.coerce.boolean())
+    deblur_sample_stats                  Boolean?
+    /// @zod.custom.use(z.coerce.number())
+    deblur_mean_error                    Float?
+    /// @zod.custom.use(z.coerce.number())
+    deblur_indel_prob                    Float?
+    /// @zod.custom.use(z.coerce.number().int())
+    deblur_indel_max                     Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    deblur_min_reads                     Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    deblur_min_size                      Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    repseq_min_length                    Int?
+    /// @zod.custom.use(z.coerce.number().int())
+    repseq_max_length                    Int?
+    /// @zod.custom.use(z.coerce.number())
+    repseq_min_abundance                 Float?
+    /// @zod.custom.use(z.coerce.number())
+    repseq_min_prevalence                Float?
+    /// @zod.custom.use(z.coerce.boolean())
+    discard_untrimmed                    Boolean?
 }
 
 model Occurrence {
     id Int @id @default(autoincrement())
 
     // Relations
-    samp_name   String
-    analysisId  Int
-    featureid   String
-    Observation Observation @relation(fields: [samp_name, featureid], references: [samp_name, featureid])
-    Assignment  Assignment  @relation(fields: [analysisId, featureid], references: [analysisId, featureid])
+    samp_name         String
+    Sample            Sample   @relation(fields: [samp_name], references: [samp_name], onDelete: Cascade)
+    analysis_run_name String
+    Analysis          Analysis @relation(fields: [analysis_run_name], references: [analysis_run_name], onDelete: Cascade)
+    featureid         String
+    Feature           Feature  @relation(fields: [featureid], references: [featureid], onDelete: Cascade)
 
     // Data
     /// @zod.custom.use(z.coerce.number().int())
     organismQuantity Int
 
-    @@unique([analysisId, samp_name, featureid])
+    @@unique([analysis_run_name, samp_name, featureid])
 }
 
 model Feature {
@@ -689,10 +746,10 @@ model Feature {
     featureid String @unique
 
     // Relations
-    Observations        Observation[]
+    Occurrence          Occurrence[]
     Assignments         Assignment[]
     consensusTaxonomyId String?
-    consensusTaxonomy   Taxonomy?     @relation(fields: [consensusTaxonomyId], references: [taxonomy])
+    consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [taxonomy])
 
     // Data
     dna_sequence String
@@ -702,19 +759,18 @@ model Assignment {
     id Int @id @default(autoincrement())
 
     // Relations
-    analysisId  Int
-    Analysis    Analysis     @relation(fields: [analysisId], references: [id])
-    Occurrences Occurrence[]
-    featureid   String
-    Feature     Feature      @relation(fields: [featureid], references: [featureid])
-    taxonomy    String
-    Taxonomy    Taxonomy     @relation(fields: [taxonomy], references: [taxonomy])
+    analysis_run_name String
+    Analysis          Analysis @relation(fields: [analysis_run_name], references: [analysis_run_name], onDelete: Cascade)
+    featureid         String
+    Feature           Feature  @relation(fields: [featureid], references: [featureid])
+    taxonomy          String
+    Taxonomy          Taxonomy @relation(fields: [taxonomy], references: [taxonomy])
 
     // Data
     /// @zod.custom.use(z.coerce.number())
     Confidence Float
 
-    @@unique([analysisId, featureid])
+    @@unique([analysis_run_name, featureid])
 }
 
 model Taxonomy {
@@ -745,16 +801,16 @@ model GenericData {
     id Int @id @default(autoincrement())
 
     // Relations
-    project_id String?
-    Study      Study?    @relation(fields: [project_id], references: [project_id])
-    samp_name  String?
-    Sample     Sample?   @relation(fields: [samp_name], references: [samp_name])
-    assay_name String?
-    Assay      Assay?    @relation(fields: [assay_name], references: [assay_name])
-    library_id String?
-    Library    Library?  @relation(fields: [library_id], references: [library_id])
-    analysisId Int?
-    Analysis   Analysis? @relation(fields: [analysisId], references: [id])
+    project_id        String?
+    Study             Study?    @relation(fields: [project_id], references: [project_id])
+    samp_name         String?
+    Sample            Sample?   @relation(fields: [samp_name], references: [samp_name])
+    assay_name        String?
+    Assay             Assay?    @relation(fields: [assay_name], references: [assay_name])
+    library_id        String?
+    Library           Library?  @relation(fields: [library_id], references: [library_id])
+    analysis_run_name String?
+    Analysis          Analysis? @relation(fields: [analysis_run_name], references: [analysis_run_name])
 
     // Data
     key   String
