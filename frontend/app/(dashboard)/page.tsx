@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import DataSummary from "../components/DataSummary";
 import dynamic from "next/dynamic";
+import ThemeAwareLogo from "../components/ThemeAwareLogo";
 const Map = dynamic(() => import("@/app/components/Map"), {
 	ssr: false
 });
@@ -75,7 +76,7 @@ export default async function Home() {
 				<div className="mt-32 mb-24">
 					<h2 className="text-3xl text-primary mb-12 text-center">Supported By:</h2>
 
-					<div className="max-w-4xl mx-auto text-lg text-main mb-16">
+					<div className="max-w-4xl mx-auto text-lg text-main mb-16 text-center">
 						<p>
 							NODE is a product of{" "}
 							<a
@@ -116,19 +117,19 @@ export default async function Home() {
 							.
 						</p>
 					</div>
-					<div className="bg-warning-content shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
+					<div className="shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
 						<div className="flex justify-center items-center gap-20">
 							<div className="relative h-24 w-64">
-								<Image
-									src="/images/noaa_exploration_light_outline.svg"
+								<ThemeAwareLogo
+									src="/images/noaa_exploration_FINAL.svg"
 									alt="National Oceanic and Atmospheric Administration Exploration Logo"
 									fill={true}
 									style={{ objectFit: "contain" }}
 								/>
 							</div>
 							<div>
-								<Image
-									src="/images/HORIZONTAL_WEB_white_maroon.svg"
+								<ThemeAwareLogo
+									src="/images/HORIZONTAL_WEB_white (3).svg"
 									alt="Mississippi State University, Northern Gulf Institute Logo"
 									width={500}
 									height={300}

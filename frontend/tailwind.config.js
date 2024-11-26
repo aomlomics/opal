@@ -50,11 +50,13 @@ module.exports = {
 				}],
 			},
 			dropShadow: {
-				full: [
-					"-0.3px -0.3px 0 rgba(0,0,0,0.5)",
-					"0.3px -0.3px 0 rgba(0,0,0,0.5)",
-					"-0.3px 0.3px 0 rgba(0,0,0,0.5)",
-					"0.3px 0.3px 0 rgba(0,0,0,0.5)"
+				'logo-light': [
+					"0 1px 2px rgba(0,0,0,0.3)",
+					"0 2px 4px rgba(0,0,0,0.2)"
+				],
+				'logo-dark': [
+					"0 1px 2px rgba(255,255,255,0.1)",
+					"0 2px 4px rgba(255,255,255,0.05)"
 				]
 			},
 			animation: {

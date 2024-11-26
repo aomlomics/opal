@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ThemeAwareLogo from "../components/ThemeAwareLogo";
 
 export default function Footer() {
     return(
@@ -14,10 +15,10 @@ export default function Footer() {
             </div>
             
             <div className="flex items-stretch bg-base-100 justify-end ml-auto">
-                <div className="bg-base-200 rounded-l-sm flex items-center px-6 h-full">
+                <div className="rounded-l-sm flex items-center px-6 h-full">
                     <div className="relative h-12 w-32 self-center mb-1">
-                        <Image 
-                            src="/images/noaa_exploration_light_outline.svg"
+                        <ThemeAwareLogo 
+                            src="/images/noaa_exploration_FINAL.svg"
                             alt="NOAA Exploration Logo"
                             fill={true}
                             style={{
@@ -27,8 +28,8 @@ export default function Footer() {
                         />
                     </div>
                     <div className="pt-3 ml-10 self-center mb-2">
-                        <Image 
-                            src="/images/HORIZONTAL_WEB_white_maroon_outline.svg"
+                        <ThemeAwareLogo 
+                            src="/images/HORIZONTAL_WEB_white (3).svg"
                             alt="MSU NGI Logo"
                             width={250}
                             height={60}
