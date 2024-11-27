@@ -27,7 +27,7 @@ export default function Footer() {
                             }}
                         />
                     </div>
-                    <div className="pt-3 ml-10 self-center mb-2">
+                    <div className="pt-2 ml-10 self-center mb-2">
                         <ThemeAwareLogo 
                             src="/images/HORIZONTAL_WEB_white (3).svg"
                             alt="MSU NGI Logo"

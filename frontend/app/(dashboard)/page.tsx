@@ -19,20 +19,17 @@ export default async function Home() {
 					priority
 					className="w-full h-full object-cover saturate-150"
 				/>
-				{/* Reduced opacity in gradients by adjusting via-X/Y values */}
-				<div className="absolute inset-0 bg-gradient-to-r from-base-100 via-base-100/60 to-transparent animate-gradient-organic"></div>
-				<div className="absolute inset-0 bg-gradient-to-t from-base-100 via-base-100/10 to-transparent animate-gradient-organic"></div>
-				<div className="absolute inset-0 bg-gradient-to-r from-base-100 via-base-100/60 to-transparent"></div>
-				<div className="absolute inset-0 bg-gradient-to-t from-base-100 via-base-100/10 to-transparent"></div>
+				<div className="absolute inset-0 -right-[200%] bg-gradient-to-r from-base-100 via-base-100/70 via-[35%] to-transparent to-[150%]"></div>
+				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base-100"></div>
 				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-xl">
-					<h1 className="text-4xl sm:text-5xl md:text-6xl mb-4 drop-shadow-lg">
+					<h1 className="text-5xl sm:text-6xl md:text-7xl mb-4 drop-shadow-lg">
 						<span className="block text-primary animate-slide-in font-light">Welcome</span>
 					</h1>
 					<div className="text-base-content drop-shadow-lg">
-						<span className="block text-2xl sm:text-3xl md:text-4xl mb-4">
-							to the <span className="text-primary">NOAA Ocean DNA Explorer</span>
+						<span className="block text-3xl font-light sm:text-4xl md:text-5xl mb-4">
+							to the <span className="text-primary font-light">NOAA Ocean DNA Explorer</span>
 						</span>
-						<div className="text-lg sm:text-xl mb-8 text-base-content/90">
+						<div className="text-xl sm:text-2xl mb-8 text-base-content/90">
 							<span>a data sharing platform, search engine, and visualization and analysis tool</span>
 							<span> for ocean environmental DNA (eDNA) data</span>
 						</div>
@@ -78,7 +75,7 @@ export default async function Home() {
 				<div className="mt-32 mb-24">
 					<h2 className="text-3xl text-primary mb-12 text-center">Supported By:</h2>
 
-					<div className="max-w-4xl mx-auto text-lg text-main mb-16 text-center">
+					<div className="max-w-4xl mx-auto text-lg text-main mb-16 text-center leading-tight">
 						<p>
 							NODE is a product of{" "}
 							<a
