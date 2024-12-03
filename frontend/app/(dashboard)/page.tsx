@@ -19,7 +19,7 @@ export default async function Home() {
 					priority
 					className="w-full h-full object-cover saturate-150"
 				/>
-				<div className="absolute inset-0 -right-[200%] bg-gradient-to-r from-base-100 via-base-100/70 via-[35%] to-transparent to-[150%]"></div>
+				<div className="absolute inset-0 -right-[200%] bg-gradient-to-r from-base-100 via-base-100/50 via-[35%] to-transparent to-[150%]"></div>
 				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base-100"></div>
 				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-xl">
 					<h1 className="text-5xl sm:text-6xl md:text-7xl mb-4 drop-shadow-lg">

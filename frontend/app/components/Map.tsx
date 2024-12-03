@@ -12,6 +12,7 @@ const ICON = icon({
 	iconSize: [32, 32]
 });
 
+// TODO: may not be necessary once Map component is updated to take arguments for points (advice from Carter)
 type ProjSampleAvgLocs = {
 	_avg: {
 		decimalLatitude: number;
@@ -21,6 +22,8 @@ type ProjSampleAvgLocs = {
 	id: number;
 };
 
+// TODO: make component take arguments for points, rather than hard-coded for the home page's map
+//
 export default function Map() {
 	const centerStart = { lat: 25.7617, lng: -80.8918 };
 	const ZOOM_LEVEL = 5;
@@ -61,7 +64,7 @@ export default function Map() {
 								<Popup className="map-popup">
 									<div className="font-sans bg-base-100 p-4 rounded-lg">
 										<h3 className="text-base-content mb-1 pt-1">Study Name (project_id)</h3>
-										<Link 
+										<Link
 											href={`/explore/study/${location.id}`}
 											className="text-info hover:text-info-focus hover:underline transition-colors"
 										>

@@ -1,16 +1,42 @@
-export const maxDuration = 120;
-
 import StudySubmit from "@/app/components/submit/StudySubmit";
+import Link from "next/link";
 
 export default function Study() {
 	return (
-		<div className="container mx-auto px-4 py-8">
-			<div className="max-w-2xl mx-auto bg-base-200 rounded-lg shadow-lg">
-				<div className="p-6">
-					<h1 className="text-2xl font-bold text-primary mb-6">Submit Study Data</h1>
-					<StudySubmit />
+		<main className="flex flex-col grow p-8 max-w-7xl mx-auto space-y-8">
+			{/* Upload Intro Section */}
+			<section className="text-center space-y-6">
+				<h1 className="text-5xl font-semibold text-primary">
+					Submit a New Study
+				</h1>
+				<div className="max-w-3xl mx-auto space-y-4 text-lg text-base-content">
+					<p>
+						Contributing a new environmental DNA study? You're in the right place.
+					</p>
+					<p className="text-sm">
+						Need help preparing your data?{" "}
+						<Link href="/docs/data-prep" className="text-primary hover:underline">
+							Check out the NOAA 'Omics Data Preparation Guide
+						</Link>
+					</p>
 				</div>
-			</div>
-		</div>
+			</section>
+
+			{/* Submission Card */}
+			<section>
+				<div className="card bg-base-200 shadow-xl">
+					<div className="card-body">
+						<div className="flex items-center gap-3 mb-6 p-3 bg-primary/5 rounded-lg">
+							<div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+							<div className="space-y-1">
+								<span className="text-base-content/80 block">All files must be in TSV format</span>
+								<span className="text-sm text-base-content/60">Make sure to follow the template structure exactly. Otherwise, you will receive errors.</span>
+							</div>
+						</div>
+						<StudySubmit />
+					</div>
+				</div>
+			</section>
+		</main>
 	);
 }
