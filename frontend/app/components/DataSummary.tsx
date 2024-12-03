@@ -45,7 +45,7 @@ export default async function DataSummary() {
 				<DataSummaryItem title="Samples" value={sampleCount} href="/explore/sample" />
 				<DataSummaryItem title="Unique Sequence Features" value={featureCount} href="/explore/feature" />
 				{uniqueAssays.map((a) => (
-					<DataSummaryItem key={a.target_gene} title={a.target_gene} value={a.count || NaN} href="/explore/" />
+					<DataSummaryItem key={a.target_gene} title={a.target_gene} value={a.count || 0} href="/explore/" />
 				))}
 			</div>
 		</div>
