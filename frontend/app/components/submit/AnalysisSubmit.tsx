@@ -91,22 +91,28 @@ export default function AnalysisSubmit() {
 		}
 	}
 
-	async function analysisFileSubmit(
+	async function analysisFileSubmit({
+		analysis,
+		file,
+		fileSuffix = "",
+		submitAction,
+		fieldsToSet = {},
+		skipBlob = false
+	}: {
 		analysis: {
 			assay_name: string;
 			analysis_run_name: string;
-		},
-		file: File,
-		fileSuffix: string,
-		submitAction: SubmitAction,
-		fieldsToSet?: Record<string, any>
-	): Promise<{ error?: boolean; result?: Record<string, any> }> {
+		};
+		file: File;
+		fileSuffix?: string;
+		submitAction: SubmitAction;
+		fieldsToSet?: Record<string, any>;
+		skipBlob?: boolean;
+	}): Promise<{ error?: boolean; result?: Record<string, any> }> {
 		const formData = new FormData();
 		formData.set("assay_name", analysis.assay_name);
-		if (fieldsToSet) {
-			for (const [key, val] of Object.entries(fieldsToSet)) {
-				formData.set(key, val);
-			}
+		for (const [key, val] of Object.entries(fieldsToSet)) {
+			formData.set(key, val);
 		}
 
 		let blob = {} as PutBlobResult;
@@ -116,7 +122,7 @@ export default function AnalysisSubmit() {
 
 		try {
 			//only upload file to the blob server when on a hosted service
-			if (process.env.NODE_ENV === "development") {
+			if (skipBlob || process.env.NODE_ENV === "development") {
 				formData.set("file", file);
 			} else {
 				blob = await upload(file.name, file, {
@@ -177,12 +183,18 @@ export default function AnalysisSubmit() {
 			if (a && a.analysis_run_name !== "\u200b") {
 				//analysis file
 				setLoading(a.analysis_run_name);
-				const { error: analysisError, result: analysisResult } = await analysisFileSubmit(
-					a,
-					allFormData.get(a.analysis_run_name) as File,
-					"",
-					analysisSubmitAction
-				);
+				//{
+				//	analysis: a,
+				//	file: allFormData.get(a.analysis_run_name) as File,
+				//	submitAction: analysisSubmitAction,
+				//	skipBlob = true
+				//}
+				const { error: analysisError, result: analysisResult } = await analysisFileSubmit({
+					analysis: a,
+					file: allFormData.get(a.analysis_run_name) as File,
+					submitAction: analysisSubmitAction,
+					skipBlob: true
+				});
 
 				if (analysisError) {
 					break;
@@ -190,13 +202,13 @@ export default function AnalysisSubmit() {
 
 				//assignments file
 				setLoading(`${a.analysis_run_name}_assign`);
-				const { error: assignError, result: assignResult } = await analysisFileSubmit(
-					a,
-					allFormData.get(`${a.analysis_run_name}_assign`) as File,
-					"_assign",
-					assignSubmitAction,
-					{ analysis_run_name: analysisResult!.analysis_run_name }
-				);
+				const { error: assignError, result: assignResult } = await analysisFileSubmit({
+					analysis: a,
+					file: allFormData.get(`${a.analysis_run_name}_assign`) as File,
+					fileSuffix: "_assign",
+					submitAction: assignSubmitAction,
+					fieldsToSet: { analysis_run_name: analysisResult!.analysis_run_name }
+				});
 
 				if (assignError) {
 					//remove analysis from database
@@ -207,13 +219,13 @@ export default function AnalysisSubmit() {
 
 				//occurrences file
 				setLoading(`${a.analysis_run_name}_occ`);
-				const { error: occError } = await analysisFileSubmit(
-					a,
-					allFormData.get(`${a.analysis_run_name}_occ`) as File,
-					"_occ",
-					occSubmitAction,
-					{ analysis_run_name: analysisResult!.analysis_run_name }
-				);
+				const { error: occError } = await analysisFileSubmit({
+					analysis: a,
+					file: allFormData.get(`${a.analysis_run_name}_occ`) as File,
+					fileSuffix: "_occ",
+					submitAction: occSubmitAction,
+					fieldsToSet: { analysis_run_name: analysisResult!.analysis_run_name }
+				});
 
 				if (occError) {
 					//remove analyses, features, and taxonomies from database
@@ -253,6 +265,7 @@ export default function AnalysisSubmit() {
 															type="file"
 															name={analyses[i].analysis_run_name}
 															required
+															disabled={!!loading}
 															accept=".tsv"
 															onChange={(e) => parseAnalysis(e.currentTarget.files, i)}
 															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
@@ -275,6 +288,7 @@ export default function AnalysisSubmit() {
 																	type="file"
 																	name={`${analyses[i].analysis_run_name}_assign`}
 																	required
+																	disabled={!!loading}
 																	accept=".tsv"
 																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 																/>
@@ -294,6 +308,7 @@ export default function AnalysisSubmit() {
 																	type="file"
 																	name={`${analyses[i].analysis_run_name}_occ`}
 																	required
+																	disabled={!!loading}
 																	accept=".tsv"
 																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 																/>
@@ -312,6 +327,7 @@ export default function AnalysisSubmit() {
 												<button
 													className="btn btn-error"
 													type="button"
+													disabled={!!loading}
 													onClick={() => {
 														//set removed analysis to null in array to maintain indices of other analyses
 														const tempAList = [...analyses];
@@ -340,6 +356,7 @@ export default function AnalysisSubmit() {
 						<button
 							className="btn btn-success"
 							type="button"
+							disabled={!!loading}
 							onClick={() => setAnalyses([...analyses, { assay_name: "", analysis_run_name: "\u200b" }])}
 						>
 							+
