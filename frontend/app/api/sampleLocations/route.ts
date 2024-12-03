@@ -22,7 +22,6 @@ export async function GET(request: Request) {
 					id: true
 				}
 			});
-			console.log(studiesRes);
 			//convert array of studies into object where keys are project_id and values are database id
 			const studies = studiesRes.reduce((accum, study) => ({ ...accum, [study.project_id]: study.id }), {});
 
@@ -55,8 +54,6 @@ export async function GET(request: Request) {
 			for (const study of rawLocations as ProjSampleAvgLocs[]) {
 				study.id = studies[study.project_id as keyof typeof studies];
 			}
-
-			console.log(rawLocations);
 
 			return rawLocations;
 		});
