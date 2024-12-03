@@ -262,6 +262,7 @@ export default function AnalysisSubmit() {
 													type="file"
 													name={analyses[i].analysis_run_name}
 													required
+													disabled={!!loading}
 													accept=".tsv"
 													onChange={(e) => parseAnalysis(e.currentTarget.files, i)}
 													className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
@@ -284,6 +285,7 @@ export default function AnalysisSubmit() {
 															type="file"
 															name={`${analyses[i].analysis_run_name}_assign`}
 															required
+															disabled={!!loading}
 															accept=".tsv"
 															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 														/>
@@ -303,6 +305,7 @@ export default function AnalysisSubmit() {
 															type="file"
 															name={`${analyses[i].analysis_run_name}_occ`}
 															required
+															disabled={!!loading}
 															accept=".tsv"
 															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 														/>
@@ -320,6 +323,7 @@ export default function AnalysisSubmit() {
 										<button
 											className="btn btn-error"
 											type="button"
+											disabled={!!loading}
 											onClick={() => {
 												//set removed analysis to null in array to maintain indices of other analyses
 												const tempAList = [...analyses];
@@ -345,6 +349,7 @@ export default function AnalysisSubmit() {
 						<button
 							className="btn btn-success"
 							type="button"
+							disabled={!!loading}
 							onClick={() => setAnalyses([...analyses, { assay_name: "", analysis_run_name: "\u200b" }])}
 						>
 							+
