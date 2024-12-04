@@ -78,7 +78,9 @@ export default function Api() {
 							</div>
 							<div className="flex items-center gap-2">
 								<div className="w-2 h-2 rounded-full bg-primary"></div>
-								<span className="text-sm text-base-content/70">Supports pagination and filtering</span>
+								<span className="text-sm text-base-content/70">
+									Can be accessed using your preferred programming language
+								</span>
 							</div>
 						</div>
 					</div>
