@@ -79,13 +79,13 @@ export default function Submit() {
 
 			{/* Requirements Section */}
 			<section className="flex justify-center">
-				<div className="card bg-base-200 shadow-xl max-w-3xl">
+				<div className="card bg-base-200 shadow-xl w-[80vh]">
 					<div className="card-body">
 						<h2 className="card-title text-3xl text-primary mb-6">Need Help with Cleaning up your Data?</h2>
 						<div className="space-y-8 text-base-content">
 							{/* TODO: NEED TO ADD LINKS TO GITHUB PAGES AND A BETTER EXPLANATION */}
 							{/* Tools Section */}
-							<div>
+							{/* <div>
 								<h3 className="text-xl font-semibold mb-3">Recommended Tools:</h3>
 								<p className="mb-3">We and our collaborators have built these tools, available on GitHub:</p>
 								<ul className="list-disc list-inside space-y-2 ml-4">
@@ -114,7 +114,10 @@ export default function Submit() {
 										{" - Amplicon sequence processing workflow"}
 									</li>
 								</ul>
-							</div>
+							</div> */}
+							<Link href="https://noaa-omics-dmg.readthedocs.io/en/latest/" className="text-primary hover:underline">
+								Check out the NOAA 'Omics Data Management Guide.
+							</Link>
 
 							{/* File Types Section */}
 							<div>
@@ -127,7 +130,7 @@ export default function Submit() {
 							{/* Dead Values Section */}
 							<div>
 								<h3 className="text-xl font-semibold mb-3">Dead Values:</h3>
-								<p className="mb-3">Special values used when data is unavailable or not applicable:</p>
+								<p className="mb-3">Special values to use instead of empty or null cells in your data:</p>
 								<div className="grid grid-cols-2 gap-4 ml-4">
 									<div className="font-mono bg-base-300 px-3 py-1 rounded flex justify-between">
 										{/* <span>-9999</span> */}
@@ -147,14 +150,6 @@ export default function Submit() {
 									</div>
 								</div>
 							</div>
-
-							<p className="text-sm">
-								Need more detailed instructions?{" "}
-								<Link href="/docs/data-prep" className="text-primary hover:underline">
-									Check out our complete Data Preparation Guide
-								</Link>
-								.
-							</p>
 						</div>
 					</div>
 				</div>
