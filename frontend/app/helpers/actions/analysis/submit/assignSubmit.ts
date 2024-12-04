@@ -18,10 +18,8 @@ import { SubmitActionReturn } from "@/types/types";
 
 export default async function assignSubmitAction(formData: FormData): SubmitActionReturn {
 	try {
-		let assay_name = formData.get("assay_name") as string;
-		console.log(`${assay_name} assignment submit`);
-
-		const analysis_run_name = formData.get("analysis_run_name");
+		const analysis_run_name = formData.get("analysis_run_name") as string;
+		console.log(`${analysis_run_name} assignment submit`);
 
 		//Feature file
 		//parsing file inside transaction to reduce memory usage, since this file is large
@@ -31,7 +29,7 @@ export default async function assignSubmitAction(formData: FormData): SubmitActi
 				const taxonomies = [] as Prisma.TaxonomyCreateManyInput[];
 				const assignments = [] as AssignmentPartial[];
 
-				console.log(`${assay_name}_assign file`);
+				console.log(`${analysis_run_name}_assign file`);
 				let assignFileLines;
 				if (process.env.NODE_ENV === "development") {
 					//get files from form data
@@ -93,7 +91,7 @@ export default async function assignSubmitAction(formData: FormData): SubmitActi
 						features.push(
 							FeatureOptionalDefaultsSchema.parse(featureRow, {
 								errorMap: (error, ctx) => {
-									return { message: `FeatureSchema (${assay_name}): ${ctx.defaultError}` };
+									return { message: `FeatureSchema (${analysis_run_name}): ${ctx.defaultError}` };
 								}
 							})
 						);
@@ -104,7 +102,7 @@ export default async function assignSubmitAction(formData: FormData): SubmitActi
 						taxonomies.push(
 							TaxonomyOptionalDefaultsSchema.parse(taxonomyRow, {
 								errorMap: (error, ctx) => {
-									return { message: `TaxonomySchema (${assay_name}): ${ctx.defaultError}` };
+									return { message: `TaxonomySchema (${analysis_run_name}): ${ctx.defaultError}` };
 								}
 							})
 						);
@@ -144,7 +142,7 @@ export default async function assignSubmitAction(formData: FormData): SubmitActi
 							{
 								errorMap: (error, ctx) => {
 									return {
-										message: `AssignmentSchema (${assay_name}, ${a.featureid}, ${a.Confidence}): ${ctx.defaultError}`
+										message: `AssignmentSchema (${analysis_run_name}, ${a.featureid}, ${a.Confidence}): ${ctx.defaultError}`
 									};
 								}
 							}

@@ -22,33 +22,19 @@ export default function AnalysisSubmit() {
 	const [responseObj, setResponseObj] = useReducer(reducer, {} as Record<string, string>); //fileName: message
 	const [errorObj, setErrorObj] = useReducer(reducer, {} as Record<string, string>); //fileName: message
 	const [loading, setLoading] = useState(""); //currently loading fileName
-	const [analyses, setAnalyses] = useState([{ assay_name: "", analysis_run_name: "\u200b" }] as Array<{
-		assay_name: string;
-		analysis_run_name: string;
-	} | null>); //uses zero-width space as placeholder
+	const [analyses, setAnalyses] = useState(["\u200b"] as Array<string | null>); //uses zero-width space as placeholder
 
 	async function parseAnalysis(files: FileList | null, i: number) {
 		try {
 			if (files?.length) {
 				const f = files[0];
 
-				let assay_name;
-				let analysis_run_name;
-
 				const lines = (await f.text()).replace(/[\r]+/gm, "").split("\n");
 				for (let j = 1; j < lines.length; j++) {
 					const currentLine = lines[j].split("\t");
 
-					if (currentLine[0] === "assay_name") {
-						assay_name = currentLine[1].replace(/[\r\n]+/gm, "");
-					} else if (currentLine[0] === "analysis_run_name") {
-						analysis_run_name = currentLine[1].replace(/[\r\n]+/gm, "");
-					}
-
-					if (assay_name && analysis_run_name) {
-						const tempAList = [...analyses];
-						tempAList[i] = { assay_name, analysis_run_name };
-						setAnalyses(tempAList);
+					if (currentLine[0] === "analysis_run_name") {
+						setAnalyses([...analyses, currentLine[1].replace(/[\r\n]+/gm, "")]);
 						return;
 					}
 				}
@@ -92,17 +78,14 @@ export default function AnalysisSubmit() {
 	}
 
 	async function analysisFileSubmit({
-		analysis,
+		analysis_run_name,
 		file,
 		fileSuffix = "",
 		submitAction,
 		fieldsToSet = {},
 		skipBlob = false
 	}: {
-		analysis: {
-			assay_name: string;
-			analysis_run_name: string;
-		};
+		analysis_run_name: string;
 		file: File;
 		fileSuffix?: string;
 		submitAction: SubmitAction;
@@ -110,7 +93,7 @@ export default function AnalysisSubmit() {
 		skipBlob?: boolean;
 	}): Promise<{ error?: boolean; result?: Record<string, any> }> {
 		const formData = new FormData();
-		formData.set("assay_name", analysis.assay_name);
+		formData.set("analysis_run_name", analysis_run_name);
 		for (const [key, val] of Object.entries(fieldsToSet)) {
 			formData.set(key, val);
 		}
@@ -137,25 +120,25 @@ export default function AnalysisSubmit() {
 			const response = await submitAction(formData);
 			if (response.error) {
 				setErrorObj({
-					[`${analysis.analysis_run_name}${fileSuffix}`]: response.error
+					[`${analysis_run_name}${fileSuffix}`]: response.error
 				});
 				error = true;
 			} else if (response.message) {
 				setResponseObj({
-					[`${analysis.analysis_run_name}${fileSuffix}`]: response.message
+					[`${analysis_run_name}${fileSuffix}`]: response.message
 				});
 				if (response.result) {
 					result = response.result;
 				}
 			} else {
 				setErrorObj({
-					[`${analysis.analysis_run_name}${fileSuffix}`]: "Unknown error."
+					[`${analysis_run_name}${fileSuffix}`]: "Unknown error."
 				});
 				error = true;
 			}
 		} catch (err) {
 			setErrorObj({
-				[`${analysis.analysis_run_name}${fileSuffix}`]: `Error: ${(err as Error).message}.`
+				[`${analysis_run_name}${fileSuffix}`]: `Error: ${(err as Error).message}.`
 			});
 			error = true;
 		}
@@ -179,10 +162,10 @@ export default function AnalysisSubmit() {
 
 		const allFormData = new FormData(event.currentTarget);
 
-		for (const a of analyses) {
-			if (a && a.analysis_run_name !== "\u200b") {
+		for (const analysis_run_name of analyses) {
+			if (analysis_run_name && analysis_run_name !== "\u200b") {
 				//analysis file
-				setLoading(a.analysis_run_name);
+				setLoading(analysis_run_name);
 				//{
 				//	analysis: a,
 				//	file: allFormData.get(a.analysis_run_name) as File,
@@ -190,8 +173,8 @@ export default function AnalysisSubmit() {
 				//	skipBlob = true
 				//}
 				const { error: analysisError, result: analysisResult } = await analysisFileSubmit({
-					analysis: a,
-					file: allFormData.get(a.analysis_run_name) as File,
+					analysis_run_name,
+					file: allFormData.get(analysis_run_name) as File,
 					submitAction: analysisSubmitAction,
 					skipBlob: true
 				});
@@ -201,10 +184,10 @@ export default function AnalysisSubmit() {
 				}
 
 				//assignments file
-				setLoading(`${a.analysis_run_name}_assign`);
+				setLoading(`${analysis_run_name}_assign`);
 				const { error: assignError, result: assignResult } = await analysisFileSubmit({
-					analysis: a,
-					file: allFormData.get(`${a.analysis_run_name}_assign`) as File,
+					analysis_run_name,
+					file: allFormData.get(`${analysis_run_name}_assign`) as File,
 					fileSuffix: "_assign",
 					submitAction: assignSubmitAction,
 					fieldsToSet: { analysis_run_name: analysisResult!.analysis_run_name }
@@ -218,10 +201,10 @@ export default function AnalysisSubmit() {
 				}
 
 				//occurrences file
-				setLoading(`${a.analysis_run_name}_occ`);
+				setLoading(`${analysis_run_name}_occ`);
 				const { error: occError } = await analysisFileSubmit({
-					analysis: a,
-					file: allFormData.get(`${a.analysis_run_name}_occ`) as File,
+					analysis_run_name,
+					file: allFormData.get(`${analysis_run_name}_occ`) as File,
 					fileSuffix: "_occ",
 					submitAction: occSubmitAction,
 					fieldsToSet: { analysis_run_name: analysisResult!.analysis_run_name }
@@ -255,7 +238,7 @@ export default function AnalysisSubmit() {
 									{analyses[i] && (
 										<>
 											<div className="flex flex-col">
-												<h2 className="text-base-content">{analyses[i].analysis_run_name}</h2>
+												<h2 className="text-base-content">{analyses[i]}</h2>
 												<div className="flex">
 													<label className="form-control w-full max-w-xs">
 														<div className="label">
@@ -263,7 +246,7 @@ export default function AnalysisSubmit() {
 														</div>
 														<input
 															type="file"
-															name={analyses[i].analysis_run_name}
+															name={analyses[i]}
 															required
 															disabled={!!loading}
 															accept=".tsv"
@@ -272,12 +255,12 @@ export default function AnalysisSubmit() {
 														/>
 													</label>
 													<ProgressCircle
-														response={responseObj[analyses[i].analysis_run_name]}
-														error={errorObj[analyses[i].analysis_run_name]}
-														loading={loading === analyses[i].analysis_run_name}
+														response={responseObj[analyses[i]]}
+														error={errorObj[analyses[i]]}
+														loading={loading === analyses[i]}
 													/>
 												</div>
-												{analyses[i].analysis_run_name !== "\u200b" && (
+												{analyses[i] !== "\u200b" && (
 													<>
 														<div className="flex">
 															<label className="form-control w-full max-w-xs">
@@ -286,7 +269,7 @@ export default function AnalysisSubmit() {
 																</div>
 																<input
 																	type="file"
-																	name={`${analyses[i].analysis_run_name}_assign`}
+																	name={`${analyses[i]}_assign`}
 																	required
 																	disabled={!!loading}
 																	accept=".tsv"
@@ -294,9 +277,9 @@ export default function AnalysisSubmit() {
 																/>
 															</label>
 															<ProgressCircle
-																response={responseObj[`${analyses[i].analysis_run_name}_assign`]}
-																error={errorObj[`${analyses[i].analysis_run_name}_assign`]}
-																loading={loading === `${analyses[i].analysis_run_name}_assign`}
+																response={responseObj[`${analyses[i]}_assign`]}
+																error={errorObj[`${analyses[i]}_assign`]}
+																loading={loading === `${analyses[i]}_assign`}
 															/>
 														</div>
 														<div className="flex">
@@ -306,7 +289,7 @@ export default function AnalysisSubmit() {
 																</div>
 																<input
 																	type="file"
-																	name={`${analyses[i].analysis_run_name}_occ`}
+																	name={`${analyses[i]}_occ`}
 																	required
 																	disabled={!!loading}
 																	accept=".tsv"
@@ -314,9 +297,9 @@ export default function AnalysisSubmit() {
 																/>
 															</label>
 															<ProgressCircle
-																response={responseObj[`${analyses[i].analysis_run_name}_occ`]}
-																error={errorObj[`${analyses[i].analysis_run_name}_occ`]}
-																loading={loading === `${analyses[i].analysis_run_name}_occ`}
+																response={responseObj[`${analyses[i]}_occ`]}
+																error={errorObj[`${analyses[i]}_occ`]}
+																loading={loading === `${analyses[i]}_occ`}
 															/>
 														</div>
 													</>
@@ -352,12 +335,12 @@ export default function AnalysisSubmit() {
 								</div>
 							)
 					)}
-					{analyses[analyses.length - 1]?.analysis_run_name !== "\u200b" && (
+					{analyses[analyses.length - 1] !== "\u200b" && (
 						<button
 							className="btn btn-success"
 							type="button"
 							disabled={!!loading}
-							onClick={() => setAnalyses([...analyses, { assay_name: "", analysis_run_name: "\u200b" }])}
+							onClick={() => setAnalyses([...analyses, "\u200b"])}
 						>
 							+
 						</button>
