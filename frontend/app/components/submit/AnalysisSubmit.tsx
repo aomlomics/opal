@@ -34,7 +34,9 @@ export default function AnalysisSubmit() {
 					const currentLine = lines[j].split("\t");
 
 					if (currentLine[0] === "analysis_run_name") {
-						setAnalyses([...analyses, currentLine[1].replace(/[\r\n]+/gm, "")]);
+						const tempAList = [...analyses];
+						tempAList[i] = currentLine[1].replace(/[\r\n]+/gm, "");
+						setAnalyses(tempAList);
 						return;
 					}
 				}
