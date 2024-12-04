@@ -13,7 +13,7 @@ export default function Header() {
 					<Link className="ml-3 normal-case text-xl h-20 w-48 flex flex-col items-center" href="/">
 						<div className="avatar w-full h-full">
 							<Image
-								src="/images/node_logo_main.png"
+								src="/images/node_logo_black-logo-only (1).svg"
 								alt="NODE Logo"
 								fill={true}
 								style={{ objectFit: "contain" }}

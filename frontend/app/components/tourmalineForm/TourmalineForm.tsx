@@ -194,8 +194,8 @@ export default function TourmalineForm() {
 	}
 
 	return (
-		<div className="flex w-full bg-neutral rounded-2xl">
-			<ul className="menu bg-white w-1/4 rounded-2xl">
+		<div className="flex w-full bg-base-200 rounded-2xl">
+			<ul className="menu bg-base-300 w-1/4 rounded-2xl">
 				<li className={activeTab === "About" ? "bg-primary text-base-content rounded-2xl" : ""}>
 					<a onClick={() => setActiveTab("About")}>About</a>
 				</li>

@@ -37,8 +37,8 @@ export default function StudySubmit() {
 
 	return (
 		<>
-			<form className="card-body" onSubmit={handleSubmit}>
-				<h1 className="text-primary font-semibold">Study Metadata:</h1>
+			<form className="space-y-4 flex flex-col items-center" onSubmit={handleSubmit}>
+				<h1 className="text-primary font-semibold -mt-4">Study Metadata:</h1>
 				<label className="form-control w-full max-w-xs">
 					<div className="label">
 						<span className="label-text text-base-content">Study File:</span>
@@ -48,7 +48,7 @@ export default function StudySubmit() {
 						name="studyFile"
 						required
 						accept=".tsv"
-						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
+						className="file-input file-input-bordered file-input-secondary text-base-content bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 					/>
 				</label>
 				<label className="form-control w-full max-w-xs">
@@ -60,7 +60,7 @@ export default function StudySubmit() {
 						name="samplesFile"
 						required
 						accept=".tsv"
-						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
+						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 					/>
 				</label>
 				<label className="form-control w-full max-w-xs">
@@ -72,15 +72,22 @@ export default function StudySubmit() {
 						name="libraryFile"
 						required
 						accept=".tsv"
-						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
+						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 					/>
 				</label>
-				<button className="btn btn-primary text-base-100">Submit</button>
+				<button className="btn btn-primary text-base-100 mt-8">Submit</button>
 			</form>
-			{loading && <span className="text-neutral-content">Loading...</span>}
-			<span className="text-neutral-content">
-				{response} {error}
-			</span>
+			{loading && (
+				<div className="mt-4 text-base-content flex items-center gap-2 justify-center">
+					<span className="loading loading-spinner"></span>
+					<span>Processing your submission...</span>
+				</div>
+			)}
+			{(response || error) && (
+				<div className={`mt-4 p-4 rounded-lg ${error ? "bg-error/10" : "bg-success/10"} text-center`}>
+					<span className="text-base-content">{response || error}</span>
+				</div>
+			)}
 		</>
 	);
 }

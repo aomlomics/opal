@@ -50,21 +50,43 @@ module.exports = {
 				}],
 			},
 			dropShadow: {
-				full: [
-					"-0.3px -0.3px 0 rgba(0,0,0,0.5)",
-					"0.3px -0.3px 0 rgba(0,0,0,0.5)",
-					"-0.3px 0.3px 0 rgba(0,0,0,0.5)",
-					"0.3px 0.3px 0 rgba(0,0,0,0.5)"
+				'logo-light': [
+					"0 1px 2px rgba(0,0,0,0.3)",
+					"0 2px 4px rgba(0,0,0,0.2)"
+				],
+				'logo-dark': [
+					"0 1px 2px rgba(255,255,255,0.1)",
+					"0 2px 4px rgba(255,255,255,0.05)"
 				]
 			},
 			animation: {
 				'slide-in': 'slide-in 1s ease-out forwards',
+				'subtle-pan': 'subtle-pan 30s ease-in-out infinite',
+				'gradient-shine': 'gradient-shine 8s ease-in-out infinite',
 			},
 			keyframes: {
 				'slide-in': {
 					'0%': { transform: 'translateY(-20px)', opacity: '0' },
 					'100%': { transform: 'translateY(0)', opacity: '1' },
 				},
+				'subtle-pan': {
+					'0%, 100%': { 
+						transform: 'scale(1.1) translate(0, 0)',
+						filter: 'brightness(1)'
+					},
+					'50%': { 
+						transform: 'scale(1.1) translate(-2%, -2%)',
+						filter: 'brightness(1.2)'
+					}
+				},
+				'gradient-shine': {
+					'0%, 100%': { 
+						opacity: 1
+					},
+					'50%': { 
+						opacity: 0.8
+					}
+				}
 			},
 			zIndex: {
 				'base': '1',

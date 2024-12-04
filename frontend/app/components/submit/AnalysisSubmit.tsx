@@ -247,104 +247,111 @@ export default function AnalysisSubmit() {
 			<form className="card-body" onSubmit={handleSubmit}>
 				<h1 className="text-primary">Analysis:</h1>
 				<div className="flex gap-5">
-					{analyses.map((a, i) => (
-						<div key={i}>
-							{analyses[i] && (
-								<>
-									<div className="flex flex-col">
-										<h2 className="text-base-content">{analyses[i].analysis_run_name}</h2>
-										<div className="flex">
-											<label className="form-control w-full max-w-xs">
-												<div className="label">
-													<span className="label-text text-base-content">Metadata:</span>
+					{/* {analyses.map((a, i) => ( */}
+					{analyses.map(
+						(a, i) =>
+							a && (
+								<div key={i}>
+									{analyses[i] && (
+										<>
+											<div className="flex flex-col">
+												<h2 className="text-base-content">{analyses[i].analysis_run_name}</h2>
+												<div className="flex">
+													<label className="form-control w-full max-w-xs">
+														<div className="label">
+															<span className="label-text text-base-content">Metadata:</span>
+														</div>
+														<input
+															type="file"
+															name={analyses[i].analysis_run_name}
+															required
+															disabled={!!loading}
+															accept=".tsv"
+															onChange={(e) => parseAnalysis(e.currentTarget.files, i)}
+															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
+														/>
+													</label>
+													<ProgressCircle
+														response={responseObj[analyses[i].analysis_run_name]}
+														error={errorObj[analyses[i].analysis_run_name]}
+														loading={loading === analyses[i].analysis_run_name}
+													/>
 												</div>
-												<input
-													type="file"
-													name={analyses[i].analysis_run_name}
-													required
+												{analyses[i].analysis_run_name !== "\u200b" && (
+													<>
+														<div className="flex">
+															<label className="form-control w-full max-w-xs">
+																<div className="label">
+																	<span className="label-text text-base-content">Features:</span>
+																</div>
+																<input
+																	type="file"
+																	name={`${analyses[i].analysis_run_name}_assign`}
+																	required
+																	disabled={!!loading}
+																	accept=".tsv"
+																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
+																/>
+															</label>
+															<ProgressCircle
+																response={responseObj[`${analyses[i].analysis_run_name}_assign`]}
+																error={errorObj[`${analyses[i].analysis_run_name}_assign`]}
+																loading={loading === `${analyses[i].analysis_run_name}_assign`}
+															/>
+														</div>
+														<div className="flex">
+															<label className="form-control w-full max-w-xs">
+																<div className="label">
+																	<span className="label-text text-base-content">Occurrences:</span>
+																</div>
+																<input
+																	type="file"
+																	name={`${analyses[i].analysis_run_name}_occ`}
+																	required
+																	disabled={!!loading}
+																	accept=".tsv"
+																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
+																/>
+															</label>
+															<ProgressCircle
+																response={responseObj[`${analyses[i].analysis_run_name}_occ`]}
+																error={errorObj[`${analyses[i].analysis_run_name}_occ`]}
+																loading={loading === `${analyses[i].analysis_run_name}_occ`}
+															/>
+														</div>
+													</>
+												)}
+											</div>
+											{/* {analyses.length > 1 && ( */}
+											{analyses.filter((a) => a !== null).length > 1 && (
+												<button
+													className="btn btn-error"
+													type="button"
 													disabled={!!loading}
-													accept=".tsv"
-													onChange={(e) => parseAnalysis(e.currentTarget.files, i)}
-													className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
-												/>
-											</label>
-											<ProgressCircle
-												response={responseObj[analyses[i].analysis_run_name]}
-												error={errorObj[analyses[i].analysis_run_name]}
-												loading={loading === analyses[i].analysis_run_name}
-											/>
-										</div>
-										{analyses[i].analysis_run_name !== "\u200b" && (
-											<>
-												<div className="flex">
-													<label className="form-control w-full max-w-xs">
-														<div className="label">
-															<span className="label-text text-base-content">Features:</span>
-														</div>
-														<input
-															type="file"
-															name={`${analyses[i].analysis_run_name}_assign`}
-															required
-															disabled={!!loading}
-															accept=".tsv"
-															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
-														/>
-													</label>
-													<ProgressCircle
-														response={responseObj[`${analyses[i].analysis_run_name}_assign`]}
-														error={errorObj[`${analyses[i].analysis_run_name}_assign`]}
-														loading={loading === `${analyses[i].analysis_run_name}_assign`}
-													/>
-												</div>
-												<div className="flex">
-													<label className="form-control w-full max-w-xs">
-														<div className="label">
-															<span className="label-text text-base-content">Occurrences:</span>
-														</div>
-														<input
-															type="file"
-															name={`${analyses[i].analysis_run_name}_occ`}
-															required
-															disabled={!!loading}
-															accept=".tsv"
-															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
-														/>
-													</label>
-													<ProgressCircle
-														response={responseObj[`${analyses[i].analysis_run_name}_occ`]}
-														error={errorObj[`${analyses[i].analysis_run_name}_occ`]}
-														loading={loading === `${analyses[i].analysis_run_name}_occ`}
-													/>
-												</div>
-											</>
-										)}
-									</div>
-									{analyses.length > 1 && (
-										<button
-											className="btn btn-error"
-											type="button"
-											disabled={!!loading}
-											onClick={() => {
-												//set removed analysis to null in array to maintain indices of other analyses
-												const tempAList = [...analyses];
-												tempAList[i] = null;
-												//clean up any trailing nulls or zero width characters
-												tempAList.findLast((a, i) => {
-													if (a && a.analysis_run_name !== "\u200b") {
-														return true;
-													}
-													tempAList.splice(i, 1);
-												});
-												setAnalyses(tempAList);
-											}}
-										>
-											-
-										</button>
+													onClick={() => {
+														//set removed analysis to null in array to maintain indices of other analyses
+														const tempAList = [...analyses];
+														tempAList[i] = null;
+														//clean up any trailing nulls
+														// BUG: array indices cause issue when analysis is removed using "-" button
+														// tempAList.findLast((a, i) => {
+														// 	if (a && a.analysis_run_name !== "\u200b") {
+														// 		return true;
+														// 	}
+														// 	tempAList.splice(i, 1);
+														// });
+
+														setAnalyses(tempAList);
+													}}
+												>
+													-
+												</button>
+											)}
+										</>
 									)}
-								</>
-							)}
-						</div>
-					))}
+								</div>
+							)
+					)}
 					{analyses[analyses.length - 1]?.analysis_run_name !== "\u200b" && (
 						<button
 							className="btn btn-success"
