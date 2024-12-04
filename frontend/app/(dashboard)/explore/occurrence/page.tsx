@@ -1,10 +1,10 @@
 import Pagination from "@/app/components/Pagination";
 import { Suspense } from "react";
 
-export default async function Feature() {
+export default async function Occurrence() {
 	return (
 		<Suspense fallback={null}>
-			<Pagination table={"feature"} title={"featureid"} />
+			<Pagination table={"occurrence"} title={"id"} />
 		</Suspense>
 	);
 }

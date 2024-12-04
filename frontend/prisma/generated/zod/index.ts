@@ -156,7 +156,7 @@ export const StudySchema = z.object({
   project_contact: z.string(),
   institution: z.string().nullish(),
   institutionID: z.string().nullish(),
-  project_name: z.string().nullish(),
+  project_name: z.string(),
   study_factor: z.string().nullish(),
   detection_type: z.string(),
   license: z.string().nullish(),

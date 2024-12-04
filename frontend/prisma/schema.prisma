@@ -291,7 +291,7 @@ model Study {
     project_contact String
     institution     String?
     institutionID   String?
-    project_name    String?
+    project_name    String
     study_factor    String?
     detection_type  String
 
@@ -318,11 +318,11 @@ model Sample {
     samp_name String @unique
 
     // Relations
-    project_id String
-    Study      Study        @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
-    Assays     Assay[]
-    Libraries  Library[]
-    Occurrence Occurrence[]
+    project_id  String
+    Study       Study        @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+    Assays      Assay[]
+    Libraries   Library[]
+    Occurrences Occurrence[]
 
     // Data
     // User Defined
@@ -626,7 +626,7 @@ model Analysis {
     Study       Study        @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
     assay_name  String
     Assay       Assay        @relation(fields: [assay_name], references: [assay_name])
-    Occurrence  Occurrence[]
+    Occurrences Occurrence[]
     Assignments Assignment[]
 
     // Data
@@ -741,7 +741,7 @@ model Feature {
     featureid String @unique
 
     // Relations
-    Occurrence          Occurrence[]
+    Occurrences         Occurrence[]
     Assignments         Assignment[]
     consensusTaxonomyId String?
     consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [taxonomy])

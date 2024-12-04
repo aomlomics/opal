@@ -357,7 +357,9 @@ export default function AnalysisSubmit() {
 					)}
 				</div>
 
-				<button className="btn btn-primary">Submit</button>
+				<button className="btn btn-primary" disabled={!!loading}>
+					Submit
+				</button>
 			</form>
 			{!!loading && <span className="text-base-content">Loading, please do not close the website</span>}
 		</>

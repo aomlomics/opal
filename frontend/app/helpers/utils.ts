@@ -4,7 +4,10 @@ import { ZodObject, ZodEnum, ZodNumber, ZodBoolean } from "zod";
 
 export async function fetcher(url: string) {
 	const res = await fetch(url);
-	if (!res.ok) return { response: "error" };
+	if (!res.ok) {
+		const data = await res.json();
+		return { error: data.error };
+	}
 	return await res.json();
 }
 
@@ -88,11 +91,13 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 		take: number;
 		skip?: number;
 		cursor?: { id: number };
+		include?: { _count: { select: Record<string, boolean> } };
+		where?: Record<string, string>;
 	};
 
 	const take = searchParams.get("take");
 	if (!take) {
-		throw new Error("Take is required");
+		throw new Error("take is required");
 	}
 	findMany.take = parseInt(take);
 
@@ -113,6 +118,23 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 	//		findMany.take *= parseInt(dir);
 	//	}
 	//}
+
+	const whereStr = searchParams.get("where");
+	if (whereStr) {
+		const where = JSON.parse(whereStr);
+		findMany.where = where;
+	}
+
+	const relCounts = searchParams.get("relCounts");
+	if (relCounts) {
+		findMany.include = {
+			_count: {
+				select: relCounts
+					.split(",")
+					.reduce((acc: Record<string, boolean>, rel: string) => ({ ...acc, [rel]: true }), {})
+			}
+		};
+	}
 
 	return findMany;
 }

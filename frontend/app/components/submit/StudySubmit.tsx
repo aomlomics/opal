@@ -47,6 +47,7 @@ export default function StudySubmit() {
 						type="file"
 						name="studyFile"
 						required
+						disabled={!!loading}
 						accept=".tsv"
 						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 					/>
@@ -59,6 +60,7 @@ export default function StudySubmit() {
 						type="file"
 						name="samplesFile"
 						required
+						disabled={!!loading}
 						accept=".tsv"
 						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 					/>
@@ -71,11 +73,14 @@ export default function StudySubmit() {
 						type="file"
 						name="libraryFile"
 						required
+						disabled={!!loading}
 						accept=".tsv"
 						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
 					/>
 				</label>
-				<button className="btn btn-primary text-base-100">Submit</button>
+				<button className="btn btn-primary text-base-100" disabled={!!loading}>
+					Submit
+				</button>
 			</form>
 			{loading && <span className="text-neutral-content">Loading...</span>}
 			<span className="text-neutral-content">
