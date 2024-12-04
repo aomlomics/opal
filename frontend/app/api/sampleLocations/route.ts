@@ -16,14 +16,14 @@ export async function GET(request: Request) {
 
 	try {
 		const rawLocations = await prisma.$transaction(async (tx) => {
-			const studiesRes = await prisma.study.findMany({
+			const projectsRes = await prisma.project.findMany({
 				select: {
 					project_id: true,
 					id: true
 				}
 			});
-			//convert array of studies into object where keys are project_id and values are database id
-			const studies = studiesRes.reduce((accum, study) => ({ ...accum, [study.project_id]: study.id }), {});
+			//convert array of projects into object where keys are project_id and values are database id
+			const projects = projectsRes.reduce((accum, project) => ({ ...accum, [project.project_id]: project.id }), {});
 
 			const rawLocations = await prisma.sample.groupBy({
 				by: ["project_id"],
@@ -51,8 +51,8 @@ export async function GET(request: Request) {
 				}
 			});
 
-			for (const study of rawLocations as ProjSampleAvgLocs[]) {
-				study.id = studies[study.project_id as keyof typeof studies];
+			for (const project of rawLocations as ProjSampleAvgLocs[]) {
+				project.id = projects[project.project_id as keyof typeof projects];
 			}
 
 			return rawLocations;

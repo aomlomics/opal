@@ -2,8 +2,8 @@ import { prisma } from "../helpers/prisma";
 import Link from "next/link";
 
 export default async function DataSummary() {
-	const { studyCount, sampleCount, featureCount, uniqueAssays } = await prisma.$transaction(async (tx) => {
-		const studyCount = await tx.study.count();
+	const { projectCount, sampleCount, featureCount, uniqueAssays } = await prisma.$transaction(async (tx) => {
+		const projectCount = await tx.project.count();
 		const sampleCount = await tx.sample.count();
 		const featureCount = await tx.feature.count();
 		const uniqueAssays = (await tx.assay.findMany({
@@ -35,13 +35,13 @@ export default async function DataSummary() {
 			}
 		}
 
-		return { studyCount, sampleCount, featureCount, uniqueAssays };
+		return { projectCount, sampleCount, featureCount, uniqueAssays };
 	});
 
 	return (
 		<div>
 			<div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
-				<DataSummaryItem title="Studies" value={studyCount} href="/explore/study" />
+				<DataSummaryItem title="Projects" value={projectCount} href="/explore/project" />
 				<DataSummaryItem title="Samples" value={sampleCount} href="/explore/sample" />
 				<DataSummaryItem title="Unique Sequence Features" value={featureCount} href="/explore/feature" />
 				{uniqueAssays.map((a) => (

@@ -5,7 +5,7 @@ export default async function Samples({ params }: { params: { project_id: string
 	return (
 		<>
 			<h1>
-				<Link href={`/explore/study/${params.project_id}`} className="text-primary hover:underline">
+				<Link href={`/explore/project/${params.project_id}`} className="text-primary hover:underline">
 					{params.project_id}
 				</Link>{" "}
 				<span> samples</span>
