@@ -5,7 +5,7 @@ export default async function Study() {
 	return (
 		<>
 			<Suspense fallback={null}>
-				<Pagination table={"study"} />
+				<Pagination id={"project_id"} table={"study"} title={"project_name"} relCounts={["Samples", "Analyses"]} />
 			</Suspense>
 		</>
 	);
