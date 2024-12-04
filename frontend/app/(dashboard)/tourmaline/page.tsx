@@ -8,10 +8,8 @@ export default function Tourmaline() {
 				<Link href={"https://github.com/aomlomics/tourmaline"}>
 					<div className="relative h-40 w-full flex items-center justify-center">
 						<div className="text-center">
-							<h1 className="text-primary font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
-								Tourmaline
-							</h1>
-							<p className="text-primary font-bold text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl">
+							<h1 className="text-primary text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">Tourmaline</h1>
+							<p className="text-primary text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl">
 								Amplicon Sequence Processing Workflow
 							</p>
 							<p className="text-base-content text-xs sm:text-sm md:text-sm lg:text-base xl:text-lg">
