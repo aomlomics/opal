@@ -23,7 +23,7 @@ export default function Tourmaline() {
 				</Link>
 			</div>
 
-			<div className="mb-4 flex justify-center z-30 bg-neutral rounded-3xl p-2 w-full max-w-5xl">
+			<div className="mb-4 flex justify-center z-30 bg-base-200 rounded-3xl p-2 w-full max-w-5xl">
 				<TourmalineForm />
 			</div>
 		</div>
