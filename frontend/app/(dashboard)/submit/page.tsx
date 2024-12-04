@@ -6,12 +6,11 @@ export default function Submit() {
 		<main className="flex flex-col grow p-8 max-w-7xl mx-auto space-y-12">
 			{/* Upload Intro Section */}
 			<section className="text-center space-y-6">
-				<h1 className="text-5xl font-semibold text-primary">
-					Built for FAIR eDNA Data
-				</h1>
+				<h1 className="text-5xl font-semibold text-primary">Built for FAIR eDNA Data</h1>
 				<div className="max-w-3xl mx-auto space-y-4 text-lg text-base-content">
 					<p>
-						Is your data currently in Google Sheets or Excel? Upgrade your eDNA data storage to NODE and benefit from complex query and visualization capabilities, API integration, and more.
+						Is your data currently in Google Sheets or Excel? Upgrade your eDNA data storage to NODE and benefit from
+						complex query and visualization capabilities, API integration, and more.
 					</p>
 					<p>
 						Still not convinced?{" "}
@@ -30,7 +29,8 @@ export default function Submit() {
 						<div className="w-3/4">
 							<h2 className="card-title text-3xl text-primary mb-4">New Study</h2>
 							<p className="text-base-content mb-6">
-								Submit a complete dataset for a new eDNA study, including assays, library metadata, sample metadata, and study metadata.
+								Submit a complete dataset for a new eDNA study, including assays, library metadata, sample metadata, and
+								study metadata.
 							</p>
 							<div className="card-actions">
 								<Link href="/submit/study" className="btn btn-secondary text-white">
@@ -38,7 +38,7 @@ export default function Submit() {
 								</Link>
 							</div>
 						</div>
-						
+
 						<div className="absolute bottom-5 right-0 w-4/5 h-64 translate-x-1/3 translate-y-1/3">
 							<Image
 								src="/images/Catcher_Vessel4.svg"
@@ -55,7 +55,8 @@ export default function Submit() {
 						<div className="w-3/4">
 							<h2 className="card-title text-3xl text-primary mb-4">New Analysis</h2>
 							<p className="text-base-content mb-6">
-								Contribute a new analysis based on existing data in NODE, using different methods or parameters to generate novel insights.
+								Contribute a new analysis based on existing data in NODE, using different methods or parameters to
+								generate novel insights.
 							</p>
 							<div className="card-actions">
 								<Link href="/submit/analysis" className="btn btn-secondary text-white">
@@ -63,7 +64,7 @@ export default function Submit() {
 								</Link>
 							</div>
 						</div>
-						
+
 						<div className="absolute bottom-4 right-0 w-4/5 h-64 translate-x-1/3 translate-y-1/3">
 							<Image
 								src="/images/Ruler.svg"
@@ -80,9 +81,7 @@ export default function Submit() {
 			<section className="flex justify-center">
 				<div className="card bg-base-200 shadow-xl max-w-3xl">
 					<div className="card-body">
-						<h2 className="card-title text-3xl text-primary mb-6">
-							Need Help with Cleaning up your Data?
-						</h2>
+						<h2 className="card-title text-3xl text-primary mb-6">Need Help with Cleaning up your Data?</h2>
 						<div className="space-y-8 text-base-content">
 							{/* TODO: NEED TO ADD LINKS TO GITHUB PAGES AND A BETTER EXPLANATION */}
 							{/* Tools Section */}
@@ -91,19 +90,27 @@ export default function Submit() {
 								<p className="mb-3">We and our collaborators have built these tools, available on GitHub:</p>
 								<ul className="list-disc list-inside space-y-2 ml-4">
 									<li>
-										<Link href="#" className="text-primary hover:underline">edna2obis</Link>
+										<Link href="#" className="text-primary hover:underline">
+											edna2obis
+										</Link>
 										{" - Convert eDNA data to OBIS format"}
 									</li>
 									<li>
-										<Link href="#" className="text-primary hover:underline">TermMatchAI</Link>
+										<Link href="#" className="text-primary hover:underline">
+											TermMatchAI
+										</Link>
 										{" - AI-powered term matching and standardization"}
 									</li>
 									<li>
-										<Link href="#" className="text-primary hover:underline">TACT</Link>
+										<Link href="#" className="text-primary hover:underline">
+											TACT
+										</Link>
 										{" - Taxonomic data cleaning and validation"}
 									</li>
 									<li>
-										<Link href="/tourmaline" className="text-primary hover:underline">Tourmaline</Link>
+										<Link href="/tourmaline" className="text-primary hover:underline">
+											Tourmaline
+										</Link>
 										{" - Amplicon sequence processing workflow"}
 									</li>
 								</ul>
@@ -112,7 +119,9 @@ export default function Submit() {
 							{/* File Types Section */}
 							<div>
 								<h3 className="text-xl font-semibold mb-3">File Types:</h3>
-								<p>All files must be in <span className="font-mono bg-base-300 px-1 rounded">TSV</span> format</p>
+								<p>
+									All files must be in <span className="font-mono bg-base-300 px-1 rounded">TSV</span> format
+								</p>
 							</div>
 
 							{/* Dead Values Section */}

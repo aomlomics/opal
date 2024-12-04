@@ -268,7 +268,7 @@ export default function AnalysisSubmit() {
 															disabled={!!loading}
 															accept=".tsv"
 															onChange={(e) => parseAnalysis(e.currentTarget.files, i)}
-															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
+															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 														/>
 													</label>
 													<ProgressCircle
@@ -290,7 +290,7 @@ export default function AnalysisSubmit() {
 																	required
 																	disabled={!!loading}
 																	accept=".tsv"
-																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
+																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 																/>
 															</label>
 															<ProgressCircle
@@ -310,7 +310,7 @@ export default function AnalysisSubmit() {
 																	required
 																	disabled={!!loading}
 																	accept=".tsv"
-																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs"
+																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 																/>
 															</label>
 															<ProgressCircle
