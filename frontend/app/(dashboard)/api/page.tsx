@@ -4,9 +4,9 @@ import UnderConstruction from "@/app/components/UnderConstruction";
 export default function Api() {
 	return (
 		<main className="flex flex-col grow p-8 max-w-7xl mx-auto space-y-10">
-			{/* <div className="text-red-500">
+			<div className="text-red-500">
 				<UnderConstruction message="API is coming soon! This page's documentation is not active, it's an example of the content in the future. The API is not operational at the moment." />
-			</div> */}
+			</div>
 
 			{/* API Introduction Section */}
 			<section className="relative">
