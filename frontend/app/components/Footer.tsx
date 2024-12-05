@@ -17,24 +17,28 @@ export default function Footer() {
 			<div className="flex items-stretch bg-base-100 justify-end ml-auto">
 				<div className="rounded-l-sm flex items-center px-6 h-full">
 					<div className="relative h-12 w-32 self-center mb-1">
-						<ThemeAwareLogo
-							src="/images/noaa_exploration_FINAL.svg"
-							alt="NOAA Exploration Logo"
-							fill={true}
-							style={{
-								objectFit: "contain",
-								marginTop: "3px"
-							}}
-						/>
+						<a href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
+							<ThemeAwareLogo
+								src="/images/noaa_exploration_FINAL.svg"
+								alt="NOAA Exploration Logo"
+								fill={true}
+								style={{
+									objectFit: "contain",
+									marginTop: "3px"
+								}}
+							/>
+						</a>
 					</div>
 					<div className="pt-2 ml-10 self-center mb-2">
-						<ThemeAwareLogo
-							src="/images/HORIZONTAL_WEB_white (3).svg"
-							alt="MSU NGI Logo"
-							width={250}
-							height={60}
-							style={{ objectFit: "contain" }}
-						/>
+						<a href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
+							<ThemeAwareLogo
+								src="/images/HORIZONTAL_WEB_white (3).svg"
+								alt="MSU NGI Logo"
+								width={250}
+								height={60}
+								style={{ objectFit: "contain" }}
+							/>
+						</a>
 					</div>
 				</div>
 			</div>

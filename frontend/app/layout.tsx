@@ -9,7 +9,7 @@ const sourceSans = Source_Sans_3({
 });
 
 export const metadata = {
-	title: "Node",
+	title: "NODE",
 	description: "NOAA Ocean DNA Explorer"
 };
 
@@ -17,9 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="en" className="scroll-smooth" suppressHydrationWarning>
 			<body className={`${sourceSans.className} bg-base-100 text-base-content`}>
-				<ClerkProvider appearance={{ elements: { footer: "hidden" } }}>
-					{children}
-				</ClerkProvider>
+				<ClerkProvider appearance={{ elements: { footer: "hidden" } }}>{children}</ClerkProvider>
 			</body>
 		</html>
 	);

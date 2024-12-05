@@ -36,7 +36,10 @@ export default async function Home() {
 					</div>
 
 					<div className="flex flex-col items-start gap-4">
-						<a href="/data" className="btn btn-lg btn-secondary bg-primary/90 backdrop-blur-sm outline-none text-white hover:bg-primary transition-all duration-300">
+						<a
+							href="/data"
+							className="btn btn-lg btn-secondary bg-primary/90 backdrop-blur-sm outline-none text-white hover:bg-primary transition-all duration-300"
+						>
 							Start Searching
 						</a>
 					</div>
@@ -60,8 +63,10 @@ export default async function Home() {
 				</Link>
 			</div>
 			<div id="dataSummary" className="z-content px-4 sm:px-6 lg:px-8 pb-12">
-			<div className="mb-4 text-2xl text-base-content">Showing all 
-				<span className="text-primary"> Studies</span></div>
+				<div className="mb-4 text-2xl text-base-content">
+					Showing all
+					<span className="text-primary"> Studies</span>
+				</div>
 				<div className="flex gap-8">
 					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">
 						<Map />
@@ -119,21 +124,25 @@ export default async function Home() {
 					<div className="shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
 						<div className="flex justify-center items-center gap-20">
 							<div className="relative h-24 w-64">
-								<ThemeAwareLogo
-									src="/images/noaa_exploration_FINAL.svg"
-									alt="National Oceanic and Atmospheric Administration Exploration Logo"
-									fill={true}
-									style={{ objectFit: "contain" }}
-								/>
+								<a href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
+									<ThemeAwareLogo
+										src="/images/noaa_exploration_FINAL.svg"
+										alt="National Oceanic and Atmospheric Administration Exploration Logo"
+										fill={true}
+										style={{ objectFit: "contain" }}
+									/>
+								</a>
 							</div>
 							<div>
-								<ThemeAwareLogo
-									src="/images/HORIZONTAL_WEB_white (3).svg"
-									alt="Mississippi State University, Northern Gulf Institute Logo"
-									width={500}
-									height={300}
-									style={{ objectFit: "contain" }}
-								/>
+								<a href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
+									<ThemeAwareLogo
+										src="/images/HORIZONTAL_WEB_white (3).svg"
+										alt="Mississippi State University, Northern Gulf Institute Logo"
+										width={500}
+										height={300}
+										style={{ objectFit: "contain" }}
+									/>
+								</a>
 							</div>
 						</div>
 					</div>
