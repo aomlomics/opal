@@ -91,16 +91,7 @@ export default async function Home() {
 							>
 								NOAA's Atlantic Oceanographic and Meteorological Laboratory
 							</a>{" "}
-							in collaboration with{" "}
-							<a
-								href="https://www.msstate.edu/"
-								className="text-primary hover:underline"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Mississippi State University
-							</a>{" "}
-							and is supported by the{" "}
+							in collaboration with the{" "}
 							<a
 								href="https://www.northerngulfinstitute.org/"
 								className="text-primary hover:underline"
@@ -109,16 +100,34 @@ export default async function Home() {
 							>
 								Northern Gulf Institute
 							</a>{" "}
-							through the{" "}
+							at{" "}
+							<a
+								href="https://www.msstate.edu/"
+								className="text-primary hover:underline"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Mississippi State University
+							</a>{" "}
+							and is supported by{" "}
+							<a
+								href="https://oceanexplorer.noaa.gov/"
+								className="text-primary hover:underline"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								NOAA Ocean Exploration
+							</a>{" "}
+							and{" "}
 							<a
 								href="https://oceanexplorer.noaa.gov/technology/omics/noaa-omics.html"
 								className="text-primary hover:underline"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								NOAA Omics program
-							</a>
-							.
+								NOAA Omics
+							</a>{" "}
+							projects NO_0062 and NO_0066.
 						</p>
 					</div>
 					<div className="shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
