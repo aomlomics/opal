@@ -70,7 +70,7 @@ export default function Search({ placeholder }: { placeholder: string }) {
 						{searchType} ▼
 					</div>
 					<ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-						{["Studies", "Samples", "Sequences", "Occurences", "Assays"].map((type) => (
+						{["Projects", "Samples", "Sequences", "Occurences", "Assays"].map((type) => (
 							<li key={type}>
 								<a onClick={() => setSearchType(type)}>{type}</a>
 							</li>

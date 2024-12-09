@@ -7,10 +7,8 @@ import { SubmitActionReturn } from "@/types/types";
 
 export default async function OccSubmitAction(formData: FormData): SubmitActionReturn {
 	try {
-		let assay_name = formData.get("assay_name") as string;
-		console.log(`${assay_name} occurrences submit`);
-
-		const analysis_run_name = formData.get("analysis_run_name");
+		const analysis_run_name = formData.get("analysis_run_name") as string;
+		console.log(`${analysis_run_name} occurrences submit`);
 
 		//Occurrence file
 		//parsing file inside transaction to reduce memory usage, since this file is large
@@ -18,7 +16,7 @@ export default async function OccSubmitAction(formData: FormData): SubmitActionR
 			async (tx) => {
 				const occurrences = [] as Prisma.OccurrenceCreateManyInput[];
 
-				console.log(`${assay_name}_occ file`);
+				console.log(`${analysis_run_name}_occ file`);
 				let occFileLines;
 				if (process.env.NODE_ENV === "development") {
 					//get files from form data
@@ -59,7 +57,7 @@ export default async function OccSubmitAction(formData: FormData): SubmitActionR
 										{
 											errorMap: (error, ctx) => {
 												return {
-													message: `OccurrenceSchema (${assay_name}, ${samp_name}, ${featureid}): ${ctx.defaultError}`
+													message: `OccurrenceSchema (${analysis_run_name}, ${samp_name}, ${featureid}): ${ctx.defaultError}`
 												};
 											}
 										}

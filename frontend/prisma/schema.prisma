@@ -276,7 +276,7 @@ enum dada2_chimera_method {
 }
 
 // Models
-model Study {
+model Project {
     id         Int    @id @default(autoincrement())
     project_id String @unique
 
@@ -319,7 +319,7 @@ model Sample {
 
     // Relations
     project_id  String
-    Study       Study        @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+    Project     Project      @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
     Assays      Assay[]
     Libraries   Library[]
     Occurrences Occurrence[]
@@ -623,7 +623,7 @@ model Analysis {
 
     // Relations
     project_id  String
-    Study       Study        @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
+    Project     Project      @relation(fields: [project_id], references: [project_id], onDelete: Cascade)
     assay_name  String
     Assay       Assay        @relation(fields: [assay_name], references: [assay_name])
     Occurrences Occurrence[]

@@ -12,7 +12,7 @@ import type { Prisma } from '@prisma/client';
 
 export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const StudyScalarFieldEnumSchema = z.enum(['id','project_id','recordedBy','recordedByID','project_contact','institution','institutionID','project_name','study_factor','detection_type','license','rightsHolder','accessRights','informationWithheld','dataGeneralizations','bibliographicCitation','associated_resource','mod_date','checkls_ver','seq_archive','code_repo','expedition_id']);
+export const ProjectScalarFieldEnumSchema = z.enum(['id','project_id','recordedBy','recordedByID','project_contact','institution','institutionID','project_name','study_factor','detection_type','license','rightsHolder','accessRights','informationWithheld','dataGeneralizations','bibliographicCitation','associated_resource','mod_date','checkls_ver','seq_archive','code_repo','expedition_id']);
 
 export const SampleScalarFieldEnumSchema = z.enum(['id','samp_name','project_id','serial_number','materialSampleID','line_id','station_id','ctd_cast_number','ctd_bottle_number','replicate_number','extract_id','samp_category','decimalLatitude','decimalLongitude','verbatimLatitude','verbatimLongitude','verbatimCoordinateSystem','verbatimSRS','geo_loc_name','eventDate','eventDurationValue','eventDurationUnit','verbatimEventDate','verbatimEventTime','verbatimDateEnd','verbatimTimeEnd','env_broad_scale','env_local_scale','env_medium','habitat_natural_artificial_0_1','samp_collect_method','samp_collect_device','samp_size','samp_size_unit','samp_store_temp','samp_store_sol','samp_store_dur','samp_store_method_additional','samp_mat_process','filter_passive_active_0_1','filter_onsite_dur','size_frac_low','size_frac','filter_diameter','filter_surface_area','filter_material','filter_name','precip_chem_prep','precip_force_prep','precip_time_prep','precip_temp_prep','prepped_samp_store_temp','prepped_samp_store_sol','prepped_samp_store_dur','prep_method_additional','sample_derived_from','sample_composed_of','biological_rep_relation','samp_vol_we_dna_ext','samp_vol_we_dna_ext_unit','nucl_acid_ext_lysis','nucl_acid_ext_sep','nucl_acid_ext','nucl_acid_ext_kit','nucl_acid_ext_modify','dna_cleanup_0_1','dna_cleanup_method','concentration','concentration_method','ratioOfAbsorbance260_280','pool_dna_num','nucl_acid_ext_method_additional','samp_weather','minimumDepthInMeters','maximumDepthInMeters','tot_depth_water_col','elev','temp','chlorophyll','light_intensity','misc_param','ph','ph_meth','salinity','suspend_part_matter','tidal_stage','turbidity','water_current','solar_irradiance','wind_direction','wind_speed','diss_inorg_carb','diss_inorg_nitro','diss_org_carb','diss_org_nitro','diss_oxygen','tot_diss_nitro','tot_inorg_nitro','tot_nitro','tot_part_carb','tot_org_carb','tot_org_c_meth','tot_nitro_content','tot_nitro_cont_meth','tot_carb','part_org_carb','part_org_nitro','nitrate','nitrite','nitro','org_carb','org_matter','org_nitro','phaeopigments','ammonium','phosphate','silicate']);
 
@@ -145,10 +145,10 @@ export type dada2_chimera_methodType = `${z.infer<typeof dada2_chimera_methodSch
 /////////////////////////////////////////
 
 /////////////////////////////////////////
-// STUDY SCHEMA
+// PROJECT SCHEMA
 /////////////////////////////////////////
 
-export const StudySchema = z.object({
+export const ProjectSchema = z.object({
   id: z.number().int(),
   project_id: z.string(),
   recordedBy: z.string(),
@@ -173,24 +173,24 @@ export const StudySchema = z.object({
   expedition_id: z.string().nullish(),
 })
 
-export type Study = z.infer<typeof StudySchema>
+export type Project = z.infer<typeof ProjectSchema>
 
 /////////////////////////////////////////
-// STUDY PARTIAL SCHEMA
+// PROJECT PARTIAL SCHEMA
 /////////////////////////////////////////
 
-export const StudyPartialSchema = StudySchema.partial()
+export const ProjectPartialSchema = ProjectSchema.partial()
 
-export type StudyPartial = z.infer<typeof StudyPartialSchema>
+export type ProjectPartial = z.infer<typeof ProjectPartialSchema>
 
-// STUDY OPTIONAL DEFAULTS SCHEMA
+// PROJECT OPTIONAL DEFAULTS SCHEMA
 //------------------------------------------------------
 
-export const StudyOptionalDefaultsSchema = StudySchema.merge(z.object({
+export const ProjectOptionalDefaultsSchema = ProjectSchema.merge(z.object({
   id: z.number().int().optional(),
 }))
 
-export type StudyOptionalDefaults = z.infer<typeof StudyOptionalDefaultsSchema>
+export type ProjectOptionalDefaults = z.infer<typeof ProjectOptionalDefaultsSchema>
 
 /////////////////////////////////////////
 // SAMPLE SCHEMA

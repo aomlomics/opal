@@ -15,99 +15,99 @@ import {
 	SampleOptionalDefaultsSchema,
 	SamplePartial,
 	SampleScalarFieldEnumSchema,
-	StudyOptionalDefaultsSchema,
-	StudyScalarFieldEnumSchema
+	ProjectOptionalDefaultsSchema,
+	ProjectScalarFieldEnumSchema
 } from "@/prisma/generated/zod";
 import { SubmitActionReturn } from "@/types/types";
 
-export default async function studySubmitAction(formData: FormData): SubmitActionReturn {
-	console.log("study submit");
+export default async function projectSubmitAction(formData: FormData): SubmitActionReturn {
+	console.log("project submit");
 	try {
 		const assays = {} as Record<string, Prisma.AssayCreateManyInput>;
 		const libraries = [] as Prisma.LibraryCreateManyInput[];
 		const samples = [] as Prisma.SampleCreateManyInput[];
 
-		const studyCol = {} as Record<string, string>;
+		const projectCol = {} as Record<string, string>;
 		const assayCols = {} as Record<string, Record<string, string>>;
 		const libraryCols = {} as Record<string, Record<string, string>>;
 
 		const sampToAssay = {} as Record<string, string>; //object to relate samples to their assay_name values
 		const libToAssay = {} as Record<string, string>; //object to relate libraries to their assay_name values
 
-		//Study file
-		console.log("study file");
+		//Project file
+		console.log("project file");
 		//code block to force garbage collection
 		{
 			//parse file
-			const studyFileLines = (await (formData.get("studyFile") as File).text()).replace(/[\r]+/gm, "").split("\n");
-			const studyFileHeaders = studyFileLines[0].split("\t");
-			const field_name_i = studyFileHeaders.indexOf("field_name");
+			const projectFileLines = (await (formData.get("projectFile") as File).text()).replace(/[\r]+/gm, "").split("\n");
+			const projectFileHeaders = projectFileLines[0].split("\t");
+			const field_name_i = projectFileHeaders.indexOf("field_name");
 			//iterate over each row
-			for (let i = 1; i < studyFileLines.length; i++) {
-				const currentLine = studyFileLines[i].split("\t");
+			for (let i = 1; i < projectFileLines.length; i++) {
+				const currentLine = projectFileLines[i].split("\t");
 
-				//Study Level
-				//study table
+				//Project Level
+				//project table
 				replaceDead(
-					currentLine[studyFileHeaders.indexOf("study_level")],
+					currentLine[projectFileHeaders.indexOf("project_level")],
 					currentLine[field_name_i],
-					studyCol,
-					StudyOptionalDefaultsSchema,
-					StudyScalarFieldEnumSchema
+					projectCol,
+					ProjectOptionalDefaultsSchema,
+					ProjectScalarFieldEnumSchema
 				);
 				//assay table
 				replaceDead(
-					currentLine[studyFileHeaders.indexOf("study_level")],
+					currentLine[projectFileHeaders.indexOf("project_level")],
 					currentLine[field_name_i],
-					studyCol,
+					projectCol,
 					AssayOptionalDefaultsSchema,
 					AssayScalarFieldEnumSchema
 				);
 
 				//library table
 				replaceDead(
-					currentLine[studyFileHeaders.indexOf("study_level")],
+					currentLine[projectFileHeaders.indexOf("project_level")],
 					currentLine[field_name_i],
-					studyCol,
+					projectCol,
 					LibraryOptionalDefaultsSchema,
 					LibraryScalarFieldEnumSchema
 				);
 
 				//analysis table
 				replaceDead(
-					currentLine[studyFileHeaders.indexOf("study_level")],
+					currentLine[projectFileHeaders.indexOf("project_level")],
 					currentLine[field_name_i],
-					studyCol,
+					projectCol,
 					AnalysisOptionalDefaultsSchema,
 					AnalysisScalarFieldEnumSchema
 				);
 
 				//Assay Levels
-				for (let i = studyFileHeaders.indexOf("study_level") + 1; i < studyFileHeaders.length; i++) {
+				for (let i = projectFileHeaders.indexOf("project_level") + 1; i < projectFileHeaders.length; i++) {
 					//flip table from long to wide
 					//constucting objects whose keys are "levels" (ssu16sv4v5, ssu18sv9)
 					//and whose values are an object representing a single "row"
 					if (currentLine[i]) {
 						//Assays
-						if (!assayCols[studyFileHeaders[i]]) {
-							assayCols[studyFileHeaders[i]] = {};
+						if (!assayCols[projectFileHeaders[i]]) {
+							assayCols[projectFileHeaders[i]] = {};
 						}
 						replaceDead(
 							currentLine[i],
 							currentLine[field_name_i],
-							assayCols[studyFileHeaders[i]],
+							assayCols[projectFileHeaders[i]],
 							AssayOptionalDefaultsSchema,
 							AssayScalarFieldEnumSchema
 						);
 
 						//Libraries
-						if (!libraryCols[studyFileHeaders[i]]) {
-							libraryCols[studyFileHeaders[i]] = {};
+						if (!libraryCols[projectFileHeaders[i]]) {
+							libraryCols[projectFileHeaders[i]] = {};
 						}
 						replaceDead(
 							currentLine[i],
 							currentLine[field_name_i],
-							libraryCols[studyFileHeaders[i]],
+							libraryCols[projectFileHeaders[i]],
 							LibraryOptionalDefaultsSchema,
 							LibraryScalarFieldEnumSchema
 						);
@@ -116,11 +116,11 @@ export default async function studySubmitAction(formData: FormData): SubmitActio
 			}
 		}
 
-		const study = StudyOptionalDefaultsSchema.parse(studyCol, {
+		const project = ProjectOptionalDefaultsSchema.parse(projectCol, {
 			errorMap: (error, ctx) => {
-				return { message: `StudySchema: ${ctx.defaultError}` };
+				return { message: `ProjectSchema: ${ctx.defaultError}` };
 			}
-		}) as Prisma.StudyCreateInput;
+		}) as Prisma.ProjectCreateInput;
 
 		//Library file
 		console.log("library file");
@@ -167,14 +167,14 @@ export default async function studySubmitAction(formData: FormData): SubmitActio
 						//if the assay doesn't exist yet, add it to the assays array
 						//TODO: do not create new assays, as they should ALL already exist in the database
 						if (!assays[assayRow.assay_name]) {
-							//TODO: build assay object from studyMetadata
+							//TODO: build assay object from projectMetadata
 							assays[assayRow.assay_name] = AssayOptionalDefaultsSchema.parse(
 								//TODO: use assay_name field, not column header
 								{
 									//least specific overrides most specific
 									...assayRow,
 									...assayCols[assayRow.assay_name],
-									...studyCol
+									...projectCol
 								},
 								{
 									errorMap: (error, ctx) => {
@@ -190,7 +190,7 @@ export default async function studySubmitAction(formData: FormData): SubmitActio
 									//least specific overrides most specific
 									...libraryRow,
 									...libraryCols[assayRow.assay_name], //TODO: 10 fields are replicated for every library, inefficient database usage
-									...studyCol
+									...projectCol
 								},
 								{
 									errorMap: (error, ctx) => {
@@ -235,7 +235,7 @@ export default async function studySubmitAction(formData: FormData): SubmitActio
 								{
 									//construct from least specific to most specific
 									...sampleRow,
-									project_id: studyCol.project_id,
+									project_id: projectCol.project_id,
 									assay_name: sampToAssay[sampleRow.samp_name]
 								},
 								{
@@ -252,13 +252,13 @@ export default async function studySubmitAction(formData: FormData): SubmitActio
 			}
 		}
 
-		console.log("study transaction");
+		console.log("project transaction");
 		await prisma.$transaction(
 			async (tx) => {
-				//study
-				console.log("study");
-				await tx.study.create({
-					data: study
+				//project
+				console.log("project");
+				await tx.project.create({
+					data: project
 				});
 
 				//assays and samples

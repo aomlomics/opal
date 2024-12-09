@@ -2,7 +2,7 @@ import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
 
 export default async function Project_Id({ params }: { params: { project_id: string } }) {
-	const study = await prisma.study.findUnique({
+	const project = await prisma.project.findUnique({
 		where: {
 			project_id: params.project_id
 		},
@@ -15,16 +15,16 @@ export default async function Project_Id({ params }: { params: { project_id: str
 			}
 		}
 	});
-	if (!study) return <>Study not found</>;
+	if (!project) return <>Project not found</>;
 	return (
 		<>
-			<h1>project_id {study.project_id}</h1>
+			<h1>project_id {project.project_id}</h1>
 			<div className="flex gap-5">
-				<Link href={`/explore/study/${params.project_id}/Samples`} className="btn">
-					{study._count.Samples} Samples
+				<Link href={`/explore/project/${params.project_id}/Samples`} className="btn">
+					{project._count.Samples} Samples
 				</Link>
-				<Link href={`/explore/study/${params.project_id}/Analyses`} className="btn">
-					{study._count.Analyses} Analyses
+				<Link href={`/explore/project/${params.project_id}/Analyses`} className="btn">
+					{project._count.Analyses} Analyses
 				</Link>
 			</div>
 		</>

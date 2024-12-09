@@ -63,9 +63,9 @@ export default function Map() {
 							>
 								<Popup className="map-popup">
 									<div className="font-sans bg-base-100 p-4 rounded-lg">
-										<h3 className="text-base-content mb-1 pt-1">Study Name (project_id)</h3>
+										<h3 className="text-base-content mb-1 pt-1">Project Name (project_id)</h3>
 										<Link
-											href={`/explore/study/${location.id}`}
+											href={`/explore/project/${location.id}`}
 											className="text-info hover:text-info-focus hover:underline transition-colors"
 										>
 											{location.project_id}
