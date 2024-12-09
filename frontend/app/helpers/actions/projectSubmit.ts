@@ -49,7 +49,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 				//Project Level
 				//project table
 				replaceDead(
-					currentLine[projectFileHeaders.indexOf("study_level")],
+					currentLine[projectFileHeaders.indexOf("project_level")],
 					currentLine[field_name_i],
 					projectCol,
 					ProjectOptionalDefaultsSchema,
@@ -57,7 +57,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 				);
 				//assay table
 				replaceDead(
-					currentLine[projectFileHeaders.indexOf("study_level")],
+					currentLine[projectFileHeaders.indexOf("project_level")],
 					currentLine[field_name_i],
 					projectCol,
 					AssayOptionalDefaultsSchema,
@@ -66,7 +66,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 
 				//library table
 				replaceDead(
-					currentLine[projectFileHeaders.indexOf("study_level")],
+					currentLine[projectFileHeaders.indexOf("project_level")],
 					currentLine[field_name_i],
 					projectCol,
 					LibraryOptionalDefaultsSchema,
@@ -75,7 +75,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 
 				//analysis table
 				replaceDead(
-					currentLine[projectFileHeaders.indexOf("study_level")],
+					currentLine[projectFileHeaders.indexOf("project_level")],
 					currentLine[field_name_i],
 					projectCol,
 					AnalysisOptionalDefaultsSchema,
@@ -83,7 +83,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 				);
 
 				//Assay Levels
-				for (let i = projectFileHeaders.indexOf("study_level") + 1; i < projectFileHeaders.length; i++) {
+				for (let i = projectFileHeaders.indexOf("project_level") + 1; i < projectFileHeaders.length; i++) {
 					//flip table from long to wide
 					//constucting objects whose keys are "levels" (ssu16sv4v5, ssu18sv9)
 					//and whose values are an object representing a single "row"
