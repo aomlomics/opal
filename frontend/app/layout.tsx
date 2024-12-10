@@ -11,9 +11,9 @@ const sourceSans = Source_Sans_3({
 const localization = {
 	signIn: {
 		start: {
-			title: "Welcome to NODE",
+			title: "Sign in to NODE",
 			subtitle:
-				"Sign in with a NOAA (@noaa.gov) or NGI (@ngi.msstate.edu) email using Google or Microsoft respectively.",
+				"You must use a NOAA (@noaa.gov) or NGI (@ngi.msstate.edu) email using Google or Microsoft respectively.",
 			actionText: "You must use a NOAA or MSState email address to sign in.",
 			actionLink: "test"
 		}
