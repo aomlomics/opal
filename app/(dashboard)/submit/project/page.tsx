@@ -25,10 +25,12 @@ export default function Project() {
 						<div className="flex items-center gap-3 mb-6 p-3 bg-primary/5 rounded-lg">
 							<div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
 							<div className="space-y-1">
-								<span className="text-base-content block">All files must be in TSV format</span>
-								<span className="text-sm text-base-content">
-									Make sure to follow the template structure exactly. Otherwise, you will receive errors.
-								</span>
+								<span className="text-base-content block">Submission Requirements</span>
+								<div className="space-y-1 text-sm text-base-content">
+									<p>• Make sure to follow the template structure exactly</p>
+									<p>• All files must be in TSV format</p>
+									<p>• You must submit at least one analysis with this project. You will be redirected upon successful upload of project data</p>
+								</div>
 							</div>
 						</div>
 					</div>
