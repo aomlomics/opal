@@ -4,7 +4,7 @@
 
 For feature requests, please raise a GitHub issue. To propose a change:
 
--   Feature branches must be made from **dev** branch [↓ See Development Process](#development-process)
+- Feature branches must be made from **dev** branch [↓ See Development Process](#development-process)
 
 # Quick Start
 
@@ -24,32 +24,32 @@ Note: npm install will fail until you do the Local DB setup. You can view the fr
 
 ## Configure .env File
 
--   You need to create an environment file named .env in the `/frontend` directory.
--   This file is required to configure environment variables for the application.
--   **See `/frontend/.env.template` to see the required variables and their format.**
+- You need to create an environment file named .env in the `/frontend` directory.
+- This file is required to configure environment variables for the application.
+- **See `/frontend/.env.template` to see the required variables and their format.**
 
 # Local Database Setup / Commands
 
 1. Install Postgres DB via [Prisma Postgres guide](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database)
-    - Follow instructions per your system, use default parameters
-    - Note your postgres username and password. We recommend username: postgres, password: admin.
+   - Follow instructions per your system, use default parameters
+   - Note your postgres username and password. We recommend username: postgres, password: admin.
 2. Create your database using either:
 
-    ```bash
-    # In terminal:
-    createdb <dbname>
+   ```bash
+   # In terminal:
+   createdb <dbname>
 
-    # Or in psql:
-    CREATE DATABASE <dbname>;
-    ```
+   # Or in psql:
+   CREATE DATABASE <dbname>;
+   ```
 
 3. To view all local databases in psql:
-    ```sql
-    \l
-    ```
+   ```sql
+   \l
+   ```
 4. Configure your .ENV file. **Please see our Env file section above for more info**:
-    - For the local database: `POSTGRES_PRISMA_URL=postgres://<username>:<password>@localhost/<database_name>?pgbouncer=true&connect_timeout=15`
-    - Replace `<username>`, `<password>`, and `<database_name>` with your own.
+   - For the local database: `POSTGRES_PRISMA_URL=postgres://<username>:<password>@localhost/<database_name>?pgbouncer=true&connect_timeout=15`
+   - Replace `<username>`, `<password>`, and `<database_name>` with your own.
 
 ## Database Commands
 
