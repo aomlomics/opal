@@ -27,14 +27,14 @@ export default function Submit() {
 				<div className="card bg-base-200 shadow-xl overflow-hidden">
 					<div className="card-body relative">
 						<div className="w-3/4">
-							<h2 className="card-title text-3xl text-primary mb-4">New Study</h2>
+							<h2 className="card-title text-3xl text-primary mb-4">New Project</h2>
 							<p className="text-base-content mb-6">
-								Submit a complete dataset for a new eDNA study, including assays, library metadata, sample metadata, and
-								study metadata.
+								Submit a complete dataset for a new eDNA project, including assays, library metadata, sample metadata,
+								and project metadata.
 							</p>
 							<div className="card-actions">
-								<Link href="/submit/study" className="btn btn-secondary text-white">
-									Submit a Study
+								<Link href="/submit/project" className="btn btn-secondary text-white">
+									Submit a Project
 								</Link>
 							</div>
 						</div>
@@ -42,7 +42,7 @@ export default function Submit() {
 						<div className="absolute bottom-5 right-0 w-4/5 h-64 translate-x-1/3 translate-y-1/3">
 							<Image
 								src="/images/Catcher_Vessel4.svg"
-								alt="Study Submission Illustration of a Research Vessel"
+								alt="Project Submission Illustration of a Research Vessel"
 								fill
 								className="object-contain opacity-80"
 							/>

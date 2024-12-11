@@ -1,11 +1,11 @@
 "use client";
 
-import studyUploadAction from "@/app/helpers/actions/studySubmit";
+import projectUploadAction from "@/app/helpers/actions/projectSubmit";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 //import { getBaseUrl } from "@/app/helpers/utils";
 
-export default function StudySubmit() {
+export default function ProjectSubmit() {
 	const router = useRouter();
 	const [response, setResponse] = useState("");
 	const [error, setError] = useState("");
@@ -20,7 +20,7 @@ export default function StudySubmit() {
 		const formData = new FormData(event.currentTarget);
 
 		try {
-			const result = await studyUploadAction(formData);
+			const result = await projectUploadAction(formData);
 			if (result.error) {
 				setError(result.error);
 			} else if (result.message) {
@@ -38,15 +38,16 @@ export default function StudySubmit() {
 	return (
 		<>
 			<form className="space-y-4 flex flex-col items-center" onSubmit={handleSubmit}>
-				<h1 className="text-primary font-semibold -mt-4">Study Metadata:</h1>
+				<h1 className="text-primary font-semibold -mt-4">Project Metadata:</h1>
 				<label className="form-control w-full max-w-xs">
 					<div className="label">
-						<span className="label-text text-base-content">Study File:</span>
+						<span className="label-text text-base-content">Project File:</span>
 					</div>
 					<input
 						type="file"
-						name="studyFile"
+						name="projectFile"
 						required
+						disabled={!!loading}
 						accept=".tsv"
 						className="file-input file-input-bordered file-input-secondary text-base-content bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 					/>
@@ -59,6 +60,7 @@ export default function StudySubmit() {
 						type="file"
 						name="samplesFile"
 						required
+						disabled={!!loading}
 						accept=".tsv"
 						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 					/>
@@ -71,11 +73,14 @@ export default function StudySubmit() {
 						type="file"
 						name="libraryFile"
 						required
+						disabled={!!loading}
 						accept=".tsv"
 						className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
 					/>
 				</label>
-				<button className="btn btn-primary text-base-100 mt-8">Submit</button>
+				<button className="btn btn-primary text-base-100" disabled={!!loading}>
+					Submit
+				</button>
 			</form>
 			{loading && (
 				<div className="mt-4 text-base-content flex items-center gap-2 justify-center">

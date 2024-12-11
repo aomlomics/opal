@@ -65,7 +65,7 @@ export default async function Home() {
 			<div id="dataSummary" className="z-content px-4 sm:px-6 lg:px-8 pb-12">
 				<div className="mb-4 text-2xl text-base-content">
 					Showing all
-					<span className="text-primary"> Studies</span>
+					<span className="text-primary"> Projects</span>
 				</div>
 				<div className="flex gap-8">
 					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">

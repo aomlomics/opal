@@ -19,8 +19,8 @@ export default async function Admin() {
 
 	return (
 		<div>
-			<Link href="/">
-				<button className="btn btn-accent">Home</button>
+			<Link href="/" className="btn btn-accent">
+				Home
 			</Link>
 			<p>Authentication status: {String(data.authenticated)}</p>
 		</div>
