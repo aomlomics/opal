@@ -106,71 +106,73 @@ export default function ProjectSubmit() {
 	};
 
 	return (
-		<div className="min-h-[400px] max-w-3xl mx-auto px-8">
-			<form className="flex-1 space-y-8 flex flex-col items-center" onSubmit={handleSubmit}>
-				{["projectFile", "samplesFile", "libraryFile"].map((fileType) => (
-					<div key={fileType} className="w-[400px]">
-						<label className="form-control w-full">
-							<div className="label">
-								<span className="label-text text-base-content">
-									{fileType.charAt(0).toUpperCase() + fileType.slice(1).replace('File', '')} File:
-								</span>
-							</div>
-							<div className="flex items-center gap-3">
-								<input
-									type="file"
-									name={fileType}
-									required
-									disabled={!!loading || submitted}
-									accept=".tsv"
-									onChange={handleFileChange}
-									className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
-								/>
-								<ProgressCircle
-									hasFile={!!fileStates[fileType]}
-									response={responseObj[fileType]}
-									error={errorObj[fileType]}
-									loading={loading === fileType}
-								/>
-							</div>
-						</label>
-					</div>
-				))}
-				
-				<button 
-					className="btn btn-primary text-white w-[200px]"
-					disabled={!!loading || submitted}
-				>
-					{loading || submitted ? (
-						<span className="loading loading-spinner loading-sm"></span>
-					) : (
-						'Submit'
-					)}
-				</button>
-			</form>
-
-			{/* Status Messages */}
-			<div className="flex-grow mt-8">
-				{(responseObj.status || errorObj.status) && (
-					<div className={`
-						p-6 rounded-lg mx-auto max-w-lg  ${errorObj.status ? "bg-error/10 border-2 border-error" : "bg-success/10 border-2 border-success"}
-					`}>
-						<h3 className={`text-lg font-bold mb-2 ${errorObj.status ? "text-error" : "text-success"}`}>
-							{errorObj.status ? "Submission Failed" : "Project Submitted Successfully"}
-						</h3>
-						<p className="text-base text-base-content">
-							{errorObj.status 
-								? errorObj.global 
-								: "Please stay on this page. You will be redirected to submit your analysis files in a few seconds..."}
-						</p>
-						{responseObj.status && (
-							<div className="mt-4 flex items-center justify-center gap-2">
-								<span className="loading loading-spinner loading-sm"></span>
-								<span className="text-base-content/80 text-sm">Redirecting...</span>
-							</div>
+		<div className="p-6 bg-base-300 rounded-lg -mt-6">
+			<div className="min-h-[400px] mx-auto">
+				<form className="flex-1 space-y-8 flex flex-col items-center" onSubmit={handleSubmit}>
+					{["projectFile", "samplesFile", "libraryFile"].map((fileType) => (
+						<div key={fileType} className="w-[400px]">
+							<label className="form-control w-full">
+								<div className="label">
+									<span className="label-text text-base-content">
+										{fileType.charAt(0).toUpperCase() + fileType.slice(1).replace('File', '')} File:
+									</span>
+								</div>
+								<div className="flex items-center gap-3">
+									<input
+										type="file"
+										name={fileType}
+										required
+										disabled={!!loading || submitted}
+										accept=".tsv"
+										onChange={handleFileChange}
+										className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
+									/>
+									<ProgressCircle
+										hasFile={!!fileStates[fileType]}
+										response={responseObj[fileType]}
+										error={errorObj[fileType]}
+										loading={loading === fileType}
+									/>
+								</div>
+							</label>
+						</div>
+					))}
+					
+					<button 
+						className="btn btn-primary text-white w-[200px]"
+						disabled={!!loading || submitted}
+					>
+						{loading || submitted ? (
+							<span className="loading loading-spinner loading-sm"></span>
+						) : (
+							'Submit'
 						)}
-					</div>
-				)}
+					</button>
+				</form>
+
+				{/* Status Messages */}
+				<div className="flex-grow mt-8">
+					{(responseObj.status || errorObj.status) && (
+						<div className={`
+							p-6 rounded-lg mx-auto max-w-lg  ${errorObj.status ? "bg-error/10 border-2 border-error" : "bg-success/10 border-2 border-success"}
+						`}>
+							<h3 className={`text-lg font-bold mb-2 ${errorObj.status ? "text-error" : "text-success"}`}>
+								{errorObj.status ? "Submission Failed" : "Project Submitted Successfully"}
+							</h3>
+							<p className="text-base text-base-content">
+								{errorObj.status 
+									? errorObj.global 
+									: "Please stay on this page. You will be redirected to submit your analysis files in a few seconds..."}
+							</p>
+							{responseObj.status && (
+								<div className="mt-4 flex items-center justify-center gap-2">
+									<span className="loading loading-spinner loading-sm"></span>
+									<span className="text-base-content/80 text-sm">Redirecting...</span>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
 			</div>
 		</div>
 	);

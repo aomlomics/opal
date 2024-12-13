@@ -22,7 +22,7 @@ export default function Project() {
 			<section>
 				<div className="card bg-base-200 shadow-xl">
 					<div className="card-body">
-						<div className="flex items-center gap-3 mb-6 p-3 bg-primary/5 rounded-lg">
+						<div className="flex items-center gap-3 p-3 bg-base-300 rounded-lg">
 							<div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
 							<div className="space-y-1">
 								<span className="text-base-content block">Submission Requirements</span>
@@ -34,7 +34,7 @@ export default function Project() {
 							</div>
 						</div>
 					</div>
-					<div className="text-center mb-8">
+					<div className="text-center p-6 px-8 mb-2">
 						<ProjectSubmit />
 					</div>
 				</div>
