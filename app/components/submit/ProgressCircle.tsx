@@ -3,41 +3,35 @@ import Image from "next/image";
 export default function ProgressCircle({
 	response,
 	error,
-	loading
+	loading,
+	hasFile
 }: {
-	response: string;
-	error: string;
-	loading: boolean;
+	response?: string;
+	error?: string;
+	loading?: boolean;
+	hasFile?: boolean;
 }) {
 	return (
-		<div className="flex items-center">
-			{!!response ? (
-				<div className="tooltip tooltip-success flex items-center h-fit" data-tip={response}>
-					<div className="btn btn-success btn-sm rounded-full aspect-square p-1">
-						<Image src="/images/checkmark.svg" alt="Checkmark" fill className="p-1" />
-					</div>
-				</div>
-			) : (
-				<>
-					{!!error ? (
-						<div className="tooltip tooltip-error flex items-center h-fit" data-tip={error}>
-							<div className="btn btn-error btn-sm rounded-full aspect-square p-1">
-								<Image src="/images/x-symbol.svg" alt="X mark" width={400} height={400} className="p-1" />
-							</div>
-						</div>
-					) : (
-						<>
-							{loading && (
-								<div className="tooltip tooltip-warning flex items-center h-fit">
-									<div className="btn btn-warning btn-sm rounded-full aspect-square p-0">
-										<span className="loading loading-spinner loading-sm"></span>
-									</div>
-								</div>
-							)}
-						</>
-					)}
-				</>
-			)}
+		<div className={`
+			w-6 h-6 rounded-full 
+			flex items-center justify-center 
+			border-[1.5px] transition-colors duration-200
+			${error ? 'border-error bg-error/10' :
+				response ? 'border-primary bg-primary text-white' :
+				loading ? 'border-primary animate-pulse' :
+				hasFile ? 'border-primary' : 
+				'border-primary/40'
+			}
+		`}>
+			{loading ? (
+				<span className="loading loading-spinner loading-xs text-primary"></span>
+			) : error ? (
+				<span className="text-white text-xs">✕</span>
+			) : response ? (
+				<span className="text-white text-xs">✓</span>
+			) : hasFile ? (
+				<span className="text-primary text-xs">•</span>
+			) : null}
 		</div>
 	);
 }

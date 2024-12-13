@@ -19,6 +19,24 @@ export default function ProjectSubmit() {
 	const [errorObj, setErrorObj] = useReducer(reducer, {} as Record<string, string>);
 	const [loading, setLoading] = useState("");
 	const [submitted, setSubmitted] = useState(false);
+	const [fileStates, setFileStates] = useState<Record<string, File | null>>({
+		projectFile: null,
+		samplesFile: null,
+		libraryFile: null
+	});
+
+	const steps = [
+		{ id: 'projectFile', label: 'Project File' },
+		{ id: 'samplesFile', label: 'Samples File' }, 
+		{ id: 'libraryFile', label: 'Library File'},
+		{ id: 'submission', label: 'Submission' }
+	];
+
+	const lineHeights = [
+		'h-[6.4rem]',  // Project to Samples
+		'h-[6.2rem]',  // Samples to Library
+		'h-[3.8rem]'     // Library to Submit
+	];
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -47,15 +65,18 @@ export default function ProjectSubmit() {
 			if (result.error) {
 				setErrorObj({ 
 					global: result.error,
-					status: "❌ Submission Failed"
+					status: "❌ Submission Failed",
+					submission: "Failed"
 				});
 				setSubmitted(false);
 			} else if (result.message) {
 				const successMessage = "Project successfully submitted! You will be redirected to submit your analysis files in 5 seconds...";
+				await new Promise(resolve => setTimeout(resolve, 100));
 				setResponseObj({ 
 					projectFile: "Success!",
 					samplesFile: "Success!",
 					libraryFile: "Success!",
+					submission: "Success!",
 					global: successMessage,
 					status: "✅ Project Submission Successful"
 				});
@@ -67,7 +88,8 @@ export default function ProjectSubmit() {
 		} catch (error) {
 			setErrorObj({ 
 				global: "An error occurred during submission.",
-				status: "❌ Submission Failed"
+				status: "❌ Submission Failed",
+				submission: "Failed"
 			});
 			setSubmitted(false);
 		}
@@ -75,59 +97,72 @@ export default function ProjectSubmit() {
 		setLoading("");
 	}
 
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, files } = e.target;
+		setFileStates(prev => ({
+			...prev,
+			[name]: files?.[0] || null
+		}));
+	};
+
 	return (
-		<div className="min-h-[400px] max-w-3xl mx-auto">
-			<form className="space-y-4 flex flex-col items-center" onSubmit={handleSubmit}>
-				<h1 className="text-primary font-semibold -mt-4">Project Metadata:</h1>
-				{["projectFile", "samplesFile", "libraryFile"].map((fileType, index) => (
-					<div key={fileType} className="flex w-full max-w-xl justify-between items-center">
-						<label className="form-control flex-1">
+		<div className="min-h-[400px] max-w-3xl mx-auto px-8">
+			<form className="flex-1 space-y-8 flex flex-col items-center" onSubmit={handleSubmit}>
+				{["projectFile", "samplesFile", "libraryFile"].map((fileType) => (
+					<div key={fileType} className="w-[400px]">
+						<label className="form-control w-full">
 							<div className="label">
 								<span className="label-text text-base-content">
 									{fileType.charAt(0).toUpperCase() + fileType.slice(1).replace('File', '')} File:
 								</span>
 							</div>
-							<input
-								type="file"
-								name={fileType}
-								required
-								disabled={!!loading || submitted}
-								accept=".tsv"
-								className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
-							/>
+							<div className="flex items-center gap-3">
+								<input
+									type="file"
+									name={fileType}
+									required
+									disabled={!!loading || submitted}
+									accept=".tsv"
+									onChange={handleFileChange}
+									className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
+								/>
+								<ProgressCircle
+									hasFile={!!fileStates[fileType]}
+									response={responseObj[fileType]}
+									error={errorObj[fileType]}
+									loading={loading === fileType}
+								/>
+							</div>
 						</label>
-						<div className="ml-4 w-12"> {/* Fixed width for progress circle */}
-							<ProgressCircle
-								response={responseObj[fileType]}
-								error={errorObj[fileType]}
-								loading={loading === fileType}
-							/>
-						</div>
 					</div>
 				))}
 				
 				<button 
-					className="btn btn-primary text-base-100 mt-4 mb-4" 
+					className="btn btn-primary text-white w-[200px]"
 					disabled={!!loading || submitted}
 				>
-					{submitted ? 'Submitted' : 'Submit'}
+					Submit
 				</button>
 			</form>
 
-			{/* Reduced fixed height for status container */}
-			<div className="h-24 mt-4">
+			{/* Status Messages */}
+			<div className="flex-grow mt-8">
 				{(responseObj.status || errorObj.status) && (
-					<div className={`p-4 rounded-lg ${errorObj.status ? "bg-error/10 border-2 border-error" : "bg-success/10 border-2 border-success"}`}>
-						<h3 className={`text-xl font-bold mb-2 ${errorObj.status ? "text-error" : "text-success"}`}>
-							{responseObj.status || errorObj.status}
+					<div className={`
+						p-6 rounded-lg mx-auto max-w-lg  ${errorObj.status ? "bg-error/10 border-2 border-error" : "bg-success/10 border-2 border-success"}
+					`}>
+						<h3 className={`text-lg font-bold mb-2 ${errorObj.status ? "text-error" : "text-success"}`}>
+							{errorObj.status ? "Submission Failed" : "Project Submitted Successfully"}
 						</h3>
-						<p className="text-base-content text-lg">
-							{responseObj.global || errorObj.global}
+						<p className="text-base text-base-content">
+							{errorObj.status 
+								? errorObj.global 
+								: "Please stay on this page. You will be redirected to submit your analysis files in a few seconds..."}
 						</p>
 						{responseObj.status && (
-							<div className="mt-2 flex items-center gap-2">
+							<div className="mt-4 flex items-center gap-2">
 								<span className="loading loading-spinner loading-sm"></span>
-								<span className="text-base-content/80">Redirecting to analysis submission...</span>
+								<span className="text-base-content/80 text-center text-sm">Redirecting...</span>
 							</div>
 						)}
 					</div>

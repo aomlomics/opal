@@ -10,6 +10,7 @@ import analysisDeleteAction from "../../helpers/actions/analysis/delete/analysis
 import { DeleteAction, SubmitAction } from "@/types/types";
 import ProgressCircle from "./ProgressCircle";
 import { useRouter } from "next/navigation";
+import ProgressLine from "./ProgressLine";
 
 function reducer(state: Record<string, string>, updates: Record<string, string>) {
 	if (updates.reset) {
@@ -26,6 +27,20 @@ export default function AnalysisSubmit() {
 	const [loading, setLoading] = useState("");
 	const [submitted, setSubmitted] = useState(false);
 	const [analyses, setAnalyses] = useState(["\u200b"] as Array<string | null>);
+	const [fileStates, setFileStates] = useState<Record<string, File | null>>({});
+
+	const steps = [
+		{ id: 'analysisFile', label: 'Analysis File' },
+		{ id: 'assignFile', label: 'Features File' },
+		{ id: 'occFile', label: 'Occurrences File' },
+		{ id: 'submission', label: 'Submission' }
+	];
+
+	const lineHeights = [
+		'h-[6.4rem]',  // Analysis to Features
+		'h-[6.2rem]',  // Features to Occurrences
+		'h-[3.8rem]'   // Occurrences to Submit
+	];
 
 	async function parseAnalysis(files: FileList | null, i: number) {
 		try {
@@ -158,6 +173,14 @@ export default function AnalysisSubmit() {
 		return { error, result };
 	}
 
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, files } = e.target;
+		setFileStates(prev => ({
+			...prev,
+			[name]: files?.[0] || null
+		}));
+	};
+
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		if (submitted) return;
@@ -250,6 +273,7 @@ export default function AnalysisSubmit() {
 
 		if (!hasError) {
 			const successMessage = "Analysis successfully submitted! You will be redirected to explore page in 5 seconds...";
+			await new Promise(resolve => setTimeout(resolve, 100));
 			setResponseObj({
 				global: successMessage,
 				status: "✅ Analysis Submission Successful"
@@ -266,132 +290,147 @@ export default function AnalysisSubmit() {
 	return (
 		<>
 			<form className="card-body" onSubmit={handleSubmit}>
-				<h1 className="text-primary">Analysis:</h1>
-				<div className="flex gap-5">
-					{/* {analyses.map((a, i) => ( */}
-					{analyses.map(
-						(a, i) =>
-							a && (
-								<div key={i}>
-									{analyses[i] && (
-										<>
-											<div className="flex flex-col">
-												<h2 className="text-base-content">{analyses[i]}</h2>
-												<div className="flex">
-													<label className="form-control w-full max-w-xs">
-														<div className="label">
-															<span className="label-text text-base-content">Metadata:</span>
+				<div className="flex gap-12">
+					<div className="mt-[5rem] -ml-2">
+						<ProgressLine
+							fileStates={fileStates}
+							responseObj={responseObj}
+							errorObj={errorObj}
+							loading={loading}
+							steps={steps}
+							lineHeights={lineHeights}
+						/>
+					</div>
+
+					<div className="flex-1">
+						<h1 className="text-primary">Analysis:</h1>
+						<div className="flex gap-5">
+							{/* {analyses.map((a, i) => ( */}
+							{analyses.map(
+								(a, i) =>
+									a && (
+										<div key={i}>
+											{analyses[i] && (
+												<>
+													<div className="flex flex-col">
+														<h2 className="text-base-content">{analyses[i]}</h2>
+														<div className="flex">
+															<label className="form-control w-full max-w-xs">
+																<div className="label">
+																	<span className="label-text text-base-content">Metadata:</span>
+																</div>
+																<input
+																	type="file"
+																	name={analyses[i]}
+																	required
+																	disabled={!!loading}
+																	accept=".tsv"
+																	onChange={(e) => parseAnalysis(e.currentTarget.files, i)}
+																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
+																/>
+															</label>
+															<ProgressCircle
+																response={responseObj[analyses[i]]}
+																error={errorObj[analyses[i]]}
+																loading={loading === analyses[i]}
+															/>
 														</div>
-														<input
-															type="file"
-															name={analyses[i]}
-															required
+														{analyses[i] !== "\u200b" && (
+															<>
+																<div className="flex">
+																	<label className="form-control w-full max-w-xs">
+																		<div className="label">
+																			<span className="label-text text-base-content">Features:</span>
+																		</div>
+																		<input
+																			type="file"
+																			name={`${analyses[i]}_assign`}
+																			required
+																			disabled={!!loading}
+																			accept=".tsv"
+																			className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
+																		/>
+																	</label>
+																	<ProgressCircle
+																		response={responseObj[`${analyses[i]}_assign`]}
+																		error={errorObj[`${analyses[i]}_assign`]}
+																		loading={loading === `${analyses[i]}_assign`}
+																	/>
+																</div>
+																<div className="flex">
+																	<label className="form-control w-full max-w-xs">
+																		<div className="label">
+																			<span className="label-text text-base-content">Occurrences:</span>
+																		</div>
+																		<input
+																			type="file"
+																			name={`${analyses[i]}_occ`}
+																			required
+																			disabled={!!loading}
+																			accept=".tsv"
+																			className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
+																		/>
+																	</label>
+																	<ProgressCircle
+																		response={responseObj[`${analyses[i]}_occ`]}
+																		error={errorObj[`${analyses[i]}_occ`]}
+																		loading={loading === `${analyses[i]}_occ`}
+																	/>
+																</div>
+															</>
+														)}
+													</div>
+													{/* {analyses.length > 1 && ( */}
+													{analyses.filter((a) => a !== null).length > 1 && (
+														<button
+															className="btn btn-error"
+															type="button"
 															disabled={!!loading}
-															accept=".tsv"
-															onChange={(e) => parseAnalysis(e.currentTarget.files, i)}
-															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
-														/>
-													</label>
-													<ProgressCircle
-														response={responseObj[analyses[i]]}
-														error={errorObj[analyses[i]]}
-														loading={loading === analyses[i]}
-													/>
-												</div>
-												{analyses[i] !== "\u200b" && (
-													<>
-														<div className="flex">
-															<label className="form-control w-full max-w-xs">
-																<div className="label">
-																	<span className="label-text text-base-content">Features:</span>
-																</div>
-																<input
-																	type="file"
-																	name={`${analyses[i]}_assign`}
-																	required
-																	disabled={!!loading}
-																	accept=".tsv"
-																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
-																/>
-															</label>
-															<ProgressCircle
-																response={responseObj[`${analyses[i]}_assign`]}
-																error={errorObj[`${analyses[i]}_assign`]}
-																loading={loading === `${analyses[i]}_assign`}
-															/>
-														</div>
-														<div className="flex">
-															<label className="form-control w-full max-w-xs">
-																<div className="label">
-																	<span className="label-text text-base-content">Occurrences:</span>
-																</div>
-																<input
-																	type="file"
-																	name={`${analyses[i]}_occ`}
-																	required
-																	disabled={!!loading}
-																	accept=".tsv"
-																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full max-w-xs [&::file-selector-button]:text-white"
-																/>
-															</label>
-															<ProgressCircle
-																response={responseObj[`${analyses[i]}_occ`]}
-																error={errorObj[`${analyses[i]}_occ`]}
-																loading={loading === `${analyses[i]}_occ`}
-															/>
-														</div>
-													</>
-												)}
-											</div>
-											{/* {analyses.length > 1 && ( */}
-											{analyses.filter((a) => a !== null).length > 1 && (
-												<button
-													className="btn btn-error"
-													type="button"
-													disabled={!!loading}
-													onClick={() => {
-														//set removed analysis to null in array to maintain indices of other analyses
-														const tempAList = [...analyses];
-														tempAList[i] = null;
-														//clean up any trailing nulls
-														// BUG: array indices cause issue when analysis is removed using "-" button
-														// tempAList.findLast((a, i) => {
-														// 	if (a && a.analysis_run_name !== "\u200b") {
-														// 		return true;
-														// 	}
-														// 	tempAList.splice(i, 1);
-														// });
+															onClick={() => {
+																//set removed analysis to null in array to maintain indices of other analyses
+																const tempAList = [...analyses];
+																tempAList[i] = null;
+																//clean up any trailing nulls
+																// BUG: array indices cause issue when analysis is removed using "-" button
+																// tempAList.findLast((a, i) => {
+																// 	if (a && a.analysis_run_name !== "\u200b") {
+																// 		return true;
+																// 	}
+																// 	tempAList.splice(i, 1);
+																// });
 
-														setAnalyses(tempAList);
-													}}
-												>
-													-
-												</button>
+																setAnalyses(tempAList);
+															}}
+														>
+															-
+														</button>
+													)}
+												</>
 											)}
-										</>
-									)}
-								</div>
-							)
-					)}
-					{analyses[analyses.length - 1] !== "\u200b" && (
-						<button
-							className="btn btn-success"
-							type="button"
-							disabled={!!loading}
-							onClick={() => setAnalyses([...analyses, "\u200b"])}
-						>
-							+
-						</button>
-					)}
-				</div>
+										</div>
+									)
+							)}
+							{analyses[analyses.length - 1] !== "\u200b" && (
+								<button
+									className="btn btn-success"
+									type="button"
+									disabled={!!loading}
+									onClick={() => setAnalyses([...analyses, "\u200b"])}
+								>
+									+
+								</button>
+							)}
+						</div>
 
-				<button className="btn btn-primary" disabled={!!loading || submitted}>
-					{submitted ? "Submitted" : "Submit"}
-				</button>
+						<button className="btn btn-primary text-white mt-8" disabled={!!loading || submitted}>
+							Submit
+						</button>
+					</div>
+				</div>
 			</form>
 
 			{/* Status Messages */}
-			<div className="h-24 mt-4">
+			<div className="flex-grow mt-4">
 				{(responseObj.status || errorObj.status) && (
 					<div
 						className={`p-4 rounded-lg ${
