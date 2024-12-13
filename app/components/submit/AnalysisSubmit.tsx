@@ -9,6 +9,7 @@ import analysisSubmitAction from "../../helpers/actions/analysis/submit/analysis
 import analysisDeleteAction from "../../helpers/actions/analysis/delete/analysisDelete";
 import { DeleteAction, SubmitAction } from "@/types/types";
 import ProgressCircle from "./ProgressCircle";
+import { useRouter } from "next/navigation";
 
 function reducer(state: Record<string, string>, updates: Record<string, string>) {
 	if (updates.reset) {
@@ -19,10 +20,12 @@ function reducer(state: Record<string, string>, updates: Record<string, string>)
 }
 
 export default function AnalysisSubmit() {
-	const [responseObj, setResponseObj] = useReducer(reducer, {} as Record<string, string>); //fileName: message
-	const [errorObj, setErrorObj] = useReducer(reducer, {} as Record<string, string>); //fileName: message
-	const [loading, setLoading] = useState(""); //currently loading fileName
-	const [analyses, setAnalyses] = useState(["\u200b"] as Array<string | null>); //uses zero-width space as placeholder
+	const router = useRouter();
+	const [responseObj, setResponseObj] = useReducer(reducer, {} as Record<string, string>);
+	const [errorObj, setErrorObj] = useReducer(reducer, {} as Record<string, string>);
+	const [loading, setLoading] = useState("");
+	const [submitted, setSubmitted] = useState(false);
+	const [analyses, setAnalyses] = useState(["\u200b"] as Array<string | null>);
 
 	async function parseAnalysis(files: FileList | null, i: number) {
 		try {
@@ -157,12 +160,15 @@ export default function AnalysisSubmit() {
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
+		if (submitted) return;
 
 		setResponseObj({ reset: "true" });
 		setErrorObj({ reset: "true" });
 		setLoading("");
+		setSubmitted(true);
 
 		const allFormData = new FormData(event.currentTarget);
+		let hasError = false;
 
 		for (const analysis_run_name of analyses) {
 			if (analysis_run_name && analysis_run_name !== "\u200b") {
@@ -182,6 +188,12 @@ export default function AnalysisSubmit() {
 				});
 
 				if (analysisError) {
+					hasError = true;
+					setErrorObj({
+						global: "An error occurred during submission.",
+						status: "❌ Submission Failed"
+					});
+					setSubmitted(false);
 					break;
 				}
 
@@ -199,6 +211,12 @@ export default function AnalysisSubmit() {
 					//remove analysis from database
 					await dbDelete(analysisDeleteAction, analysisResult!.analysis_run_name);
 
+					hasError = true;
+					setErrorObj({
+						global: "An error occurred during submission.",
+						status: "❌ Submission Failed"
+					});
+					setSubmitted(false);
 					break;
 				}
 
@@ -219,9 +237,27 @@ export default function AnalysisSubmit() {
 						dbTaxonomies: assignResult!.dbTaxonomies
 					});
 
+					hasError = true;
+					setErrorObj({
+						global: "An error occurred during submission.",
+						status: "❌ Submission Failed"
+					});
+					setSubmitted(false);
 					break;
 				}
 			}
+		}
+
+		if (!hasError) {
+			const successMessage = "Analysis successfully submitted! You will be redirected to explore page in 5 seconds...";
+			setResponseObj({
+				global: successMessage,
+				status: "✅ Analysis Submission Successful"
+			});
+
+			setTimeout(() => {
+				router.push("/explore");
+			}, 5000);
 		}
 
 		setLoading("");
@@ -349,10 +385,33 @@ export default function AnalysisSubmit() {
 					)}
 				</div>
 
-				<button className="btn btn-primary" disabled={!!loading}>
-					Submit
+				<button className="btn btn-primary" disabled={!!loading || submitted}>
+					{submitted ? "Submitted" : "Submit"}
 				</button>
 			</form>
+
+			{/* Status Messages */}
+			<div className="h-24 mt-4">
+				{(responseObj.status || errorObj.status) && (
+					<div
+						className={`p-4 rounded-lg ${
+							errorObj.status ? "bg-error/10 border-2 border-error" : "bg-success/10 border-2 border-success"
+						}`}
+					>
+						<h3 className={`text-xl font-bold mb-2 ${errorObj.status ? "text-error" : "text-success"}`}>
+							{responseObj.status || errorObj.status}
+						</h3>
+						<p className="text-base-content text-lg">{responseObj.global || errorObj.global}</p>
+						{responseObj.status && (
+							<div className="mt-2 flex items-center gap-2">
+								<span className="loading loading-spinner loading-sm"></span>
+								<span className="text-base-content/80">Redirecting to explore page...</span>
+							</div>
+						)}
+					</div>
+				)}
+			</div>
+
 			{!!loading && <span className="text-base-content">Loading, please do not close the website</span>}
 		</>
 	);
