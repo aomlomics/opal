@@ -160,9 +160,9 @@ export default function ProjectSubmit() {
 								: "Please stay on this page. You will be redirected to submit your analysis files in a few seconds..."}
 						</p>
 						{responseObj.status && (
-							<div className="mt-4 flex items-center gap-2">
+							<div className="mt-4 flex items-center justify-center gap-2">
 								<span className="loading loading-spinner loading-sm"></span>
-								<span className="text-base-content/80 text-center text-sm">Redirecting...</span>
+								<span className="text-base-content/80 text-sm">Redirecting...</span>
 							</div>
 						)}
 					</div>
