@@ -141,7 +141,11 @@ export default function ProjectSubmit() {
 					className="btn btn-primary text-white w-[200px]"
 					disabled={!!loading || submitted}
 				>
-					Submit
+					{loading || submitted ? (
+						<span className="loading loading-spinner loading-sm"></span>
+					) : (
+						'Submit'
+					)}
 				</button>
 			</form>
 
