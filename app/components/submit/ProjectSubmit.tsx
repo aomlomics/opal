@@ -25,23 +25,20 @@ export default function ProjectSubmit() {
 		libraryFile: null
 	});
 
-	const steps = [
-		{ id: 'projectFile', label: 'Project File' },
-		{ id: 'samplesFile', label: 'Samples File' }, 
-		{ id: 'libraryFile', label: 'Library File'},
-		{ id: 'submission', label: 'Submission' }
-	];
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, files } = e.target;
+		setFileStates((prev) => ({
+			...prev,
+			[name]: files?.[0] || null
+		}));
+	};
 
-	const lineHeights = [
-		'h-[6.4rem]',  // Project to Samples
-		'h-[6.2rem]',  // Samples to Library
-		'h-[3.8rem]'     // Library to Submit
-	];
+	const allFilesPresent = fileStates.projectFile && fileStates.samplesFile && fileStates.libraryFile;
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		if (submitted) return;
-		
+
 		setResponseObj({ reset: "true" });
 		setErrorObj({ reset: "true" });
 		setLoading("");
@@ -54,25 +51,26 @@ export default function ProjectSubmit() {
 			// Process each file sequentially just for progress display
 			for (const fileType of fileTypes) {
 				setLoading(fileType);
-				await new Promise(resolve => setTimeout(resolve, 500));
+				await new Promise((resolve) => setTimeout(resolve, 500));
 				setResponseObj({ [fileType]: "File received" });
 			}
 
 			// All files processed, proceed with submission
 			setLoading("submitting");
 			const result = await projectUploadAction(formData);
-			
+
 			if (result.error) {
-				setErrorObj({ 
+				setErrorObj({
 					global: result.error,
 					status: "❌ Submission Failed",
 					submission: "Failed"
 				});
 				setSubmitted(false);
 			} else if (result.message) {
-				const successMessage = "Project successfully submitted! You will be redirected to submit your analysis files in 5 seconds...";
-				await new Promise(resolve => setTimeout(resolve, 100));
-				setResponseObj({ 
+				const successMessage =
+					"Project successfully submitted! You will be redirected to submit your analysis files in 5 seconds...";
+				await new Promise((resolve) => setTimeout(resolve, 100));
+				setResponseObj({
 					projectFile: "Success!",
 					samplesFile: "Success!",
 					libraryFile: "Success!",
@@ -80,13 +78,13 @@ export default function ProjectSubmit() {
 					global: successMessage,
 					status: "✅ Project Submission Successful"
 				});
-				
+
 				setTimeout(() => {
 					router.push("/submit/analysis");
 				}, 5000);
 			}
 		} catch (error) {
-			setErrorObj({ 
+			setErrorObj({
 				global: "An error occurred during submission.",
 				status: "❌ Submission Failed",
 				submission: "Failed"
@@ -97,14 +95,6 @@ export default function ProjectSubmit() {
 		setLoading("");
 	}
 
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, files } = e.target;
-		setFileStates(prev => ({
-			...prev,
-			[name]: files?.[0] || null
-		}));
-	};
-
 	return (
 		<div className="p-6 bg-base-300 rounded-lg -mt-6">
 			<div className="min-h-[400px] mx-auto">
@@ -114,7 +104,7 @@ export default function ProjectSubmit() {
 							<label className="form-control w-full">
 								<div className="label">
 									<span className="label-text text-base-content">
-										{fileType.charAt(0).toUpperCase() + fileType.slice(1).replace('File', '')} File:
+										{fileType.charAt(0).toUpperCase() + fileType.slice(1).replace("File", "")} File:
 									</span>
 								</div>
 								<div className="flex items-center gap-3">
@@ -137,31 +127,31 @@ export default function ProjectSubmit() {
 							</label>
 						</div>
 					))}
-					
-					<button 
+
+					<button
 						className="btn btn-primary text-white w-[200px]"
-						disabled={!!loading || submitted}
+						disabled={!!loading || submitted || !allFilesPresent}
 					>
-						{loading || submitted ? (
-							<span className="loading loading-spinner loading-sm"></span>
-						) : (
-							'Submit'
-						)}
+						{loading || submitted ? <span className="loading loading-spinner loading-sm"></span> : "Submit"}
 					</button>
 				</form>
 
 				{/* Status Messages */}
 				<div className="flex-grow mt-8">
 					{(responseObj.status || errorObj.status) && (
-						<div className={`
-							p-6 rounded-lg mx-auto max-w-lg  ${errorObj.status ? "bg-error/10 border-2 border-error" : "bg-success/10 border-2 border-success"}
-						`}>
+						<div
+							className={`
+							p-6 rounded-lg mx-auto max-w-lg  ${
+								errorObj.status ? "bg-error/10 border-2 border-error" : "bg-success/10 border-2 border-success"
+							}
+						`}
+						>
 							<h3 className={`text-lg font-bold mb-2 ${errorObj.status ? "text-error" : "text-success"}`}>
 								{errorObj.status ? "Submission Failed" : "Project Submitted Successfully"}
 							</h3>
 							<p className="text-base text-base-content">
-								{errorObj.status 
-									? errorObj.global 
+								{errorObj.status
+									? errorObj.global
 									: "Please stay on this page. You will be redirected to submit your analysis files in a few seconds..."}
 							</p>
 							{responseObj.status && (

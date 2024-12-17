@@ -21,17 +21,19 @@ export default async function Home() {
 				/>
 				<div className="absolute inset-0 -right-[200%] bg-gradient-to-r from-base-100 via-base-100/50 via-[35%] to-transparent to-[150%]"></div>
 				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base-100"></div>
-				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-xl">
-					<h1 className="text-5xl sm:text-6xl md:text-7xl mb-4 drop-shadow-lg">
-						<span className="block text-primary animate-slide-in font-light">Welcome</span>
+				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-3xl">
+					<h1 className="text-6xl font-light drop-shadow-lg leading-tight">
+						<span className="block text-primary animate-slide-in">Welcome</span>
 					</h1>
 					<div className="text-base-content drop-shadow-lg">
-						<span className="block text-3xl font-light sm:text-4xl md:text-5xl mb-4">
-							to the <span className="text-primary font-light">NOAA Ocean DNA Explorer</span>
+						<span className="block text-4xl font-light sm:text-5xl mb-4">
+							to the <span className="text-primary">NOAA Ocean DNA Explorer</span>
 						</span>
-						<div className="text-xl sm:text-2xl mb-8 text-base-content/90">
-							<span>a data sharing platform, search engine, and visualization and analysis tool</span>
-							<span> for ocean environmental DNA (eDNA) data</span>
+						<div className="text-2xl sm:text-3xl mb-8 text-base-content/90 leading-snug">
+							<span className="block">
+								a data sharing platform, search engine, and visualization and analysis tool for ocean environmental DNA
+								(eDNA) data
+							</span>
 						</div>
 					</div>
 
