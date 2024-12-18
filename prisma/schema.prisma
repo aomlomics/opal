@@ -25,8 +25,8 @@ generator zod {
 
 // Enums
 enum DeadBoolean {
-    false          @map("0")
-    true           @map("1")
+    false          @map("false")
+    true           @map("true")
     not_applicable @map("not applicable")
     not_collected  @map("not collected")
     not_provided   @map("not provided")
