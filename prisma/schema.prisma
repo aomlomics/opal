@@ -304,8 +304,7 @@ model Project {
     bibliographicCitation String? // DOI
     associated_resource   String?
     mod_date              DateTime? // fixed
-    /// @zod.custom.use(z.coerce.number())
-    checkls_ver           Float
+    checkls_ver           String
     seq_archive           String?
     code_repo             String?
 
@@ -560,8 +559,7 @@ model Assay {
     pcr_rep                      Int?
     nucl_acid_amp                String?
     pcr_cond                     String?
-    /// @zod.custom.use(z.coerce.number())
-    annealingTemp                Float?
+    annealingTemp                String?
     /// @zod.custom.use(z.coerce.number())
     pcr_cycles                   Float?
     pcr_analysis_software        String?
