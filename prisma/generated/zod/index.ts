@@ -197,6 +197,9 @@ export type ProjectOptionalDefaults = z.infer<typeof ProjectOptionalDefaultsSche
 /////////////////////////////////////////
 
 export const SampleSchema = z.object({
+  habitat_natural_artificial_0_1: DeadBooleanSchema.nullish(),
+  filter_passive_active_0_1: DeadBooleanSchema.nullish(),
+  dna_cleanup_0_1: DeadBooleanSchema.nullish(),
   id: z.number().int(),
   samp_name: z.string(),
   project_id: z.string(),
@@ -226,7 +229,6 @@ export const SampleSchema = z.object({
   env_broad_scale: z.string(),
   env_local_scale: z.string(),
   env_medium: z.string(),
-  habitat_natural_artificial_0_1: z.coerce.boolean().nullish(),
   samp_collect_method: z.string().nullish(),
   samp_collect_device: z.string().nullish(),
   samp_size: z.coerce.number().nullish(),
@@ -236,7 +238,6 @@ export const SampleSchema = z.object({
   samp_store_dur: z.string().nullish(),
   samp_store_method_additional: z.string().nullish(),
   samp_mat_process: z.string().nullish(),
-  filter_passive_active_0_1: z.coerce.boolean().nullish(),
   filter_onsite_dur: z.string().nullish(),
   size_frac_low: z.coerce.number().nullish(),
   size_frac: z.coerce.number().nullish(),
@@ -262,7 +263,6 @@ export const SampleSchema = z.object({
   nucl_acid_ext: z.string().nullish(),
   nucl_acid_ext_kit: z.string().nullish(),
   nucl_acid_ext_modify: z.string().nullish(),
-  dna_cleanup_0_1: z.coerce.boolean().nullish(),
   dna_cleanup_method: z.string().nullish(),
   concentration: z.number().nullish(),
   concentration_method: z.string().nullish(),
@@ -340,12 +340,12 @@ export type SampleOptionalDefaults = z.infer<typeof SampleOptionalDefaultsSchema
 /////////////////////////////////////////
 
 export const AssaySchema = z.object({
+  pcr_0_1: DeadBooleanSchema,
   id: z.number().int(),
   assay_name: z.string(),
   neg_cont_type: z.string(),
   pos_cont_type: z.string(),
   sterilise_method: z.string().nullish(),
-  pcr_0_1: z.coerce.boolean(),
   thermocycler: z.string().nullish(),
   amplificationReactionVolume: z.coerce.number().nullish(),
   assay_validation: z.string().nullish(),
@@ -456,6 +456,8 @@ export type LibraryOptionalDefaults = z.infer<typeof LibraryOptionalDefaultsSche
 /////////////////////////////////////////
 
 export const AnalysisSchema = z.object({
+  deblur_sample_stats: DeadBooleanSchema.nullish(),
+  discard_untrimmed: DeadBooleanSchema.nullish(),
   id: z.number().int(),
   analysis_run_name: z.string(),
   project_id: z.string(),
@@ -505,7 +507,6 @@ export const AnalysisSchema = z.object({
   dada2_min_fold_parent_over_abundance: z.coerce.number().int().nullish(),
   dada2_n_reads_learn: z.coerce.number().int().nullish(),
   deblur_trim_length: z.coerce.number().int().nullish(),
-  deblur_sample_stats: z.coerce.boolean().nullish(),
   deblur_mean_error: z.coerce.number().nullish(),
   deblur_indel_prob: z.coerce.number().nullish(),
   deblur_indel_max: z.coerce.number().int().nullish(),
@@ -515,7 +516,6 @@ export const AnalysisSchema = z.object({
   repseq_max_length: z.coerce.number().int().nullish(),
   repseq_min_abundance: z.coerce.number().nullish(),
   repseq_min_prevalence: z.coerce.number().nullish(),
-  discard_untrimmed: z.coerce.boolean().nullish(),
 })
 
 export type Analysis = z.infer<typeof AnalysisSchema>
