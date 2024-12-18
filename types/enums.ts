@@ -6,8 +6,10 @@ export enum DeadValueEnum {
 }
 
 export const DeadBooleanEnum = {
-	"0": "zero",
-	"1": "one",
+	false: "false",
+	"0": "false",
+	true: "true",
+	"1": "true",
 	"not applicable": "not_applicable",
 	"not collected": "not_collected",
 	"not provided": "not_provided",

@@ -36,7 +36,7 @@ export const QueryModeSchema = z.enum(['default','insensitive']);
 
 export const NullsOrderSchema = z.enum(['first','last']);
 
-export const DeadBooleanSchema = z.enum(['zero','one','not_applicable','not_collected','not_provided','missing']);
+export const DeadBooleanSchema = z.enum(['false','true','not_applicable','not_collected','not_provided','missing']);
 
 export type DeadBooleanType = `${z.infer<typeof DeadBooleanSchema>}`
 

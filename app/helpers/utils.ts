@@ -66,7 +66,7 @@ export function replaceDead(
 			//DeadBooleanEnum
 			if (field in DeadBooleanEnum) {
 				//replace field with DeadBoolean value
-				obj[fieldName] = DeadBooleanEnum[field as keyof typeof DeadBooleanEnum];
+				obj[fieldName] = DeadBooleanEnum[field.toLowerCase() as keyof typeof DeadBooleanEnum];
 			}
 		} else if (field in DeadValueEnum) {
 			//check the type of the field
