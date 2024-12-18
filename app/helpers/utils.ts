@@ -1,6 +1,6 @@
-import { DeadValue } from "@/types/enums";
+import { DeadBooleanEnum, DeadValueEnum } from "@/types/enums";
 import { Prisma } from "@prisma/client";
-import { ZodObject, ZodEnum, ZodNumber, ZodBoolean } from "zod";
+import { ZodObject, ZodEnum, ZodNumber } from "zod";
 
 export async function fetcher(url: string) {
 	const res = await fetch(url);
@@ -62,14 +62,17 @@ export function replaceDead(
 ) {
 	//check if the field name is in the Schema
 	if (field && fieldOptionsEnum.options.includes(fieldName)) {
-		//check if the field has a dead value
-		if (field in DeadValue) {
+		if (checkZodType(schema.shape[fieldName], ZodEnum)) {
+			//DeadBooleanEnum
+			if (field in DeadBooleanEnum) {
+				//replace field with DeadBoolean value
+				obj[fieldName] = DeadBooleanEnum[field.toLowerCase() as keyof typeof DeadBooleanEnum];
+			}
+		} else if (field in DeadValueEnum) {
 			//check the type of the field
 			if (checkZodType(schema.shape[fieldName], ZodNumber)) {
-				//replace the value with the deadvalue equivalent
-				obj[fieldName] = DeadValue[field as unknown as DeadValue];
-			} else if (checkZodType(schema.shape[fieldName], ZodBoolean)) {
-				obj[fieldName] = 0; //TODO: make the boolean value properly represent the dead value
+				//replace the value with the DeadValue equivalent
+				obj[fieldName] = DeadValueEnum[field as unknown as DeadValueEnum];
 			} else {
 				//continue as normal
 				obj[fieldName] = field;
