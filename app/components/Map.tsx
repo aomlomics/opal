@@ -65,7 +65,7 @@ export default function Map() {
 									<div className="font-sans bg-base-100 p-4 rounded-lg">
 										<h3 className="text-base-content mb-1 pt-1">Project Name (project_id)</h3>
 										<Link
-											href={`/explore/project/${location.id}`}
+											href={`/explore/project/${location.project_id}`}
 											className="text-info hover:text-info-focus hover:underline transition-colors"
 										>
 											{location.project_id}

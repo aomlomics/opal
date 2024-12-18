@@ -6,7 +6,7 @@ import TabButton from "./TabButton";
 
 export default function Header() {
 	return (
-		<header className="top-0 z-header bg-base-100 border-b-4 border-primary h-24"> 
+		<header className="top-0 z-header bg-base-100 border-b-4 border-primary h-24">
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logo section */}
 				<div className="flex items-center">
@@ -38,7 +38,7 @@ export default function Header() {
 					<div className="absolute bottom-0 right-[240px] hidden lg:flex space-x-4">
 						<TabButton tabName="Home" route="/" />
 						<TabButton tabName="Search" route="/search" />
-						<TabButton tabName="Explore" route="/explore" />
+						<TabButton tabName="Explore" route="/explore/project" />
 						<TabButton tabName="Submit" route="/submit" />
 						<TabButton tabName="Assays" route="/assays" />
 						<TabButton tabName="Tourmaline" route="/tourmaline" />
