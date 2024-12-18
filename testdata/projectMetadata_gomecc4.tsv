@@ -16,7 +16,7 @@ O	free text		Data management	Coordinates generalized from original GPS coordinat
 R	DOI		Data management	DOI: 10.1111/mec.15382	bibliographicCitation	https://doi.org/10.1101/2024.07.30.605667		
 O	free text		Data management	http://www.earthmicrobiome.org/	associated_resource	http://www.earthmicrobiome.org/		
 R	fixed format		Data management	9/9/2014	mod_date	10/31/2024		
-M	numeric		Data management	1.1	checkls_ver	eDNA_data_checklist_v7_20241004.xlsx		
+M	numeric		Data management	1.1	checkls_ver	1.1		
 R	free text		Data management	PRJNA998750	seq_archive	PRJNA887898		
 R	free text		Data management	https://github.com/aomlomics/gomecc	code_repo	https://github.com/aomlomics/gomecc		
 M	controlled vocabulary	site negative | field negative | process negative | extraction negative | PCR negative | other	Quality assurance	field negative | process negative | extraction negative | PCR negative	neg_cont_type	12 distilled water blanks | 2 PCR no-template controls | 7 extraction blanks | 12 2nd PCR no-template controls		
@@ -53,7 +53,7 @@ R	numeric		PCR	2	pcr_dna_vol	1
 R	integer		PCR	3	pcr_rep	3		
 R	free text		PCR	https://phylogenomics.me/protocols/16s-pcr-protocol/	nucl_acid_amp		https://doi.org/10.1111/1462-2920.13023	
 O	free text		PCR	initial denaturation:94_3;annealing:50_1;elongation:72_1.5;final elongation:72_10;35	pcr_cond		initial denaturation:95_2;denaturation:95_0.75;annealing:50_0.75;elongation:68_1.5;final elongation:68_5;25	initial denaturation:94_3;denaturation:94_0.75;annealing:65_0.25;57_0.5;elongation:72_1.5;final elongation:72_10;35
-O	numeric		PCR	60	annealingTemp		50	65;57
+O	numeric		PCR	60	annealingTemp		50	65
 O	numeric		PCR	40	pcr_cycles		25	35
 O	free text		PCR	BIO-RAD QuantaSoft	pcr_analysis_software			
 O	free text		PCR	"Blocking primer (TAGTATAGCTACGAAGCCGAGGAGG-c3) (Wilcox et al. 2014, DOI 10.1007/s12686-013-0113-4) was applied to prevent elongation of a closely related species"	pcr_method_additional			
