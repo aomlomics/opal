@@ -96,3 +96,15 @@ export type nucl_acid_ext_lysisType = `${z.infer<typeof nucl_acid_ext_lysisSchem
 export const nucl_acid_ext_sepSchema = z.enum(['column based', 'magnetic beads', 'centrifugation', 'precipitation', 'phenol chloroform', 'g', 'electrophoresis', 'other']);
 
 export type nucl_acid_ext_sepType = `${z.infer<typeof nucl_acid_ext_sepSchema>}`
+
+export const asv_methodSchema = z.enum(['dada2pe','dada2se','deblur','other']);
+
+export type asv_methodType = `${z.infer<typeof asv_methodSchema>}`
+
+export const dada2_pooling_methodSchema = z.enum(['independent','pseudo','standard']);
+
+export type dada2_pooling_methodType = `${z.infer<typeof dada2_pooling_methodSchema>}`
+
+export const dada2_chimera_methodSchema = z.enum(['consensus','none','pooled']);
+
+export type dada2_chimera_methodType = `${z.infer<typeof dada2_chimera_methodSchema>}`
