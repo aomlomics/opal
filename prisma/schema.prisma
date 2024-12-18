@@ -25,8 +25,8 @@ generator zod {
 
 // Enums
 enum DeadBoolean {
-    zero           @map("0")
-    one            @map("1")
+    false          @map("0")
+    true           @map("1")
     not_applicable @map("not applicable")
     not_collected  @map("not collected")
     not_provided   @map("not provided")
@@ -304,8 +304,7 @@ model Project {
     bibliographicCitation String? // DOI
     associated_resource   String?
     mod_date              DateTime? // fixed
-    /// @zod.custom.use(z.coerce.number())
-    checkls_ver           Float
+    checkls_ver           String
     seq_archive           String?
     code_repo             String?
 
@@ -357,8 +356,7 @@ model Sample {
     env_broad_scale                String // fixed
     env_local_scale                String // fixed
     env_medium                     String // fixed
-    /// @zod.custom.use(z.coerce.boolean())
-    habitat_natural_artificial_0_1 Boolean?
+    habitat_natural_artificial_0_1 DeadBoolean?
     samp_collect_method            String?
     samp_collect_device            String?
     /// @zod.custom.use(z.coerce.number())
@@ -373,8 +371,7 @@ model Sample {
 
     // Sample Preparation
     samp_mat_process          String?
-    /// @zod.custom.use(z.coerce.boolean())
-    filter_passive_active_0_1 Boolean?
+    filter_passive_active_0_1 DeadBoolean?
     filter_onsite_dur         String? // fixed
     /// @zod.custom.use(z.coerce.number())
     size_frac_low             Float?
@@ -412,8 +409,7 @@ model Sample {
     nucl_acid_ext                   String?
     nucl_acid_ext_kit               String?
     nucl_acid_ext_modify            String?
-    /// @zod.custom.use(z.coerce.boolean())
-    dna_cleanup_0_1                 Boolean?
+    dna_cleanup_0_1                 DeadBoolean?
     dna_cleanup_method              String?
     concentration                   Float?
     concentration_method            String?
@@ -524,8 +520,7 @@ model Assay {
     sterilise_method String?
 
     // PCR
-    /// @zod.custom.use(z.coerce.boolean())
-    pcr_0_1                      Boolean
+    pcr_0_1                      DeadBoolean
     thermocycler                 String?
     /// @zod.custom.use(z.coerce.number())
     amplificationReactionVolume  Float?
@@ -564,8 +559,7 @@ model Assay {
     pcr_rep                      Int?
     nucl_acid_amp                String?
     pcr_cond                     String?
-    /// @zod.custom.use(z.coerce.number())
-    annealingTemp                Float?
+    annealingTemp                String?
     /// @zod.custom.use(z.coerce.number())
     pcr_cycles                   Float?
     pcr_analysis_software        String?
@@ -694,8 +688,7 @@ model Analysis {
     dada2_n_reads_learn                  Int?
     /// @zod.custom.use(z.coerce.number().int())
     deblur_trim_length                   Int?
-    /// @zod.custom.use(z.coerce.boolean())
-    deblur_sample_stats                  Boolean?
+    deblur_sample_stats                  DeadBoolean?
     /// @zod.custom.use(z.coerce.number())
     deblur_mean_error                    Float?
     /// @zod.custom.use(z.coerce.number())
@@ -714,8 +707,7 @@ model Analysis {
     repseq_min_abundance                 Float?
     /// @zod.custom.use(z.coerce.number())
     repseq_min_prevalence                Float?
-    /// @zod.custom.use(z.coerce.boolean())
-    discard_untrimmed                    Boolean?
+    discard_untrimmed                    DeadBoolean?
 }
 
 model Occurrence {
