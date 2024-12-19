@@ -3,13 +3,23 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
+// Images with '_m' are images that are mirrored/flipped horizontally
+// There are no other modifications to the images from NOAA Ocean Exploration
 const carouselImgSrc = [
-	`/images/carousel/bamboo_coral_m.jpg?v=${Date.now()}`,
-	`/images/carousel/hydroid_medusa.jpg?v=${Date.now()}`,
-	`/images/carousel/nice_squid_m.jpg?v=${Date.now()}`,
-	`/images/carousel/polar_bear_m.jpg?v=${Date.now()}`,
-	`/images/carousel/school_of_fish.jpg?v=${Date.now()}`,
-	`/images/carousel/sculpin_on_coral_m.jpg?v=${Date.now()}`
+	`/images/carousel/bamboo_coral_m.jpg`,
+	`/images/carousel/hydroid_medusa.jpg`,
+	`/images/carousel/squid_m.jpg`,
+	`/images/carousel/polar_bear_m.jpg`,
+	`/images/carousel/school_of_fish.jpg`,
+	`/images/carousel/sculpin_on_coral_m.jpg`,
+	`/images/carousel/adobe_copepod.jpeg`,
+	`/images/carousel/adobe_jellyfish.jpeg`,
+	`/images/carousel/bobtail_m.jpg`,
+	`/images/carousel/chimaera.jpg`,
+	`/images/carousel/fish_m.jpg`,
+	`/images/carousel/hydroid.jpg`,
+	`/images/carousel/pricklefish_m.jpg`,
+	`/images/carousel/sculpin_on_coral_m.jpg`
 ];
 
 export default function Carousel() {
@@ -24,7 +34,7 @@ export default function Carousel() {
 				nextItem = Math.floor(Math.random() * carouselImgSrc.length);
 			} while (nextItem === carouselActiveItem); // Ensure we don't show the same image twice
 			setCarouselActiveItem(nextItem);
-		}, 11000);
+		}, 11000);  // how much time between image changes (11 seconds)
 		return () => clearInterval(play);
 	}, [carouselActiveItem]);
 
@@ -43,7 +53,7 @@ export default function Carousel() {
 			{carouselImgSrc.map((imgSrc, index) => (
 				<div
 					key={imgSrc}
-					className={`absolute inset-0 transition-opacity duration-[3000ms] ${
+					className={`absolute inset-0 transition-opacity duration-[2000ms] ${   // transition animation duration
 						index === carouselActiveItem ? "opacity-100" : "opacity-0"
 					}`}
 				>
