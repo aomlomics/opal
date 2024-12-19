@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Carousel from "@/app/components/Carousel";
 import Link from "next/link";
 import DataSummary from "../components/DataSummary";
 import dynamic from "next/dynamic";
@@ -11,14 +11,7 @@ export default async function Home() {
 	return (
 		<main className="flex flex-col grow bg-base-400 text-base-content">
 			<div className="relative w-full h-[80vh] bg-black overflow-hidden z-content-overlay">
-				<Image
-					src="/images/school_of_fish.jpg"
-					alt="Hero Image"
-					width={1920}
-					height={1080}
-					priority
-					className="w-full h-full object-cover saturate-150"
-				/>
+				<Carousel />
 				<div className="absolute inset-0 -right-[200%] bg-gradient-to-r from-base-100 via-base-100/50 via-[35%] to-transparent to-[150%]"></div>
 				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base-100"></div>
 				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-3xl">
