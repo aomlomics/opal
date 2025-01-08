@@ -7,8 +7,9 @@ export default function TabButton({ tabName, route }: { tabName: string; route: 
 	const router = useRouter();
 	const pathname = usePathname();
 
-	// Determine if the tab is active
-	const isActive = "/" + pathname.split("/")[1] === route;
+	// Special case for home route to prevent it from matching all paths
+	const isActive = route === "/" ? pathname === "/" : pathname.startsWith(route);
+	// We use startsWith now to make sure any page past /explore (for example, explore/project) shows 'Explore' as the active tab- BLW
 
 	// Redirect handler
 	const handleRedirect = () => {
