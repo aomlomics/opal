@@ -29,6 +29,7 @@ export default function Map() {
 	const ZOOM_LEVEL = 5;
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
 
+	// 1. accept all points on the map, map clumps based on proximity- only the map knows how zoomed in it is
 	const { data, error, isLoading } = useSWR("/api/sampleLocations", fetcher, {
 		keepPreviousData: true
 	});

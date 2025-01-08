@@ -10,24 +10,25 @@ export default function Header() {
 			<div className="relative h-full flex justify-between items-center">
 				{/* Logo section */}
 				<div className="flex items-center">
-					<Link className="ml-3 normal-case text-xl h-20 w-48 flex flex-col items-center" href="/">
+					<Link className="px-4 sm:px-6 lg:px-8 normal-case text-xl pt-1 h-24 w-64 flex flex-col items-center" href="/">
 						<div className="avatar w-full h-full">
 							<Image
-								src="/images/node_logo_black-logo-only (1).svg"
+								src="/images/node_logo_1_8_blw.svg"
 								alt="NODE Logo"
 								fill={true}
 								style={{ objectFit: "contain" }}
+								priority={true}
 								sizes="(max-width: 768px) 100vw, 33vw"
 							/>
 						</div>
-						<div className="h-8 w-48 relative -mt-5">
+						{/* <div className="h-8 w-48 relative -mt-5">
 							<Image
 								src="/images/NOAA_TEXT_LOGO_HORIZONTAL.png"
 								alt="NOAA Text Logo"
 								fill={true}
 								style={{ objectFit: "contain" }}
 							/>
-						</div>
+						</div> */}
 					</Link>
 				</div>
 

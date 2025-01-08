@@ -130,7 +130,7 @@ export default async function Home() {
 							<div className="relative h-24 w-64">
 								<a href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
 									<ThemeAwareLogo
-										src="/images/noaa_exploration_FINAL.svg"
+										src="/images/noaa_exploration_logo_FINAL.svg"
 										alt="National Oceanic and Atmospheric Administration Exploration Logo"
 										fill={true}
 										style={{ objectFit: "contain" }}
@@ -140,7 +140,7 @@ export default async function Home() {
 							<div>
 								<a href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
 									<ThemeAwareLogo
-										src="/images/HORIZONTAL_WEB_white (3).svg"
+										src="/images/ngi_msu_logo_FINAL.svg"
 										alt="Mississippi State University, Northern Gulf Institute Logo"
 										width={500}
 										height={300}

@@ -19,7 +19,7 @@ export default function Footer() {
 					<div className="relative h-12 w-32 self-center mb-1">
 						<a href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
 							<ThemeAwareLogo
-								src="/images/noaa_exploration_FINAL.svg"
+								src="/images/noaa_exploration_logo_FINAL.svg"
 								alt="NOAA Exploration Logo"
 								fill={true}
 								style={{
@@ -32,7 +32,7 @@ export default function Footer() {
 					<div className="pt-2 ml-10 self-center mb-2">
 						<a href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
 							<ThemeAwareLogo
-								src="/images/HORIZONTAL_WEB_white (3).svg"
+								src="/images/ngi_msu_logo_FINAL.svg"
 								alt="MSU NGI Logo"
 								width={250}
 								height={60}
