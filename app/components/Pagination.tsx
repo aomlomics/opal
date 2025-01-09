@@ -64,9 +64,14 @@ export default function Pagination({
 		<div className="p-5 bg-primary rounded-xl">
 			<div className="flex flex-col gap-3">
 				{data.result.map((d: any, i: number) => (
-					<Link key={i} href={`/explore/${table}/${d[id]}`} className="card bg-neutral-content">
+					<div key={i} className="card bg-neutral-content">
 						<div className="card-body p-5">
-							<h1>{d[title]}</h1>
+							<Link
+								href={`/explore/${table}/${d[id]}`}
+								className="text-info hover:text-info-focus hover:underline transition-colors"
+							>
+								{d[title]}
+							</Link>
 							<div className="flex gap-5">
 								{relCounts?.map((rel) => (
 									<Link key={rel} href={`/explore/${table}/${d[id]}/${rel}`}>
@@ -80,7 +85,7 @@ export default function Pagination({
 								<div key={f}>{d[f]}</div>
 							))}
 						</div>
-					</Link>
+					</div>
 				))}
 			</div>
 			<div className="join grid grid-flow-col">

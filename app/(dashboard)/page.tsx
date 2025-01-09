@@ -1,13 +1,45 @@
 import Image from "next/image";
 import Link from "next/link";
 import DataSummary from "../components/DataSummary";
-import dynamic from "next/dynamic";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
-const Map = dynamic(() => import("@/app/components/Map"), {
-	ssr: false
-});
+import { DeadValueEnum } from "@/types/enums";
+import { prisma } from "../helpers/prisma";
+import MapWrapper from "../components/MapWrapper";
 
 export default async function Home() {
+	const deadValues = Object.values(DeadValueEnum).filter((v) => !isNaN(Number(v))) as number[];
+
+	const rawLocations = await prisma.sample.groupBy({
+		by: ["project_id"],
+		_avg: {
+			decimalLatitude: true,
+			decimalLongitude: true
+		},
+		where: {
+			AND: [
+				{
+					NOT: {
+						decimalLatitude: {
+							in: deadValues
+						}
+					}
+				},
+				{
+					NOT: {
+						decimalLongitude: {
+							in: deadValues
+						}
+					}
+				}
+			]
+		}
+	});
+	const avgProjectLocs = rawLocations.map((loc) => ({
+		project_id: loc.project_id,
+		decimalLatitude: loc._avg.decimalLatitude,
+		decimalLongitude: loc._avg.decimalLongitude
+	}));
+
 	return (
 		<main className="flex flex-col grow bg-base-400 text-base-content">
 			<div className="relative w-full h-[80vh] bg-black overflow-hidden z-content-overlay">
@@ -69,7 +101,7 @@ export default async function Home() {
 				</div>
 				<div className="flex gap-8">
 					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">
-						<Map />
+						<MapWrapper locations={avgProjectLocs} id="project_id" title="Project Name:" table="project" />
 					</div>
 					<div className="w-1/2">
 						<DataSummary />
