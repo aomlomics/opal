@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/app/helpers/prisma";
 import { OccurrenceOptionalDefaultsSchema } from "@/prisma/generated/zod";
 import { SubmitActionReturn } from "@/types/types";
+import { revalidatePath } from "next/cache";
 
 export default async function OccSubmitAction(formData: FormData): SubmitActionReturn {
 	try {
@@ -79,6 +80,7 @@ export default async function OccSubmitAction(formData: FormData): SubmitActionR
 			}
 		);
 
+		revalidatePath("/explore");
 		return { message: "Success" };
 	} catch (err) {
 		const error = err as Error;

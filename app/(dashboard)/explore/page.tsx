@@ -1,5 +1,11 @@
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default function Explore() {
-	redirect("/explore/project");
+	return (
+		<div>
+			<Link href="/explore/project" className="btn">
+				Projects
+			</Link>
+		</div>
+	);
 }

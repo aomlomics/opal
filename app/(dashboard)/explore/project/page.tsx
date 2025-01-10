@@ -1,17 +1,11 @@
 import Pagination from "@/app/components/Pagination";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
-
-const Map = dynamic(() => import("@/app/components/Map"), {
-	ssr: false
-});
+import MapWrapper from "@/app/components/MapWrapper";
 
 export default async function Project() {
 	return (
 		<div className="space-y-8">
-			<div className="h-[400px] w-full rounded-xl overflow-hidden bg-base-200 shadow-lg">
-				<Map />
-			</div>
+			<div className="h-[400px] w-full rounded-xl overflow-hidden bg-base-200 shadow-lg">{/*<MapWrapper />*/}</div>
 
 			<div>
 				<h1 className="text-2xl text-base-content mb-4">

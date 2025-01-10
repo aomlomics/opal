@@ -1,16 +1,14 @@
 import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
-import dynamic from "next/dynamic";
+import MapWrapper from "@/app/components/MapWrapper";
 import Image from "next/image";
 
-const Map = dynamic(() => import("@/app/components/Map"), {
-	ssr: false
-});
+export default async function Project_Id({ params }: { params: Promise<{ project_id: string }> }) {
+	const { project_id } = await params;
 
-export default async function Project_Id({ params }: { params: { project_id: string } }) {
 	const project = await prisma.project.findUnique({
 		where: {
-			project_id: params.project_id
+			project_id
 		},
 		include: {
 			_count: {
@@ -19,18 +17,32 @@ export default async function Project_Id({ params }: { params: { project_id: str
 					Analyses: true
 				}
 			},
-			Analyses: {
+			Samples: {
 				select: {
-					Assay: true
+					samp_name: true,
+					decimalLatitude: true,
+					decimalLongitude: true
+				}
+			},
+			Analyses: {
+				distinct: ["assay_name"],
+				select: {
+					assay_name: true,
+					Assay: {
+						select: {
+							target_gene: true
+						}
+					}
 				}
 			}
 		}
 	});
 
 	if (!project) return <>Project not found</>;
+	console.log(project.Analyses);
 
 	// Get unique assays (remove duplicates)
-	const uniqueAssays = [...new Set(project.Analyses.map((a) => a.Assay).filter(Boolean))];
+	//const uniqueAssays = [...new Set(project.Analyses.map((a) => a.Assay).filter(Boolean))];
 
 	return (
 		<div className="max-w-7xl mx-auto p-6 space-y-6">
@@ -45,7 +57,7 @@ export default async function Project_Id({ params }: { params: { project_id: str
 					{/* Stats Cards */}
 					<div className="grid grid-cols-2 gap-4">
 						<Link
-							href={`/explore/project/${params.project_id}/Samples`}
+							href={`/explore/project/${project_id}/Samples`}
 							className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
 						>
 							<div className="stat-title">Total Samples</div>
@@ -53,7 +65,7 @@ export default async function Project_Id({ params }: { params: { project_id: str
 						</Link>
 
 						<Link
-							href={`/explore/project/${params.project_id}/Analyses`}
+							href={`/explore/project/${project_id}/Analyses`}
 							className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
 						>
 							<div className="stat-title">Total Analyses</div>
@@ -120,10 +132,10 @@ export default async function Project_Id({ params }: { params: { project_id: str
 			{/* Assays Section - fixed image logic */}
 			<div className="card bg-base-200 shadow-xl">
 				<div className="card-body">
-					<h2 className="card-title text-primary">Assays in this Project: {uniqueAssays.length}</h2>
+					<h2 className="card-title text-primary">Assays in this Project: {project.Analyses.length}</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-						{uniqueAssays.map((assay, index) => {
-							const is16S = assay.assay_name?.toLowerCase().includes("ssu16s");
+						{project.Analyses.map((analysis, index) => {
+							const is16S = analysis.assay_name.toLowerCase().includes("ssu16s");
 							const imagePath = is16S ? "/images/bacteria_outline_16S.png" : "/images/plankton_outline_18S.png";
 
 							return (
@@ -133,15 +145,15 @@ export default async function Project_Id({ params }: { params: { project_id: str
 											<div className="w-16 h-16">
 												<Image
 													src={imagePath}
-													alt={assay.assay_name}
+													alt={analysis.assay_name}
 													width={64}
 													height={64}
 													className="object-contain"
 												/>
 											</div>
 											<div>
-												<h3 className="font-medium">{assay.assay_name}</h3>
-												<p className="text-sm text-base-content/70">{assay.target_gene}</p>
+												<h3 className="font-medium">{analysis.assay_name}</h3>
+												<p className="text-sm text-base-content">{analysis.Assay.target_gene}</p>
 											</div>
 										</div>
 									</div>
@@ -156,7 +168,7 @@ export default async function Project_Id({ params }: { params: { project_id: str
 			<div className="card bg-base-200 shadow-xl">
 				<div className="card-body p-0 overflow-hidden">
 					<div className="h-[400px]">
-						<Map />
+						<MapWrapper locations={project.Samples} id="samp_name" title="Sample:" table="sample" />
 					</div>
 				</div>
 			</div>
