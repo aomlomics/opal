@@ -61,57 +61,80 @@ export default function Pagination({
 	}
 
 	return (
-		<div className="p-5 bg-primary rounded-xl">
-			<div className="flex flex-col gap-3">
+		<div className="space-y-6">
+			{/* Project Cards */}
+			<div className="grid gap-4">
 				{data.result.map((d: any, i: number) => (
-					<div key={i} className="card bg-neutral-content">
-						<div className="card-body p-5">
-							<Link
-								href={`/explore/${table}/${d[id]}`}
-								className="text-info hover:text-info-focus hover:underline transition-colors"
-							>
-								{d[title]}
-							</Link>
-							<div className="flex gap-5">
-								{relCounts?.map((rel) => (
-									<Link key={rel} href={`/explore/${table}/${d[id]}/${rel}`}>
-										<button className="btn">
-											{d._count[rel]} {rel}
-										</button>
-									</Link>
-								))}
+					<div key={i} className="block hover:translate-x-1 transition-transform duration-200">
+						<div className="card bg-base-300">
+							<div className="card-body p-5">
+								<div className="flex justify-between items-start">
+									<h2 className="text-base text-base-content">{d[title]}</h2>
+									<div className="flex gap-4">
+										{relCounts?.map((rel) => (
+											<Link
+												key={rel}
+												href={`/explore/${table}/${d[id]}/${rel}`}
+												className="btn bg-base-100 text-base-content normal-case hover:bg-base-200"
+											>
+												{d._count[rel]} {rel}
+											</Link>
+										))}
+									</div>
+								</div>
 							</div>
-							{fields?.map((f) => (
-								<div key={f}>{d[f]}</div>
-							))}
 						</div>
 					</div>
 				))}
 			</div>
-			<div className="join grid grid-flow-col">
+
+			{/* Pagination Controls */}
+			<div className="flex items-center justify-center gap-8">
 				<button
-					className="join-item btn btn-outline"
+					className="btn btn-ghost gap-2"
 					disabled={!searchParams.get("page") || parseInt(searchParams.get("page") as string) <= 1}
-					onClick={() => {
-						//setQuery(`&skip=${data.skip + take}&dir=-1`);
-						handlePage(-1);
-					}}
+					onClick={() => handlePage(-1)}
 				>
-					&lt;
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					>
+						<path d="m15 18-6-6 6-6" />
+					</svg>
+					Previous
 				</button>
-				<div className="flex items-center justify-center">
+
+				<div className="text-base-content/70">
 					{(parseInt(searchParams.get("page") || "1") - 1) * take}-{parseInt(searchParams.get("page") || "1") * take} of{" "}
 					{data.count}
 				</div>
+
 				<button
-					className="join-item btn btn-outline"
+					className="btn btn-ghost gap-2"
 					disabled={parseInt(searchParams.get("page") || "1") * take > data.count}
-					onClick={() => {
-						//setQuery(`&skip=${data.skip + take || take}`);
-						handlePage();
-					}}
+					onClick={() => handlePage()}
 				>
-					&gt;
+					Next
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					>
+						<path d="m9 18 6-6-6-6" />
+					</svg>
 				</button>
 			</div>
 		</div>

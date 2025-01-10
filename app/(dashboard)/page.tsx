@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Carousel from "@/app/components/Carousel";
 import Link from "next/link";
 import DataSummary from "../components/DataSummary";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
@@ -43,27 +43,22 @@ export default async function Home() {
 	return (
 		<main className="flex flex-col grow bg-base-400 text-base-content">
 			<div className="relative w-full h-[80vh] bg-black overflow-hidden z-content-overlay">
-				<Image
-					src="/images/school_of_fish.jpg"
-					alt="Hero Image"
-					width={1920}
-					height={1080}
-					priority
-					className="w-full h-full object-cover saturate-150"
-				/>
+				<Carousel />
 				<div className="absolute inset-0 -right-[200%] bg-gradient-to-r from-base-100 via-base-100/50 via-[35%] to-transparent to-[150%]"></div>
 				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base-100"></div>
-				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-xl">
-					<h1 className="text-5xl sm:text-6xl md:text-7xl mb-4 drop-shadow-lg">
-						<span className="block text-primary animate-slide-in font-light">Welcome</span>
+				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-3xl">
+					<h1 className="text-6xl font-light drop-shadow-lg leading-tight">
+						<span className="block text-primary animate-slide-in">Welcome</span>
 					</h1>
 					<div className="text-base-content drop-shadow-lg">
-						<span className="block text-3xl font-light sm:text-4xl md:text-5xl mb-4">
-							to the <span className="text-primary font-light">NOAA Ocean DNA Explorer</span>
+						<span className="block text-4xl font-light sm:text-5xl mb-4">
+							to the <span className="text-primary">NOAA Ocean DNA Explorer</span>
 						</span>
-						<div className="text-xl sm:text-2xl mb-8 text-base-content/90">
-							<span>a data sharing platform, search engine, and visualization and analysis tool</span>
-							<span> for ocean environmental DNA (eDNA) data</span>
+						<div className="text-2xl sm:text-3xl mb-8 text-base-content/90 leading-snug">
+							<span className="block">
+								a data sharing platform, search engine, and visualization and analysis tool for ocean environmental DNA
+								(eDNA) data
+							</span>
 						</div>
 					</div>
 
@@ -123,16 +118,7 @@ export default async function Home() {
 							>
 								NOAA's Atlantic Oceanographic and Meteorological Laboratory
 							</a>{" "}
-							in collaboration with{" "}
-							<a
-								href="https://www.msstate.edu/"
-								className="text-primary hover:underline"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Mississippi State University
-							</a>{" "}
-							and is supported by the{" "}
+							in collaboration with the{" "}
 							<a
 								href="https://www.northerngulfinstitute.org/"
 								className="text-primary hover:underline"
@@ -141,36 +127,58 @@ export default async function Home() {
 							>
 								Northern Gulf Institute
 							</a>{" "}
-							through the{" "}
+							at{" "}
+							<a
+								href="https://www.msstate.edu/"
+								className="text-primary hover:underline"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								Mississippi State University
+							</a>{" "}
+							and is supported by{" "}
+							<a
+								href="https://oceanexplorer.noaa.gov/"
+								className="text-primary hover:underline"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								NOAA Ocean Exploration
+							</a>{" "}
+							and{" "}
 							<a
 								href="https://oceanexplorer.noaa.gov/technology/omics/noaa-omics.html"
 								className="text-primary hover:underline"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								NOAA Omics program
-							</a>
-							.
+								NOAA Omics
+							</a>{" "}
+							projects NO_0062 and NO_0066.
 						</p>
 					</div>
 					<div className="shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
 						<div className="flex justify-center items-center gap-20">
 							<div className="relative h-24 w-64">
-								<ThemeAwareLogo
-									src="/images/noaa_exploration_FINAL.svg"
-									alt="National Oceanic and Atmospheric Administration Exploration Logo"
-									fill={true}
-									style={{ objectFit: "contain" }}
-								/>
+								<a href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
+									<ThemeAwareLogo
+										src="/images/noaa_exploration_logo_FINAL.svg"
+										alt="National Oceanic and Atmospheric Administration Exploration Logo"
+										fill={true}
+										style={{ objectFit: "contain" }}
+									/>
+								</a>
 							</div>
 							<div>
-								<ThemeAwareLogo
-									src="/images/HORIZONTAL_WEB_white (3).svg"
-									alt="Mississippi State University, Northern Gulf Institute Logo"
-									width={500}
-									height={300}
-									style={{ objectFit: "contain" }}
-								/>
+								<a href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
+									<ThemeAwareLogo
+										src="/images/ngi_msu_logo_FINAL.svg"
+										alt="Mississippi State University, Northern Gulf Institute Logo"
+										width={500}
+										height={300}
+										style={{ objectFit: "contain" }}
+									/>
+								</a>
 							</div>
 						</div>
 					</div>

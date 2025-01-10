@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 const sharedTheme = {
-	"primary": "#64ABDC",    // Brand blue
+	// "primary": "#64ABDC",    // Brand light blue
 	"secondary": "#233D7F",  // Dark blue accent
 	"neutral": "#3d4451",    // Required by DaisyUI
 	"map-colors": "#FF6B6B"  // Map accents
@@ -112,6 +112,8 @@ module.exports = {
 					...require("daisyui/src/theming/themes")["light"],
 					...sharedTheme,
 					
+					"primary": "#233D7F",    // Brand dark blue
+					
 					"base-100": "#f2f6ff",      // Was background-main
 					"base-200": "#e8eeff",      // Was div-base
 					"base-300": "#cad8f9",     // Was div-elevated
@@ -151,6 +153,8 @@ module.exports = {
 				dark: {
 					...require("daisyui/src/theming/themes")["dark"],
 					...sharedTheme,
+					
+					"primary": "#64ABDC",    // Brand light blue
 					
 					"base-100": "#141824",      // Was background-main
 					"base-200": "#1E2337",      // Was div-base
