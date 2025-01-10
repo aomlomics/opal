@@ -1,3 +1,5 @@
-export default function Featureid({ params }: { params: { featureid: string } }) {
-	return <>featureid {params.featureid}</>;
+export default async function Featureid({ params }: { params: { featureid: string } }) {
+	const { featureid } = await params;
+
+	return <>featureid {featureid}</>;
 }

@@ -4,6 +4,7 @@ import MapWrapper from "@/app/components/MapWrapper";
 
 export default async function Project_Id({ params }: { params: { project_id: string } }) {
 	const { project_id } = await params;
+
 	const project = await prisma.project.findUnique({
 		where: {
 			project_id

@@ -49,6 +49,7 @@ export default function Map({
 		}
 		return { values, decimalLatitude: sum[0] / c.length, decimalLongitude: sum[1] / c.length };
 	});
+	console.log(clusters);
 
 	const centerStart = { lat: 25.7617, lng: -80.8918 };
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
