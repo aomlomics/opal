@@ -110,13 +110,17 @@ export default function AnalysisSubmit() {
 		let result;
 
 		try {
-			//upload file to blob store
-			blob = await upload(file.name, file, {
-				access: "public",
-				handleUploadUrl: "/api/analysisFile/upload",
-				multipart: true
-			});
-			formData.set("file", JSON.stringify(blob));
+			if (skipBlob) {
+				formData.set("file", file);
+			} else {
+				//upload file to blob store
+				blob = await upload(file.name, file, {
+					access: "public",
+					handleUploadUrl: "/api/analysisFile/upload",
+					multipart: true
+				});
+				formData.set("file", JSON.stringify(blob));
+			}
 
 			//send request
 			const response = await submitAction(formData);
@@ -145,10 +149,12 @@ export default function AnalysisSubmit() {
 			error = true;
 		}
 
-		//delete file from blob store
-		await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
-			method: "DELETE"
-		});
+		if (!skipBlob) {
+			//delete file from blob store
+			await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
+				method: "DELETE"
+			});
+		}
 
 		return { error, result };
 	}
