@@ -73,10 +73,6 @@ export default function Map({
 							html: loc.values.length.toString(),
 							iconSize: [32, 32]
 						})}
-						//icon={icon({
-						//	iconSize: [32, 32],
-						//	iconUrl: "/images/map_marker.svg"
-						//})}
 						position={{
 							lat: loc.decimalLatitude,
 							lng: loc.decimalLongitude
@@ -84,8 +80,6 @@ export default function Map({
 					>
 						<Popup className="map-popup">
 							<div className="font-sans bg-base-100 p-4 rounded-lg">
-								{/*<h3 className="text-base-content mb-1 pt-1">{locFields.title}</h3>*/}
-								<h3 className="text-base-content mb-1 pt-1">{loc.values.length}</h3>
 								<div className="flex flex-col max-h-20 overflow-y-scroll pr-5">
 									{loc.values.map((label) => (
 										<Link
