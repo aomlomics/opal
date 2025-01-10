@@ -31,18 +31,11 @@ export default async function assignSubmitAction(formData: FormData): SubmitActi
 
 				console.log(`${analysis_run_name}_assign file`);
 				let assignFileLines;
-				if (process.env.NODE_ENV === "development") {
-					//get files from form data
-					const file = formData.get("file") as File;
-					const fileText = await file.text();
-					assignFileLines = fileText.replace(/[\r]+/gm, "").split("\n");
-				} else {
-					//fetch from blob storage
-					const url = JSON.parse(formData.get("file") as string).url;
-					const file = await fetch(url);
-					const fileText = await file.text();
-					assignFileLines = fileText.replace(/[\r]+/gm, "").split("\n");
-				}
+				//fetch files from blob storage
+				const url = JSON.parse(formData.get("file") as string).url;
+				const file = await fetch(url);
+				const fileText = await file.text();
+				assignFileLines = fileText.replace(/[\r]+/gm, "").split("\n");
 				const assignFileHeaders = assignFileLines[0].split("\t");
 
 				//iterate over each row
