@@ -5,8 +5,8 @@ export default function Footer() {
 	return (
 		<footer className="footer pl-1 text-neutral-content mt-auto z-30 bg-base-100 border-t-4 border-primary flex items-stretch">
 			<div className="text-left pt-1 text-base-content">
-				<p className="-mb-3">Copyright © 2024 - All Rights Reserved.</p>
-				<p className="text-base-content hover:underline -mb-3">
+				<p className="-mb-4">Copyright © 2024 - All Rights Reserved.</p>
+				<p className="text-base-content hover:underline -mb-4">
 					<a href="https://www.aoml.noaa.gov/">NOAA's Atlantic Oceanographic and Meteorological Laboratory</a>
 				</p>
 				<p className="text-primary hover:underline">
