@@ -29,6 +29,7 @@ export default function Map() {
 	const ZOOM_LEVEL = 5;
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
 
+	// 1. accept all points on the map, map clumps based on proximity- only the map knows how zoomed in it is
 	const { data, error, isLoading } = useSWR("/api/sampleLocations", fetcher, {
 		keepPreviousData: true
 	});
@@ -65,7 +66,7 @@ export default function Map() {
 									<div className="font-sans bg-base-100 p-4 rounded-lg">
 										<h3 className="text-base-content mb-1 pt-1">Project Name (project_id)</h3>
 										<Link
-											href={`/explore/project/${location.id}`}
+											href={`/explore/project/${location.project_id}`}
 											className="text-info hover:text-info-focus hover:underline transition-colors"
 										>
 											{location.project_id}

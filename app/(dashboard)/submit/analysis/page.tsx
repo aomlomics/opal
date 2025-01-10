@@ -8,7 +8,7 @@ export default function Analysis() {
 			<section className="text-center space-y-6">
 				<h1 className="text-5xl font-semibold text-primary">Submit Analysis</h1>
 				<div className="max-w-3xl mx-auto space-y-4 text-lg text-base-content">
-					<p>Ready to contribute new insights? Upload your analysis files here.</p>
+					<p>Ready to contribute new insights? Upload your analysis files here. They must be for an existing NODE Project. You may submit multiple analyses for a Project at once.</p>
 					<p className="max-w-3xl mx-auto space-y-4 text-lg text-base-content">
 						First time submitting an analysis?{" "}
 						<Link href="https://noaa-omics-dmg.readthedocs.io/en/latest/" className="text-primary hover:underline">
@@ -25,10 +25,10 @@ export default function Analysis() {
 						<div className="flex items-center gap-3 mb-6 p-3 bg-primary/5 rounded-lg">
 							<div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
 							<div className="space-y-1">
-								<span className="text-base-content/80 block">
+								<span className="text-base-content block">
 									Each analysis requires metadata, features, and occurrences
 								</span>
-								<span className="text-sm text-base-content/60">Files must be in TSV format</span>
+								<span className="text-sm text-base-content">Files must be in TSV format</span>
 							</div>
 						</div>
 						<AnalysisSubmit />

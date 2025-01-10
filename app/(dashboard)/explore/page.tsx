@@ -1,5 +1,5 @@
-import UnderConstruction from "@/app/components/UnderConstruction";
+import { redirect } from "next/navigation";
 
 export default function Explore() {
-	return <UnderConstruction />;
+	redirect("/explore/project");
 }
