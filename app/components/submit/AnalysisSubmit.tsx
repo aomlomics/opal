@@ -110,17 +110,13 @@ export default function AnalysisSubmit() {
 		let result;
 
 		try {
-			//only upload file to the blob server when on a hosted service
-			if (skipBlob || process.env.NODE_ENV === "development") {
-				formData.set("file", file);
-			} else {
-				blob = await upload(file.name, file, {
-					access: "public",
-					handleUploadUrl: "/api/analysisFile/upload",
-					multipart: true
-				});
-				formData.set("file", JSON.stringify(blob));
-			}
+			//upload file to blob store
+			blob = await upload(file.name, file, {
+				access: "public",
+				handleUploadUrl: "/api/analysisFile/upload",
+				multipart: true
+			});
+			formData.set("file", JSON.stringify(blob));
 
 			//send request
 			const response = await submitAction(formData);
@@ -149,12 +145,10 @@ export default function AnalysisSubmit() {
 			error = true;
 		}
 
-		//only delete file on the blob server when on a hosted service
-		if (process.env.NODE_ENV !== "development") {
-			await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
-				method: "DELETE"
-			});
-		}
+		//delete file from blob store
+		await fetch(`/api/analysisFile/delete?url=${blob.url}`, {
+			method: "DELETE"
+		});
 
 		return { error, result };
 	}
@@ -163,13 +157,13 @@ export default function AnalysisSubmit() {
 		const { name, files } = e.target;
 		// If this is the first metadata file (when analysis name is \u200b)
 		if (analyses.includes("\u200b") && !name.includes("_assign") && !name.includes("_occ")) {
-			setFileStates(prev => ({
+			setFileStates((prev) => ({
 				...prev,
 				"\u200b": files?.[0] || null,
-				[name]: files?.[0] || null  // Also store under the actual name
+				[name]: files?.[0] || null // Also store under the actual name
 			}));
 		} else {
-			setFileStates(prev => ({
+			setFileStates((prev) => ({
 				...prev,
 				[name]: files?.[0] || null
 			}));
@@ -268,7 +262,7 @@ export default function AnalysisSubmit() {
 
 		if (!hasError) {
 			const successMessage = "Analysis successfully submitted! You will be redirected to explore page in 5 seconds...";
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await new Promise((resolve) => setTimeout(resolve, 100));
 			setResponseObj({
 				global: successMessage,
 				status: "✅ Analysis Submission Successful"
@@ -286,117 +280,118 @@ export default function AnalysisSubmit() {
 		<>
 			<form className="card-body w-full max-w-4xl mx-auto" onSubmit={handleSubmit}>
 				<div className="space-y-6">
-					{analyses.map((a, i) =>
-						a && (
-							<div key={i} className="card bg-base-300 shadow-xl p-6 relative">
-								{analyses[i] && (
-									<div className="space-y-4">
-										<h2 className="text-xl font-semibold text-base-content mb-4">
-											{analyses[i] === "\u200b" ? "New Analysis" : analyses[i]}
-										</h2>
-										
+					{analyses.map(
+						(a, i) =>
+							a && (
+								<div key={i} className="card bg-base-300 shadow-xl p-6 relative">
+									{analyses[i] && (
 										<div className="space-y-4">
-											<div className="flex items-center gap-3">
-												<label className="form-control w-full">
-													<div className="label">
-														<span className="label-text text-base-content">Metadata:</span>
+											<h2 className="text-xl font-semibold text-base-content mb-4">
+												{analyses[i] === "\u200b" ? "New Analysis" : analyses[i]}
+											</h2>
+
+											<div className="space-y-4">
+												<div className="flex items-center gap-3">
+													<label className="form-control w-full">
+														<div className="label">
+															<span className="label-text text-base-content">Metadata:</span>
+														</div>
+														<input
+															type="file"
+															name={analyses[i]}
+															required
+															disabled={!!loading}
+															accept=".tsv"
+															onChange={(e) => {
+																handleFileChange(e);
+																parseAnalysis(e.currentTarget.files, i);
+															}}
+															className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
+														/>
+													</label>
+													<div className="flex items-center self-end mb-[10.5px]">
+														<ProgressCircle
+															response={responseObj[analyses[i]]}
+															error={errorObj[analyses[i]]}
+															loading={loading === analyses[i]}
+															hasFile={!!fileStates["\u200b"] || !!fileStates[analyses[i]]}
+														/>
 													</div>
-													<input
-														type="file"
-														name={analyses[i]}
-														required
-														disabled={!!loading}
-														accept=".tsv"
-														onChange={(e) => {
-															handleFileChange(e);
-															parseAnalysis(e.currentTarget.files, i);
-														}}
-														className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
-													/>
-												</label>
-												<div className="flex items-center self-end mb-[10.5px]">
-													<ProgressCircle
-														response={responseObj[analyses[i]]}
-														error={errorObj[analyses[i]]}
-														loading={loading === analyses[i]}
-														hasFile={!!fileStates["\u200b"] || !!fileStates[analyses[i]]}
-													/>
 												</div>
+
+												{analyses[i] !== "\u200b" && (
+													<>
+														<div className="flex items-center gap-3">
+															<label className="form-control w-full">
+																<div className="label">
+																	<span className="label-text text-base-content">Features:</span>
+																</div>
+																<input
+																	type="file"
+																	name={`${analyses[i]}_assign`}
+																	required
+																	disabled={!!loading}
+																	accept=".tsv"
+																	onChange={handleFileChange}
+																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
+																/>
+															</label>
+															<div className="flex items-center self-end mb-[10.5px]">
+																<ProgressCircle
+																	response={responseObj[`${analyses[i]}_assign`]}
+																	error={errorObj[`${analyses[i]}_assign`]}
+																	loading={loading === `${analyses[i]}_assign`}
+																	hasFile={!!fileStates[`${analyses[i]}_assign`]}
+																/>
+															</div>
+														</div>
+
+														<div className="flex items-center gap-3">
+															<label className="form-control w-full">
+																<div className="label">
+																	<span className="label-text text-base-content">Occurrences:</span>
+																</div>
+																<input
+																	type="file"
+																	name={`${analyses[i]}_occ`}
+																	required
+																	disabled={!!loading}
+																	accept=".tsv"
+																	onChange={handleFileChange}
+																	className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
+																/>
+															</label>
+															<div className="flex items-center self-end mb-[10.5px]">
+																<ProgressCircle
+																	response={responseObj[`${analyses[i]}_occ`]}
+																	error={errorObj[`${analyses[i]}_occ`]}
+																	loading={loading === `${analyses[i]}_occ`}
+																	hasFile={!!fileStates[`${analyses[i]}_occ`]}
+																/>
+															</div>
+														</div>
+													</>
+												)}
 											</div>
-
-											{analyses[i] !== "\u200b" && (
-												<>
-													<div className="flex items-center gap-3">
-														<label className="form-control w-full">
-															<div className="label">
-																<span className="label-text text-base-content">Features:</span>
-															</div>
-															<input
-																type="file"
-																name={`${analyses[i]}_assign`}
-																required
-																disabled={!!loading}
-																accept=".tsv"
-																onChange={handleFileChange}
-																className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
-															/>
-														</label>
-														<div className="flex items-center self-end mb-[10.5px]">
-															<ProgressCircle
-																response={responseObj[`${analyses[i]}_assign`]}
-																error={errorObj[`${analyses[i]}_assign`]}
-																loading={loading === `${analyses[i]}_assign`}
-																hasFile={!!fileStates[`${analyses[i]}_assign`]}
-															/>
-														</div>
-													</div>
-
-													<div className="flex items-center gap-3">
-														<label className="form-control w-full">
-															<div className="label">
-																<span className="label-text text-base-content">Occurrences:</span>
-															</div>
-															<input
-																type="file"
-																name={`${analyses[i]}_occ`}
-																required
-																disabled={!!loading}
-																accept=".tsv"
-																onChange={handleFileChange}
-																className="file-input file-input-bordered file-input-secondary bg-neutral-content w-full [&::file-selector-button]:text-white"
-															/>
-														</label>
-														<div className="flex items-center self-end mb-[10.5px]">
-															<ProgressCircle
-																response={responseObj[`${analyses[i]}_occ`]}
-																error={errorObj[`${analyses[i]}_occ`]}
-																loading={loading === `${analyses[i]}_occ`}
-																hasFile={!!fileStates[`${analyses[i]}_occ`]}
-															/>
-														</div>
-													</div>
-												</>
-											)}
 										</div>
-									</div>
-								)}
-								
-								{analyses.filter((a) => a !== null).length > 1 && (
-									<button
-										className="btn btn-sm absolute top-4 right-4 bg-base-200 hover:bg-base-200/80"
-										type="button"
-										disabled={!!loading}
-										onClick={() => {
-											const tempAList = [...analyses];
+									)}
+
+									{analyses.filter((a) => a !== null).length > 1 && (
+										<button
+											className="btn btn-sm absolute top-4 right-4 bg-base-200 hover:bg-base-200/80"
+											type="button"
+											disabled={!!loading}
+											onClick={() => {
+												const tempAList = [...analyses];
 												tempAList[i] = null;
 												setAnalyses(tempAList);
-										}}
-									>
-										<span className="text-base-content">×</span>
-									</button>
-								)}
-							</div>
-						)
+											}}
+										>
+											<span className="text-base-content">×</span>
+										</button>
+									)}
+								</div>
+							)
 					)}
 
 					{analyses[analyses.length - 1] !== "\u200b" && (
@@ -406,22 +401,15 @@ export default function AnalysisSubmit() {
 								type="button"
 								disabled={!!loading}
 								onClick={() => setAnalyses([...analyses, "\u200b"])}
-								>
+							>
 								<span className="text-base-content">+</span> Add Another Analysis to Submission
 							</button>
 						</div>
 					)}
 
 					<div className="flex justify-center mt-8">
-						<button 
-							className="btn btn-primary text-white w-[200px]"
-							disabled={!!loading || submitted}
-						>
-							{loading || submitted ? (
-								<span className="loading loading-spinner loading-sm"></span>
-							) : (
-								'Submit'
-							)}
+						<button className="btn btn-primary text-white w-[200px]" disabled={!!loading || submitted}>
+							{loading || submitted ? <span className="loading loading-spinner loading-sm"></span> : "Submit"}
 						</button>
 					</div>
 				</div>
@@ -430,16 +418,18 @@ export default function AnalysisSubmit() {
 			{/* Status Messages */}
 			<div className="flex-grow mt-8">
 				{(responseObj.status || errorObj.status) && (
-					<div className={`
-						p-6 rounded-lg mx-auto max-w-lg 
+					<div
+						className={`
+						p-6 rounded-lg mx-auto max-w-lg
 						${errorObj.status ? "bg-error/10 border-2 border-error" : "bg-success/10 border-2 border-success"}
-					`}>
+					`}
+					>
 						<h3 className={`text-lg font-bold mb-2 ${errorObj.status ? "text-error" : "text-success"}`}>
 							{errorObj.status ? "Analysis Submission Failed" : "Analysis Submitted Successfully"}
 						</h3>
 						<p className="text-base text-base-content">
-							{errorObj.status 
-								? errorObj.global 
+							{errorObj.status
+								? errorObj.global
 								: "Please stay on this page. You will be redirected to the explore page in a few seconds..."}
 						</p>
 						{responseObj.status && (
@@ -453,9 +443,7 @@ export default function AnalysisSubmit() {
 			</div>
 
 			{!!loading && (
-				<div className="text-center mt-4 text-base-content/80">
-					Loading, please do not close the website
-				</div>
+				<div className="text-center mt-4 text-base-content/80">Loading, please do not close the website</div>
 			)}
 		</>
 	);
