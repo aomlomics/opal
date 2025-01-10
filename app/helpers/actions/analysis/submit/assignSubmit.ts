@@ -146,7 +146,7 @@ export default async function assignSubmitAction(formData: FormData): SubmitActi
 				return { dbFeatures: dbFeatures.map((feat) => feat.id), dbTaxonomies: dbTaxonomies.map((taxa) => taxa.id) };
 			},
 			{
-				timeout: 0.5 * 60 * 1000
+				timeout: 1 * 60 * 1000
 			}
 		);
 
