@@ -69,7 +69,9 @@ export default function Pagination({
 						<div className="card bg-base-300">
 							<div className="card-body p-5">
 								<div className="flex justify-between items-start">
-									<h2 className="text-base text-base-content">{d[title]}</h2>
+									<Link href={`/explore/${table}/${d[id]}`} className="text-base text-base-content">
+										{d[title]}
+									</Link>
 									<div className="flex gap-4">
 										{relCounts?.map((rel) => (
 											<Link
