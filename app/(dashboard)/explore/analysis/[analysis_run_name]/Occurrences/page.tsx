@@ -1,7 +1,7 @@
 import Pagination from "@/app/components/Pagination";
 import Link from "next/link";
 
-export default async function Occurrences({ params }: { params: { analysis_run_name: string } }) {
+export default async function Occurrences({ params }: { params: Promise<{ analysis_run_name: string }> }) {
 	const { analysis_run_name } = await params;
 
 	return (

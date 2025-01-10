@@ -1,7 +1,7 @@
 import Pagination from "@/app/components/Pagination";
 import Link from "next/link";
 
-export default async function Analyses({ params }: { params: { project_id: string } }) {
+export default async function Analyses({ params }: { params: Promise<{ project_id: string }> }) {
 	const { project_id } = await params;
 
 	return (

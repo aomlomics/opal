@@ -2,7 +2,7 @@ import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
 import MapWrapper from "@/app/components/MapWrapper";
 
-export default async function Project_Id({ params }: { params: { project_id: string } }) {
+export default async function Project_Id({ params }: { params: Promise<{ project_id: string }> }) {
 	const { project_id } = await params;
 
 	const project = await prisma.project.findUnique({

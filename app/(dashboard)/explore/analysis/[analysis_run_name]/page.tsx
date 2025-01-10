@@ -1,7 +1,7 @@
 import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
 
-export default async function Analysis_Run_name({ params }: { params: { analysis_run_name: string } }) {
+export default async function Analysis_Run_name({ params }: { params: Promise<{ analysis_run_name: string }> }) {
 	const { analysis_run_name } = await params;
 
 	const analysis = await prisma.analysis.findUnique({
