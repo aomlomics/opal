@@ -18,7 +18,11 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					Analyses: true
 				}
 			},
-			Samples: true,
+			Samples: {
+				omit: {
+					project_id: true
+				}
+			},
 			Analyses: {
 				distinct: ["assay_name"],
 				select: {
@@ -34,7 +38,6 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 	});
 
 	if (!project) return <>Project not found</>;
-	console.log(project.Analyses);
 
 	// Get unique assays (remove duplicates)
 	//const uniqueAssays = [...new Set(project.Analyses.map((a) => a.Assay).filter(Boolean))];
@@ -166,7 +169,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 				</div>
 			</div>
-			<div className="h-96">
+			<div className="h-[400px]">
 				<Table data={project.Samples} table="sample" title="samp_name"></Table>
 			</div>
 		</div>
