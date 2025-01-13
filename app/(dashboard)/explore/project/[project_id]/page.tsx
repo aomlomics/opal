@@ -2,6 +2,7 @@ import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
 import MapWrapper from "@/app/components/MapWrapper";
 import Image from "next/image";
+import Table from "@/app/components/Table";
 
 export default async function Project_Id({ params }: { params: Promise<{ project_id: string }> }) {
 	const { project_id } = await params;
@@ -17,13 +18,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					Analyses: true
 				}
 			},
-			Samples: {
-				select: {
-					samp_name: true,
-					decimalLatitude: true,
-					decimalLongitude: true
-				}
-			},
+			Samples: true,
 			Analyses: {
 				distinct: ["assay_name"],
 				select: {
@@ -90,7 +85,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				<div className="col-span-1">
 					<div className="card bg-base-200 shadow-xl">
 						<div className="card-body">
-							<h2 className="card-title text-primary mb-4">Institute Information</h2>
+							<h2 className="card-title text-primary mb-4">Institution Information</h2>
 							<div className="space-y-4">
 								<div>
 									<label className="text-sm font-medium text-base-content/70">Contact</label>
@@ -135,8 +130,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					<h2 className="card-title text-primary">Assays in this Project: {project.Analyses.length}</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
 						{project.Analyses.map((analysis, index) => {
-							const is16S = analysis.assay_name.toLowerCase().includes("ssu16s");
-							const imagePath = is16S ? "/images/bacteria_outline_16S.png" : "/images/plankton_outline_18S.png";
+							const imagePath = `/images/${analysis.assay_name}_icon.png`;
 
 							return (
 								<div key={index} className="card bg-base-100 shadow-md">
@@ -152,8 +146,8 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 												/>
 											</div>
 											<div>
-												<h3 className="font-medium">{analysis.assay_name}</h3>
-												<p className="text-sm text-base-content">{analysis.Assay.target_gene}</p>
+												<h3 className="font-medium">{analysis.Assay.target_gene}</h3>
+												<p className="text-sm text-base-content">{analysis.assay_name}</p>
 											</div>
 										</div>
 									</div>
@@ -171,6 +165,9 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 						<MapWrapper locations={project.Samples} id="samp_name" title="Sample:" table="sample" />
 					</div>
 				</div>
+			</div>
+			<div className="h-96">
+				<Table data={project.Samples} table="sample" title="samp_name"></Table>
 			</div>
 		</div>
 	);
