@@ -1,3 +1,4 @@
+import UnderConstruction from "@/app/components/UnderConstruction";
 import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
 
@@ -20,7 +21,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 	if (!analysis) return <>Analysis not found</>;
 	return (
 		<>
-			<h1>analysis_run_name {analysis.analysis_run_name}</h1>
+			{/* <h1>analysis_run_name {analysis.analysis_run_name}</h1>
 			<div className="flex gap-5">
 				<Link href={`/explore/analysis/${analysis_run_name}/Occurrences`} className="btn">
 					{analysis._count.Occurrences} Occurrences
@@ -28,7 +29,8 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 				<Link href={`/explore/analysis/${analysis_run_name}/Assignments`} className="btn">
 					{analysis._count.Assignments} Assignments
 				</Link>
-			</div>
+			</div> */}
+			<UnderConstruction />
 		</>
 	);
 }
