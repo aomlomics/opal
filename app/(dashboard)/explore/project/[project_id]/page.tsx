@@ -191,29 +191,40 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 			</div>
 
-			{/* Map Card */}
-			<div className="card bg-base-200 shadow-xl">
-				<h2 className="card-title text-primary">Samples:</h2>
-				<div className="card-body p-0 overflow-hidden">
-					<div className="h-[400px]">
-						<MapWrapper locations={project.Samples} id="samp_name" table="sample" cluster />
+			<h2 className="card-title text-primary">Samples:</h2>
+			<div role="tablist" className="tabs tabs-lifted">
+				{/* Map */}
+				<input type="radio" defaultChecked name="dataTabs" role="tab" className="tab" aria-label="Map" />
+				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+					<div className="card-body p-0 overflow-hidden">
+						<div className="h-[400px]">
+							<MapWrapper locations={project.Samples} id="samp_name" table="sample" cluster />
+						</div>
 					</div>
 				</div>
+
+				{/* Table */}
+				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Table" />
+				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6 h-[400px] w-[1200px]">
+					<Table data={project.Samples} title="samp_name"></Table>
+				</div>
+
+				{/* Charts */}
+				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Charts" />
+				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+					<BarChart
+						title="Top 10 Taxonomies"
+						labels={sortedTaxa.slice(0, 10).map((taxaArr) => taxaArr[0].split(";")[taxaArr[0].split(";").length - 1])}
+						datasets={Object.keys(taxaCountByAnalysis).map((taxa, i) => ({
+							label: taxa.split(";")[taxa.split(";").length - 1],
+							data: sortedTaxa.slice(0, 10).map((taxaArr) => taxaCountByAnalysis[taxa][taxaArr[0]]),
+							backgroundColor: colorsArr[i]
+						}))}
+					/>
+				</div>
 			</div>
-			<div className="h-[400px]">
-				<Table data={project.Samples} title="samp_name"></Table>
-			</div>
-			<div>
-				<BarChart
-					title="Top 10 Taxonomies"
-					labels={sortedTaxa.slice(0, 10).map((taxaArr) => taxaArr[0].split(";")[taxaArr[0].split(";").length - 1])}
-					datasets={Object.keys(taxaCountByAnalysis).map((taxa, i) => ({
-						label: taxa.split(";")[taxa.split(";").length - 1],
-						data: sortedTaxa.slice(0, 10).map((taxaArr) => taxaCountByAnalysis[taxa][taxaArr[0]]),
-						backgroundColor: colorsArr[i]
-					}))}
-				/>
-			</div>
+
+			<div></div>
 		</div>
 	);
 }
