@@ -170,7 +170,8 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 			</div>
 			<div className="h-[400px]">
-				<Table data={project.Samples} table="sample" title="samp_name"></Table>
+				<h2 className="card-title text-primary">Samples:</h2>
+				<Table data={project.Samples} title="samp_name"></Table>
 			</div>
 		</div>
 	);
