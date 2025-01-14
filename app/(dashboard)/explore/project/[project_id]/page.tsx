@@ -3,6 +3,8 @@ import Link from "next/link";
 import MapWrapper from "@/app/components/MapWrapper";
 import Image from "next/image";
 import Table from "@/app/components/Table";
+import BarChart from "@/app/components/BarChart";
+import { randomColors } from "@/app/helpers/utils";
 
 export default async function Project_Id({ params }: { params: Promise<{ project_id: string }> }) {
 	const { project_id } = await params;
@@ -24,23 +26,51 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				}
 			},
 			Analyses: {
-				distinct: ["assay_name"],
 				select: {
+					analysis_run_name: true,
 					assay_name: true,
 					Assay: {
 						select: {
 							target_gene: true
+						}
+					},
+					Assignments: {
+						select: {
+							taxonomy: true
 						}
 					}
 				}
 			}
 		}
 	});
-
 	if (!project) return <>Project not found</>;
 
-	// Get unique assays (remove duplicates)
-	//const uniqueAssays = [...new Set(project.Analyses.map((a) => a.Assay).filter(Boolean))];
+	const uniqueAssays = project.Analyses.reduce(
+		(acc, a) => ({ ...acc, [a.assay_name]: { target_gene: a.Assay.target_gene } }),
+		{} as Record<string, Record<string, string>>
+	);
+
+	//get a sorted array of taxonomy counts, and a separate object to show which analysis taxonomies came from
+	const taxaCount = {} as Record<string, number>;
+	const taxaCountByAnalysis = {} as Record<string, Record<string, number>>;
+	for (const a of project.Analyses) {
+		taxaCountByAnalysis[a.analysis_run_name] = {};
+		for (const assign of a.Assignments) {
+			if (assign.taxonomy in taxaCount) {
+				taxaCount[assign.taxonomy] += 1;
+			} else {
+				taxaCount[assign.taxonomy] = 1;
+			}
+
+			if (assign.taxonomy in taxaCountByAnalysis[a.analysis_run_name]) {
+				taxaCountByAnalysis[a.analysis_run_name][assign.taxonomy] += 1;
+			} else {
+				taxaCountByAnalysis[a.analysis_run_name][assign.taxonomy] = 1;
+			}
+		}
+	}
+	const colorsArr = randomColors(Object.keys(taxaCountByAnalysis).length);
+	const sortedTaxa = Object.entries(taxaCount).sort(([, a], [, b]) => b - a);
 
 	return (
 		<div className="max-w-7xl mx-auto p-6 space-y-6">
@@ -71,15 +101,21 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 						</Link>
 					</div>
 
-					<div className="grid grid-cols-2 gap-4">
+					<div className="grid grid-cols-2">
 						<div className="stat bg-base-200 rounded-lg p-6">
 							<div className="stat-title">Detection Type</div>
 							<div className="stat-value text-sm capitalize">{project.detection_type}</div>
-						</div>
-
-						<div className="stat bg-base-200 rounded-lg p-6">
 							<div className="stat-title">Study Factor</div>
 							<div className="stat-value text-sm">{project.study_factor}</div>
+						</div>
+
+						<div className="stat bg-base-200 rounded-lg p-6 overflow-hidden">
+							<div className="stat-title">Top Taxonomy</div>
+							{sortedTaxa.splice(0, 5).map((taxa) => (
+								<div key={taxa[0]} className="stat-value text-sm">
+									{taxa[0].split(";")[taxa[0].split(";").length - 1]}: {taxa[1]}
+								</div>
+							))}
 						</div>
 					</div>
 				</div>
@@ -130,27 +166,21 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 			{/* Assays Section - fixed image logic */}
 			<div className="card bg-base-200 shadow-xl">
 				<div className="card-body">
-					<h2 className="card-title text-primary">Assays in this Project: {project.Analyses.length}</h2>
+					<h2 className="card-title text-primary">Assays in this Project: {Object.keys(uniqueAssays).length}</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-						{project.Analyses.map((analysis, index) => {
-							const imagePath = `/images/${analysis.assay_name}_icon.png`;
+						{Object.keys(uniqueAssays).map((assay, index) => {
+							const imagePath = `/images/${assay}_icon.png`;
 
 							return (
 								<div key={index} className="card bg-base-100 shadow-md">
 									<div className="card-body">
 										<div className="flex items-center gap-4">
 											<div className="w-16 h-16">
-												<Image
-													src={imagePath}
-													alt={analysis.assay_name}
-													width={64}
-													height={64}
-													className="object-contain"
-												/>
+												<Image src={imagePath} alt={assay} width={64} height={64} className="object-contain" />
 											</div>
 											<div>
-												<h3 className="font-medium">{analysis.Assay.target_gene}</h3>
-												<p className="text-sm text-base-content">{analysis.assay_name}</p>
+												<h3 className="font-medium">{uniqueAssays[assay].target_gene}</h3>
+												<p className="text-sm text-base-content">{assay}</p>
 											</div>
 										</div>
 									</div>
@@ -172,6 +202,17 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 			</div>
 			<div className="h-[400px]">
 				<Table data={project.Samples} title="samp_name"></Table>
+			</div>
+			<div>
+				<BarChart
+					title="Top 10 Taxonomies"
+					labels={sortedTaxa.slice(0, 10).map((taxaArr) => taxaArr[0].split(";")[taxaArr[0].split(";").length - 1])}
+					datasets={Object.keys(taxaCountByAnalysis).map((taxa, i) => ({
+						label: taxa.split(";")[taxa.split(";").length - 1],
+						data: sortedTaxa.slice(0, 10).map((taxaArr) => taxaCountByAnalysis[taxa][taxaArr[0]]),
+						backgroundColor: colorsArr[i]
+					}))}
+				/>
 			</div>
 		</div>
 	);
