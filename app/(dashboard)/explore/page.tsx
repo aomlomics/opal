@@ -1,5 +1,11 @@
-import UnderConstruction from "@/app/components/UnderConstruction";
+import Link from "next/link";
 
 export default function Explore() {
-	return <UnderConstruction />;
+	return (
+		<div>
+			<Link href="/explore/project" className="btn">
+				Projects
+			</Link>
+		</div>
+	);
 }

@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 //import { getRemoteUrl } from "@/app/helpers/utils";
 
 export default async function Admin() {
-	const jwt = cookies().get("__session");
+	const jwt = (await cookies()).get("__session");
 	const res = await fetch(`/admin`, {
 		method: "POST",
 		headers: {

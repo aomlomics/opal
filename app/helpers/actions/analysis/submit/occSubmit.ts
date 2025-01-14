@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/app/helpers/prisma";
 import { OccurrenceOptionalDefaultsSchema } from "@/prisma/generated/zod";
 import { SubmitActionReturn } from "@/types/types";
+import { revalidatePath } from "next/cache";
 
 export default async function OccSubmitAction(formData: FormData): SubmitActionReturn {
 	try {
@@ -18,18 +19,11 @@ export default async function OccSubmitAction(formData: FormData): SubmitActionR
 
 				console.log(`${analysis_run_name}_occ file`);
 				let occFileLines;
-				if (process.env.NODE_ENV === "development") {
-					//get files from form data
-					const file = formData.get("file") as File;
-					const fileText = await file.text();
-					occFileLines = fileText.replace(/[\r]+/gm, "").split("\n");
-				} else {
-					//fetch from blob storage
-					const url = JSON.parse(formData.get("file") as string).url;
-					const file = await fetch(url);
-					const fileText = await file.text();
-					occFileLines = fileText.replace(/[\r]+/gm, "").split("\n");
-				}
+				//fetch from blob storage
+				const url = JSON.parse(formData.get("file") as string).url;
+				const file = await fetch(url);
+				const fileText = await file.text();
+				occFileLines = fileText.replace(/[\r]+/gm, "").split("\n");
 				occFileLines.splice(0, 1); //TODO: parse comments out logically instead of hard-coded
 				const occFileHeaders = occFileLines[0].split("\t");
 
@@ -79,6 +73,7 @@ export default async function OccSubmitAction(formData: FormData): SubmitActionR
 			}
 		);
 
+		revalidatePath("/explore");
 		return { message: "Success" };
 	} catch (err) {
 		const error = err as Error;

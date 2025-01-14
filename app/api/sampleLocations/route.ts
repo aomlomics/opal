@@ -1,5 +1,5 @@
 import { prisma } from "@/app/helpers/prisma";
-import { DeadValue } from "@/types/enums";
+import { DeadValueEnum } from "@/types/enums";
 
 type ProjSampleAvgLocs = {
 	_avg: {
@@ -12,11 +12,11 @@ type ProjSampleAvgLocs = {
 
 export async function GET(request: Request) {
 	//maps enum to only its numeric values, discarding the string values
-	const deadValues = Object.values(DeadValue).filter((v) => !isNaN(Number(v))) as number[];
+	const deadValues = Object.values(DeadValueEnum).filter((v) => !isNaN(Number(v))) as number[];
 
 	try {
 		const rawLocations = await prisma.$transaction(async (tx) => {
-			const projectsRes = await prisma.project.findMany({
+			const projectsRes = await tx.project.findMany({
 				select: {
 					project_id: true,
 					id: true
@@ -25,7 +25,7 @@ export async function GET(request: Request) {
 			//convert array of projects into object where keys are project_id and values are database id
 			const projects = projectsRes.reduce((accum, project) => ({ ...accum, [project.project_id]: project.id }), {});
 
-			const rawLocations = await prisma.sample.groupBy({
+			const rawLocations = await tx.sample.groupBy({
 				by: ["project_id"],
 				_avg: {
 					decimalLatitude: true,

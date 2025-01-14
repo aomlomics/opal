@@ -19,6 +19,7 @@ import {
 	ProjectScalarFieldEnumSchema
 } from "@/prisma/generated/zod";
 import { SubmitActionReturn } from "@/types/types";
+import { revalidatePath } from "next/cache";
 
 export default async function projectSubmitAction(formData: FormData): SubmitActionReturn {
 	console.log("project submit");
@@ -303,6 +304,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 			{ timeout: 0.5 * 60 * 1000 } //30 seconds
 		);
 
+		revalidatePath("/explore");
 		return { message: "Success" };
 	} catch (err) {
 		const error = err as Error;

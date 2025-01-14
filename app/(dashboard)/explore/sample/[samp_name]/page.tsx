@@ -1,3 +1,8 @@
-export default function Samp_Name({ params }: { params: { samp_name: string } }) {
-	return <>samp_name {params.samp_name}</>;
+import UnderConstruction from "@/app/components/UnderConstruction";
+
+export default async function Samp_Name({ params }: { params: Promise<{ samp_name: string }> }) {
+	const { samp_name } = await params;
+
+	// return <>samp_name {samp_name}</>;
+	return <UnderConstruction />;
 }
