@@ -9,13 +9,13 @@ const Map = dynamic(() => import("@/app/components/Map"), {
 export default function MapWrapper({
 	locations,
 	id,
-	title,
-	table
+	table,
+	cluster = false
 }: {
 	locations: any[];
 	id: string;
-	title: string;
 	table: Uncapitalize<Prisma.ModelName>;
+	cluster?: boolean;
 }) {
-	return <Map locations={locations} id={id} title={title} table={table} />;
+	return <Map locations={locations} id={id} table={table} cluster={cluster} />;
 }

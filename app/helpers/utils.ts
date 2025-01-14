@@ -141,3 +141,12 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 
 	return findMany;
 }
+
+export function randomColors(num: number) {
+	console.log(num)
+    let colors = [];
+    for (let i = 0; i < num; i++) {
+        colors.push(`rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`);
+    }
+    return colors;
+}
