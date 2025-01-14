@@ -96,7 +96,7 @@ export default async function Home() {
 				</div>
 				<div className="flex gap-8">
 					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">
-						<MapWrapper locations={avgProjectLocs} id="project_id" title="Project Name:" table="project" />
+						<MapWrapper locations={avgProjectLocs} id="project_id" table="project" />
 					</div>
 					<div className="w-1/2">
 						<DataSummary />

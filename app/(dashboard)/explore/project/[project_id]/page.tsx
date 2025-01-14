@@ -163,14 +163,14 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 
 			{/* Map Card */}
 			<div className="card bg-base-200 shadow-xl">
+				<h2 className="card-title text-primary">Samples:</h2>
 				<div className="card-body p-0 overflow-hidden">
 					<div className="h-[400px]">
-						<MapWrapper locations={project.Samples} id="samp_name" title="Sample:" table="sample" />
+						<MapWrapper locations={project.Samples} id="samp_name" table="sample" cluster />
 					</div>
 				</div>
 			</div>
 			<div className="h-[400px]">
-				<h2 className="card-title text-primary">Samples:</h2>
 				<Table data={project.Samples} title="samp_name"></Table>
 			</div>
 		</div>

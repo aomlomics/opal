@@ -12,13 +12,13 @@ import { DeadValueEnum } from "@/types/enums";
 export default function Map({
 	locations,
 	id,
-	title,
-	table
+	table,
+	cluster = false
 }: {
 	locations: any[];
 	id: string;
-	title: string;
 	table: Uncapitalize<Prisma.ModelName>;
+	cluster?: boolean;
 }) {
 	const [zoomLevel, setZoomLevel] = useState(5);
 
@@ -32,26 +32,31 @@ export default function Map({
 		return null;
 	}
 
-	//cluster location data
-	const dataset = locations.map((loc) => [loc.decimalLatitude, loc.decimalLongitude]);
-	const dbscan = new DBSCAN();
-	//adjust second argument to adjust when points cluster
-	const clusters = dbscan.run(dataset, 50 / zoomLevel ** 2.5, 2);
-	//take index of cluster and average latlongs
-	const clusteredLocations = [];
-	for (const c of clusters) {
-		const sum = [0, 0];
-		const values = [];
-		for (const i of c) {
-			if (!(dataset[i][0] in DeadValueEnum || dataset[i][1] in DeadValueEnum)) {
-				sum[0] += dataset[i][0];
-				sum[1] += dataset[i][1];
-				values.push(locations[i][id]);
+	let points = locations;
+
+	if (cluster) {
+		//cluster location data
+		const dataset = locations.map((loc) => [loc.decimalLatitude, loc.decimalLongitude]);
+		const dbscan = new DBSCAN();
+		//adjust second argument to adjust when points cluster
+		const clusters = dbscan.run(dataset, 50 / zoomLevel ** 2.5, 2);
+		//take index of cluster and average latlongs
+		const clusteredLocations = [];
+		for (const c of clusters) {
+			const sum = [0, 0];
+			const values = [];
+			for (const i of c) {
+				if (!(dataset[i][0] in DeadValueEnum || dataset[i][1] in DeadValueEnum)) {
+					sum[0] += dataset[i][0];
+					sum[1] += dataset[i][1];
+					values.push(locations[i][id]);
+				}
+			}
+			if (values.length) {
+				clusteredLocations.push({ values, decimalLatitude: sum[0] / c.length, decimalLongitude: sum[1] / c.length });
 			}
 		}
-		if (values.length) {
-			clusteredLocations.push({ values, decimalLatitude: sum[0] / c.length, decimalLongitude: sum[1] / c.length });
-		}
+		points = clusteredLocations;
 	}
 
 	const centerStart = { lat: 25.7617, lng: -80.8918 };
@@ -65,12 +70,12 @@ export default function Map({
 					attribution='Powered by <a href="https://www.esri.com/en-us/home" target="_blank">Esri</a>'
 					url={`https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}?token=${ARCGIS_API_KEY}`}
 				/>
-				{clusteredLocations.map((loc) => (
+				{points.map((loc, i) => (
 					<Marker
-						key={loc.values[0]}
+						key={loc.decimalLatitude.toString() + loc.decimalLongitude.toString() + i}
 						icon={divIcon({
 							className: "text-center content-center bg-red-500 rounded-full border-2 border-black text-white",
-							html: loc.values.length.toString(),
+							html: cluster ? loc.values.length.toString() : "",
 							iconSize: [32, 32]
 						})}
 						position={{
@@ -81,15 +86,24 @@ export default function Map({
 						<Popup className="map-popup">
 							<div className="font-sans bg-base-100 p-4 rounded-lg">
 								<div className="flex flex-col max-h-20 overflow-y-scroll pr-5">
-									{loc.values.map((label) => (
+									{cluster ? (
+										loc.values.map((label: string) => (
+											<Link
+												key={label}
+												href={`/explore/${table}/${label}`}
+												className="text-info hover:text-info-focus hover:underline transition-colors"
+											>
+												{label}
+											</Link>
+										))
+									) : (
 										<Link
-											key={label}
-											href={`/explore/${table}/${label}`}
+											href={`/explore/${table}/${loc[id]}`}
 											className="text-info hover:text-info-focus hover:underline transition-colors"
 										>
-											{label}
+											{loc[id]}
 										</Link>
-									))}
+									)}
 								</div>
 
 								<style jsx global>{`

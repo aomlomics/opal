@@ -18,8 +18,7 @@ const carouselImgSrc = [
 	`/images/carousel/chimaera.jpg`,
 	`/images/carousel/fish_m.jpg`,
 	`/images/carousel/hydroid.jpg`,
-	`/images/carousel/pricklefish_m.jpg`,
-	`/images/carousel/sculpin_on_coral_m.jpg`
+	`/images/carousel/pricklefish_m.jpg`
 ];
 
 export default function Carousel() {
@@ -34,7 +33,7 @@ export default function Carousel() {
 				nextItem = Math.floor(Math.random() * carouselImgSrc.length);
 			} while (nextItem === carouselActiveItem); // Ensure we don't show the same image twice
 			setCarouselActiveItem(nextItem);
-		}, 11000);  // how much time between image changes (11 seconds)
+		}, 11000); // how much time between image changes (11 seconds)
 		return () => clearInterval(play);
 	}, [carouselActiveItem]);
 
@@ -53,7 +52,8 @@ export default function Carousel() {
 			{carouselImgSrc.map((imgSrc, index) => (
 				<div
 					key={imgSrc}
-					className={`absolute inset-0 transition-opacity duration-[2000ms] ${   // transition animation duration
+					className={`absolute inset-0 transition-opacity duration-[2000ms] ${
+						// transition animation duration
 						index === carouselActiveItem ? "opacity-100" : "opacity-0"
 					}`}
 				>
