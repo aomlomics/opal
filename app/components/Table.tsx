@@ -1,5 +1,6 @@
 "use client";
 
+import { DeadValueEnum } from "@/types/enums";
 import { ReactNode, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -24,19 +25,24 @@ export default function Table({ data, id = "id", title }: { data: Record<string,
 	return (
 		<div className="max-h-full overflow-x-auto overflow-y-auto">
 			<table className="table table-xs table-pin-rows table-pin-cols">
+				{/* Headers */}
 				<thead>
 					<tr>
+						{/* Title Header Cell */}
 						<th className="p-0 z-40">
 							<div className="h-full w-full top-0 px-2 py-1">
 								<div>{title}</div>
+								{/* Column Selection Button */}
 								<div className="dropdown">
 									<div tabIndex={0} role="button" className="btn btn-xs">
 										Columns
 									</div>
+									{/* Dropdown */}
 									<div
 										tabIndex={0}
 										className="dropdown-content menu bg-base-300 rounded-box z-50 w-52 shadow p-0 text-xs min-w-min w-[250px]"
 									>
+										{/* Header Name Filter Section */}
 										<div className="form-control flex-row items-center w-full border-b-2 p-2 pb-0">
 											<label className="label cursor-pointer justify-start">
 												<input
@@ -61,9 +67,12 @@ export default function Table({ data, id = "id", title }: { data: Record<string,
 												className="input input-bordered input-xs w-full max-w-xs"
 											/>
 										</div>
+										{/* Header Names Section */}
 										<ul className="p-2 pt-0 w-full max-h-[200px] overflow-y-auto">
 											{headers.reduce((acc: ReactNode[], head) => {
+												//only render the header name if it is selected in the header name filter
 												if (head.toLowerCase().includes(columnsFilter.toLowerCase())) {
+													//Header Name
 													acc.push(
 														<li key={head + "_dropdown"} className="form-control">
 															<label className="label cursor-pointer justify-start p-1">
@@ -88,14 +97,19 @@ export default function Table({ data, id = "id", title }: { data: Record<string,
 								</div>
 							</div>
 						</th>
+
+						{/* Headers */}
 						{headers.reduce((acc: ReactNode[], head) => {
+							//only render the header if it is selected in the header filter
 							if (displayHeaders[head]) {
+								//Header
 								acc.push(
 									<td key={head}>
 										<label className="form-control w-full max-w-xs">
 											<div>
 												<span>{head}</span>
 											</div>
+											{/* Value Filter */}
 											<label className="input input-bordered input-xs flex items-center gap-2">
 												<input
 													onChange={(e) => handleFilter({ [head]: e.target.value })}
@@ -126,13 +140,16 @@ export default function Table({ data, id = "id", title }: { data: Record<string,
 					</tr>
 				</thead>
 				<tbody>
+					{/* Value Cell */}
 					{data.reduce((acc: ReactNode[], row) => {
+						//node to render
 						const rowNode = (
 							<tr key={row[id]} className="border-base-100 border-b-2">
 								<th>{row[title]}</th>
 								<>
 									{headers.reduce((acc: ReactNode[], head, i) => {
 										if (displayHeaders[head]) {
+											//cell
 											acc.push(
 												<td
 													className={`whitespace-nowrap ${i ? "border-base-100 border-l-2" : ""} ${
@@ -140,7 +157,9 @@ export default function Table({ data, id = "id", title }: { data: Record<string,
 													}`}
 													key={row[head] + "child" + i}
 												>
-													{row[head]}
+													{row[head] in DeadValueEnum && typeof row[head] === "number"
+														? DeadValueEnum[row[head]]
+														: row[head]}
 												</td>
 											);
 										}
@@ -152,6 +171,7 @@ export default function Table({ data, id = "id", title }: { data: Record<string,
 							</tr>
 						);
 
+						//only render the cell if it matches the value filter
 						//no filters, include everything
 						if (Object.keys(filters).length === 0) {
 							acc.push(rowNode);
