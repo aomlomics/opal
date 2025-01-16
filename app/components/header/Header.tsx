@@ -38,8 +38,8 @@ export default function Header() {
 					<ThemeToggle />
 					<div className="absolute bottom-0 right-[240px] hidden lg:flex space-x-4">
 						<TabButton tabName="Home" route="/" />
-						<TabButton tabName="Search" route="/search" />
 						<TabButton tabName="Explore" route="/explore/project" />
+						<TabButton tabName="Search" route="/search" />
 						<TabButton tabName="Submit" route="/submit" />
 						<TabButton tabName="Assays" route="/assays" />
 						<TabButton tabName="Tourmaline" route="/tourmaline" />
