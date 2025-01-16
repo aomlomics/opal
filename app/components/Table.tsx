@@ -3,7 +3,7 @@
 import { DeadValueEnum, TableToEnumSchema } from "@/types/enums";
 import { Prisma } from "@prisma/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, ReactNode, useRef, useState } from "react";
+import { FormEvent, MouseEventHandler, ReactNode, useRef, useState } from "react";
 import useSWR from "swr";
 import { useDebouncedCallback } from "use-debounce";
 import { fetcher } from "../helpers/utils";
@@ -67,6 +67,12 @@ export default function Table({
 		setWhereFilter(temp);
 	}
 
+	function resetForm(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+		//@ts-ignore
+		document.forms[`${table}TableForm`].reset();
+		setWhereFilter({});
+	}
+
 	//api call
 	let query = new URLSearchParams({
 		table,
@@ -101,11 +107,11 @@ export default function Table({
 	});
 
 	return (
-		<form onSubmit={applyFilters} className="w-full h-full flex flex-col">
+		<form id={`${table}TableForm`} onSubmit={applyFilters} className="w-full h-full flex flex-col">
 			<div className="grid grid-cols-3 justify-items-center">
 				{/* Filters Buttons */}
 				<div className="flex items-center gap-5">
-					<button onClick={() => setWhereFilter({})} className="btn btn-sm">
+					<button onClick={resetForm} className="btn btn-sm" type="button">
 						Clear Filters
 					</button>
 					<button type="submit" className="btn btn-sm">
@@ -122,6 +128,7 @@ export default function Table({
 						className="btn btn-ghost gap-2"
 						disabled={!searchParams.get("page") || parseInt(searchParams.get("page") as string) <= 1}
 						onClick={() => handlePage(-1)}
+						type="button"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -151,6 +158,7 @@ export default function Table({
 						className="btn btn-ghost gap-2"
 						disabled={parseInt(searchParams.get("page") || "1") * take > data.count}
 						onClick={() => handlePage()}
+						type="button"
 					>
 						Next
 						<svg
