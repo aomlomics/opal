@@ -21,8 +21,10 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				}
 			},
 			Samples: {
-				omit: {
-					project_id: true
+				select: {
+					samp_name: true,
+					decimalLatitude: true,
+					decimalLongitude: true
 				}
 			},
 			Analyses: {
@@ -206,7 +208,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				{/* Table */}
 				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Table" />
 				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6 h-[400px] w-[1200px]">
-					<Table data={project.Samples} title="samp_name"></Table>
+					<Table table="sample" title="samp_name" where={{ project_id }}></Table>
 				</div>
 
 				{/* Charts */}

@@ -85,12 +85,16 @@ export function replaceDead(
 }
 
 export function parsePaginationParams(searchParams: URLSearchParams) {
-	const findMany = {
+	const query = {
 		orderBy: {
 			id: "asc"
+		},
+		omit: {
+			id: true
 		}
 	} as {
 		orderBy: { id: Prisma.SortOrder };
+		omit: {id: true};
 		take: number;
 		skip?: number;
 		cursor?: { id: number };
@@ -102,13 +106,13 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 	if (!take) {
 		throw new Error("take is required");
 	}
-	findMany.take = parseInt(take);
+	query.take = parseInt(take);
 
 	const page = searchParams.get("page");
 	//const cursorId = searchParams.get("cursorId");
 	if (page) {
 		//offset pagination
-		findMany.skip = (parseInt(page) - 1) * findMany.take;
+		query.skip = (parseInt(page) - 1) * query.take;
 	}
 	//} else if (cursorId) {
 	//	const dir = searchParams.get("dir");
@@ -125,12 +129,12 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 	const whereStr = searchParams.get("where");
 	if (whereStr) {
 		const where = JSON.parse(whereStr);
-		findMany.where = where;
+		query.where = where;
 	}
 
 	const relCounts = searchParams.get("relCounts");
 	if (relCounts) {
-		findMany.include = {
+		query.include = {
 			_count: {
 				select: relCounts
 					.split(",")
@@ -139,7 +143,7 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 		};
 	}
 
-	return findMany;
+	return query;
 }
 
 export function randomColors(num: number) {

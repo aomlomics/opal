@@ -18,14 +18,14 @@ export const DeadBooleanEnum = {
 	missing: "missing"
 };
 
-// export const TableToEnumSchema = {
-// 	sample: SampleScalarFieldEnumSchema,
-// 	project: ProjectScalarFieldEnumSchema,
-// 	assay: AssayScalarFieldEnumSchema,
-// 	library: LibraryScalarFieldEnumSchema,
-// 	analysis: AnalysisScalarFieldEnumSchema,
-// 	occurrence: OccurrenceScalarFieldEnumSchema,
-// 	feature: FeatureScalarFieldEnumSchema,
-// 	assignment: AssignmentScalarFieldEnumSchema,
-// 	taxonomy: TaxonomyScalarFieldEnumSchema
-// }
+export const TableToEnumSchema = {
+	sample: SampleScalarFieldEnumSchema,
+	project: ProjectScalarFieldEnumSchema,
+	assay: AssayScalarFieldEnumSchema,
+	library: LibraryScalarFieldEnumSchema,
+	analysis: AnalysisScalarFieldEnumSchema,
+	occurrence: OccurrenceScalarFieldEnumSchema,
+	feature: FeatureScalarFieldEnumSchema,
+	assignment: AssignmentScalarFieldEnumSchema,
+	taxonomy: TaxonomyScalarFieldEnumSchema
+}
