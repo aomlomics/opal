@@ -11,17 +11,18 @@ import { fetcher } from "../helpers/utils";
 export default function Table({
 	table,
 	title,
-	where,
-	take = 50
+	where
 }: {
 	table: Uncapitalize<Prisma.ModelName>;
 	title: string;
 	where?: Record<string, any>;
-	take?: number;
 }) {
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const { replace } = useRouter();
+
+	const [take, setTake] = useState(50);
+
 	const [whereFilter, setWhereFilter] = useState({} as Record<string, { contains: string; mode: "insensitive" }>);
 
 	const [columnsFilter, setColumnsFilter] = useState("");
@@ -48,8 +49,12 @@ export default function Table({
 	function applyFilters(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
+		console.log("test");
+
 		const formData = new FormData(e.currentTarget);
-		console.log(formData);
+
+		let take = parseInt(formData.get("take") as string);
+		formData.delete("take");
 
 		const temp = {} as typeof whereFilter;
 		for (const [key, value] of formData.entries()) {
@@ -58,6 +63,7 @@ export default function Table({
 					temp[key] = { contains: value, mode: "insensitive" };
 				}
 		}
+		setTake(take);
 		setWhereFilter(temp);
 	}
 
@@ -78,29 +84,37 @@ export default function Table({
 	if (isLoading) return <div>loading...</div>;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
 
-	const headers = TableToEnumSchema[table]._def.values as string[];
-	//remove database field
-	headers.splice(headers.indexOf("id"), 1);
-	//displaying this header differently, so removing it
-	headers.splice(headers.indexOf(title), 1);
-	//remove all headers where the value is assumed to be the same
-	if (where) {
-		for (const head in where) {
-			headers.splice(headers.indexOf(head), 1);
+	const headers = TableToEnumSchema[table]._def.values.filter((e) => {
+		//remove database field
+		//displaying title header differently, so removing it
+		let toRemove = e === "id" || e === title;
+		//remove all headers where the value is assumed to be the same
+		if (!toRemove && where) {
+			for (const head in where) {
+				if (e === head) {
+					toRemove = true;
+				}
+			}
 		}
-	}
+
+		return !toRemove;
+	});
 
 	return (
-		<div className="w-full h-full flex flex-col">
+		<form onSubmit={applyFilters} className="w-full h-full flex flex-col">
 			<div className="grid grid-cols-3 justify-items-center">
 				{/* Filters Buttons */}
-				<div className="flex gap-5">
+				<div className="flex items-center gap-5">
 					<button onClick={() => setWhereFilter({})} className="btn btn-sm">
 						Clear Filters
 					</button>
-					<button form={`${table}TableForm`} type="submit" className="btn btn-sm">
+					<button type="submit" className="btn btn-sm">
 						Apply Filters
 					</button>
+					<label className="input input-sm input-bordered flex items-center gap-2">
+						Per Page:
+						<input name="take" defaultValue={take} type="number" className="grow max-w-12" />
+					</label>
 				</div>
 				{/* Pagination Controls */}
 				<div className="flex items-center justify-center gap-8">
@@ -155,87 +169,85 @@ export default function Table({
 					</button>
 				</div>
 				{/* Column Selection Button */}
-				<div className="dropdown">
-					<div tabIndex={0} role="button" className="btn btn-sm">
-						Columns
-					</div>
-					{/* Dropdown */}
-					<div
-						tabIndex={0}
-						className="dropdown-content menu bg-base-300 rounded-box z-50 w-52 shadow p-0 text-xs min-w-min w-[250px]"
-					>
-						{/* Header Name Filter Section */}
-						<div className="form-control flex-row items-center w-full border-b-2 p-2 pb-0">
-							<label className="label cursor-pointer justify-start">
-								<input
-									type="checkbox"
-									onChange={(e) => {
-										if (e.target.checked) {
-											setHeadersFilter({});
-										} else {
-											setHeadersFilter(
-												headers.reduce((acc, head) => {
-													if (!headersFilter[head]) {
-														return { ...acc, [head]: true };
-													} else {
-														return { ...acc };
-													}
-												}, {})
-											);
-										}
-									}}
-									checked={!Object.values(headersFilter).some((bool) => bool)}
-									className="checkbox checkbox-xs"
-								/>
-								<span className="label-text pl-2">All</span>
-							</label>
-							<input
-								type="text"
-								onChange={(e) => handleColFilter(e.target.value)}
-								placeholder="Filter"
-								className="input input-bordered input-xs w-full max-w-xs"
-							/>
+				<div className="flex items-center">
+					<div className="dropdown dropdown-end">
+						<div tabIndex={0} role="button" className="btn btn-sm">
+							Columns
 						</div>
-						{/* Header Names Section */}
-						<ul className="p-2 pt-0 w-full max-h-[200px] overflow-y-auto">
-							{headers.reduce((acc: ReactNode[], head) => {
-								//only render the header name if it is selected in the header name filter
-								if (head.toLowerCase().includes(columnsFilter.toLowerCase())) {
-									//Header Name
-									acc.push(
-										<li key={head + "_dropdown"} className="form-control">
-											<label className="label cursor-pointer justify-start p-1">
-												<input
-													type="checkbox"
-													checked={!headersFilter[head]}
-													onChange={() => {
-														const temp = { ...headersFilter };
-														if (headersFilter[head]) {
-															delete temp[head];
+						{/* Dropdown */}
+						<div
+							tabIndex={0}
+							className="dropdown-content menu bg-base-300 rounded-box z-50 w-52 shadow p-0 text-xs min-w-min w-[250px]"
+						>
+							{/* Header Name Filter Section */}
+							<div className="form-control flex-row items-center w-full border-b-2 p-2 pb-0">
+								<label className="label cursor-pointer justify-start">
+									<input
+										type="checkbox"
+										onChange={(e) => {
+											if (e.target.checked) {
+												setHeadersFilter({});
+											} else {
+												setHeadersFilter(
+													headers.reduce((acc, head) => {
+														if (!headersFilter[head]) {
+															return { ...acc, [head]: true };
 														} else {
-															temp[head] = true;
+															return { ...acc };
 														}
-														setHeadersFilter(temp);
-													}}
-													className="checkbox checkbox-xs"
-												/>
-												<span className="label-text pl-2">{head}</span>
-											</label>
-										</li>
-									);
-								}
+													}, {})
+												);
+											}
+										}}
+										checked={!Object.values(headersFilter).some((bool) => bool)}
+										className="checkbox checkbox-xs"
+									/>
+									<span className="label-text pl-2">All</span>
+								</label>
+								<input
+									type="text"
+									onChange={(e) => handleColFilter(e.target.value)}
+									placeholder="Filter"
+									className="input input-bordered input-xs w-full max-w-xs ml-2 mb-1"
+								/>
+							</div>
+							{/* Header Names Section */}
+							<ul className="p-2 pt-0 w-full max-h-[200px] overflow-y-auto scrollbar scrollbar-thumb-accent scrollbar-track-base-300">
+								{headers.reduce((acc: ReactNode[], head) => {
+									//only render the header name if it is selected in the header name filter
+									if (head.toLowerCase().includes(columnsFilter.toLowerCase())) {
+										//Header Name
+										acc.push(
+											<li key={head + "_dropdown"} className="form-control">
+												<label className="label cursor-pointer justify-start p-1">
+													<input
+														type="checkbox"
+														checked={!headersFilter[head]}
+														onChange={() => {
+															const temp = { ...headersFilter };
+															if (headersFilter[head]) {
+																delete temp[head];
+															} else {
+																temp[head] = true;
+															}
+															setHeadersFilter(temp);
+														}}
+														className="checkbox checkbox-xs"
+													/>
+													<span className="label-text pl-2">{head}</span>
+												</label>
+											</li>
+										);
+									}
 
-								return acc;
-							}, [])}
-						</ul>
+									return acc;
+								}, [])}
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
-			<form
-				id={`${table}TableForm`}
-				onSubmit={applyFilters}
-				className="overflow-auto scrollbar scrollbar-thumb-accent scrollbar-track-base-100"
-			>
+			<div className="overflow-auto scrollbar scrollbar-thumb-accent scrollbar-track-base-100">
 				<table className="table table-xs table-pin-rows table-pin-cols">
 					{/* Headers */}
 					<thead>
@@ -344,7 +356,7 @@ export default function Table({
 						}, [])}
 					</tbody>
 				</table>
-			</form>
-		</div>
+			</div>
+		</form>
 	);
 }
