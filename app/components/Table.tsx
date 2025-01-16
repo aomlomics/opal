@@ -79,6 +79,8 @@ export default function Table({
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
 
 	const headers = TableToEnumSchema[table]._def.values as string[];
+	//remove database field
+	headers.splice(headers.indexOf("id"), 1);
 	//displaying this header differently, so removing it
 	headers.splice(headers.indexOf(title), 1);
 	//remove all headers where the value is assumed to be the same
