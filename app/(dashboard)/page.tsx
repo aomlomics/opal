@@ -44,8 +44,10 @@ export default async function Home() {
 		<main className="flex flex-col grow bg-base-400 text-base-content">
 			<div className="relative w-full h-[80vh] bg-black overflow-hidden z-content-overlay">
 				<Carousel />
-				<div className="absolute inset-0 -right-[200%] bg-gradient-to-r from-base-100 via-base-100/50 via-[35%] to-transparent to-[150%]"></div>
-				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base-100"></div>
+				{/* Gradient for left-to-right */}
+				<div className="absolute inset-0 -right-[60%] bg-gradient-to-r from-base-100 via-base-100/70 via-[20%] via-base-100/30 via-[40%] to-transparent to-[100%]"></div>
+				{/* Gradient for bottom */}
+				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-base-100/30 via-[50%] to-base-100"></div>
 				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-3xl">
 					<h1 className="text-6xl font-light drop-shadow-lg leading-tight">
 						<span className="block text-primary animate-slide-in">Welcome</span>
