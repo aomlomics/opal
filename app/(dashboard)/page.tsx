@@ -74,8 +74,11 @@ export default async function Home() {
 			</div>
 
 			<div className="relative mb-12 text-center">
-				<p className="text-primary mb-2">Explore Our Data</p>
-				<Link href="#dataSummary">
+				<Link
+					href="#dataSummary"
+					className="relative inline-block after:absolute after:content-[''] after:inset-[-40px] after:cursor-pointer"
+				>
+					<p className="text-primary mb-2">Explore Our Data</p>
 					<div className="animate-bounce">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
