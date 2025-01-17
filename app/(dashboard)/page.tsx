@@ -47,7 +47,7 @@ export default async function Home() {
 				{/* Gradient for left-to-right */}
 				<div className="absolute inset-0 -right-[60%] bg-gradient-to-r from-base-100 via-base-100/70 via-[20%] via-base-100/30 via-[40%] to-transparent to-[100%]"></div>
 				{/* Gradient for bottom */}
-				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-base-100/30 via-[50%] to-base-100"></div>
+				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-base-100/40 via-[50%] to-base-100"></div>
 				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-3xl">
 					<h1 className="text-6xl font-light drop-shadow-lg leading-tight">
 						<span className="block text-primary animate-slide-in">Welcome</span>
