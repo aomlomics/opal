@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SignedIn, UserButton, SignedOut, SignInButton } from "@clerk/nextjs";
 import TabButton from "./TabButton";
+import NodeLogo from "@/app/components/NodeLogo";
 
 export default function Header() {
 	return (
@@ -11,9 +12,8 @@ export default function Header() {
 				{/* Logo section */}
 				<div className="flex items-center">
 					<Link className="px-4 sm:px-6 lg:px-8 normal-case text-xl pt-1 h-24 w-64 flex flex-col items-center" href="/">
-						<div className="avatar w-full h-full">
-							<Image
-								src="/images/node_logo_1_8_blw.svg"
+						<div className="avatar w-full h-full relative">
+							<NodeLogo
 								alt="NODE Logo"
 								fill={true}
 								style={{ objectFit: "contain" }}
