@@ -45,18 +45,18 @@ export default async function Home() {
 			<div className="relative w-full h-[80vh] bg-black overflow-hidden z-content-overlay">
 				<Carousel />
 				{/* Gradient for left-to-right */}
-				<div className="absolute inset-0 -right-[60%] bg-gradient-to-r from-base-100 via-base-100/70 via-[20%] via-base-100/30 via-[40%] to-transparent to-[100%]"></div>
+				<div className="absolute inset-0 -right-[60%] bg-gradient-to-r from-base-100 via-base-100/30 via-[40%] to-transparent to-[100%]"></div>
 				{/* Gradient for bottom */}
 				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-base-100/40 via-[50%] to-base-100"></div>
-				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-3xl">
-					<h1 className="text-6xl font-light drop-shadow-lg leading-tight">
+				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-4xl lg:max-w-5xl">
+					<h1 className="text-5xl sm:text-6xl lg:text-7xl font-light drop-shadow-lg leading-tight">
 						<span className="block text-primary animate-slide-in">Welcome</span>
 					</h1>
 					<div className="text-base-content drop-shadow-lg">
-						<span className="block text-4xl font-light sm:text-5xl mb-4">
-							to the <span className="text-primary">NOAA Ocean DNA Explorer</span>
+						<span className="block text-3xl sm:text-4xl font-light lg:text-5xl mb-4">
+							to the <span className="text-primary font-light">NOAA Ocean DNA Explorer</span>
 						</span>
-						<div className="text-2xl sm:text-3xl mb-8 text-base-content/90 leading-snug">
+						<div className="text-lg sm:text-xl lg:text-2xl mb-8 text-base-content leading-relaxed max-w-3xl">
 							<span className="block">
 								a data sharing platform, search engine, and visualization and analysis tool for ocean environmental DNA
 								(eDNA) data
