@@ -59,7 +59,7 @@ export default async function Home() {
 						<div className="text-lg sm:text-xl lg:text-2xl mb-8 text-base-content leading-relaxed max-w-3xl">
 							<span className="block">
 								a data sharing platform, search engine, and visualization and analysis tool for ocean environmental DNA
-								(eDNA) data
+								data
 							</span>
 						</div>
 					</div>

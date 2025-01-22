@@ -118,7 +118,7 @@ export default function Pagination({
 					{data.count}
 				</div> */}
 
-				<div className="text-base-content/70">
+				<div className="text-base-content">
 					{Math.min((parseInt(searchParams.get("page") || "1") - 1) * take + 1, data.count)}-
 					{Math.min(parseInt(searchParams.get("page") || "1") * take, data.count)} of {data.count}
 				</div>
