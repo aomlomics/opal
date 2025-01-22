@@ -1,6 +1,78 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import ExploreTabButton from "@/app/components/explore/ExploreTabButton";
+import TableDescription from "@/app/components/explore/TableDescription";
+
+const TABLES = [
+	{
+		name: "Project",
+		route: "project",
+		description:
+			"Research initiatives collecting eDNA samples, with metadata on study design, objectives, and participating institutions."
+	},
+	{
+		name: "Sample",
+		route: "sample",
+		description: "eDNA samples with metadata on collection, environmental conditions, storage, and processing methods."
+	},
+	{
+		name: "Assay",
+		route: "assay",
+		description:
+			"Laboratory protocols used to analyze samples, specifying primers, controls, PCR protocols, and target genes for DNA amplification."
+	},
+	{
+		name: "Library",
+		route: "library",
+		description:
+			"Sequencing preparation details for each Sample-Assay combination, including barcoding approach, sequencing platform, and adapter information."
+	},
+	{
+		name: "Analysis",
+		route: "analysis",
+		description:
+			"Bioinformatic processing runs that convert raw sequence data into species detections, documenting all parameters and methods used."
+	},
+	{
+		name: "Occurence",
+		route: "occurence",
+		description:
+			"Individual detection records linking samples to specific DNA sequences (Features), including their quantified abundance."
+	},
+	{
+		name: "Feature",
+		route: "feature",
+		description:
+			"Unique DNA sequences (eg, ASVs) found in samples, typically representing distinct organisms, with their consensus taxonomic classification."
+	},
+	{
+		name: "Taxonomy",
+		route: "taxonomy",
+		description: "Hierarchical classification of detected organisms from domain to species level."
+	}
+];
+
 export default function ExploreLayout({ children }: { children: React.ReactNode }) {
+	const pathname = usePathname();
+	const currentRoute = pathname.split("/").pop() || "project";
+	const currentTable = TABLES.find((table) => table.route === currentRoute) || TABLES[0];
+
 	return (
-		<div className="flex flex-col space-y-8 p-4">
+		<div className="flex flex-col space-y-4 p-4">
+			{/* Tabs Navigation */}
+			<div className="border-b border-base-300">
+				<div className="flex space-x-2">
+					{TABLES.map((table) => (
+						<ExploreTabButton key={table.route} tabName={table.name} route={table.route} />
+					))}
+				</div>
+			</div>
+
+			{/* Table Description */}
+			<TableDescription tableName={currentTable.name} description={currentTable.description} />
+
+			{/* Existing Content */}
 			<div className="bg-base-200 p-6 rounded-lg">{children}</div>
 		</div>
 	);
