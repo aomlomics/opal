@@ -279,6 +279,7 @@ enum dada2_chimera_method {
 model Project {
     id         Int    @id @default(autoincrement())
     project_id String @unique
+    userId     String
 
     // Relations
     Samples  Sample[]
@@ -614,6 +615,7 @@ model Library {
 model Analysis {
     id                Int    @id @default(autoincrement())
     analysis_run_name String @unique
+    userId            String
 
     // Relations
     project_id  String

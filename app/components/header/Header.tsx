@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SignedIn, UserButton, SignedOut, SignInButton } from "@clerk/nextjs";
 import TabButton from "./TabButton";
+import User from "./User";
 
 export default function Header() {
 	return (
@@ -47,14 +48,7 @@ export default function Header() {
 						<TabButton tabName="Help" route="/help" />
 					</div>
 					<div className="mr-5">
-						<SignedIn>
-							<UserButton />
-						</SignedIn>
-						<SignedOut>
-							<SignInButton>
-								<button className="btn bg-primary text-white hover:bg-primary/80">Sign In</button>
-							</SignInButton>
-						</SignedOut>
+						<User />
 					</div>
 				</div>
 			</div>
