@@ -20,9 +20,17 @@ import {
 } from "@/prisma/generated/zod";
 import { SubmitActionReturn } from "@/types/types";
 import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
 
+//https://clerk.com/docs/organizations/verify-user-permissions
 export default async function projectSubmitAction(formData: FormData): SubmitActionReturn {
 	console.log("project submit");
+
+	const { userId } = await auth();
+	if (!userId) {
+		return { message: "Error", error: "Unauthorized" };
+	}
+
 	try {
 		const assays = {} as Record<string, Prisma.AssayCreateManyInput>;
 		const libraries = [] as Prisma.LibraryCreateManyInput[];
@@ -117,11 +125,14 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 			}
 		}
 
-		const project = ProjectOptionalDefaultsSchema.parse(projectCol, {
-			errorMap: (error, ctx) => {
-				return { message: `ProjectSchema: ${ctx.defaultError}` };
+		const project = ProjectOptionalDefaultsSchema.parse(
+			{ ...projectCol, userId: userId },
+			{
+				errorMap: (error, ctx) => {
+					return { message: `ProjectSchema: ${ctx.defaultError}` };
+				}
 			}
-		}) as Prisma.ProjectCreateInput;
+		) as Prisma.ProjectCreateInput;
 
 		//Library file
 		console.log("library file");

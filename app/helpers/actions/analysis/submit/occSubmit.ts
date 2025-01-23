@@ -5,8 +5,14 @@ import { prisma } from "@/app/helpers/prisma";
 import { OccurrenceOptionalDefaultsSchema } from "@/prisma/generated/zod";
 import { SubmitActionReturn } from "@/types/types";
 import { revalidatePath } from "next/cache";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function OccSubmitAction(formData: FormData): SubmitActionReturn {
+	const { userId } = await auth();
+	if (!userId) {
+		return { message: "Error", error: "Unauthorized" };
+	}
+
 	try {
 		const analysis_run_name = formData.get("analysis_run_name") as string;
 		console.log(`${analysis_run_name} occurrences submit`);

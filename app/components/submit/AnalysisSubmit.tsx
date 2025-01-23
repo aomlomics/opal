@@ -62,6 +62,7 @@ export default function AnalysisSubmit() {
 
 		try {
 			const response = await deleteAction(formData);
+			//TODO: change how errors are handled (no longer returns response.error, now throws new error)
 			if (response.error) {
 				setErrorObj({
 					[analysis_run_name]: response.error
@@ -217,7 +218,7 @@ export default function AnalysisSubmit() {
 
 				//assignments file
 				setLoading(`${analysis_run_name}_assign`);
-				const { error: assignError, result: assignResult } = await analysisFileSubmit({
+				const { error: assignError } = await analysisFileSubmit({
 					analysis_run_name,
 					file: allFormData.get(`${analysis_run_name}_assign`) as File,
 					fileSuffix: "_assign",
@@ -249,11 +250,12 @@ export default function AnalysisSubmit() {
 				});
 
 				if (occError) {
+					await dbDelete(analysisDeleteAction, analysisResult!.analysis_run_name);
 					//remove analyses, features, and taxonomies from database
-					await dbDelete(analysisDeleteAction, analysisResult!.analysis_run_name, {
-						dbFeatures: assignResult!.dbFeatures,
-						dbTaxonomies: assignResult!.dbTaxonomies
-					});
+					// await dbDelete(analysisDeleteAction, analysisResult!.analysis_run_name, {
+					// 	dbFeatures: assignResult!.dbFeatures,
+					// 	dbTaxonomies: assignResult!.dbTaxonomies
+					// });
 
 					hasError = true;
 					setErrorObj({
