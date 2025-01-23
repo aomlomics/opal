@@ -7,6 +7,7 @@ import { FormEvent, ReactNode, useState } from "react";
 import useSWR from "swr";
 import { useDebouncedCallback } from "use-debounce";
 import { fetcher } from "../../helpers/utils";
+import LoadingTable from "./LoadingTable";
 
 export default function Table({
 	table,
@@ -87,7 +88,7 @@ export default function Table({
 		}
 	}
 	const { data, error, isLoading } = useSWR(`/api/pagination?${query.toString()}`, fetcher);
-	if (isLoading) return <div>loading...</div>;
+	if (isLoading) return <LoadingTable />;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
 
 	const headers = TableToEnumSchema[table]._def.values.filter((e) => {
@@ -123,11 +124,11 @@ export default function Table({
 					</label>
 				</div>
 				{/* Pagination Controls */}
-				<div className="flex items-center justify-center gap-8">
+				<div className="flex items-center gap-8 w-full">
 					<button
 						className="btn btn-ghost gap-2"
 						disabled={!searchParams.get("page") || parseInt(searchParams.get("page") as string) <= 1}
-						onClick={() => handlePage(-1)}
+						onClick={(e) => handlePage(-1)}
 						type="button"
 					>
 						<svg
@@ -146,7 +147,7 @@ export default function Table({
 						Previous
 					</button>
 
-					<div className="text-base-content/70">
+					<div className="text-base-content/70 grow text-center">
 						{(parseInt(searchParams.get("page") || "1") - 1) * take}-
 						{parseInt(searchParams.get("page") || "1") * take < data.count
 							? parseInt(searchParams.get("page") || "1") * take
@@ -157,7 +158,7 @@ export default function Table({
 					<button
 						className="btn btn-ghost gap-2"
 						disabled={parseInt(searchParams.get("page") || "1") * take > data.count}
-						onClick={() => handlePage()}
+						onClick={(e) => handlePage()}
 						type="button"
 					>
 						Next

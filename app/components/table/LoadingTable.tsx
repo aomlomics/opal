@@ -4,19 +4,19 @@ export default function LoadingTable() {
 			<div className="grid grid-cols-3 justify-items-center">
 				{/* Filters Buttons */}
 				<div className="flex items-center gap-5">
-					<button className="btn btn-sm" type="button">
+					<button disabled={true} className="btn btn-sm" type="button">
 						Clear Filters
 					</button>
-					<button type="submit" className="btn btn-sm">
+					<button disabled={true} className="btn btn-sm">
 						Apply Filters
 					</button>
 					<label className="input input-sm input-bordered flex items-center gap-2">
 						Per Page:
-						<input name="take" defaultValue={50} type="number" className="grow max-w-12" />
+						<input name="take" disabled={true} type="number" className="grow max-w-12" />
 					</label>
 				</div>
 				{/* Pagination Controls */}
-				<div className="flex items-center justify-center gap-8">
+				<div className="flex items-center gap-8 w-full">
 					<button className="btn btn-ghost gap-2" disabled={true} type="button">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ export default function LoadingTable() {
 						Previous
 					</button>
 
-					<div className="text-base-content/70">0 - 0 of 0</div>
+					<div className="text-base-content/70 grow text-center">0-0 of 0</div>
 
 					<button className="btn btn-ghost gap-2" disabled={true} type="button">
 						Next
@@ -55,10 +55,14 @@ export default function LoadingTable() {
 				</div>
 				{/* Column Selection Button */}
 				<div className="flex items-center">
-					<button className="btn btn-sm">Columns</button>
+					<button disabled={true} className="btn btn-sm">
+						Columns
+					</button>
 				</div>
 			</div>
-			<div className="overflow-auto scrollbar scrollbar-thumb-accent scrollbar-track-base-100"></div>
+			<div className="flex items-center justify-center grow">
+				<span className="loading loading-spinner loading-lg"></span>
+			</div>
 		</div>
 	);
 }

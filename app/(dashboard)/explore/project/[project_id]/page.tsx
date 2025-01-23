@@ -5,6 +5,7 @@ import Image from "next/image";
 import Table from "@/app/components/table/Table";
 import BarChart from "@/app/components/BarChart";
 import { randomColors } from "@/app/helpers/utils";
+import LoadingTable from "@/app/components/table/LoadingTable";
 
 export default async function Project_Id({ params }: { params: Promise<{ project_id: string }> }) {
 	const { project_id } = await params;
@@ -212,6 +213,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					className="tab-content bg-base-100 border-base-300 rounded-box p-6 h-[400px] w-full overflow-hidden"
 				>
 					<Table table="sample" title="samp_name" where={{ project_id }}></Table>
+					{/* <LoadingTable /> */}
 				</div>
 
 				{/* Charts */}
