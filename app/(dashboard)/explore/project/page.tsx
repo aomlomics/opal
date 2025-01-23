@@ -1,6 +1,6 @@
 import Pagination from "@/app/components/Pagination";
 import { Suspense } from "react";
-import MapWrapper from "@/app/components/MapWrapper";
+import MapWrapper from "@/app/components/map/Map";
 
 export default async function Project() {
 	return (

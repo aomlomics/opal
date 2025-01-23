@@ -1,8 +1,8 @@
 import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
-import MapWrapper from "@/app/components/MapWrapper";
+import MapWrapper from "@/app/components/map/Map";
 import Image from "next/image";
-import Table from "@/app/components/Table";
+import Table from "@/app/components/table/Table";
 import BarChart from "@/app/components/BarChart";
 import { randomColors } from "@/app/helpers/utils";
 

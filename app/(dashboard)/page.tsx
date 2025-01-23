@@ -4,7 +4,7 @@ import DataSummary from "../components/DataSummary";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
 import { DeadValueEnum } from "@/types/enums";
 import { prisma } from "../helpers/prisma";
-import MapWrapper from "../components/MapWrapper";
+import MapWrapper from "../components/map/Map";
 
 export default async function Home() {
 	const deadValues = Object.values(DeadValueEnum).filter((v) => !isNaN(Number(v))) as number[];

@@ -3,10 +3,10 @@
 import { DeadValueEnum, TableToEnumSchema } from "@/types/enums";
 import { Prisma } from "@prisma/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, MouseEventHandler, ReactNode, useRef, useState } from "react";
+import { FormEvent, ReactNode, useState } from "react";
 import useSWR from "swr";
 import { useDebouncedCallback } from "use-debounce";
-import { fetcher } from "../helpers/utils";
+import { fetcher } from "../../helpers/utils";
 
 export default function Table({
 	table,
