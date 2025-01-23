@@ -1,28 +1,21 @@
 import Pagination from "@/app/components/Pagination";
+import TableFilter from "@/app/components/explore/TableFilter";
 import { Suspense } from "react";
-import MapWrapper from "@/app/components/map/Map";
 
 export default async function Project() {
 	return (
-		<div className="space-y-8">
-			<div className="h-[400px] w-full rounded-xl overflow-hidden bg-base-200 shadow-lg">{/*<MapWrapper />*/}</div>
+		<div className="space-y-6">
+			<h1 className="text-xl font-medium text-base-content">
+				Showing all
+				<span className="text-primary"> Projects</span>
+			</h1>
 
-			<div>
-				<h1 className="text-2xl text-base-content mb-4">
-					Showing all
-					<span className="text-primary"> Projects</span>
-				</h1>
+			<TableFilter />
 
-				<div className="bg-base-200 p-6 rounded-xl shadow-lg">
-					<Suspense fallback={null}>
-						<Pagination
-							id={"project_id"}
-							table={"project"}
-							title={"project_name"}
-							relCounts={["Samples", "Analyses"]}
-						/>
-					</Suspense>
-				</div>
+			<div className="bg-base-100 rounded-lg border border-base-300">
+				<Suspense fallback={null}>
+					<Pagination id={"project_id"} table={"project"} title={"project_name"} relCounts={["Samples", "Analyses"]} />
+				</Suspense>
 			</div>
 		</div>
 	);

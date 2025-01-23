@@ -61,22 +61,22 @@ export default function Pagination({
 	}
 
 	return (
-		<div className="space-y-6">
+		<div className="space-y-6 p-6">
 			{/* Project Cards */}
 			<div className="grid gap-4">
 				{data.result.map((d: any, i: number) => (
-					<div key={i} className="block hover:translate-x-1 transition-transform duration-200 card bg-base-300">
-						<div className="card-body p-5">
+					<div key={i} className="card bg-base-200 hover:translate-x-1 transition-transform duration-200">
+						<div className="card-body p-4">
 							<div className="flex justify-between items-start">
 								<Link href={`/explore/${table}/${d[id]}`} className="text-base text-base-content">
 									{d[title]}
 								</Link>
-								<div className="flex gap-4">
+								<div className="flex gap-2">
 									{relCounts?.map((rel) => (
 										<Link
 											key={rel}
 											href={`/explore/${table}/${d[id]}/${rel}`}
-											className="btn bg-base-100 text-base-content normal-case hover:bg-base-200"
+											className="btn btn-sm bg-base-100 text-base-content normal-case hover:bg-base-300"
 										>
 											{d._count[rel]} {rel}
 										</Link>
@@ -111,9 +111,16 @@ export default function Pagination({
 					Previous
 				</button>
 
-				<div className="text-base-content/70">
+				{/*  to carter- i changed this so instead of it starting at 0, it starts at 1 (luke's request). you can change this back if it breaks any logic */}
+				{/* here is the original section i replaced:  */}
+				{/* <div className="text-base-content/70">
 					{(parseInt(searchParams.get("page") || "1") - 1) * take}-{parseInt(searchParams.get("page") || "1") * take} of{" "}
 					{data.count}
+				</div> */}
+
+				<div className="text-base-content">
+					{Math.min((parseInt(searchParams.get("page") || "1") - 1) * take + 1, data.count)}-
+					{Math.min(parseInt(searchParams.get("page") || "1") * take, data.count)} of {data.count}
 				</div>
 
 				<button

@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Source_Sans_3 } from "next/font/google";
+import ScrollToTop from "@/app/components/ScrollToTop";
 
 const sourceSans = Source_Sans_3({
 	weight: ["300", "400", "500", "600", "700", "800"],
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<ClerkProvider appearance={{ elements: { footer: "hidden" } }} localization={localization}>
 					{children}
 				</ClerkProvider>
+				<ScrollToTop />
 			</body>
 		</html>
 	);
