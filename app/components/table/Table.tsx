@@ -4,12 +4,12 @@ import { DeadValueEnum, TableToEnumSchema } from "@/types/enums";
 import { Prisma } from "@prisma/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, ReactNode, useState } from "react";
-import useSWR from "swr";
+import useSWR, { preload } from "swr";
 import { useDebouncedCallback } from "use-debounce";
 import { fetcher } from "../../helpers/utils";
 import LoadingTable from "./LoadingTable";
 
-export default function Table({
+export default function ActualTable({
 	table,
 	title,
 	where
@@ -44,6 +44,23 @@ export default function Table({
 			params.set("page", "2");
 		}
 		replace(`${pathname}?${params.toString()}`, { scroll: false });
+	}
+
+	function handlePageHover(dir = 1) {
+		let query = new URLSearchParams({
+			table,
+			take: take.toString(),
+			page: (parseInt(searchParams.get("page") || "1") + dir).toString()
+		});
+		if (where) {
+			if (Object.keys(whereFilter).length) {
+				query.set("where", JSON.stringify({ ...where, ...whereFilter }));
+			} else {
+				query.set("where", JSON.stringify(where));
+			}
+		}
+
+		preload(`/api/pagination?${query.toString()}`, fetcher);
 	}
 
 	//filters in the column header
@@ -128,7 +145,8 @@ export default function Table({
 					<button
 						className="btn btn-ghost gap-2"
 						disabled={!searchParams.get("page") || parseInt(searchParams.get("page") as string) <= 1}
-						onClick={(e) => handlePage(-1)}
+						onClick={() => handlePage(-1)}
+						onMouseEnter={() => handlePageHover(-1)}
 						type="button"
 					>
 						<svg
@@ -158,7 +176,8 @@ export default function Table({
 					<button
 						className="btn btn-ghost gap-2"
 						disabled={parseInt(searchParams.get("page") || "1") * take > data.count}
-						onClick={(e) => handlePage()}
+						onClick={() => handlePage()}
+						onMouseEnter={() => handlePageHover()}
 						type="button"
 					>
 						Next

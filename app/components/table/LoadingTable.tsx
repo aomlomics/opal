@@ -1,4 +1,4 @@
-export default function LoadingTable() {
+export default function LoadingTable({ error }: { error?: string }) {
 	return (
 		<div className="w-full h-full flex flex-col">
 			<div className="grid grid-cols-3 justify-items-center">
@@ -61,7 +61,7 @@ export default function LoadingTable() {
 				</div>
 			</div>
 			<div className="flex items-center justify-center grow">
-				<span className="loading loading-spinner loading-lg"></span>
+				{error ? <span>{error}</span> : <span className="loading loading-spinner loading-lg"></span>}
 			</div>
 		</div>
 	);

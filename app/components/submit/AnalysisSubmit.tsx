@@ -269,7 +269,8 @@ export default function AnalysisSubmit() {
 		}
 
 		if (!hasError) {
-			const successMessage = "Analysis successfully submitted! You will be redirected to explore page in 5 seconds...";
+			const successMessage =
+				"Analysis successfully submitted! You will be redirected to the project page in 5 seconds...";
 			await new Promise((resolve) => setTimeout(resolve, 100));
 			setResponseObj({
 				global: successMessage,
@@ -277,7 +278,7 @@ export default function AnalysisSubmit() {
 			});
 
 			setTimeout(() => {
-				router.push("/explore");
+				router.push(`/explore/project`);
 			}, 5000);
 		}
 
