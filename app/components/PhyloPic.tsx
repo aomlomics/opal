@@ -25,6 +25,7 @@ export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	}
 
 	//retrieve suggested taxonomies from GBIF
+	//TODO: split more logically
 	const gbifTaxaRes = await fetch(
 		`https://api.gbif.org/v1/species/suggest?q=${(taxonomy[mostSpecificRank] as string).split("_")[0]}`
 	);
@@ -43,5 +44,6 @@ export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	const phyloPic = await phyloPicRes.json();
 	const imageUrl = phyloPic._embedded.primaryImage._links.vectorFile.href;
 
+	//TODO: make image not take up entire screen
 	return <Image src={imageUrl} alt="Image of taxonomy" fill />;
 }
