@@ -2,9 +2,10 @@ import { prisma } from "../helpers/prisma";
 import Link from "next/link";
 
 export default async function DataSummary() {
-	const { projectCount, sampleCount, featureCount, uniqueAssays } = await prisma.$transaction(async (tx) => {
+	const { projectCount, sampleCount, taxaCount, featureCount, uniqueAssays } = await prisma.$transaction(async (tx) => {
 		const projectCount = await tx.project.count();
 		const sampleCount = await tx.sample.count();
+		const taxaCount = await tx.taxonomy.count();
 		const featureCount = await tx.feature.count();
 		const uniqueAssays = (await tx.assay.findMany({
 			distinct: ["target_gene"],
@@ -35,7 +36,7 @@ export default async function DataSummary() {
 			}
 		}
 
-		return { projectCount, sampleCount, featureCount, uniqueAssays };
+		return { projectCount, sampleCount, taxaCount, featureCount, uniqueAssays };
 	});
 
 	return (
@@ -43,6 +44,7 @@ export default async function DataSummary() {
 			<div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
 				<DataSummaryItem title="Projects" value={projectCount} href="/explore/project" />
 				<DataSummaryItem title="Samples" value={sampleCount} href="/explore/sample" />
+				<DataSummaryItem title="Observed Taxonomies" value={taxaCount} href="/explore/taxonomy" />
 				<DataSummaryItem title="Unique Sequence Features" value={featureCount} href="/explore/feature" />
 				{uniqueAssays.map((a) => (
 					<DataSummaryItem key={a.target_gene} title={a.target_gene} value={a.count || 0} href="/explore/assay" />

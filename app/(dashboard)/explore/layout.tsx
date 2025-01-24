@@ -6,49 +6,49 @@ import TableDescription from "@/app/components/explore/TableDescription";
 
 const TABLES = [
 	{
-		name: "Project",
+		name: "Projects",
 		route: "project",
 		description:
 			"Research initiatives collecting eDNA samples, with metadata on study design, objectives, and participating institutions."
 	},
+	// {
+	// 	name: "Samples",
+	// 	route: "sample",
+	// 	description: "eDNA samples with metadata on collection, environmental conditions, storage, and processing methods."
+	// },
+	// {
+	// 	name: "Assays",
+	// 	route: "assay",
+	// 	description:
+	// 		"Laboratory protocols used to analyze samples, specifying primers, controls, PCR protocols, and target genes for DNA amplification."
+	// },
+	// {
+	// 	name: "Libraries",
+	// 	route: "library",
+	// 	description:
+	// 		"Sequencing preparation details for each Sample-Assay combination, including barcoding approach, sequencing platform, and adapter information."
+	// },
 	{
-		name: "Sample",
-		route: "sample",
-		description: "eDNA samples with metadata on collection, environmental conditions, storage, and processing methods."
-	},
-	{
-		name: "Assay",
-		route: "assay",
-		description:
-			"Laboratory protocols used to analyze samples, specifying primers, controls, PCR protocols, and target genes for DNA amplification."
-	},
-	{
-		name: "Library",
-		route: "library",
-		description:
-			"Sequencing preparation details for each Sample-Assay combination, including barcoding approach, sequencing platform, and adapter information."
-	},
-	{
-		name: "Analysis",
+		name: "Analyses",
 		route: "analysis",
 		description:
 			"Bioinformatic processing runs that convert raw sequence data into species detections, documenting all parameters and methods used."
 	},
+	// {
+	// 	name: "Occurrences",
+	// 	route: "occurrence",
+	// 	description:
+	// 		"Individual detection records linking samples to specific DNA sequences (Features), including their quantified abundance."
+	// },
+	// {
+	// 	name: "Features",
+	// 	route: "feature",
+	// 	description:
+	// 		"Unique DNA sequences (eg, ASVs) found in samples, typically representing distinct organisms, with their consensus taxonomic classification."
+	// },
+	// { name: "Assignments", route: "assignment", description: "Some description." },
 	{
-		name: "Occurrence",
-		route: "occurrence",
-		description:
-			"Individual detection records linking samples to specific DNA sequences (Features), including their quantified abundance."
-	},
-	{
-		name: "Feature",
-		route: "feature",
-		description:
-			"Unique DNA sequences (eg, ASVs) found in samples, typically representing distinct organisms, with their consensus taxonomic classification."
-	},
-	{ name: "Assignment", route: "assignment", description: "Some description." },
-	{
-		name: "Taxonomy",
+		name: "Taxonomies",
 		route: "taxonomy",
 		description: "Hierarchical classification of detected organisms from domain to species level."
 	}

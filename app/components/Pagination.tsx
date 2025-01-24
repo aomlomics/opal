@@ -65,26 +65,22 @@ export default function Pagination({
 			{/* Project Cards */}
 			<div className="grid gap-4">
 				{data.result.map((d: any, i: number) => (
-					<div key={i} className="card bg-base-200 hover:translate-x-1 transition-transform duration-200">
+					<Link
+						href={`/explore/${table}/${d[id]}`}
+						key={i}
+						className="card bg-base-200 hover:translate-x-1 transition-transform duration-200"
+					>
 						<div className="card-body p-4">
-							<div className="flex justify-between items-start">
-								<Link href={`/explore/${table}/${d[id]}`} className="text-base text-base-content">
-									{d[title]}
-								</Link>
-								<div className="flex gap-2">
-									{relCounts?.map((rel) => (
-										<Link
-											key={rel}
-											href={`/explore/${table}/${d[id]}/${rel}`}
-											className="btn btn-sm bg-base-100 text-base-content normal-case hover:bg-base-300"
-										>
-											{d._count[rel]} {rel}
-										</Link>
-									))}
-								</div>
+							<div className="text-base text-base-content">{d[title]}</div>
+							<div className="flex gap-2">
+								{relCounts?.map((rel) => (
+									<div key={rel} className="p-3 rounded-lg bg-base-100 text-base-content normal-case">
+										{d._count[rel]} {rel}
+									</div>
+								))}
 							</div>
 						</div>
-					</div>
+					</Link>
 				))}
 			</div>
 

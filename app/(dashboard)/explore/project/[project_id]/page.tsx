@@ -7,7 +7,8 @@ import BarChart from "@/app/components/BarChart";
 import { randomColors } from "@/app/helpers/utils";
 
 export default async function Project_Id({ params }: { params: Promise<{ project_id: string }> }) {
-	const { project_id } = await params;
+	let { project_id } = await params;
+	project_id = decodeURIComponent(project_id);
 
 	const project = await prisma.project.findUnique({
 		where: {

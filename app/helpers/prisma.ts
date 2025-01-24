@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import fs from "fs";
-import path from "path";
+// import fs from "fs";
+// import path from "path";
 
 //BLACK MAGIC DO NOT TOUCH
 //database initialization
