@@ -4,7 +4,7 @@ import assignSubmitAction from "@/app/helpers/actions/analysis/submit/assignSubm
 import occSubmitAction from "@/app/helpers/actions/analysis/submit/occSubmit";
 import { PutBlobResult } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
-import { useState, FormEvent, useReducer } from "react";
+import { useState, FormEvent, useReducer, useEffect } from "react";
 import analysisSubmitAction from "../../helpers/actions/analysis/submit/analysisSubmit";
 import analysisDeleteAction from "../../helpers/actions/analysis/delete/analysisDelete";
 import { DeleteAction, SubmitAction } from "@/types/types";
@@ -27,6 +27,22 @@ export default function AnalysisSubmit() {
 	const [submitted, setSubmitted] = useState(false);
 	const [analyses, setAnalyses] = useState(["\u200b"] as Array<string | null>);
 	const [fileStates, setFileStates] = useState<Record<string, File | null>>({});
+
+	//scroll newest analysis box into view
+	useEffect(() => {
+		for (let i = 1; i < analyses.length; i++) {
+			if (analyses[analyses.length - i] !== null) {
+				const element = document.getElementById(`analysis_${analyses.length - i}`);
+				if (element) {
+					element.scrollIntoView({
+						block: "start",
+						behavior: "smooth"
+					});
+					break;
+				}
+			}
+		}
+	}, [analyses]);
 
 	async function parseAnalysis(files: FileList | null, i: number) {
 		try {
@@ -292,7 +308,7 @@ export default function AnalysisSubmit() {
 					{analyses.map(
 						(a, i) =>
 							a && (
-								<div key={i} className="card bg-base-300 shadow-xl p-6 relative">
+								<div key={i} id={`analysis_${i}`} className="card bg-base-300 shadow-xl p-6 relative">
 									{analyses[i] && (
 										<div className="space-y-4">
 											<h2 className="text-xl font-semibold text-base-content mb-4">

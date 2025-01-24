@@ -94,7 +94,7 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 		}
 	} as {
 		orderBy: { id: Prisma.SortOrder };
-		omit: {id: true};
+		omit: { id: true };
 		take: number;
 		skip?: number;
 		cursor?: { id: number };
@@ -147,9 +147,11 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 }
 
 export function randomColors(num: number) {
-    let colors = [];
-    for (let i = 0; i < num; i++) {
-        colors.push(`rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`);
-    }
-    return colors;
+	let colors = [];
+	for (let i = 0; i < num; i++) {
+		colors.push(
+			`rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`
+		);
+	}
+	return colors;
 }

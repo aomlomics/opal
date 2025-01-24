@@ -35,8 +35,8 @@ const TABLES = [
 			"Bioinformatic processing runs that convert raw sequence data into species detections, documenting all parameters and methods used."
 	},
 	{
-		name: "Occurence",
-		route: "occurence",
+		name: "Occurrence",
+		route: "occurrence",
 		description:
 			"Individual detection records linking samples to specific DNA sequences (Features), including their quantified abundance."
 	},
@@ -46,6 +46,7 @@ const TABLES = [
 		description:
 			"Unique DNA sequences (eg, ASVs) found in samples, typically representing distinct organisms, with their consensus taxonomic classification."
 	},
+	{ name: "Assignment", route: "assignment", description: "Some description." },
 	{
 		name: "Taxonomy",
 		route: "taxonomy",
