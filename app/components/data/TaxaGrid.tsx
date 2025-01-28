@@ -1,10 +1,10 @@
 "use client";
 
 import useSWR, { preload } from "swr";
-import { fetcher } from "../helpers/utils";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import PhyloPicClient from "./PhyloPicClient";
+import { fetcher } from "@/app/helpers/utils";
+import PhyloPicClient from "../PhyloPicClient";
 
 export default function TaxaGrid({ take = 50 }: { take?: number }) {
 	//const [query, setQuery] = useState("");
