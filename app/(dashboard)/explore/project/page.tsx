@@ -14,7 +14,13 @@ export default async function Project() {
 
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<Suspense fallback={null}>
-					<Pagination id={"project_id"} table={"project"} title={"project_name"} relCounts={["Samples", "Analyses"]} />
+					<Pagination
+						id="project_id"
+						table="project"
+						title="project_name"
+						fields={["detection_type", "study_factor", "institution", "project_contact"]}
+						relCounts={["Samples", "Analyses"]}
+					/>
 				</Suspense>
 			</div>
 		</div>

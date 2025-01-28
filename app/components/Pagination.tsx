@@ -68,16 +68,32 @@ export default function Pagination({
 					<Link
 						href={`/explore/${table}/${d[id]}`}
 						key={i}
-						className="card bg-base-200 hover:translate-x-1 transition-transform duration-200"
+						className="card bg-base-200 hover:bg-base-300 transition-all duration-200"
 					>
-						<div className="card-body p-4">
-							<div className="text-base text-base-content">{d[title]}</div>
-							<div className="flex gap-2">
-								{relCounts?.map((rel) => (
-									<div key={rel} className="p-3 rounded-lg bg-base-100 text-base-content normal-case">
-										{d._count[rel]} {rel}
-									</div>
-								))}
+						<div className="card-body p-5">
+							<div className="flex flex-col gap-3">
+								{/* Title with hover animation */}
+								<h3 className="text-lg font-medium text-primary">{d[title]}</h3>
+
+								{/* Info section with clean layout */}
+								<div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-base-content/70">
+									{fields?.map((field) => (
+										<div key={field} className="flex items-center gap-2">
+											<span className="font-medium">{field}:</span>
+											<span>{d[field]}</span>
+										</div>
+									))}
+								</div>
+
+								{/* Stats with subtle separator */}
+								<div className="flex gap-6 pt-1">
+									{relCounts?.map((rel) => (
+										<div key={rel} className="flex items-center gap-2">
+											<span className="text-lg font-medium">{d._count[rel]}</span>
+											<span className="text-sm text-base-content/70">{rel}</span>
+										</div>
+									))}
+								</div>
 							</div>
 						</div>
 					</Link>
