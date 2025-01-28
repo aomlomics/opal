@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	const [loading, setLoading] = useState(false);
 	const [imageUrl, setImageUrl] = useState("");
-	const [noImg, setNoImg] = useState(false);
 
 	let ranksBySpecificity = [
 		"species",
@@ -52,7 +51,6 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 				}
 				if (!gbifTaxonomy) {
 					setLoading(false);
-					setNoImg(true);
 					return;
 				}
 			} catch {
@@ -81,7 +79,6 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 
 					setLoading(false);
 					if (phyloPic.errors) {
-						setNoImg(true);
 						return;
 					}
 					setImageUrl(phyloPic._embedded.primaryImage._links.vectorFile.href);
@@ -103,10 +100,8 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 				<Image src={imageUrl} alt="Image of taxonomy" fill className="object-contain" />
 			) : loading ? (
 				<span className="loading loading-spinner loading-lg h-full"></span>
-			) : noImg ? (
-				<div className="text-center">No Image</div>
 			) : (
-				<div className="text-center">Error</div>
+				<div className="text-center">No Image</div>
 			)}
 		</div>
 	);
