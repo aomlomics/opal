@@ -40,9 +40,8 @@ export default function TabDropdown({
 
 	// Returns a link instead of a button (you can now do open in new tab)
 	return (
-		<div className="dropdown dropdown-hover">
+		<div onClick={unfocus} className="dropdown dropdown-hover">
 			<Link
-				onClick={unfocus}
 				href={route}
 				className={`px-4 py-2 dropdown dropdown-hover- ${
 					isActive
@@ -54,7 +53,7 @@ export default function TabDropdown({
 			</Link>
 			<ul tabIndex={0} className="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow">
 				{dropdown.map(({ label, href }) => (
-					<li onClick={unfocus}>
+					<li>
 						<Link href={href}>{label}</Link>
 					</li>
 				))}
