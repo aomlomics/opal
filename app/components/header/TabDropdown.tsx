@@ -18,12 +18,6 @@ export default function TabDropdown({
 
 	// Special case for home route to prevent it from matching all paths
 	const isActive = route === "/" ? pathname === "/" : pathname.startsWith(route);
-	// We use startsWith now to make sure any page past /explore (for example, explore/project) shows 'Explore' as the active tab- BLW
-
-	// Redirect handler
-	const handleRedirect = () => {
-		router.push(route);
-	};
 
 	//black magic do not touch
 	function __unfocus() {
@@ -38,7 +32,6 @@ export default function TabDropdown({
 		__unfocus();
 	}
 
-	// Returns a link instead of a button (you can now do open in new tab)
 	return (
 		<div onClick={unfocus} className="dropdown dropdown-hover">
 			<Link
