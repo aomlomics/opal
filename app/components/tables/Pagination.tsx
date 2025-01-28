@@ -3,9 +3,9 @@
 //import { useState } from "react";
 import { Prisma } from "@prisma/client";
 import useSWR from "swr";
-import { fetcher } from "../helpers/utils";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { fetcher } from "@/app/helpers/utils";
 
 export default function Pagination({
 	table,
@@ -24,13 +24,10 @@ export default function Pagination({
 	relCounts?: string[];
 	take?: number;
 }) {
-	//const [query, setQuery] = useState("");
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const { replace } = useRouter();
 
-	//const origin = typeof window !== "undefined" ? window.location.origin : null;
-	//const { data, error, isLoading } = useSWR(`/api/pagination?table=${table}&take=${take}${query}`, fetcher, {
 	let query = new URLSearchParams({
 		table,
 		take: take.toString(),
@@ -122,13 +119,6 @@ export default function Pagination({
 					</svg>
 					Previous
 				</button>
-
-				{/*  to carter- i changed this so instead of it starting at 0, it starts at 1 (luke's request). you can change this back if it breaks any logic */}
-				{/* here is the original section i replaced:  */}
-				{/* <div className="text-base-content/70">
-					{(parseInt(searchParams.get("page") || "1") - 1) * take}-{parseInt(searchParams.get("page") || "1") * take} of{" "}
-					{data.count}
-				</div> */}
 
 				<div className="text-base-content">
 					{Math.min((parseInt(searchParams.get("page") || "1") - 1) * take + 1, data.count)}-
