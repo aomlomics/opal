@@ -1,5 +1,5 @@
 import TableFilter from "@/app/components/explore/TableFilter";
-import Pagination from "@/app/components/data/Pagination";
+import Pagination from "@/app/components/paginated/Pagination";
 import { Suspense } from "react";
 
 export default async function Project() {

@@ -2,10 +2,11 @@
 
 //import { useState } from "react";
 import { Prisma } from "@prisma/client";
-import useSWR from "swr";
+import useSWR, { preload } from "swr";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { fetcher } from "@/app/helpers/utils";
+import PaginationControls from "./PaginationControls";
 
 export default function Pagination({
 	table,
@@ -57,6 +58,22 @@ export default function Pagination({
 		replace(`${pathname}?${params.toString()}`);
 	}
 
+	function handlePageHover(dir = 1) {
+		let query = new URLSearchParams({
+			table,
+			take: take.toString(),
+			page: (parseInt(searchParams.get("page") || "1") + dir).toString()
+		});
+		if (where) {
+			query.set("where", JSON.stringify(where));
+		}
+		if (relCounts) {
+			query.set("relCounts", relCounts.toString());
+		}
+
+		preload(`/api/pagination?${query.toString()}`, fetcher);
+	}
+
 	return (
 		<div className="space-y-6 p-6">
 			{/* Project Cards */}
@@ -98,54 +115,13 @@ export default function Pagination({
 			</div>
 
 			{/* Pagination Controls */}
-			<div className="flex items-center justify-center gap-8">
-				<button
-					className="btn btn-ghost gap-2"
-					disabled={!searchParams.get("page") || parseInt(searchParams.get("page") as string) <= 1}
-					onClick={() => handlePage(-1)}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="16"
-						height="16"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth="2"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-					>
-						<path d="m15 18-6-6 6-6" />
-					</svg>
-					Previous
-				</button>
-
-				<div className="text-base-content">
-					{Math.min((parseInt(searchParams.get("page") || "1") - 1) * take + 1, data.count)}-
-					{Math.min(parseInt(searchParams.get("page") || "1") * take, data.count)} of {data.count}
-				</div>
-
-				<button
-					className="btn btn-ghost gap-2"
-					disabled={parseInt(searchParams.get("page") || "1") * take > data.count}
-					onClick={() => handlePage()}
-				>
-					Next
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="16"
-						height="16"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth="2"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-					>
-						<path d="m9 18 6-6-6-6" />
-					</svg>
-				</button>
-			</div>
+			<PaginationControls
+				page={parseInt(searchParams.get("page") || "1")}
+				take={take}
+				count={data.count}
+				handlePage={handlePage}
+				handlePageHover={handlePageHover}
+			/>
 		</div>
 	);
 }

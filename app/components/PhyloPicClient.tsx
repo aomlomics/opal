@@ -61,7 +61,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 			//use result of GBIF API to query PhyloPics for the vector image
 			const objectIDs =
 				`${gbifTaxonomy.speciesKey ? gbifTaxonomy.speciesKey + "," : ""}` +
-				`${gbifTaxonomy.genus ? gbifTaxonomy.genus + "," : ""}` +
+				`${gbifTaxonomy.genusKey ? gbifTaxonomy.genusKey + "," : ""}` +
 				`${gbifTaxonomy.familyKey ? gbifTaxonomy.familyKey + "," : ""}` +
 				`${gbifTaxonomy.orderKey ? gbifTaxonomy.orderKey + "," : ""}` +
 				`${gbifTaxonomy.classKey ? gbifTaxonomy.classKey + "," : ""}` +
@@ -73,7 +73,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 				try {
 					const phyloPicRes = await fetch(
 						`https://api.phylopic.org/resolve/gbif.org/species?embed_primaryImage=true&objectIDs=${objectIDs}`,
-						{ signal: AbortSignal.timeout(5000) }
+						{ signal: AbortSignal.timeout(3000) }
 					);
 					const phyloPic = await phyloPicRes.json();
 
