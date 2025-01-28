@@ -43,7 +43,7 @@ export default function TabDropdown({
 		<div onClick={unfocus} className="dropdown dropdown-hover">
 			<Link
 				href={route}
-				className={`px-4 py-2 dropdown dropdown-hover- ${
+				className={`px-4 py-2 inline-block ${
 					isActive
 						? "bg-primary text-white rounded-t-lg -mb-1"
 						: "text-text-main hover:bg-base-300 hover:text-base-content rounded-t-lg"
