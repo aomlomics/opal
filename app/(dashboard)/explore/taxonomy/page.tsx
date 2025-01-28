@@ -1,5 +1,5 @@
 import TableFilter from "@/app/components/explore/TableFilter";
-import TaxaGrid from "@/app/components/tables/TaxaGrid";
+import TaxaGrid from "@/app/components/data/TaxaGrid";
 import { Suspense } from "react";
 
 export default async function Taxonomy() {
