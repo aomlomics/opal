@@ -5,11 +5,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
+	const errorImg = <div className="text-center">No Image</div>;
+
 	const [loading, setLoading] = useState(false);
 	const [imageUrl, setImageUrl] = useState("");
 	useEffect(() => {
-		const errorImg = <>An error occurred</>;
-
 		//check for the most specific rank of the taxonomy
 		let mostSpecificRank = "" as keyof typeof taxonomy;
 		if (taxonomy.species) {
@@ -54,7 +54,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 				setImageUrl(phyloPic._embedded.primaryImage._links.vectorFile.href);
 			} catch {
 				setLoading(false);
-				<div className="text-center">No Image</div>;
+				return errorImg;
 			}
 		}
 
@@ -72,7 +72,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 			) : loading ? (
 				<span className="loading loading-spinner loading-lg h-full"></span>
 			) : (
-				<div className="text-center">No Image</div>
+				<>{errorImg}</>
 			)}
 		</div>
 	);
