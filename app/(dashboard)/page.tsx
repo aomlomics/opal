@@ -170,7 +170,7 @@ export default async function Home() {
 										src="/images/noaa_exploration_logo_FINAL.svg"
 										alt="National Oceanic and Atmospheric Administration Exploration Logo"
 										fill={true}
-										style={{ objectFit: "contain" }}
+										className="object-contain"
 									/>
 								</a>
 							</div>
@@ -181,7 +181,7 @@ export default async function Home() {
 										alt="Mississippi State University, Northern Gulf Institute Logo"
 										width={500}
 										height={300}
-										style={{ objectFit: "contain" }}
+										className="object-contain"
 									/>
 								</a>
 							</div>

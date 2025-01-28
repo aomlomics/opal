@@ -18,7 +18,7 @@ export default function Header() {
 							<NodeLogo
 								alt="NODE Logo"
 								fill={true}
-								style={{ objectFit: "contain" }}
+								className="object-contain"
 								priority={true}
 								sizes="(max-width: 768px) 100vw, 33vw"
 							/>
