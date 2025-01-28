@@ -7,8 +7,7 @@ import { useEffect, useState } from "react";
 export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	const [loading, setLoading] = useState(false);
 	const [imageUrl, setImageUrl] = useState("");
-
-	const errorImg = <div className="text-center">No Image</div>;
+	const [noImg, setNoImg] = useState(false);
 
 	let ranksBySpecificity = [
 		"species",
@@ -27,14 +26,16 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	useEffect(() => {
 		async function fetchData() {
 			setLoading(true);
+			let gbifTaxonomy;
 			try {
-				let gbifTaxonomy;
 				for (const rank of ranksBySpecificity) {
 					if (taxonomy[rank]) {
+						// console.log("TEST:", rank, taxonomy);
 						//retrieve suggested taxonomies from GBIF
 						//TODO: split more logically
-						const gbifTaxaRes = await fetch(`https://api.gbif.org/v1/species/suggest?q=${taxonomy[rank] as string}`);
+						const gbifTaxaRes = await fetch(`https://api.gbif.org/v1/species/suggest?q=${taxonomy[rank]}`);
 						const gbifTaxa = await gbifTaxaRes.json();
+
 						//get only the taxonomies that match the specific rank
 						//TODO: check GBIF API docs to do this step in the previous fetch
 						//have to replace our database class field with the proper keyword
@@ -43,6 +44,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 						} else {
 							gbifTaxonomy = gbifTaxa.filter((taxa: Record<string, any>) => taxa.rank.toLowerCase() === rank)[0];
 						}
+
 						if (gbifTaxonomy) {
 							break;
 						}
@@ -50,28 +52,46 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 				}
 				if (!gbifTaxonomy) {
 					setLoading(false);
-					return errorImg;
+					setNoImg(true);
+					return;
 				}
-
-				//use result of GBIF API to query PhyloPics for the vector image
-				const objectIDs =
-					`${gbifTaxonomy.speciesKey ? gbifTaxonomy.speciesKey + "," : ""}` +
-					`${gbifTaxonomy.genus ? gbifTaxonomy.genus + "," : ""}` +
-					`${gbifTaxonomy.familyKey ? gbifTaxonomy.familyKey + "," : ""}` +
-					`${gbifTaxonomy.orderKey ? gbifTaxonomy.orderKey + "," : ""}` +
-					`${gbifTaxonomy.classKey ? gbifTaxonomy.classKey + "," : ""}` +
-					`${gbifTaxonomy.phylumKey ? gbifTaxonomy.phylumKey + "," : ""}` +
-					`${gbifTaxonomy.kingdomKey ? gbifTaxonomy.kingdomKey : ""}`;
-				const phyloPicRes = await fetch(
-					`https://api.phylopic.org/resolve/gbif.org/species?embed_primaryImage=true&objectIDs=${objectIDs}`
-				);
-				const phyloPic = await phyloPicRes.json();
-				setLoading(false);
-				setImageUrl(phyloPic._embedded.primaryImage._links.vectorFile.href);
 			} catch {
 				setLoading(false);
-				return errorImg;
+				return;
 			}
+
+			//use result of GBIF API to query PhyloPics for the vector image
+			const objectIDs =
+				`${gbifTaxonomy.speciesKey ? gbifTaxonomy.speciesKey + "," : ""}` +
+				`${gbifTaxonomy.genus ? gbifTaxonomy.genus + "," : ""}` +
+				`${gbifTaxonomy.familyKey ? gbifTaxonomy.familyKey + "," : ""}` +
+				`${gbifTaxonomy.orderKey ? gbifTaxonomy.orderKey + "," : ""}` +
+				`${gbifTaxonomy.classKey ? gbifTaxonomy.classKey + "," : ""}` +
+				`${gbifTaxonomy.phylumKey ? gbifTaxonomy.phylumKey + "," : ""}` +
+				`${gbifTaxonomy.kingdomKey ? gbifTaxonomy.kingdomKey : ""}`;
+
+			//retry PhyloPic API call
+			for (let i = 0; i < 3; i++) {
+				try {
+					const phyloPicRes = await fetch(
+						`https://api.phylopic.org/resolve/gbif.org/species?embed_primaryImage=true&objectIDs=${objectIDs}`,
+						{ signal: AbortSignal.timeout(5000) }
+					);
+					const phyloPic = await phyloPicRes.json();
+
+					setLoading(false);
+					if (phyloPic.errors) {
+						setNoImg(true);
+						return;
+					}
+					setImageUrl(phyloPic._embedded.primaryImage._links.vectorFile.href);
+					break;
+				} catch {
+					//retry after 1 second
+					await new Promise((res) => setTimeout(res, 1000));
+				}
+			}
+			setLoading(false);
 		}
 
 		fetchData();
@@ -83,8 +103,10 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 				<Image src={imageUrl} alt="Image of taxonomy" fill className="object-contain" />
 			) : loading ? (
 				<span className="loading loading-spinner loading-lg h-full"></span>
+			) : noImg ? (
+				<div className="text-center">No Image</div>
 			) : (
-				<>{errorImg}</>
+				<div className="text-center">Error</div>
 			)}
 		</div>
 	);

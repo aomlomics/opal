@@ -13,7 +13,7 @@ export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 		if (taxonomy[rank]) {
 			//retrieve suggested taxonomies from GBIF
 			//TODO: split more logically
-			const gbifTaxaRes = await fetch(`https://api.gbif.org/v1/species/suggest?q=${taxonomy[rank] as string}`);
+			const gbifTaxaRes = await fetch(`https://api.gbif.org/v1/species/suggest?q=${taxonomy[rank]}`);
 			const gbifTaxa = await gbifTaxaRes.json();
 			//get only the taxonomies that match the specific rank
 			//TODO: check GBIF API docs to do this step in the previous fetch
@@ -45,6 +45,9 @@ export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 		`https://api.phylopic.org/resolve/gbif.org/species?embed_primaryImage=true&objectIDs=${objectIDs}`
 	);
 	const phyloPic = await phyloPicRes.json();
+	if (phyloPic.errors) {
+		return errorImg;
+	}
 	const imageUrl = phyloPic._embedded.primaryImage._links.vectorFile.href;
 
 	//TODO: make image not take up entire screen
