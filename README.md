@@ -1,6 +1,6 @@
-# opal
+# node
 
-[![Opal CI/CD workflow](https://github.com/aomlomics/opal/actions/workflows/testAndDeploy.yml/badge.svg)](https://github.com/aomlomics/opal/actions/workflows/testAndDeploy.yml)
+[![NODE CI/CD workflow](https://github.com/aomlomics/node/actions/workflows/testAndDeploy.yml/badge.svg)](https://github.com/aomlomics/node/actions/workflows/testAndDeploy.yml)
 
 ## Development Workflow
 
@@ -150,7 +150,7 @@ The following sections are no longer in use but maintained for reference:
 Build the image and run the image in a container using
 
 ```bash
-docker build -t opal -f server/Dockerfile.dev .; docker run -t -d -p 8080:8080 --name opal opal
+docker build -t node -f server/Dockerfile.dev .; docker run -t -d -p 8080:8080 --name node node
 ```
 
 This will open our remote server at `localhost:8080`. After running this once, you can use Docker Desktop to manage the container.
@@ -158,12 +158,12 @@ This will open our remote server at `localhost:8080`. After running this once, y
 To delete the container and image, use
 
 ```bash
-docker rm --force opal; docker rmi opal
+docker rm --force node; docker rmi node
 ```
 
 To open the container in VSCode, open the Command Pallette `ctrl + shift + p` and run `Dev Containers: Attach to Running Container` (this requires the Dev Containers extension).
 
-Open the folder `/app/Opal/server` in the Dev Container.
+Open the folder `/app/node/server` in the Dev Container.
 
 When opening the first time, VSCode will think every file has been changed (potentially line-termination inconsistencies, not sure). Discard all git changes before starting any work. You should only have to do this once after creating the container.
 
@@ -174,7 +174,7 @@ The server must be handled inside the Docker container.
 To reattach your terminal to the gunicorn process, use
 
 ```bash
-screen -rd opalserver
+screen -rd nodeserver
 ```
 
 To scroll inside the screen (enter copy mode), hit `ctrl+a`, then hit `esc`. When you are in copy mode, you can't see new logs. So, once you are done looking, hit `ctrl+c` to exit copy mode. To detach, hit `ctrl+a`, then hit `d`.
