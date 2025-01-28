@@ -2,11 +2,11 @@
 
 import { Prisma } from "@prisma/client";
 import dynamic from "next/dynamic";
-const Map = dynamic(() => import("@/app/components/Map"), {
+const ActualMap = dynamic(() => import("@/app/components/map/ActualMap"), {
 	ssr: false
 });
 
-export default function MapWrapper({
+export default function Map({
 	locations,
 	id,
 	table,
@@ -17,5 +17,5 @@ export default function MapWrapper({
 	table: Uncapitalize<Prisma.ModelName>;
 	cluster?: boolean;
 }) {
-	return <Map locations={locations} id={id} table={table} cluster={cluster} />;
+	return <ActualMap locations={locations} id={id} table={table} cluster={cluster} />;
 }

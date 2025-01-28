@@ -4,7 +4,7 @@ import DataSummary from "../components/DataSummary";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
 import { DeadValueEnum } from "@/types/enums";
 import { prisma } from "../helpers/prisma";
-import MapWrapper from "../components/MapWrapper";
+import Map from "../components/map/Map";
 
 export default async function Home() {
 	const deadValues = Object.values(DeadValueEnum).filter((v) => !isNaN(Number(v))) as number[];
@@ -44,20 +44,22 @@ export default async function Home() {
 		<main className="flex flex-col grow bg-base-400 text-base-content">
 			<div className="relative w-full h-[80vh] bg-black overflow-hidden z-content-overlay">
 				<Carousel />
-				<div className="absolute inset-0 -right-[200%] bg-gradient-to-r from-base-100 via-base-100/50 via-[35%] to-transparent to-[150%]"></div>
-				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-base-100"></div>
-				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-3xl">
-					<h1 className="text-6xl font-light drop-shadow-lg leading-tight">
+				{/* Gradient for left-to-right */}
+				<div className="absolute inset-0 -right-[60%] bg-gradient-to-r from-base-100 via-base-100/30 via-[40%] to-transparent to-[100%]"></div>
+				{/* Gradient for bottom */}
+				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-base-100/40 via-[50%] to-base-100"></div>
+				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-4xl lg:max-w-5xl">
+					<h1 className="text-5xl sm:text-6xl lg:text-7xl font-light drop-shadow-lg leading-tight">
 						<span className="block text-primary animate-slide-in">Welcome</span>
 					</h1>
 					<div className="text-base-content drop-shadow-lg">
-						<span className="block text-4xl font-light sm:text-5xl mb-4">
-							to the <span className="text-primary">NOAA Ocean DNA Explorer</span>
+						<span className="block text-3xl sm:text-4xl font-light lg:text-5xl mb-4">
+							to the <span className="text-primary font-light">NOAA Ocean DNA Explorer</span>
 						</span>
-						<div className="text-2xl sm:text-3xl mb-8 text-base-content/90 leading-snug">
+						<div className="text-lg sm:text-xl lg:text-2xl mb-8 text-base-content leading-relaxed max-w-3xl">
 							<span className="block">
 								a data sharing platform, search engine, and visualization and analysis tool for ocean environmental DNA
-								(eDNA) data
+								data
 							</span>
 						</div>
 					</div>
@@ -74,8 +76,11 @@ export default async function Home() {
 			</div>
 
 			<div className="relative mb-12 text-center">
-				<p className="text-primary mb-2">Explore Our Data</p>
-				<Link href="#dataSummary">
+				<Link
+					href="#dataSummary"
+					className="relative inline-block after:absolute after:content-[''] after:inset-[-40px] after:cursor-pointer"
+				>
+					<p className="text-primary mb-2">Explore Our Data</p>
 					<div className="animate-bounce">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +101,7 @@ export default async function Home() {
 				</div>
 				<div className="flex gap-8">
 					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">
-						<MapWrapper locations={avgProjectLocs} id="project_id" table="project" />
+						<Map locations={avgProjectLocs} id="project_id" table="project" />
 					</div>
 					<div className="w-1/2">
 						<DataSummary />
@@ -165,7 +170,7 @@ export default async function Home() {
 										src="/images/noaa_exploration_logo_FINAL.svg"
 										alt="National Oceanic and Atmospheric Administration Exploration Logo"
 										fill={true}
-										style={{ objectFit: "contain" }}
+										className="object-contain"
 									/>
 								</a>
 							</div>
@@ -176,7 +181,7 @@ export default async function Home() {
 										alt="Mississippi State University, Northern Gulf Institute Logo"
 										width={500}
 										height={300}
-										style={{ objectFit: "contain" }}
+										className="object-contain"
 									/>
 								</a>
 							</div>

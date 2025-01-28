@@ -9,7 +9,7 @@ import { DBSCAN } from "density-clustering";
 import { Prisma } from "@prisma/client";
 import { DeadValueEnum } from "@/types/enums";
 
-export default function Map({
+export default function ActualMap({
 	locations,
 	id,
 	table,

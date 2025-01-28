@@ -1,13 +1,14 @@
 import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
-import MapWrapper from "@/app/components/MapWrapper";
+import Map from "@/app/components/map/Map";
 import Image from "next/image";
-import Table from "@/app/components/Table";
+import Table from "@/app/components/data/Table";
 import BarChart from "@/app/components/BarChart";
 import { randomColors } from "@/app/helpers/utils";
 
 export default async function Project_Id({ params }: { params: Promise<{ project_id: string }> }) {
-	const { project_id } = await params;
+	let { project_id } = await params;
+	project_id = decodeURIComponent(project_id);
 
 	const project = await prisma.project.findUnique({
 		where: {
@@ -198,10 +199,8 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				{/* Map */}
 				<input type="radio" defaultChecked name="dataTabs" role="tab" className="tab" aria-label="Map" />
 				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
-					<div className="card-body p-0 overflow-hidden">
-						<div className="h-[400px]">
-							<MapWrapper locations={project.Samples} id="samp_name" table="sample" cluster />
-						</div>
+					<div className="card-body p-0 overflow-hidden h-[400px]">
+						<Map locations={project.Samples} id="samp_name" table="sample" cluster />
 					</div>
 				</div>
 

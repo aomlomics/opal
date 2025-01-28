@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export default function ProgressCircle({
 	response,
 	error,
@@ -12,17 +10,24 @@ export default function ProgressCircle({
 	hasFile?: boolean;
 }) {
 	return (
-		<div className={`
+		<div
+			className={`
 			w-6 h-6 rounded-full 
 			flex items-center justify-center 
 			border-[1.5px] transition-colors duration-200
-			${error ? 'border-error bg-error/10' :
-				response ? 'border-primary bg-primary text-white' :
-				loading ? 'border-primary animate-pulse' :
-				hasFile ? 'border-primary' : 
-				'border-primary/40'
+			${
+				error
+					? "border-error bg-error/10"
+					: response
+					? "border-primary bg-primary text-white"
+					: loading
+					? "border-primary animate-pulse"
+					: hasFile
+					? "border-primary"
+					: "border-primary/40"
 			}
-		`}>
+		`}
+		>
 			{loading ? (
 				<span className="loading loading-spinner loading-xs text-primary"></span>
 			) : error ? (

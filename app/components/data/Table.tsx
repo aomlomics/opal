@@ -3,12 +3,13 @@
 import { DeadValueEnum, TableToEnumSchema } from "@/types/enums";
 import { Prisma } from "@prisma/client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, MouseEventHandler, ReactNode, useRef, useState } from "react";
-import useSWR from "swr";
+import { FormEvent, ReactNode, useState } from "react";
+import useSWR, { preload } from "swr";
 import { useDebouncedCallback } from "use-debounce";
-import { fetcher } from "../helpers/utils";
+import { fetcher } from "../../helpers/utils";
+import LoadingTable from "./LoadingTable";
 
-export default function Table({
+export default function ActualTable({
 	table,
 	title,
 	where
@@ -43,6 +44,23 @@ export default function Table({
 			params.set("page", "2");
 		}
 		replace(`${pathname}?${params.toString()}`, { scroll: false });
+	}
+
+	function handlePageHover(dir = 1) {
+		let query = new URLSearchParams({
+			table,
+			take: take.toString(),
+			page: (parseInt(searchParams.get("page") || "1") + dir).toString()
+		});
+		if (where) {
+			if (Object.keys(whereFilter).length) {
+				query.set("where", JSON.stringify({ ...where, ...whereFilter }));
+			} else {
+				query.set("where", JSON.stringify(where));
+			}
+		}
+
+		preload(`/api/pagination?${query.toString()}`, fetcher);
 	}
 
 	//filters in the column header
@@ -87,7 +105,7 @@ export default function Table({
 		}
 	}
 	const { data, error, isLoading } = useSWR(`/api/pagination?${query.toString()}`, fetcher);
-	if (isLoading) return <div>loading...</div>;
+	if (isLoading) return <LoadingTable />;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
 
 	const headers = TableToEnumSchema[table]._def.values.filter((e) => {
@@ -123,11 +141,12 @@ export default function Table({
 					</label>
 				</div>
 				{/* Pagination Controls */}
-				<div className="flex items-center justify-center gap-8">
+				<div className="flex items-center gap-8 w-full">
 					<button
 						className="btn btn-ghost gap-2"
 						disabled={!searchParams.get("page") || parseInt(searchParams.get("page") as string) <= 1}
 						onClick={() => handlePage(-1)}
+						onMouseEnter={() => handlePageHover(-1)}
 						type="button"
 					>
 						<svg
@@ -146,8 +165,8 @@ export default function Table({
 						Previous
 					</button>
 
-					<div className="text-base-content/70">
-						{(parseInt(searchParams.get("page") || "1") - 1) * take}-
+					<div className="text-base-content/70 grow text-center">
+						{(parseInt(searchParams.get("page") || "1") - 1) * take + 1}-
 						{parseInt(searchParams.get("page") || "1") * take < data.count
 							? parseInt(searchParams.get("page") || "1") * take
 							: data.count}{" "}
@@ -158,6 +177,7 @@ export default function Table({
 						className="btn btn-ghost gap-2"
 						disabled={parseInt(searchParams.get("page") || "1") * take > data.count}
 						onClick={() => handlePage()}
+						onMouseEnter={() => handlePageHover()}
 						type="button"
 					>
 						Next

@@ -10,8 +10,12 @@ export async function GET(request: Request) {
 
 		const table = searchParams.get("table") as Uncapitalize<Prisma.ModelName>;
 		if (table) {
-			//@ts-ignore
-			const [result, count] = await prisma.$transaction([prisma[table].findMany(query), prisma[table].count({where: query.where})]);
+			const [result, count] = await prisma.$transaction([
+				//@ts-ignore
+				prisma[table].findMany(query),
+				//@ts-ignore
+				prisma[table].count({ where: query.where })
+			]);
 
 			return Response.json({ message: "Success", result, count });
 		} else {

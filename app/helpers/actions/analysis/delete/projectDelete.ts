@@ -23,7 +23,7 @@ export default async function projectDeleteAction(formData: FormData) {
 				});
 			}
 
-			//features delete
+			// features delete
 			console.log("empty features delete");
 			await tx.feature.deleteMany({
 				where: {
