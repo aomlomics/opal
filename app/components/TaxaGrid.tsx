@@ -78,7 +78,7 @@ export default function TaxaGrid({ take = 50 }: { take?: number }) {
 					className="btn btn-ghost gap-2"
 					disabled={parseInt(searchParams.get("page") || "1") * take > data.count}
 					onClick={() => handlePage()}
-					onMouseEnter={() => handlePageHover(-1)}
+					onMouseEnter={() => handlePageHover()}
 				>
 					Next
 					<svg

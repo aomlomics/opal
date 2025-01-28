@@ -5,6 +5,7 @@ import { SignedIn, UserButton, SignedOut, SignInButton } from "@clerk/nextjs";
 import TabButton from "./TabButton";
 import NodeLogo from "@/app/components/NodeLogo";
 import User from "./User";
+import TabDropdown from "./TabDropdown";
 
 export default function Header() {
 	return (
@@ -38,8 +39,17 @@ export default function Header() {
 					{/* Tabs with placeholder routes */}
 					<ThemeToggle />
 					<div className="absolute bottom-0 right-[240px] hidden lg:flex space-x-4">
+						<button id="unfocusButton" className="w-0 h-0"></button>
 						<TabButton tabName="Home" route="/" />
-						<TabButton tabName="Explore" route="/explore/project" />
+						<TabDropdown
+							tabName="Explore"
+							route="/explore"
+							dropdown={[
+								{ label: "Projects", href: "/explore/project" },
+								{ label: "Analyses", href: "/explore/analysis" },
+								{ label: "Taxonomies", href: "/explore/taxonomy" }
+							]}
+						/>
 						<TabButton tabName="Search" route="/search" />
 						<TabButton tabName="Submit" route="/submit" />
 						<TabButton tabName="Assays" route="/assays" />
