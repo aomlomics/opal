@@ -166,7 +166,7 @@ export default function ActualTable({
 					</button>
 
 					<div className="text-base-content/70 grow text-center">
-						{(parseInt(searchParams.get("page") || "1") - 1) * take}-
+						{(parseInt(searchParams.get("page") || "1") - 1) * take + 1}-
 						{parseInt(searchParams.get("page") || "1") * take < data.count
 							? parseInt(searchParams.get("page") || "1") * take
 							: data.count}{" "}

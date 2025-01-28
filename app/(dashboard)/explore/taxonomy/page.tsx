@@ -1,5 +1,5 @@
 import TableFilter from "@/app/components/explore/TableFilter";
-import Pagination from "@/app/components/Pagination";
+import TaxaGrid from "@/app/components/TaxaGrid";
 import { Suspense } from "react";
 
 export default async function Taxonomy() {
@@ -7,14 +7,14 @@ export default async function Taxonomy() {
 		<div className="space-y-6">
 			<h1 className="text-xl font-medium text-base-content">
 				Showing all
-				<span className="text-primary"> Projects</span>
+				<span className="text-primary"> Taxonomies</span>
 			</h1>
 
 			<TableFilter />
 
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<Suspense fallback={null}>
-					<Pagination id={"taxonomy"} table={"taxonomy"} title={"taxonomy"} />
+					<TaxaGrid />
 				</Suspense>
 			</div>
 		</div>

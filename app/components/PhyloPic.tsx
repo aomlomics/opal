@@ -2,7 +2,7 @@ import { Taxonomy } from "@prisma/client";
 import Image from "next/image";
 
 export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
-	const errorImg = <>An error occurred</>;
+	const errorImg = <>No Image</>;
 
 	//check for the most specific rank of the taxonomy
 	let mostSpecificRank = "" as keyof typeof taxonomy;
@@ -39,11 +39,15 @@ export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 
 	//use result of GBIF API to query PhyloPics for the vector image
 	const phyloPicRes = await fetch(
-		`https://api.phylopic.org/resolve/gbif.org/species?build=470&embed_primaryImage=true&objectIDs=${gbifTaxonomy.speciesKey},${gbifTaxonomy.genusKey},${gbifTaxonomy.familyKey},${gbifTaxonomy.orderKey},${gbifTaxonomy.classKey},${gbifTaxonomy.phylumKey},${gbifTaxonomy.kingdomKey}`
+		`https://api.phylopic.org/resolve/gbif.org/species?embed_primaryImage=true&objectIDs=${gbifTaxonomy.speciesKey},${gbifTaxonomy.genusKey},${gbifTaxonomy.familyKey},${gbifTaxonomy.orderKey},${gbifTaxonomy.classKey},${gbifTaxonomy.phylumKey},${gbifTaxonomy.kingdomKey}`
 	);
 	const phyloPic = await phyloPicRes.json();
 	const imageUrl = phyloPic._embedded.primaryImage._links.vectorFile.href;
 
 	//TODO: make image not take up entire screen
-	return <Image src={imageUrl} alt="Image of taxonomy" fill />;
+	return (
+		<div className="w-full h-full relative flex flex-col items-center justify-center">
+			<Image src={imageUrl} alt="Image of taxonomy" fill />
+		</div>
+	);
 }

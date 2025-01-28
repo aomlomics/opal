@@ -1,6 +1,6 @@
-import PhyloPic from "@/app/components/PhyloPic";
 import { prisma } from "@/app/helpers/prisma";
-import Image from "next/image";
+import PhyloPic from "@/app/components/PhyloPic";
+import Map from "@/app/components/map/Map";
 
 export default async function Taxonomy({ params }: { params: Promise<{ taxonomy: string }> }) {
 	let { taxonomy } = await params;
@@ -73,7 +73,12 @@ export default async function Taxonomy({ params }: { params: Promise<{ taxonomy:
 	return (
 		<div>
 			<h2>{taxonomy}</h2>
-			<PhyloPic taxonomy={dbTaxonomy} />
+			<div className="grid grid-cols-2">
+				<PhyloPic taxonomy={dbTaxonomy} />
+				<div className="card-body p-0 overflow-hidden h-[400px]">
+					<Map locations={samples} id="samp_name" table="sample" cluster />
+				</div>
+			</div>
 		</div>
 	);
 }

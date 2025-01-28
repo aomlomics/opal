@@ -4,7 +4,7 @@ import DataSummary from "../components/DataSummary";
 import ThemeAwareLogo from "../components/ThemeAwareLogo";
 import { DeadValueEnum } from "@/types/enums";
 import { prisma } from "../helpers/prisma";
-import MapWrapper from "../components/map/Map";
+import Map from "../components/map/Map";
 
 export default async function Home() {
 	const deadValues = Object.values(DeadValueEnum).filter((v) => !isNaN(Number(v))) as number[];
@@ -101,7 +101,7 @@ export default async function Home() {
 				</div>
 				<div className="flex gap-8">
 					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">
-						<MapWrapper locations={avgProjectLocs} id="project_id" table="project" />
+						<Map locations={avgProjectLocs} id="project_id" table="project" />
 					</div>
 					<div className="w-1/2">
 						<DataSummary />
