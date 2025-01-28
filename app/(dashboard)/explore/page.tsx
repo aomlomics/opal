@@ -1,11 +1,5 @@
-import Link from "next/link";
+import { permanentRedirect } from "next/navigation";
 
 export default function Explore() {
-	return (
-		<div>
-			<Link href="/explore/project" className="btn">
-				Projects
-			</Link>
-		</div>
-	);
+	permanentRedirect("/explore/project");
 }

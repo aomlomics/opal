@@ -103,7 +103,8 @@ module.exports = {
 		}
 	},
 	plugins: [
-		require("daisyui")
+		require("daisyui"),
+		require("tailwind-scrollbar")
 	],
 	daisyui: {
 		themes: [
@@ -114,9 +115,10 @@ module.exports = {
 
 					"primary": "#233D7F",    // Brand dark blue
 
-					"base-100": "#f2f6ff",      // Was background-main
-					"base-200": "#e8eeff",      // Was div-base
-					"base-300": "#cad8f9",     // Was div-elevated
+					"base-100": "#e2e6f0",      // Was background-main
+					"base-200": "#d8dde8",      // Was div-base
+					"base-300": "#cdd4e2",     // Was div-elevated
+					"base-400": "#c2cade", // Was interactive-active
 					"base-content": "#2D3748",   // Was text-main
 					"secondary-content": "#4A5568", // Was text-muted
 					"neutral-content": "#FFFFFF",   // Was text-inverse
@@ -125,7 +127,6 @@ module.exports = {
 
 					"info": "#EAF2FF",          // Was interactive-default
 					"info-content": "#D3E4FF",   // Was interactive-hover
-					"base-400": "#BDD4FF", // Was interactive-active
 
 					"accent": "#7DBAE5",        // Was button-hover
 					"accent-focus": "#4B95C3",   // Was button-selected

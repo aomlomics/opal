@@ -4,7 +4,7 @@ import assignSubmitAction from "@/app/helpers/actions/analysis/submit/assignSubm
 import occSubmitAction from "@/app/helpers/actions/analysis/submit/occSubmit";
 import { PutBlobResult } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
-import { useState, FormEvent, useReducer } from "react";
+import { useState, FormEvent, useReducer, useEffect } from "react";
 import analysisSubmitAction from "../../helpers/actions/analysis/submit/analysisSubmit";
 import analysisDeleteAction from "../../helpers/actions/analysis/delete/analysisDelete";
 import { DeleteAction, SubmitAction } from "@/types/types";
@@ -27,6 +27,22 @@ export default function AnalysisSubmit() {
 	const [submitted, setSubmitted] = useState(false);
 	const [analyses, setAnalyses] = useState(["\u200b"] as Array<string | null>);
 	const [fileStates, setFileStates] = useState<Record<string, File | null>>({});
+
+	//scroll newest analysis box into view
+	useEffect(() => {
+		for (let i = 1; i < analyses.length; i++) {
+			if (analyses[analyses.length - i] !== null) {
+				const element = document.getElementById(`analysis_${analyses.length - i}`);
+				if (element) {
+					element.scrollIntoView({
+						block: "start",
+						behavior: "smooth"
+					});
+					break;
+				}
+			}
+		}
+	}, [analyses]);
 
 	async function parseAnalysis(files: FileList | null, i: number) {
 		try {
@@ -62,6 +78,7 @@ export default function AnalysisSubmit() {
 
 		try {
 			const response = await deleteAction(formData);
+			//TODO: change how errors are handled (no longer returns response.error, now throws new error)
 			if (response.error) {
 				setErrorObj({
 					[analysis_run_name]: response.error
@@ -217,7 +234,7 @@ export default function AnalysisSubmit() {
 
 				//assignments file
 				setLoading(`${analysis_run_name}_assign`);
-				const { error: assignError, result: assignResult } = await analysisFileSubmit({
+				const { error: assignError } = await analysisFileSubmit({
 					analysis_run_name,
 					file: allFormData.get(`${analysis_run_name}_assign`) as File,
 					fileSuffix: "_assign",
@@ -249,11 +266,12 @@ export default function AnalysisSubmit() {
 				});
 
 				if (occError) {
+					await dbDelete(analysisDeleteAction, analysisResult!.analysis_run_name);
 					//remove analyses, features, and taxonomies from database
-					await dbDelete(analysisDeleteAction, analysisResult!.analysis_run_name, {
-						dbFeatures: assignResult!.dbFeatures,
-						dbTaxonomies: assignResult!.dbTaxonomies
-					});
+					// await dbDelete(analysisDeleteAction, analysisResult!.analysis_run_name, {
+					// 	dbFeatures: assignResult!.dbFeatures,
+					// 	dbTaxonomies: assignResult!.dbTaxonomies
+					// });
 
 					hasError = true;
 					setErrorObj({
@@ -267,7 +285,8 @@ export default function AnalysisSubmit() {
 		}
 
 		if (!hasError) {
-			const successMessage = "Analysis successfully submitted! You will be redirected to explore page in 5 seconds...";
+			const successMessage =
+				"Analysis successfully submitted! You will be redirected to the project page in 5 seconds...";
 			await new Promise((resolve) => setTimeout(resolve, 100));
 			setResponseObj({
 				global: successMessage,
@@ -275,7 +294,7 @@ export default function AnalysisSubmit() {
 			});
 
 			setTimeout(() => {
-				router.push("/explore");
+				router.push(`/explore/project`);
 			}, 5000);
 		}
 
@@ -289,7 +308,7 @@ export default function AnalysisSubmit() {
 					{analyses.map(
 						(a, i) =>
 							a && (
-								<div key={i} className="card bg-base-300 shadow-xl p-6 relative">
+								<div key={i} id={`analysis_${i}`} className="card bg-base-300 shadow-xl p-6 relative">
 									{analyses[i] && (
 										<div className="space-y-4">
 											<h2 className="text-xl font-semibold text-base-content mb-4">
