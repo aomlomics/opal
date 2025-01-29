@@ -3,7 +3,7 @@ import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
 import Map from "@/app/components/map/Map";
 import Table from "@/app/components/paginated/Table";
-import OccurrenceTable from "@/app/components/paginated/OccurrenceTable";
+import DownloadButton from "@/app/components/DownloadButton";
 
 export default async function Analysis_Run_name({ params }: { params: Promise<{ analysis_run_name: string }> }) {
 	const { analysis_run_name } = await params;
@@ -41,6 +41,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 				<h1 className="text-4xl font-bold text-primary">{analysis_run_name}</h1>
 				{/* <p className="text-xl text-base-content/70">{project.project_name}</p> */}
 			</header>
+
 			{/* Stats Cards */}
 			<div className="grid grid-cols-2 gap-4 py-10">
 				<Link
@@ -68,6 +69,11 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 					<div className="stat-value text-primary">{analysis._count.Assignments}</div>
 				</Link>
 			</div>
+
+			<div className="mb-5">
+				<DownloadButton text={"Occurrence Table"} />
+			</div>
+
 			<div role="tablist" className="tabs tabs-lifted">
 				<input type="radio" defaultChecked name="dataTabs" role="tab" className="tab" aria-label="Samples" />
 				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">

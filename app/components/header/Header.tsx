@@ -51,7 +51,14 @@ export default function Header() {
 							]}
 						/>
 						<TabButton tabName="Search" route="/search" />
-						<TabButton tabName="Submit" route="/submit" />
+						<TabDropdown
+							tabName="Submit"
+							route="/submit"
+							dropdown={[
+								{ label: "Project", href: "/submit/project" },
+								{ label: "Analysis", href: "/submit/analysis" }
+							]}
+						/>
 						<TabButton tabName="Assays" route="/assays" />
 						<TabButton tabName="Tourmaline" route="/tourmaline" />
 						<TabButton tabName="API" route="/api" />

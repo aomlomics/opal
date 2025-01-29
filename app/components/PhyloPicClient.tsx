@@ -30,7 +30,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 			let mostSpecificRank;
 			try {
 				for (const rank of ranksBySpecificity) {
-					if (taxonomy[rank]) {
+					if (taxonomy[rank] && /^[a-zA-Z]+$/.test(taxonomy[rank].toString())) {
 						// console.log("TEST:", rank, taxonomy);
 						//retrieve suggested taxonomies from GBIF
 						//TODO: split more logically

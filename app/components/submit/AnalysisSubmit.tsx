@@ -319,7 +319,7 @@ export default function AnalysisSubmit() {
 												<div className="flex items-center gap-3">
 													<label className="form-control w-full">
 														<div className="label">
-															<span className="label-text text-base-content">Metadata:</span>
+															<span className="label-text text-base-content">Analysis Metadata File:</span>
 														</div>
 														<input
 															type="file"
@@ -349,7 +349,7 @@ export default function AnalysisSubmit() {
 														<div className="flex items-center gap-3">
 															<label className="form-control w-full">
 																<div className="label">
-																	<span className="label-text text-base-content">Features:</span>
+																	<span className="label-text text-base-content">ASV Taxa/Features File:</span>
 																</div>
 																<input
 																	type="file"
@@ -374,7 +374,7 @@ export default function AnalysisSubmit() {
 														<div className="flex items-center gap-3">
 															<label className="form-control w-full">
 																<div className="label">
-																	<span className="label-text text-base-content">Occurrences:</span>
+																	<span className="label-text text-base-content">Occurrence Table File:</span>
 																</div>
 																<input
 																	type="file"

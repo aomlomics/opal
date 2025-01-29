@@ -87,12 +87,12 @@ export default function OccurrenceTable({ where }: { where?: Prisma.OccurrenceWh
 	const occurrences = {} as Record<string, Record<string, number>>;
 	const headers = new Set() as Set<string>;
 	for (const occ of data.result as Occurrence[]) {
-		if (occ.samp_name in occurrences) {
-			occurrences[occ.samp_name][occ.featureid] = occ.organismQuantity;
+		if (occ.featureid in occurrences) {
+			occurrences[occ.featureid][occ.samp_name] = occ.organismQuantity;
 		} else {
-			occurrences[occ.samp_name] = { [occ.featureid]: occ.organismQuantity };
+			occurrences[occ.featureid] = { [occ.samp_name]: occ.organismQuantity };
 		}
-		headers.add(occ.featureid);
+		headers.add(occ.samp_name);
 	}
 
 	return (
