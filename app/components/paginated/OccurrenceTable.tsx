@@ -1,23 +1,15 @@
 "use client";
 
-import { DeadValueEnum, TableToEnumSchema } from "@/types/enums";
-import { Prisma } from "@prisma/client";
+import { DeadValueEnum } from "@/types/enums";
+import { Occurrence, Prisma } from "@prisma/client";
 import { FormEvent, ReactNode, useState } from "react";
 import useSWR, { preload } from "swr";
-import { useDebouncedCallback } from "use-debounce";
 import { fetcher } from "../../helpers/utils";
 import LoadingTable from "./LoadingTable";
 import PaginationControls from "./PaginationControls";
+import { useDebouncedCallback } from "use-debounce";
 
-export default function Table({
-	table,
-	title,
-	where
-}: {
-	table: Uncapitalize<Prisma.ModelName>;
-	title: string;
-	where?: Record<string, any>;
-}) {
+export default function OccurrenceTable({ where }: { where?: Prisma.OccurrenceWhereInput }) {
 	const [take, setTake] = useState(50);
 	const [page, setPage] = useState(1);
 
@@ -32,7 +24,7 @@ export default function Table({
 
 	function handlePageHover(dir = 1) {
 		let query = new URLSearchParams({
-			table,
+			table: "occurrence",
 			take: take.toString(),
 			page: (page + dir).toString()
 		});
@@ -71,13 +63,13 @@ export default function Table({
 
 	function resetForm() {
 		//@ts-ignore
-		document.forms[`${table}TableForm`].reset();
+		document.forms["occurrenceTableForm"].reset();
 		setWhereFilter({});
 	}
 
 	//api call
 	let query = new URLSearchParams({
-		table,
+		table: "occurrence",
 		take: take.toString(),
 		page: page.toString()
 	});
@@ -92,26 +84,19 @@ export default function Table({
 	if (isLoading) return <LoadingTable />;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
 
-	const headers = TableToEnumSchema[table]._def.values.filter((e) => {
-		//remove database field
-		//displaying title header differently, so removing it
-		if (e === "id" || e === title) {
-			return false;
+	const occurrences = {} as Record<string, Record<string, number>>;
+	const headers = new Set() as Set<string>;
+	for (const occ of data.result as Occurrence[]) {
+		if (occ.samp_name in occurrences) {
+			occurrences[occ.samp_name][occ.featureid] = occ.organismQuantity;
+		} else {
+			occurrences[occ.samp_name] = { [occ.featureid]: occ.organismQuantity };
 		}
-		//remove all headers where the value is assumed to be the same
-		if (where) {
-			for (const head in where) {
-				if (e === head) {
-					return false;
-				}
-			}
-		}
-
-		return true;
-	});
+		headers.add(occ.featureid);
+	}
 
 	return (
-		<form id={`${table}TableForm`} onSubmit={applyFilters} className="w-full h-full flex flex-col">
+		<form id="occurrenceTableForm" onSubmit={applyFilters} className="w-full h-full flex flex-col">
 			<div className="grid grid-cols-3 justify-items-center">
 				{/* Filters Buttons */}
 				<div className="flex items-center gap-5">
@@ -155,7 +140,7 @@ export default function Table({
 												setHeadersFilter({});
 											} else {
 												setHeadersFilter(
-													headers.reduce((acc, head) => {
+													Array.from(headers).reduce((acc, head) => {
 														if (!headersFilter[head]) {
 															return { ...acc, [head]: true };
 														} else {
@@ -179,7 +164,7 @@ export default function Table({
 							</div>
 							{/* Header Names Section */}
 							<ul className="p-2 pt-0 w-full max-h-[200px] overflow-y-auto scrollbar scrollbar-thumb-accent scrollbar-track-base-300">
-								{headers.reduce((acc: ReactNode[], head) => {
+								{Array.from(headers).reduce((acc: ReactNode[], head) => {
 									//only render the header name if it is selected in the header name filter
 									if (head.toLowerCase().includes(columnsFilter.toLowerCase())) {
 										//Header Name
@@ -219,35 +204,8 @@ export default function Table({
 					<thead>
 						<tr>
 							{/* Title Header Cell */}
-							<th className="p-0 pr-2 z-40">
-								<label className="form-control w-full max-w-xs">
-									<div>
-										<span>{title}</span>
-									</div>
-									{/* Value Filter */}
-									<label className="input input-bordered input-xs flex items-center gap-2">
-										<input
-											name={title}
-											defaultValue={!!whereFilter[title] ? whereFilter[title].contains : ""}
-											type="text"
-											className="grow"
-										/>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 16 16"
-											fill="currentColor"
-											className="h-4 w-4 opacity-70"
-										>
-											<path
-												fillRule="evenodd"
-												d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-												clipRule="evenodd"
-											/>
-										</svg>
-									</label>
-								</label>
-							</th>
-							{headers.reduce((acc: ReactNode[], head) => {
+							<th></th>
+							{Array.from(headers).reduce((acc: ReactNode[], head) => {
 								//only render the header if it is selected in the header filter
 								if (!headersFilter[head]) {
 									//Header
@@ -290,24 +248,24 @@ export default function Table({
 					</thead>
 					<tbody>
 						{/* Value Cell */}
-						{data.result.reduce((acc: ReactNode[], row: any, i: number) => {
+						{Object.entries(occurrences).reduce((acc: ReactNode[], [samp_name, features], i: number) => {
 							//node to render
 							acc.push(
 								<tr key={i} className="border-base-100 border-b-2">
-									<th>{row[title]}</th>
-									{headers.reduce((acc: ReactNode[], head, i) => {
+									<th>{samp_name}</th>
+									{Array.from(headers).reduce((acc: ReactNode[], head, i) => {
 										if (!headersFilter[head]) {
 											//cell
 											acc.push(
 												<td
 													className={`whitespace-nowrap ${i ? "border-base-100 border-l-2" : ""} ${
-														row[head] ? "" : "bg-base-300"
+														features[head] ? "" : "bg-base-300"
 													}`}
-													key={row[head] + "child" + i}
+													key={features[head] + "child" + i}
 												>
-													{row[head] in DeadValueEnum && typeof row[head] === "number"
-														? DeadValueEnum[row[head]]
-														: row[head]}
+													{features[head] in DeadValueEnum && typeof features[head] === "number"
+														? DeadValueEnum[features[head]]
+														: features[head]}
 												</td>
 											);
 										}
