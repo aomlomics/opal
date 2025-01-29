@@ -2,42 +2,24 @@
 
 import useSWR, { preload } from "swr";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { fetcher } from "@/app/helpers/utils";
 import PhyloPicClient from "../PhyloPicClient";
 import PaginationControls from "./PaginationControls";
 import { Prisma } from "@prisma/client";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 
 export default function TaxaGrid({
 	take = 50,
-	cols = 10,
+	size = "lg",
 	where,
 	orderBy
 }: {
 	take?: number;
-	cols?: number;
+	size?: "sm" | "lg";
 	where?: Prisma.TaxonomyWhereInput;
 	orderBy?: Prisma.TaxonomyOrderByWithAggregationInput;
 }) {
-	//const [query, setQuery] = useState("");
-	const searchParams = useSearchParams();
-	const pathname = usePathname();
-	const { replace } = useRouter();
-
 	const [page, setPage] = useState(1);
-
-	// function handlePage(dir = 1) {
-	// 	const params = new URLSearchParams(searchParams);
-	// 	const pageStr = params.get("page");
-	// 	if (pageStr) {
-	// 		const page = parseInt(pageStr);
-	// 		params.set("page", (page + dir).toString());
-	// 	} else {
-	// 		params.set("page", "2");
-	// 	}
-	// 	replace(`${pathname}?${params.toString()}`, { scroll: false });
-	// }
 
 	function handlePageHover(dir = 1) {
 		let query = new URLSearchParams({
@@ -70,6 +52,11 @@ export default function TaxaGrid({
 	if (isLoading) return <div>loading...</div>;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
 
+	const gridSizes = {
+		sm: "grid-cols-5",
+		lg: "grid-cols-10"
+	};
+
 	return (
 		<div className="space-y-6 p-6">
 			{/* Pagination Controls */}
@@ -81,7 +68,7 @@ export default function TaxaGrid({
 				handlePageHover={handlePageHover}
 			/>
 
-			<div className={`grid gap-4 grid-cols-${cols}`}>
+			<div className={`grid gap-4 ${gridSizes[size]}`}>
 				{data.result.map((d: any) => (
 					<Link
 						href={`/explore/taxonomy/${d.taxonomy}`}

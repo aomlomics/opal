@@ -101,7 +101,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box">
 					<TaxaGrid
 						take={25}
-						cols={5}
+						size="sm"
 						where={{
 							Assignments: {
 								some: {
