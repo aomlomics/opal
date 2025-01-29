@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	const [loading, setLoading] = useState(false);
 	const [imageUrl, setImageUrl] = useState("");
-	const [specificRank, setSpecificRank] = useState({} as { rank: string; title: string });
+	const [imageDetails, setImageDetails] = useState({} as { rank: string; title: string });
 
 	let ranksBySpecificity = [
 		"species",
@@ -85,7 +85,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 						return;
 					}
 					setImageUrl(phyloPic._embedded.primaryImage._links.vectorFile.href);
-					setSpecificRank({
+					setImageDetails({
 						rank: mostSpecificRank as string,
 						title: phyloPic._embedded.primaryImage._links.self.title
 					});
@@ -107,7 +107,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 			{!!imageUrl ? (
 				<div
 					className="tooltip tooltip-bottom tooltip-primary w-full h-full"
-					data-tip={`${specificRank.rank[0].toUpperCase() + specificRank.rank.slice(1)}: ${specificRank.title}`}
+					data-tip={`${imageDetails.rank[0].toUpperCase() + imageDetails.rank.slice(1)}: ${imageDetails.title}`}
 				>
 					<Image src={imageUrl} alt="Image of taxonomy" fill className="object-contain" />
 				</div>

@@ -9,8 +9,9 @@ export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	>;
 
 	let gbifTaxonomy;
+	let imageDetails = { rank: "", title: "" };
 	for (const rank of ranksBySpecificity) {
-		if (taxonomy[rank]) {
+		if (taxonomy[rank] && /^[a-zA-Z]+$/.test(taxonomy[rank].toString())) {
 			//retrieve suggested taxonomies from GBIF
 			//TODO: split more logically
 			const gbifTaxaRes = await fetch(`https://api.gbif.org/v1/species/suggest?q=${taxonomy[rank]}`);
@@ -24,6 +25,7 @@ export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 				gbifTaxonomy = gbifTaxa.filter((taxa: Record<string, any>) => taxa.rank.toLowerCase() === rank)[0];
 			}
 			if (gbifTaxonomy) {
+				imageDetails.rank = rank;
 				break;
 			}
 		}
@@ -49,11 +51,17 @@ export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 		return errorImg;
 	}
 	const imageUrl = phyloPic._embedded.primaryImage._links.vectorFile.href;
+	imageDetails.title = phyloPic._embedded.primaryImage._links.self.title;
 
 	//TODO: make image not take up entire screen
 	return (
 		<div className="w-full h-full relative flex flex-col items-center justify-center">
-			<Image src={imageUrl} alt="Image of taxonomy" fill className="object-contain" />
+			<div
+				className="tooltip tooltip-bottom tooltip-primary w-full h-full"
+				data-tip={`${imageDetails.rank[0].toUpperCase() + imageDetails.rank.slice(1)}: ${imageDetails.title}`}
+			>
+				<Image src={imageUrl} alt="Image of taxonomy" fill className="object-contain" />
+			</div>
 		</div>
 	);
 }
