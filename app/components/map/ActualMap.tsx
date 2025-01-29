@@ -90,7 +90,7 @@ export default function ActualMap({
 										loc.values.map((label: string) => (
 											<Link
 												key={label}
-												href={`/explore/${table}/${label}`}
+												href={`/explore/${table}/${encodeURIComponent(label)}`}
 												className="text-info hover:text-info-focus hover:underline transition-colors"
 											>
 												{label}
@@ -98,7 +98,7 @@ export default function ActualMap({
 										))
 									) : (
 										<Link
-											href={`/explore/${table}/${loc[id]}`}
+											href={`/explore/${table}/${encodeURIComponent(loc[id])}`}
 											className="text-info hover:text-info-focus hover:underline transition-colors"
 										>
 											{loc[id]}

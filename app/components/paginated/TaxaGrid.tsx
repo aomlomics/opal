@@ -71,7 +71,7 @@ export default function TaxaGrid({
 			<div className={`grid gap-4 ${gridSizes[size]}`}>
 				{data.result.map((d: any) => (
 					<Link
-						href={`/explore/taxonomy/${d.taxonomy}`}
+						href={`/explore/taxonomy/${encodeURIComponent(d.taxonomy)}`}
 						key={d.taxonomy}
 						className="card bg-base-200 hover:translate-x-1 transition-transform duration-200 aspect-square"
 					>

@@ -80,7 +80,7 @@ export default function Pagination({
 			<div className="grid gap-4">
 				{data.result.map((d: any, i: number) => (
 					<Link
-						href={`/explore/${table}/${d[id]}`}
+						href={`/explore/${table}/${encodeURIComponent(d[id])}`}
 						key={i}
 						className="card bg-base-200 hover:bg-base-300 transition-all duration-200"
 					>

@@ -88,7 +88,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					{/* Stats Cards */}
 					<div className="grid grid-cols-2 gap-4">
 						<Link
-							href={`/explore/project/${project_id}/Samples`}
+							href={`/explore/project/${encodeURIComponent(project_id)}/Samples`}
 							className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
 						>
 							<div className="stat-title">Total Samples</div>
@@ -96,7 +96,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 						</Link>
 
 						<Link
-							href={`/explore/project/${project_id}/Analyses`}
+							href={`/explore/project/${encodeURIComponent(project_id)}/Analyses`}
 							className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
 						>
 							<div className="stat-title">Total Analyses</div>

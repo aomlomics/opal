@@ -32,7 +32,7 @@ export default async function Submissions() {
 					{projects.map((proj) => (
 						<div key={proj.id} className="flex gap-3">
 							<Link
-								href={`/explore/project/${proj.project_id}`}
+								href={`/explore/project/${encodeURIComponent(proj.project_id)}`}
 								className="text-info hover:text-info-focus hover:underline transition-colors"
 							>
 								<h3>{proj.project_id}</h3>

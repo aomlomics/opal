@@ -46,14 +46,14 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 			{/* Stats Cards */}
 			<div className="grid grid-cols-2 gap-4 py-10">
 				<Link
-					href={`/explore/project/${analysis.project_id}`}
+					href={`/explore/project/${encodeURIComponent(analysis.project_id)}`}
 					className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
 				>
 					<div className="stat-title">Project</div>
 					<div className="stat-value text-primary">{analysis.project_id}</div>
 				</Link>
 				<Link
-					href={`/explore/assay/${analysis.assay_name}`}
+					href={`/explore/assay/${encodeURIComponent(analysis.assay_name)}`}
 					className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
 				>
 					<div className="stat-title">Assay</div>
