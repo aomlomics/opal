@@ -73,7 +73,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 
 			<div className="mb-5">
 				<OccDownloadButton
-					text={"Occurrence Table"}
+					text="Occurrence Table"
 					filename={`${analysis_run_name}_occurrenceTable`}
 					where={{ analysis_run_name }}
 				/>
