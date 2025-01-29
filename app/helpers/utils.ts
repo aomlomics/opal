@@ -102,6 +102,11 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 		where?: Record<string, string>;
 	};
 
+	const orderBy = searchParams.get("orderBy");
+	if (orderBy) {
+		query.orderBy = JSON.parse(orderBy);
+	}
+
 	const take = searchParams.get("take");
 	if (!take) {
 		throw new Error("take is required");

@@ -24,6 +24,7 @@ export default function ActualTable({
 	const { replace } = useRouter();
 
 	const [take, setTake] = useState(50);
+	const [page, setPage] = useState(1);
 
 	const [whereFilter, setWhereFilter] = useState({} as Record<string, { contains: string; mode: "insensitive" }>);
 
@@ -35,23 +36,23 @@ export default function ActualTable({
 	const [headersFilter, setHeadersFilter] = useState({} as Record<string, boolean>);
 
 	//pagination previous/next buttons
-	function handlePage(dir = 1) {
-		const params = new URLSearchParams(searchParams);
-		const pageStr = params.get("page");
-		if (pageStr) {
-			const page = parseInt(pageStr);
-			params.set("page", (page + dir).toString());
-		} else {
-			params.set("page", "2");
-		}
-		replace(`${pathname}?${params.toString()}`, { scroll: false });
-	}
+	// function handlePage(dir = 1) {
+	// 	const params = new URLSearchParams(searchParams);
+	// 	const pageStr = params.get("page");
+	// 	if (pageStr) {
+	// 		const page = parseInt(pageStr);
+	// 		params.set("page", (page + dir).toString());
+	// 	} else {
+	// 		params.set("page", "2");
+	// 	}
+	// 	replace(`${pathname}?${params.toString()}`, { scroll: false });
+	// }
 
 	function handlePageHover(dir = 1) {
 		let query = new URLSearchParams({
 			table,
 			take: take.toString(),
-			page: (parseInt(searchParams.get("page") || "1") + dir).toString()
+			page: (page + dir).toString()
 		});
 		if (where) {
 			if (Object.keys(whereFilter).length) {
@@ -96,7 +97,7 @@ export default function ActualTable({
 	let query = new URLSearchParams({
 		table,
 		take: take.toString(),
-		page: searchParams.get("page") || "1"
+		page: page.toString()
 	});
 	if (where) {
 		if (Object.keys(whereFilter).length) {
@@ -112,17 +113,19 @@ export default function ActualTable({
 	const headers = TableToEnumSchema[table]._def.values.filter((e) => {
 		//remove database field
 		//displaying title header differently, so removing it
-		let toRemove = e === "id" || e === title;
+		if (e === "id" || e === title) {
+			return false;
+		}
 		//remove all headers where the value is assumed to be the same
-		if (!toRemove && where) {
+		if (where) {
 			for (const head in where) {
 				if (e === head) {
-					toRemove = true;
+					return false;
 				}
 			}
 		}
 
-		return !toRemove;
+		return true;
 	});
 
 	return (
@@ -143,10 +146,10 @@ export default function ActualTable({
 				</div>
 				{/* Pagination Controls */}
 				<PaginationControls
-					page={parseInt(searchParams.get("page") || "1")}
+					page={page}
 					take={take}
 					count={data.count}
-					handlePage={handlePage}
+					handlePage={(dir?: number) => setPage(dir ? page + dir : page + 1)}
 					handlePageHover={handlePageHover}
 				/>
 				{/* Column Selection Button */}
@@ -329,7 +332,7 @@ export default function ActualTable({
 
 										return acc;
 									}, [])}
-									<th>{i + 1 + (parseInt(searchParams.get("page") || "1") - 1) * take}</th>
+									<th>{i + 1 + (page - 1) * take}</th>
 								</tr>
 							);
 

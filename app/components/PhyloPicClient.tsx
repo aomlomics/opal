@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	const [loading, setLoading] = useState(false);
 	const [imageUrl, setImageUrl] = useState("");
+	const [specificRank, setSpecificRank] = useState({} as { rank: string; title: string });
 
 	let ranksBySpecificity = [
 		"species",
@@ -26,6 +27,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 		async function fetchData() {
 			setLoading(true);
 			let gbifTaxonomy;
+			let mostSpecificRank;
 			try {
 				for (const rank of ranksBySpecificity) {
 					if (taxonomy[rank]) {
@@ -45,6 +47,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 						}
 
 						if (gbifTaxonomy) {
+							mostSpecificRank = rank;
 							break;
 						}
 					}
@@ -82,6 +85,10 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 						return;
 					}
 					setImageUrl(phyloPic._embedded.primaryImage._links.vectorFile.href);
+					setSpecificRank({
+						rank: mostSpecificRank as string,
+						title: phyloPic._embedded.primaryImage._links.self.title
+					});
 					break;
 				} catch {
 					//retry after 1 second
@@ -94,10 +101,16 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 		fetchData();
 	}, []);
 
+	//TODO: make tooltip not appear underneath elements that come after it
 	return (
 		<div className="w-full h-full relative flex flex-col items-center justify-center">
 			{!!imageUrl ? (
-				<Image src={imageUrl} alt="Image of taxonomy" fill className="object-contain" />
+				<div
+					className="tooltip tooltip-bottom tooltip-primary w-full h-full"
+					data-tip={`${specificRank.rank[0].toUpperCase() + specificRank.rank.slice(1)}: ${specificRank.title}`}
+				>
+					<Image src={imageUrl} alt="Image of taxonomy" fill className="object-contain" />
+				</div>
 			) : loading ? (
 				<span className="loading loading-spinner loading-lg h-full"></span>
 			) : (

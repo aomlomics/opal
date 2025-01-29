@@ -6,31 +6,51 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { fetcher } from "@/app/helpers/utils";
 import PhyloPicClient from "../PhyloPicClient";
 import PaginationControls from "./PaginationControls";
+import { Prisma } from "@prisma/client";
+import { useState } from "react";
 
-export default function TaxaGrid({ take = 50 }: { take?: number }) {
+export default function TaxaGrid({
+	take = 50,
+	cols = 10,
+	where,
+	orderBy
+}: {
+	take?: number;
+	cols?: number;
+	where?: Prisma.TaxonomyWhereInput;
+	orderBy?: Prisma.TaxonomyOrderByWithAggregationInput;
+}) {
 	//const [query, setQuery] = useState("");
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const { replace } = useRouter();
 
-	function handlePage(dir = 1) {
-		const params = new URLSearchParams(searchParams);
-		const pageStr = params.get("page");
-		if (pageStr) {
-			const page = parseInt(pageStr);
-			params.set("page", (page + dir).toString());
-		} else {
-			params.set("page", "2");
-		}
-		replace(`${pathname}?${params.toString()}`, { scroll: false });
-	}
+	const [page, setPage] = useState(1);
+
+	// function handlePage(dir = 1) {
+	// 	const params = new URLSearchParams(searchParams);
+	// 	const pageStr = params.get("page");
+	// 	if (pageStr) {
+	// 		const page = parseInt(pageStr);
+	// 		params.set("page", (page + dir).toString());
+	// 	} else {
+	// 		params.set("page", "2");
+	// 	}
+	// 	replace(`${pathname}?${params.toString()}`, { scroll: false });
+	// }
 
 	function handlePageHover(dir = 1) {
 		let query = new URLSearchParams({
 			table: "taxonomy",
 			take: take.toString(),
-			page: (parseInt(searchParams.get("page") || "1") + dir).toString()
+			page: (page + dir).toString()
 		});
+		if (where) {
+			query.set("where", JSON.stringify(where));
+		}
+		if (orderBy) {
+			query.set("orderBy", JSON.stringify(orderBy));
+		}
 
 		preload(`/api/pagination?${query.toString()}`, fetcher);
 	}
@@ -38,8 +58,14 @@ export default function TaxaGrid({ take = 50 }: { take?: number }) {
 	let query = new URLSearchParams({
 		table: "taxonomy",
 		take: take.toString(),
-		page: searchParams.get("page") || "1"
+		page: page.toString()
 	});
+	if (where) {
+		query.set("where", JSON.stringify(where));
+	}
+	if (orderBy) {
+		query.set("orderBy", JSON.stringify(orderBy));
+	}
 	const { data, error, isLoading } = useSWR(`/api/pagination?${query.toString()}`, fetcher);
 	if (isLoading) return <div>loading...</div>;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
@@ -48,14 +74,14 @@ export default function TaxaGrid({ take = 50 }: { take?: number }) {
 		<div className="space-y-6 p-6">
 			{/* Pagination Controls */}
 			<PaginationControls
-				page={parseInt(searchParams.get("page") || "1")}
+				page={page}
 				take={take}
 				count={data.count}
-				handlePage={handlePage}
+				handlePage={(dir?: number) => setPage(dir ? page + dir : page + 1)}
 				handlePageHover={handlePageHover}
 			/>
 
-			<div className="grid gap-4 grid-cols-10">
+			<div className={`grid gap-4 grid-cols-${cols}`}>
 				{data.result.map((d: any) => (
 					<Link
 						href={`/explore/taxonomy/${d.taxonomy}`}
@@ -63,22 +89,54 @@ export default function TaxaGrid({ take = 50 }: { take?: number }) {
 						className="card bg-base-200 hover:translate-x-1 transition-transform duration-200 aspect-square"
 					>
 						<div className="card-body p-4">
-							<div className="text-base text-base-content break-words text-primary">
-								{d.species
-									? d.species
-									: d.genus
-									? d.genus
-									: d.family
-									? d.family
-									: d.order
-									? d.order
-									: d.taxonClass
-									? d.taxonClass
-									: d.phylum
-									? d.phylum
-									: d.kingdom
-									? d.kingdom
-									: "Error"}
+							<div>
+								{d.species ? (
+									<>
+										<p className="text-primary">Species:</p> <p className="break-words">{d.species}</p>
+									</>
+								) : d.genus ? (
+									<>
+										<p className="text-primary">Genus:</p> <p className="break-words">{d.genus}</p>
+									</>
+								) : d.family ? (
+									<>
+										<p className="text-primary">Family:</p> <p className="break-words">{d.family}</p>
+									</>
+								) : d.order ? (
+									<>
+										<p className="text-primary">Order:</p> <p className="break-words">{d.order}</p>
+									</>
+								) : d.taxonClass ? (
+									<>
+										<p className="text-primary">Class:</p> <p className="break-words">{d.taxonClass}</p>
+									</>
+								) : d.phylum ? (
+									<>
+										<p className="text-primary">Phylum:</p> <p className="break-words">{d.phylum}</p>
+									</>
+								) : d.subdivision ? (
+									<>
+										<p className="text-primary">Subdivision:</p> <p className="break-words">{d.subdivision}</p>
+									</>
+								) : d.division ? (
+									<>
+										<p className="text-primary">Division:</p> <p className="break-words">{d.division}</p>
+									</>
+								) : d.supergroup ? (
+									<>
+										<p className="text-primary">Supergroup:</p> <p className="break-words">{d.supergroup}</p>
+									</>
+								) : d.kingdom ? (
+									<>
+										<p className="text-primary">Kingdom:</p> <p className="break-words">{d.kingdom}</p>
+									</>
+								) : d.domain ? (
+									<>
+										<p className="text-primary">Domain:</p> <p className="break-words">{d.domain}</p>
+									</>
+								) : (
+									"Error"
+								)}
 							</div>
 							<div className="grow">
 								<PhyloPicClient taxonomy={d} />

@@ -12,56 +12,58 @@ export default function PaginationControls({
 	handlePageHover: Function;
 }) {
 	return (
-		<div className="flex items-center justify-center gap-8">
-			<button
-				className="btn btn-ghost gap-2"
-				disabled={page <= 1}
-				onClick={() => handlePage(-1)}
-				onMouseEnter={() => handlePageHover(-1)}
-				type="button"
-			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="16"
-					height="16"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth="2"
-					strokeLinecap="round"
-					strokeLinejoin="round"
+		<div className="w-full flex justify-center">
+			<div className="flex items-center gap-12">
+				<button
+					className="btn btn-ghost gap-2"
+					disabled={page <= 1}
+					onClick={() => handlePage(-1)}
+					onMouseEnter={() => handlePageHover(-1)}
+					type="button"
 				>
-					<path d="m15 18-6-6 6-6" />
-				</svg>
-				Previous
-			</button>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					>
+						<path d="m15 18-6-6 6-6" />
+					</svg>
+					Previous
+				</button>
 
-			<div className="text-base-content grow text-center">
-				{Math.min((page - 1) * take + 1, count)}-{Math.min(page * take, count)} of {count}
+				<div className="text-base-content text-center grow">
+					{Math.min((page - 1) * take + 1, count)}-{Math.min(page * take, count)} of {count}
+				</div>
+
+				<button
+					className="btn btn-ghost gap-2"
+					disabled={page * take > count}
+					onClick={() => handlePage()}
+					onMouseEnter={() => handlePageHover()}
+					type="button"
+				>
+					Next
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					>
+						<path d="m9 18 6-6-6-6" />
+					</svg>
+				</button>
 			</div>
-
-			<button
-				className="btn btn-ghost gap-2"
-				disabled={page * take > count}
-				onClick={() => handlePage()}
-				onMouseEnter={() => handlePageHover()}
-				type="button"
-			>
-				Next
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					width="16"
-					height="16"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth="2"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-				>
-					<path d="m9 18 6-6-6-6" />
-				</svg>
-			</button>
 		</div>
 	);
 }
