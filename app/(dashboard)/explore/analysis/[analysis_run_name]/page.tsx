@@ -3,7 +3,8 @@ import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
 import Map from "@/app/components/map/Map";
 import Table from "@/app/components/paginated/Table";
-import DownloadButton from "@/app/components/DownloadButton";
+import OccDownloadButton from "@/app/components/OccDownloadButton";
+import occDownloadAction from "@/app/helpers/actions/occDownloadAction";
 
 export default async function Analysis_Run_name({ params }: { params: Promise<{ analysis_run_name: string }> }) {
 	const { analysis_run_name } = await params;
@@ -71,7 +72,11 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 			</div>
 
 			<div className="mb-5">
-				<DownloadButton text={"Occurrence Table"} />
+				<OccDownloadButton
+					text={"Occurrence Table"}
+					filename={`${analysis_run_name}_occurrenceTable`}
+					where={{ analysis_run_name }}
+				/>
 			</div>
 
 			<div role="tablist" className="tabs tabs-lifted">
