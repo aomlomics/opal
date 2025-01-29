@@ -1,3 +1,4 @@
+"use client";
 import { SignIn } from "@clerk/nextjs";
 
 export default function Page() {
@@ -8,13 +9,19 @@ export default function Page() {
 					elements: {
 						formButtonPrimary: "bg-primary text-base-content hover:bg-primary/80",
 						card: "bg-base-200 shadow-lg p-8",
-						headerTitle: "text-primary text-3xl font-bold",
-						headerSubtitle: "text-base-content/80",
+						headerTitle: "text-primary text-3xl font-semibold",
+						headerSubtitle: "text-primary font-normal",
 						socialButtonsBlockButton: "bg-base-300 text-base-content hover:bg-base-400",
 						formFieldInput: "bg-base-100 text-base-content",
-						footer: "hidden"
+						logoImage: {
+							width: "1000px",
+							height: "40px"
+						}
 					}
 				}}
+				path="/sign-in"
+				routing="path"
+				signUpUrl="/sign-up"
 			/>
 		</div>
 	);

@@ -37,37 +37,36 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 	if (!analysis) return <>Analysis not found</>;
 
 	return (
-		<div className="mx-80">
-			<header className="space-y-4">
-				<h1 className="text-4xl font-bold text-primary">{analysis_run_name}</h1>
-				{/* <p className="text-xl text-base-content/70">{project.project_name}</p> */}
+		<div className="max-w-7xl mx-auto p-6 space-y-8">
+			<header className="mb-8">
+				<h1 className="text-4xl font-semibold text-primary mb-2">{analysis_run_name}</h1>
 			</header>
 
-			{/* Stats Cards */}
-			<div className="grid grid-cols-2 gap-4 py-10">
+			<div className="grid grid-cols-2 gap-4">
 				<Link
-					href={`/explore/project/${encodeURIComponent(analysis.project_id)}`}
-					className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
+					href={`/explore/project/${analysis.project_id}`}
+					className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors"
 				>
-					<div className="stat-title">Project</div>
-					<div className="stat-value text-primary">{analysis.project_id}</div>
-				</Link>
-				<Link
-					href={`/explore/assay/${encodeURIComponent(analysis.assay_name)}`}
-					className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
-				>
-					<div className="stat-title">Assay</div>
-					<div className="stat-value text-primary">{analysis.assay_name}</div>
+					<div className="text-sm font-medium text-base-content/70">Project</div>
+					<div className="text-2xl font-medium mt-1">{analysis.project_id}</div>
 				</Link>
 
-				<Link href={`/`} className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors">
-					<div className="stat-title">Total Occurrences</div>
-					<div className="stat-value text-primary">{analysis._count.Occurrences}</div>
+				<Link
+					href={`/explore/assay/${analysis.assay_name}`}
+					className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors"
+				>
+					<div className="text-sm font-medium text-base-content/70">Assay</div>
+					<div className="text-2xl font-medium mt-1">{analysis.assay_name}</div>
 				</Link>
 
-				<Link href={`/`} className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors">
-					<div className="stat-title">Total Assignments</div>
-					<div className="stat-value text-primary">{analysis._count.Assignments}</div>
+				<Link href={`/`} className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors">
+					<div className="text-sm font-medium text-base-content/70">Total Occurrences</div>
+					<div className="text-2xl font-medium mt-1">{analysis._count.Occurrences}</div>
+				</Link>
+
+				<Link href={`/`} className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors">
+					<div className="text-sm font-medium text-base-content/70">Total Assignments</div>
+					<div className="text-2xl font-medium mt-1">{analysis._count.Assignments}</div>
 				</Link>
 			</div>
 

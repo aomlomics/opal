@@ -76,46 +76,50 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 	const sortedTaxa = Object.entries(taxaCount).sort(([, a], [, b]) => b - a);
 
 	return (
-		<div className="max-w-7xl mx-auto p-6 space-y-6">
+		<div className="max-w-7xl mx-auto p-6 space-y-8">
 			<div className="grid grid-cols-3 gap-8">
-				{/* Left side - Project Info + Stats */}
-				<div className="col-span-2 space-y-6">
-					<header className="space-y-4">
-						<h1 className="text-4xl font-bold text-primary">{project.project_id}</h1>
-						<p className="text-xl text-base-content/70">{project.project_name}</p>
+				<div className="col-span-2 space-y-8">
+					<header>
+						<h1 className="text-4xl font-semibold text-primary mb-2">{project.project_id}</h1>
+						<p className="text-lg text-base-content/70">{project.project_name}</p>
 					</header>
 
-					{/* Stats Cards */}
 					<div className="grid grid-cols-2 gap-4">
 						<Link
-							href={`/explore/project/${encodeURIComponent(project_id)}/Samples`}
-							className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
+							href={`/explore/project/${project_id}/Samples`}
+							className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors"
 						>
-							<div className="stat-title">Total Samples</div>
-							<div className="stat-value text-primary">{project._count.Samples}</div>
+							<div className="text-sm font-medium text-base-content/70">Total Samples</div>
+							<div className="text-2xl font-medium mt-1">{project._count.Samples}</div>
 						</Link>
 
 						<Link
-							href={`/explore/project/${encodeURIComponent(project_id)}/Analyses`}
-							className="stat bg-base-300 rounded-lg p-6 hover:bg-base-300/55 transition-colors"
+							href={`/explore/project/${project_id}/Analyses`}
+							className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors"
 						>
-							<div className="stat-title">Total Analyses</div>
-							<div className="stat-value text-primary">{project._count.Analyses}</div>
+							<div className="text-sm font-medium text-base-content/70">Total Analyses</div>
+							<div className="text-2xl font-medium mt-1">{project._count.Analyses}</div>
 						</Link>
 					</div>
 
-					<div className="grid grid-cols-2">
-						<div className="stat bg-base-200 rounded-lg p-6">
-							<div className="stat-title">Detection Type</div>
-							<div className="stat-value text-sm capitalize">{project.detection_type}</div>
-							<div className="stat-title">Study Factor</div>
-							<div className="stat-value text-sm">{project.study_factor}</div>
+					<div className="grid grid-cols-2 gap-4">
+						<div className="bg-base-200 rounded-lg p-6">
+							<div className="space-y-4">
+								<div>
+									<div className="text-sm font-medium text-base-content/70 mb-1">Detection Type</div>
+									<div className="text-base capitalize">{project.detection_type}</div>
+								</div>
+								<div>
+									<div className="text-sm font-medium text-base-content/70 mb-1">Study Factor</div>
+									<div className="text-base">{project.study_factor}</div>
+								</div>
+							</div>
 						</div>
 
-						<div className="stat bg-base-200 rounded-lg p-6 overflow-hidden">
-							<div className="stat-title">Top Taxonomy</div>
+						<div className="bg-base-200 rounded-lg p-6">
+							<div className="text-sm font-medium text-base-content/70 mb-2">Top Taxonomy</div>
 							{sortedTaxa.splice(0, 5).map((taxa) => (
-								<div key={taxa[0]} className="stat-value text-sm">
+								<div key={taxa[0]} className="text-base mb-1">
 									{taxa[0].split(";")[taxa[0].split(";").length - 1]}: {taxa[1]}
 								</div>
 							))}
@@ -123,42 +127,39 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 				</div>
 
-				{/* Right side - Institute Info Card */}
 				<div className="col-span-1">
-					<div className="card bg-base-200 shadow-xl">
-						<div className="card-body">
-							<h2 className="card-title text-primary mb-4">Institution Information</h2>
-							<div className="space-y-4">
+					<div className="bg-base-200 rounded-lg p-6">
+						<h2 className="text-lg font-medium text-primary mb-4">Institution Information</h2>
+						<div className="space-y-4">
+							<div>
+								<div className="text-sm font-medium text-base-content/70 mb-1">Contact</div>
+								<div className="text-base">{project.project_contact}</div>
+							</div>
+							<div>
+								<div className="text-sm font-medium text-base-content/70 mb-1">Institution</div>
+								<div className="text-base">{project.institution}</div>
+							</div>
+							{project.institutionID && (
 								<div>
-									<label className="text-sm font-medium text-base-content/70">Contact</label>
-									<p className="text-base-content">{project.project_contact}</p>
+									<div className="text-sm font-medium text-base-content/70 mb-1">Institution ID</div>
+									<a
+										href={project.institutionID}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="text-primary hover:underline block"
+									>
+										{project.institutionID}
+									</a>
 								</div>
-								<div>
-									<label className="text-sm font-medium text-base-content/70">Institution</label>
-									<p className="text-base-content">{project.institution}</p>
-								</div>
-								{project.institutionID && (
-									<div>
-										<label className="text-sm font-medium text-base-content/70">Institution ID</label>
-										<a
-											href={project.institutionID}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="text-primary hover:underline block"
-										>
-											{project.institutionID}
-										</a>
-									</div>
-								)}
-								<div>
-									<label className="text-sm font-medium text-base-content/70">Last Modified</label>
-									<p className="text-base-content">
-										{project.mod_date?.toLocaleDateString("en-US", {
-											year: "numeric",
-											month: "long",
-											day: "numeric"
-										})}
-									</p>
+							)}
+							<div>
+								<div className="text-sm font-medium text-base-content/70 mb-1">Last Modified</div>
+								<div className="text-base">
+									{project.mod_date?.toLocaleDateString("en-US", {
+										year: "numeric",
+										month: "long",
+										day: "numeric"
+									})}
 								</div>
 							</div>
 						</div>
@@ -166,7 +167,6 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 			</div>
 
-			{/* Assays Section - fixed image logic */}
 			<div className="card bg-base-200 shadow-xl">
 				<div className="card-body">
 					<h2 className="card-title text-primary">Assays in this Project: {Object.keys(uniqueAssays).length}</h2>
@@ -196,7 +196,6 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 
 			<h2 className="card-title text-primary">Samples:</h2>
 			<div role="tablist" className="tabs tabs-lifted">
-				{/* Map */}
 				<input type="radio" defaultChecked name="dataTabs" role="tab" className="tab" aria-label="Map" />
 				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
 					<div className="card-body p-0 overflow-hidden h-[400px]">
@@ -204,7 +203,6 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 				</div>
 
-				{/* Table */}
 				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Table" />
 				<div
 					role="tabpanel"
@@ -213,7 +211,6 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					<Table table="sample" title="samp_name" where={{ project_id }}></Table>
 				</div>
 
-				{/* Charts */}
 				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Charts" />
 				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
 					<BarChart
