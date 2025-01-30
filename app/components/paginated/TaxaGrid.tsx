@@ -76,54 +76,56 @@ export default function TaxaGrid({
 						className="card bg-base-200 hover:translate-x-1 transition-transform duration-200 aspect-square"
 					>
 						<div className="card-body p-4">
-							<div>
-								{d.species ? (
-									<>
-										<p className="text-primary">Species:</p> <p className="break-words">{d.species}</p>
-									</>
-								) : d.genus ? (
-									<>
-										<p className="text-primary">Genus:</p> <p className="break-words">{d.genus}</p>
-									</>
-								) : d.family ? (
-									<>
-										<p className="text-primary">Family:</p> <p className="break-words">{d.family}</p>
-									</>
-								) : d.order ? (
-									<>
-										<p className="text-primary">Order:</p> <p className="break-words">{d.order}</p>
-									</>
-								) : d.taxonClass ? (
-									<>
-										<p className="text-primary">Class:</p> <p className="break-words">{d.taxonClass}</p>
-									</>
-								) : d.phylum ? (
-									<>
-										<p className="text-primary">Phylum:</p> <p className="break-words">{d.phylum}</p>
-									</>
-								) : d.subdivision ? (
-									<>
-										<p className="text-primary">Subdivision:</p> <p className="break-words">{d.subdivision}</p>
-									</>
-								) : d.division ? (
-									<>
-										<p className="text-primary">Division:</p> <p className="break-words">{d.division}</p>
-									</>
-								) : d.supergroup ? (
-									<>
-										<p className="text-primary">Supergroup:</p> <p className="break-words">{d.supergroup}</p>
-									</>
-								) : d.kingdom ? (
-									<>
-										<p className="text-primary">Kingdom:</p> <p className="break-words">{d.kingdom}</p>
-									</>
-								) : d.domain ? (
-									<>
-										<p className="text-primary">Domain:</p> <p className="break-words">{d.domain}</p>
-									</>
-								) : (
-									"Error"
-								)}
+							<div className="tooltip tooltip-primary w-full break-words" data-tip={d.taxonomy}>
+								<div>
+									{d.species ? (
+										<>
+											<p className="text-primary">Species:</p> <p className="break-words">{d.species}</p>
+										</>
+									) : d.genus ? (
+										<>
+											<p className="text-primary">Genus:</p> <p className="break-words">{d.genus}</p>
+										</>
+									) : d.family ? (
+										<>
+											<p className="text-primary">Family:</p> <p className="break-words">{d.family}</p>
+										</>
+									) : d.order ? (
+										<>
+											<p className="text-primary">Order:</p> <p className="break-words">{d.order}</p>
+										</>
+									) : d.taxonClass ? (
+										<>
+											<p className="text-primary">Class:</p> <p className="break-words">{d.taxonClass}</p>
+										</>
+									) : d.phylum ? (
+										<>
+											<p className="text-primary">Phylum:</p> <p className="break-words">{d.phylum}</p>
+										</>
+									) : d.subdivision ? (
+										<>
+											<p className="text-primary">Subdivision:</p> <p className="break-words">{d.subdivision}</p>
+										</>
+									) : d.division ? (
+										<>
+											<p className="text-primary">Division:</p> <p className="break-words">{d.division}</p>
+										</>
+									) : d.supergroup ? (
+										<>
+											<p className="text-primary">Supergroup:</p> <p className="break-words">{d.supergroup}</p>
+										</>
+									) : d.kingdom ? (
+										<>
+											<p className="text-primary">Kingdom:</p> <p className="break-words">{d.kingdom}</p>
+										</>
+									) : d.domain ? (
+										<>
+											<p className="text-primary">Domain:</p> <p className="break-words">{d.domain}</p>
+										</>
+									) : (
+										"Error"
+									)}
+								</div>
 							</div>
 							<div className="grow">
 								<PhyloPicClient taxonomy={d} />
