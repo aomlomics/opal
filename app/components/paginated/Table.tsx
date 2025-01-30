@@ -301,7 +301,7 @@ export default function Table({
 											acc.push(
 												<td
 													className={`whitespace-nowrap ${i ? "border-base-100 border-l-2" : ""} ${
-														row[head] ? "" : "bg-base-300"
+														row[head] !== null ? "" : "bg-base-300"
 													}`}
 													key={row[head] + "child" + i}
 												>

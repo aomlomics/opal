@@ -5,6 +5,7 @@ import Image from "next/image";
 import Table from "@/app/components/paginated/Table";
 import BarChart from "@/app/components/BarChart";
 import { randomColors } from "@/app/helpers/utils";
+import DataDisplay from "@/app/components/DataDisplay";
 
 export default async function Project_Id({ params }: { params: Promise<{ project_id: string }> }) {
 	let { project_id } = await params;
@@ -47,6 +48,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 		}
 	});
 	if (!project) return <>Project not found</>;
+	const { _count: _, Samples: __, Analyses: ___, ...justProject } = project;
 
 	const uniqueAssays = project.Analyses.reduce(
 		(acc, a) => ({ ...acc, [a.assay_name]: { target_gene: a.Assay.target_gene } }),
@@ -77,7 +79,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 
 	return (
 		<div className="max-w-7xl mx-auto p-6 space-y-8">
-			<div className="grid grid-cols-3 gap-8">
+			<div className="grid grid-cols-4 gap-8">
 				<div className="col-span-2 space-y-8">
 					<header>
 						<h1 className="text-4xl font-semibold text-primary mb-2">{project.project_id}</h1>
@@ -162,6 +164,28 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 									})}
 								</div>
 							</div>
+						</div>
+					</div>
+				</div>
+
+				<div className="col-span-1">
+					<div className="bg-base-200 rounded-lg p-6">
+						<h2 className="text-lg font-medium text-primary mb-4">Project Information</h2>
+						<div className="h-[400px]">
+							<DataDisplay
+								data={justProject}
+								omit={[
+									"id",
+									"project_id",
+									"userId",
+									"institution",
+									"institutionID",
+									"mod_date",
+									"project_contact",
+									"detection_type",
+									"study_factor"
+								]}
+							/>
 						</div>
 					</div>
 				</div>

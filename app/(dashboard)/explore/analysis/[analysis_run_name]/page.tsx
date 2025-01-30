@@ -5,6 +5,7 @@ import Map from "@/app/components/map/Map";
 import Table from "@/app/components/paginated/Table";
 import OccDownloadButton from "@/app/components/OccDownloadButton";
 import occDownloadAction from "@/app/helpers/actions/occDownloadAction";
+import DataDisplay from "@/app/components/DataDisplay";
 
 export default async function Analysis_Run_name({ params }: { params: Promise<{ analysis_run_name: string }> }) {
 	const { analysis_run_name } = await params;
@@ -35,6 +36,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 		}
 	});
 	if (!analysis) return <>Analysis not found</>;
+	const { _count: _, Occurrences: __, ...justAnalysis } = analysis;
 
 	return (
 		<div className="max-w-7xl mx-auto p-6 space-y-8">
@@ -42,7 +44,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 				<h1 className="text-4xl font-semibold text-primary mb-2">{analysis_run_name}</h1>
 			</header>
 
-			<div className="grid grid-cols-2 gap-4">
+			<div className="grid grid-cols-3 gap-4">
 				<Link
 					href={`/explore/project/${analysis.project_id}`}
 					className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors"
@@ -58,6 +60,13 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 					<div className="text-sm font-medium text-base-content/70">Assay</div>
 					<div className="text-2xl font-medium mt-1">{analysis.assay_name}</div>
 				</Link>
+
+				<div className="bg-base-200 rounded-lg p-6 row-span-2">
+					<h2 className="text-lg font-medium text-primary mb-4">Analysis Information</h2>
+					<div className="h-[400px]">
+						<DataDisplay data={justAnalysis} omit={["id", "project_id", "userId", "analysis_run_name", "assay_name"]} />
+					</div>
+				</div>
 
 				<Link href={`/`} className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors">
 					<div className="text-sm font-medium text-base-content/70">Total Occurrences</div>
