@@ -5,13 +5,15 @@ import ThemeAwareLogo from "../components/ThemeAwareLogo";
 import { DeadValueEnum } from "@/types/enums";
 import { prisma } from "../helpers/prisma";
 import Map from "../components/map/Map";
+import { randomColors } from "../helpers/utils";
 
 export default async function Home() {
 	const deadValues = Object.values(DeadValueEnum).filter((v) => !isNaN(Number(v))) as number[];
 
-	const rawLocations = await prisma.sample.groupBy({
-		by: ["project_id"],
-		_avg: {
+	const samples = await prisma.sample.findMany({
+		select: {
+			samp_name: true,
+			project_id: true,
 			decimalLatitude: true,
 			decimalLongitude: true
 		},
@@ -34,11 +36,21 @@ export default async function Home() {
 			]
 		}
 	});
-	const avgProjectLocs = rawLocations.map((loc) => ({
-		project_id: loc.project_id,
-		decimalLatitude: loc._avg.decimalLatitude,
-		decimalLongitude: loc._avg.decimalLongitude
-	}));
+
+	const uniqueProjects = samples.reduce((acc, a) => {
+		if (!acc.includes(a.project_id)) {
+			acc.push(a.project_id);
+		}
+
+		return acc;
+	}, [] as string[]);
+	const colors = randomColors(uniqueProjects.length);
+	const projectColors = {} as Record<string, string>;
+	for (let i = 0; i < colors.length; i++) {
+		projectColors[uniqueProjects[i]] = colors[i];
+	}
+
+	const locations = samples.map((samp) => ({ ...samp, color: projectColors[samp.project_id] }));
 
 	return (
 		<main className="flex flex-col grow bg-base-400 text-base-content">
@@ -101,7 +113,7 @@ export default async function Home() {
 				</div>
 				<div className="flex gap-8">
 					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">
-						<Map locations={avgProjectLocs} id="project_id" table="project" />
+						<Map locations={locations} id="samp_name" title="project_id" table="project" iconSize={16} />
 					</div>
 					<div className="w-1/2">
 						<DataSummary />

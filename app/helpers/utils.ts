@@ -155,7 +155,7 @@ export function randomColors(num: number) {
 	let colors = [];
 	for (let i = 0; i < num; i++) {
 		colors.push(
-			`rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`
+			`rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`
 		);
 	}
 	return colors;

@@ -13,8 +13,12 @@ export default function DataDisplay({
 				if (!omit.includes(field)) {
 					acc.push(
 						<>
-							<div className="flex items-center break-all">{field}</div>
-							<div className={`break-words ${value !== null ? "" : "bg-base-300"}`}>{value?.toString()}</div>
+							<div key={`${field}1`} className="flex items-center break-all">
+								{field}
+							</div>
+							<div key={`${field}2`} className={`break-words ${value !== null ? "" : "bg-base-300"}`}>
+								{value?.toString()}
+							</div>
 						</>
 					);
 				}

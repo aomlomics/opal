@@ -6,16 +6,16 @@ import { fetcher } from "@/app/helpers/utils";
 import PhyloPicClient from "../PhyloPicClient";
 import PaginationControls from "./PaginationControls";
 import { Prisma } from "@prisma/client";
-import { CSSProperties, useState } from "react";
+import { useState } from "react";
 
 export default function TaxaGrid({
 	take = 50,
-	size = "lg",
+	cols = 10,
 	where,
 	orderBy
 }: {
 	take?: number;
-	size?: "sm" | "lg";
+	cols?: number;
 	where?: Prisma.TaxonomyWhereInput;
 	orderBy?: Prisma.TaxonomyOrderByWithAggregationInput;
 }) {
@@ -52,11 +52,6 @@ export default function TaxaGrid({
 	if (isLoading) return <div>loading...</div>;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
 
-	const gridSizes = {
-		sm: "grid-cols-5",
-		lg: "grid-cols-10"
-	};
-
 	return (
 		<div className="space-y-6 p-6">
 			{/* Pagination Controls */}
@@ -68,7 +63,7 @@ export default function TaxaGrid({
 				handlePageHover={handlePageHover}
 			/>
 
-			<div className={`grid gap-4 ${gridSizes[size]}`}>
+			<div className={`grid gap-4`} style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
 				{data.result.map((d: any) => (
 					<Link
 						href={`/explore/taxonomy/${encodeURIComponent(d.taxonomy)}`}
