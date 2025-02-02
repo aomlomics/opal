@@ -16,6 +16,7 @@ export default function DataDisplay({
 							<div key={`${field}1`} className="flex items-center break-all">
 								{field}
 							</div>
+							{/* TODO: deavalues */}
 							<div key={`${field}2`} className={`break-words ${value !== null ? "" : "bg-base-300"}`}>
 								{value?.toString()}
 							</div>
