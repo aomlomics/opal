@@ -40,13 +40,13 @@ const TABLES = [
 	// 	description:
 	// 		"Individual detection records linking samples to specific DNA sequences (Features), including their quantified abundance."
 	// },
-	// {
-	// 	name: "Features",
-	// 	route: "feature",
-	// 	description:
-	// 		"Unique DNA sequences (eg, ASVs) found in samples, typically representing distinct organisms, with their consensus taxonomic classification."
-	// },
-	// { name: "Assignments", route: "assignment", description: "Some description." },
+	{
+		name: "Features",
+		route: "feature",
+		description:
+			"Unique DNA sequences (eg, ASVs) found in samples, typically representing distinct organisms, with their consensus taxonomic classification."
+	},
+	{ name: "Assignments", route: "assignment", description: "Some description." },
 	{
 		name: "Taxonomies",
 		route: "taxonomy",

@@ -47,7 +47,8 @@ export default function Header() {
 							dropdown={[
 								{ label: "Projects", href: "/explore/project" },
 								{ label: "Analyses", href: "/explore/analysis" },
-								{ label: "Taxonomies", href: "/explore/taxonomy" }
+								{ label: "Taxonomies", href: "/explore/taxonomy" },
+								{ label: "Features", href: "/explore/feature" }
 							]}
 						/>
 						<TabButton tabName="Search" route="/search" />

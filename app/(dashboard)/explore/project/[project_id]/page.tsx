@@ -3,7 +3,7 @@ import Link from "next/link";
 import Map from "@/app/components/map/Map";
 import Image from "next/image";
 import Table from "@/app/components/paginated/Table";
-import BarChart from "@/app/components/BarChart";
+import BarChart from "@/app/components/charts/BarChart";
 import { randomColors } from "@/app/helpers/utils";
 import DataDisplay from "@/app/components/DataDisplay";
 

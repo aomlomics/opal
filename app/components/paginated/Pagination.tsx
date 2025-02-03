@@ -90,24 +90,28 @@ export default function Pagination({
 								<h3 className="text-lg font-medium text-primary">{d[title]}</h3>
 
 								{/* Info section with clean layout */}
-								<div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-base-content/70">
-									{fields?.map((field) => (
-										<div key={field} className="flex items-center gap-2">
-											<span className="font-medium">{field}:</span>
-											<span>{d[field]}</span>
-										</div>
-									))}
-								</div>
+								{fields && (
+									<div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-base-content/70">
+										{fields.map((field) => (
+											<div key={field} className="flex items-center gap-2">
+												<span className="font-medium">{field}:</span>
+												<span className="break-all">{d[field]}</span>
+											</div>
+										))}
+									</div>
+								)}
 
 								{/* Stats with subtle separator */}
-								<div className="flex gap-6 pt-1">
-									{relCounts?.map((rel) => (
-										<div key={rel} className="flex items-center gap-2">
-											<span className="text-lg font-medium">{d._count[rel]}</span>
-											<span className="text-sm text-base-content/70">{rel}</span>
-										</div>
-									))}
-								</div>
+								{relCounts && (
+									<div className="flex gap-6 pt-1">
+										{relCounts.map((rel) => (
+											<div key={rel} className="flex items-center gap-2">
+												<span className="text-lg font-medium">{d._count[rel]}</span>
+												<span className="text-sm text-base-content/70">{rel}</span>
+											</div>
+										))}
+									</div>
+								)}
 							</div>
 						</div>
 					</Link>
