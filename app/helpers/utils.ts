@@ -88,13 +88,9 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 	const query = {
 		orderBy: {
 			id: "asc"
-		},
-		omit: {
-			id: true
 		}
 	} as {
 		orderBy: { id: Prisma.SortOrder };
-		omit: { id: true };
 		take: number;
 		skip?: number;
 		cursor?: { id: number };

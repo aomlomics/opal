@@ -1,4 +1,5 @@
 import DataDisplay from "@/app/components/DataDisplay";
+import Pagination from "@/app/components/paginated/Pagination";
 import { prisma } from "@/app/helpers/prisma";
 import { ReactNode } from "react";
 
@@ -89,11 +90,19 @@ export default async function Featureid({ params }: { params: Promise<{ featurei
 				<h2 className="text-primary text-2xl">Prevalence</h2>
 				<div>Found in {prevalence.toFixed(2)}% of samples.</div>
 			</div>
-			<div className="collapse collapse-arrow bg-base-200">
-				<input type="checkbox" />
-				<div className="collapse-title text-xl font-medium">Click me to show/hide content</div>
-				<div className="collapse-content">
-					<p>hello</p>
+			<div role="tablist" className="tabs tabs-lifted">
+				<input type="radio" defaultChecked name="dataTabs" role="tab" className="tab" aria-label="Occurrences" />
+				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+					<Pagination
+						table="occurrence"
+						where={{ featureid }}
+						title={["analysis_run_name", "samp_name", "featureid"]}
+					/>
+				</div>
+
+				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Assignments" />
+				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+					<Pagination table="assignment" where={{ featureid }} title={["analysis_run_name", "featureid"]} />
 				</div>
 			</div>
 		</div>

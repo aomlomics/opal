@@ -20,7 +20,7 @@ export default function Pagination({
 	table: Uncapitalize<Prisma.ModelName>;
 	id?: string;
 	where?: Record<string, string>;
-	title: string;
+	title: string | string[];
 	fields?: string[];
 	relCounts?: string[];
 	take?: number;
@@ -87,7 +87,22 @@ export default function Pagination({
 						<div className="card-body p-5">
 							<div className="flex flex-col gap-3">
 								{/* Title with hover animation */}
-								<h3 className="text-lg font-medium text-primary">{d[title]}</h3>
+								{typeof title === "string" ? (
+									<h3 className="text-lg font-medium text-primary">{d[title]}</h3>
+								) : (
+									<div className="grid" style={{ gridTemplateColumns: `repeat(${title.length}, minmax(0, 1fr))` }}>
+										{title.map((t) => (
+											<h3 key={`${t}1`} className="text-lg font-medium text-primary">
+												{t}:
+											</h3>
+										))}
+										{title.map((t) => (
+											<h3 key={`${t}2`} className="text-lg font-medium text-primary break-words">
+												{d[t]}
+											</h3>
+										))}
+									</div>
+								)}
 
 								{/* Info section with clean layout */}
 								{fields && (
