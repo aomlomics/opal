@@ -89,6 +89,13 @@ export default async function Featureid({ params }: { params: Promise<{ featurei
 				<h2 className="text-primary text-2xl">Prevalence</h2>
 				<div>Found in {prevalence.toFixed(2)}% of samples.</div>
 			</div>
+			<div className="collapse collapse-arrow bg-base-200">
+				<input type="checkbox" />
+				<div className="collapse-title text-xl font-medium">Click me to show/hide content</div>
+				<div className="collapse-content">
+					<p>hello</p>
+				</div>
+			</div>
 		</div>
 	);
 }
