@@ -8,7 +8,7 @@ export default function User() {
 			<SignedIn>
 				<UserButton>
 					<UserButton.MenuItems>
-						<UserButton.Link href="/submissions" label="Submissions" labelIcon={<span>.</span>} />
+						<UserButton.Link href="/mySubmissions" label="My Submissions" labelIcon={<span>.</span>} />
 					</UserButton.MenuItems>
 				</UserButton>
 			</SignedIn>

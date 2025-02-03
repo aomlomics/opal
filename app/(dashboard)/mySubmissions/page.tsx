@@ -5,7 +5,7 @@ import { prisma } from "@/app/helpers/prisma";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 
-export default async function Submissions() {
+export default async function MySubmissions() {
 	const { userId } = await auth();
 	if (!userId) {
 		return <div>Unauthorized</div>;

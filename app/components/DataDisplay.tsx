@@ -1,3 +1,4 @@
+import { DeadValueEnum } from "@/types/enums";
 import { ReactNode } from "react";
 
 export default function DataDisplay({
@@ -12,15 +13,18 @@ export default function DataDisplay({
 			{Object.entries(data).reduce((acc: ReactNode[], [field, value]) => {
 				if (!omit.includes(field)) {
 					acc.push(
-						<>
-							<div key={`${field}1`} className="flex items-center break-all">
-								{field}
-							</div>
-							{/* TODO: deavalues */}
-							<div key={`${field}2`} className={`break-words ${value !== null ? "" : "bg-base-300"}`}>
-								{value?.toString()}
-							</div>
-						</>
+						<div key={`${field}1`} className="flex items-center break-all">
+							{field}
+						</div>
+					);
+					acc.push(
+						<div key={`${field}2`} className={`break-words ${value !== null ? "" : "bg-base-300"}`}>
+							{value === null
+								? ""
+								: parseInt(value.toString()) in DeadValueEnum && typeof value === "number"
+								? DeadValueEnum[parseInt(value.toString())]
+								: value.toString()}
+						</div>
 					);
 				}
 
