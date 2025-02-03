@@ -85,6 +85,10 @@ export default async function Featureid({ params }: { params: Promise<{ featurei
 					}, [])}
 				</div>
 			</div>
+			<div>
+				<h2 className="text-primary text-2xl">Prevalence</h2>
+				<div>Found in {prevalence.toFixed(2)}% of samples.</div>
+			</div>
 		</div>
 	);
 }
