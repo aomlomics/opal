@@ -46,7 +46,7 @@ const TABLES = [
 		description:
 			"Unique DNA sequences (eg, ASVs) found in samples, typically representing distinct organisms, with their consensus taxonomic classification."
 	},
-	{ name: "Assignments", route: "assignment", description: "Some description." },
+	// { name: "Assignments", route: "assignment", description: "Some description." },
 	{
 		name: "Taxonomies",
 		route: "taxonomy",
