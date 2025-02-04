@@ -87,21 +87,48 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</header>
 
 					<div className="grid grid-cols-2 gap-4">
-						<Link
-							href={`/explore/project/${project_id}/Samples`}
-							className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors"
+						<a
+							href="#samples-section"
+							className="stat bg-base-200 rounded-lg p-6 hover:bg-base-300 transition-colors cursor-pointer"
 						>
 							<div className="text-sm font-medium text-base-content/70">Total Samples</div>
 							<div className="text-2xl font-medium mt-1">{project._count.Samples}</div>
-						</Link>
+						</a>
 
-						<Link
-							href={`/explore/project/${project_id}/Analyses`}
-							className="stat bg-base-200 rounded-lg p-6 hover:bg-base-200/80 transition-colors"
-						>
-							<div className="text-sm font-medium text-base-content/70">Total Analyses</div>
-							<div className="text-2xl font-medium mt-1">{project._count.Analyses}</div>
-						</Link>
+						<details className="dropdown dropdown-bottom w-full">
+							<summary className="stat bg-base-200 rounded-lg p-6 hover:bg-base-300 focus:bg-base-300 transition-colors w-full cursor-pointer relative z-[2] flex justify-between items-center">
+								<div>
+									<div className="text-sm font-medium text-base-content/70">Total Analyses</div>
+									<div className="text-2xl font-medium mt-1">{project._count.Analyses}</div>
+								</div>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="20"
+									height="20"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									className="text-base-content/70"
+								>
+									<path d="m6 9 6 6 6-6" />
+								</svg>
+							</summary>
+							<ul className="dropdown-content menu py-1 px-2 bg-base-300 rounded-b-box w-full rounded-t-none shadow-xl absolute top-[calc(100%-1.25rem)] left-0 z-[1]">
+								{project.Analyses.map((analysis) => (
+									<li key={analysis.analysis_run_name}>
+										<Link
+											href={`/explore/analysis/${analysis.analysis_run_name}`}
+											className="text-base-content hover:text-primary"
+										>
+											{analysis.analysis_run_name}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</details>
 					</div>
 
 					<div className="grid grid-cols-2 gap-4">
@@ -218,9 +245,11 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 			</div>
 
-			<h2 className="card-title text-primary">Samples:</h2>
+			<h2 id="samples-section" className="card-title text-primary">
+				Samples:
+			</h2>
 			<div role="tablist" className="tabs tabs-lifted">
-				<input type="radio" defaultChecked name="dataTabs" role="tab" className="tab" aria-label="Map" />
+				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Map" defaultChecked />
 				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
 					<div className="card-body p-0 overflow-hidden h-[400px]">
 						<Map locations={project.Samples} id="samp_name" table="sample" cluster />
