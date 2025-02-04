@@ -7,7 +7,14 @@ export default function Footer() {
 			<div className="text-left pt-1 text-base-content">
 				<p className="-mb-4">Copyright © 2024 - All Rights Reserved.</p>
 				<p className="text-base-content hover:underline -mb-4">
-					<Link href="https://www.aoml.noaa.gov/">NOAA's Atlantic Oceanographic and Meteorological Laboratory</Link>
+					<Link
+						href="https://www.aoml.noaa.gov/"
+						className="text-primary hover:underline break-words"
+						target="_blank"
+						rel="noreferrer"
+					>
+						NOAA's Atlantic Oceanographic and Meteorological Laboratory
+					</Link>
 				</p>
 				<p className="text-primary hover:underline">
 					<Link href="/about">Report an Issue</Link>
