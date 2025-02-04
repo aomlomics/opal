@@ -76,18 +76,19 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 	}
 	const colorsArr = randomColors(Object.keys(taxaCountByAnalysis).length);
 	const sortedTaxa = Object.entries(taxaCount).sort(([, a], [, b]) => b - a);
+	const topTaxa = [...sortedTaxa]; // Create a copy for the top taxonomy section
 
 	return (
 		<div className="max-w-7xl mx-auto p-6">
-			<div className="grid grid-cols-4 gap-8 mb-3">
-				<div className="col-span-4">
+			<div className="grid grid-cols-12 gap-8 mb-3">
+				<div className="col-span-12">
 					<header>
 						<h1 className="text-4xl font-semibold text-primary mb-2">{project.project_id}</h1>
 						<p className="text-lg text-base-content/70">{project.project_name}</p>
 					</header>
 				</div>
 
-				<div className="col-span-2 space-y-4">
+				<div className="col-span-6 space-y-4">
 					<div className="grid grid-cols-2 gap-4">
 						<a
 							href="#samples-section"
@@ -149,16 +150,20 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 
 						<div className="bg-base-200 p-6">
 							<div className="text-sm font-medium text-base-content/70 mb-2">Top Taxonomy</div>
-							{sortedTaxa.splice(0, 5).map((taxa) => (
-								<div key={taxa[0]} className="text-base mb-1">
-									{taxa[0].split(";")[taxa[0].split(";").length - 1]}: {taxa[1]}
-								</div>
-							))}
+							{sortedTaxa.slice(0, 5).map((taxa) => {
+								const taxonomyParts = taxa[0].split(";").filter(Boolean); // Remove empty strings after split
+								const lastTaxonomy = taxonomyParts[taxonomyParts.length - 1]?.trim() || "Unknown";
+								return (
+									<div key={taxa[0]} className="text-base mb-1">
+										{lastTaxonomy}: {taxa[1]}
+									</div>
+								);
+							})}
 						</div>
 					</div>
 				</div>
 
-				<div className="col-span-1">
+				<div className="col-span-3">
 					<div className="bg-base-200 p-6">
 						<h2 className="text-lg font-medium text-base-content/70 mb-4">Institution Information</h2>
 						<div className="space-y-4">
@@ -197,7 +202,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 				</div>
 
-				<div className="col-span-1">
+				<div className="col-span-3">
 					<div className="bg-base-200 p-6">
 						<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
 						<div className="h-[300px] overflow-y-auto">
