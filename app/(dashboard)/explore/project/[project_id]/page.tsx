@@ -80,15 +80,15 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 
 	return (
 		<div className="max-w-7xl mx-auto p-6">
-			<div className="grid grid-cols-12 gap-8 mb-3">
-				<div className="col-span-12">
+			<div className="grid grid-cols-3 gap-8 mb-3">
+				<div className="col-span-3">
 					<header>
 						<h1 className="text-4xl font-semibold text-primary mb-2">{project.project_id}</h1>
 						<p className="text-lg text-base-content/70">{project.project_name}</p>
 					</header>
 				</div>
 
-				<div className="col-span-6 space-y-4">
+				<div className="col-span-2 space-y-4">
 					<div className="grid grid-cols-2 gap-4">
 						<a
 							href="#samples-section"
@@ -163,7 +163,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 				</div>
 
-				<div className="col-span-3">
+				{/* <div className="col-span-3">
 					<div className="bg-base-200 p-6">
 						<h2 className="text-lg font-medium text-base-content/70 mb-4">Institution Information</h2>
 						<div className="space-y-4">
@@ -178,14 +178,14 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 							{project.institutionID && (
 								<div>
 									<div className="text-sm font-medium text-base-content/70 mb-1">Institution ID</div>
-									<a
+									<Link
 										href={project.institutionID}
 										target="_blank"
-										rel="noopener noreferrer"
+										rel="noreferrer"
 										className="text-primary hover:underline block"
 									>
 										{project.institutionID}
-									</a>
+									</Link>
 								</div>
 							)}
 							<div>
@@ -200,27 +200,12 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> */}
 
-				<div className="col-span-3">
-					<div className="bg-base-200 p-6">
-						<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
-						<div className="h-[300px] overflow-y-auto">
-							<DataDisplay
-								data={justProject}
-								omit={[
-									"id",
-									"project_id",
-									"userId",
-									"institution",
-									"institutionID",
-									"mod_date",
-									"project_contact",
-									"detection_type",
-									"study_factor"
-								]}
-							/>
-						</div>
+				<div className="bg-base-200 p-6">
+					<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
+					<div className="h-[300px] overflow-y-auto">
+						<DataDisplay data={justProject} omit={["id", "project_id", "userId", "detection_type", "study_factor"]} />
 					</div>
 				</div>
 			</div>
