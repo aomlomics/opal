@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function TaxaGrid({
 	take = 50,
-	cols = 10,
+	cols = 5,
 	where,
 	orderBy
 }: {
