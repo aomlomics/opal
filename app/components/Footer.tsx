@@ -24,7 +24,7 @@ export default function Footer() {
 			<div className="flex items-stretch bg-base-100 justify-end ml-auto">
 				<div className="rounded-l-sm flex items-center px-6 h-full">
 					<div className="relative h-12 w-32 self-center mb-1">
-						<Link href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
+						<Link href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noreferrer">
 							<ThemeAwareLogo
 								src="/images/noaa_exploration_logo_FINAL.svg"
 								alt="NOAA Exploration Logo"
@@ -37,7 +37,7 @@ export default function Footer() {
 						</Link>
 					</div>
 					<div className="pt-2 ml-10 self-center mb-2">
-						<Link href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
+						<Link href="https://www.northerngulfinstitute.org/" target="_blank" rel="noreferrer">
 							<ThemeAwareLogo
 								src="/images/ngi_msu_logo_FINAL.svg"
 								alt="MSU NGI Logo"

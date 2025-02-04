@@ -138,7 +138,7 @@ export default async function Home() {
 								href="https://www.aoml.noaa.gov/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA's Atlantic Oceanographic and Meteorological Laboratory
 							</Link>{" "}
@@ -147,7 +147,7 @@ export default async function Home() {
 								href="https://www.northerngulfinstitute.org/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								Northern Gulf Institute
 							</Link>{" "}
@@ -156,7 +156,7 @@ export default async function Home() {
 								href="https://www.msstate.edu/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								Mississippi State University
 							</Link>{" "}
@@ -165,7 +165,7 @@ export default async function Home() {
 								href="https://oceanexplorer.noaa.gov/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA Ocean Exploration
 							</Link>{" "}
@@ -174,7 +174,7 @@ export default async function Home() {
 								href="https://oceanexplorer.noaa.gov/technology/omics/noaa-omics.html"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA Omics
 							</Link>{" "}
@@ -184,7 +184,7 @@ export default async function Home() {
 					<div className="shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
 						<div className="flex justify-center items-center gap-20">
 							<div className="relative h-24 w-64">
-								<Link href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
+								<Link href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noreferrer">
 									<ThemeAwareLogo
 										src="/images/noaa_exploration_logo_FINAL.svg"
 										alt="National Oceanic and Atmospheric Administration Exploration Logo"
@@ -194,7 +194,7 @@ export default async function Home() {
 								</Link>
 							</div>
 							<div>
-								<Link href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
+								<Link href="https://www.northerngulfinstitute.org/" target="_blank" rel="noreferrer">
 									<ThemeAwareLogo
 										src="/images/ngi_msu_logo_FINAL.svg"
 										alt="Mississippi State University, Northern Gulf Institute Logo"
