@@ -9,20 +9,28 @@ export default function User() {
 				<UserButton
 					appearance={{
 						elements: {
-							cardBox: "bg-base-100 shadow-md",
-							headerTitle: "text-primary", // this doesnt do anything
-							headerSubtitle: "text-primary", // this one doesnt do anything
-							headerBackground: "bg-primary",
-							button: "text-primary hover:bg-primary",
-							buttonText: "text-primary",
+							// Dropdown background
+							userButtonPopoverCard__userButton: "bg-base-100",
+							userButtonPopoverContainer: "bg-base-100",
+							userButtonPopoverActions: "bg-base-100",
+							userButtonPopoverMain: "bg-base-100",
+							
+							headerTitle: "text-base-content",
+							headerSubtitle: "text-base-content",
+							button: "text-primary hover:bg-base-200",
+							buttonText: "text-base-content",
 							divider: "bg-base-300",
 							
+							// Menu items - text base-content, icons primary, hover effects
+							userButtonPopoverActionButton: "hover:bg-base-200",
 							userButtonPopoverActionButtonIcon: "text-primary",
 							userButtonPopoverActionButtonLabel: "text-primary",
+							menuItem: "text-base-content",
+							menuItemText: "text-base-content",
+							actionButtonIcon: "text-primary",
 							
-							// for the email name
+							// Email and name
 							userPreviewSecondaryIdentifier: "text-primary",
-							// for the name
 							userPreviewMainIdentifier: "text-primary",
 							
 							socialButtonsBlockButton: "bg-base-200 text-primary hover:bg-primary",
