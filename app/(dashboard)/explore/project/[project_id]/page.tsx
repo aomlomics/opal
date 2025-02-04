@@ -134,39 +134,24 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 						</details>
 					</div>
 
-					<div className="grid grid-cols-2 gap-4">
-						<div className="bg-base-200 p-6">
-							<div className="space-y-4">
-								<div>
-									<div className="text-sm font-medium text-base-content/70 mb-1">Detection Type</div>
-									<div className="text-base capitalize">{project.detection_type}</div>
+					<div className="bg-base-200 p-6">
+						<div className="text-sm font-medium text-base-content/70 mb-2">Top Taxonomy</div>
+						{sortedTaxa.slice(0, 5).map((taxa) => {
+							const taxonomyParts = taxa[0].split(";").filter(Boolean); // Remove empty strings after split
+							const lastTaxonomy = taxonomyParts[taxonomyParts.length - 1]?.trim() || "Unknown";
+							return (
+								<div key={taxa[0]} className="text-base mb-1">
+									{lastTaxonomy}: {taxa[1]}
 								</div>
-								<div>
-									<div className="text-sm font-medium text-base-content/70 mb-1">Study Factor</div>
-									<div className="text-base">{project.study_factor}</div>
-								</div>
-							</div>
-						</div>
-
-						<div className="bg-base-200 p-6">
-							<div className="text-sm font-medium text-base-content/70 mb-2">Top Taxonomy</div>
-							{sortedTaxa.slice(0, 5).map((taxa) => {
-								const taxonomyParts = taxa[0].split(";").filter(Boolean); // Remove empty strings after split
-								const lastTaxonomy = taxonomyParts[taxonomyParts.length - 1]?.trim() || "Unknown";
-								return (
-									<div key={taxa[0]} className="text-base mb-1">
-										{lastTaxonomy}: {taxa[1]}
-									</div>
-								);
-							})}
-						</div>
+							);
+						})}
 					</div>
 				</div>
 
 				<div className="bg-base-200 p-6">
 					<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
 					<div className="h-[300px] overflow-y-auto">
-						<DataDisplay data={justProject} omit={["id", "project_id", "userId", "detection_type", "study_factor"]} />
+						<DataDisplay data={justProject} omit={["id", "project_id", "userId", "project_name"]} />
 					</div>
 				</div>
 			</div>

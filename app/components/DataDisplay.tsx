@@ -1,10 +1,9 @@
 import { DeadValueEnum } from "@/types/enums";
 import Link from "next/link";
-import { ReactNode } from "react";
 
 export default function DataDisplay({
 	data,
-	omit = []
+	omit = ["id"]
 }: {
 	data: Record<string, string | number | boolean | Date | null>;
 	omit?: (keyof typeof data)[];
