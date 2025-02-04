@@ -30,18 +30,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					localization={{
 						signIn: {
 							start: {
-								title: "Continue to NODE",
-								__experimental_titleCombined: "Continue to NODE",
-								subtitle:
-									"Sign in with a NOAA (@noaa.gov) or NGI (@ngi.msstate.edu) email using Google or Microsoft respectively.",
+								title: "Sign in to Submit Data",
+								__experimental_titleCombined: "Sign in to Submit Data",
+								subtitle: "Sign in with a @noaa.gov Google account or @ngi.msstate.edu Microsoft account.",
 								// @ts-ignore - subtitleCombined is needed for the UI but not in types
-								subtitleCombined:
-									"Sign in with a NOAA (@noaa.gov) or NGI (@ngi.msstate.edu) email using Google or Microsoft respectively.",
+								subtitleCombined: "Sign in with a @noaa.gov Google account or @ngi.msstate.edu Microsoft account.",
+								titleCombined: "Sign in to Submit Data",
 								actionText: "You must use a NOAA or MSState email address to sign in."
 							}
 						},
-						socialButtonsBlockButton__google: "NOAA Users",
-						socialButtonsBlockButton__microsoft: "MSU Users",
 						dividerText: "or",
 						formFieldLabel: {
 							emailAddress: "Email Address"
