@@ -1,6 +1,5 @@
 import TableFilter from "@/app/components/explore/TableFilter";
 import TaxaGrid from "@/app/components/paginated/TaxaGrid";
-import { Suspense } from "react";
 
 export default async function Taxonomy() {
 	return (
@@ -13,9 +12,7 @@ export default async function Taxonomy() {
 			<TableFilter />
 
 			<div className="bg-base-100 rounded-lg border border-base-300">
-				<Suspense fallback={null}>
-					<TaxaGrid />
-				</Suspense>
+				<TaxaGrid />
 			</div>
 		</div>
 	);
