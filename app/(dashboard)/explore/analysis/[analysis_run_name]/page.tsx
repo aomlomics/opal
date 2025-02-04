@@ -4,7 +4,6 @@ import Link from "next/link";
 import Map from "@/app/components/map/Map";
 import Table from "@/app/components/paginated/Table";
 import OccDownloadButton from "@/app/components/OccDownloadButton";
-import occDownloadAction from "@/app/helpers/actions/occDownloadAction";
 import DataDisplay from "@/app/components/DataDisplay";
 
 export default async function Analysis_Run_name({ params }: { params: Promise<{ analysis_run_name: string }> }) {
@@ -67,12 +66,12 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 					<header>
 						<h1 className="text-4xl font-semibold text-primary mb-2">{analysis_run_name}</h1>
 						<div className="bg-base-200 -ml-3.5 text-semibold">
-							<OccDownloadButton
-								text={"Download Occurrence Table"}
-								filename={`${analysis_run_name}_occurrenceTable`}
-								where={{ analysis_run_name }}
-							/>
-						</div>
+								<OccDownloadButton
+									text={"Download Occurrence Table"}
+									filename={`${analysis_run_name}_occurrenceTable`}
+									where={{ analysis_run_name }}
+								/>
+							</div>
 					</header>
 				</div>
 
@@ -141,18 +140,12 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 						role="tabpanel"
 						className="tab-content bg-base-100 border-base-300 rounded-box p-6 h-[400px] w-full overflow-hidden"
 					>
-						<Table 
-							table="assignment" 
-							title="featureid" 
-							where={{ analysis_run_name }}
-						/>
+						<Table table="assignment" title="featureid" where={{ analysis_run_name }} />
 					</div>
 
 					<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Taxa" />
 					<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box">
 						<TaxaGrid
-							take={25}
-							cols={5}
 							where={{
 								Assignments: {
 									some: {

@@ -67,24 +67,27 @@ export default async function Home() {
 							<h1 className="text-[clamp(2.5rem,7.5vw,6.25rem)] font-light leading-none mb-1">
 								<span className="block text-primary animate-slide-in">Welcome</span>
 							</h1>
-							
+
 							<div className="text-base-content -mt-1">
 								<span className="block text-[clamp(1.5rem,4.5vw,3.75rem)] font-light leading-tight mb-1">
 									to the <span className="text-primary font-light">NOAA Ocean DNA Explorer</span>
 								</span>
-								
+
 								<div className="text-[clamp(1rem,2.2vw,1.9rem)] leading-snug text-base-content max-w-3xl mb-8">
 									<span className="block">
-										a data sharing platform, search engine, and visualization and analysis tool for ocean environmental DNA data
+										a data sharing platform, search engine, and visualization and analysis tool for ocean environmental
+										DNA data
 									</span>
 								</div>
 							</div>
 
 							<div className="flex flex-col items-start gap-4">
-								<a href="/data" 
-								   className="btn btn-lg btn-secondary bg-primary/90 backdrop-blur-sm outline-none text-white hover:bg-primary transition-all duration-300">
+								<Link
+									href="/data"
+									className="btn btn-lg btn-secondary bg-primary/90 backdrop-blur-sm outline-none text-white hover:bg-primary transition-all duration-300"
+								>
 									Start Searching
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -131,67 +134,67 @@ export default async function Home() {
 					<div className="max-w-4xl mx-auto text-lg text-main mb-16 text-center leading-tight">
 						<p>
 							NODE is a product of{" "}
-							<a
+							<Link
 								href="https://www.aoml.noaa.gov/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA's Atlantic Oceanographic and Meteorological Laboratory
-							</a>{" "}
+							</Link>{" "}
 							in collaboration with the{" "}
-							<a
+							<Link
 								href="https://www.northerngulfinstitute.org/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								Northern Gulf Institute
-							</a>{" "}
+							</Link>{" "}
 							at{" "}
-							<a
+							<Link
 								href="https://www.msstate.edu/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								Mississippi State University
-							</a>{" "}
+							</Link>{" "}
 							and is supported by{" "}
-							<a
+							<Link
 								href="https://oceanexplorer.noaa.gov/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA Ocean Exploration
-							</a>{" "}
+							</Link>{" "}
 							and{" "}
-							<a
+							<Link
 								href="https://oceanexplorer.noaa.gov/technology/omics/noaa-omics.html"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA Omics
-							</a>{" "}
+							</Link>{" "}
 							projects NO_0062 and NO_0066.
 						</p>
 					</div>
 					<div className="shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
 						<div className="flex justify-center items-center gap-20">
 							<div className="relative h-24 w-64">
-								<a href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
+								<Link href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noreferrer">
 									<ThemeAwareLogo
 										src="/images/noaa_exploration_logo_FINAL.svg"
 										alt="National Oceanic and Atmospheric Administration Exploration Logo"
 										fill={true}
 										className="object-contain"
 									/>
-								</a>
+								</Link>
 							</div>
 							<div>
-								<a href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
+								<Link href="https://www.northerngulfinstitute.org/" target="_blank" rel="noreferrer">
 									<ThemeAwareLogo
 										src="/images/ngi_msu_logo_FINAL.svg"
 										alt="Mississippi State University, Northern Gulf Institute Logo"
@@ -199,7 +202,7 @@ export default async function Home() {
 										height={300}
 										className="object-contain"
 									/>
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>

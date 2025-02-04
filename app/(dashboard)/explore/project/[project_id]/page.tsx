@@ -100,15 +100,15 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</header>
 				</div>
 
-				<div className="col-span-6 space-y-4">
+				<div className="col-span-2 space-y-4">
 					<div className="grid grid-cols-2 gap-4">
-						<a
+						<Link
 							href="#samples-section"
 							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors cursor-pointer"
 						>
 							<div className="text-sm font-medium text-base-content/70">Total Samples</div>
 							<div className="text-2xl font-medium mt-1">{project._count.Samples}</div>
-						</a>
+						</Link>
 
 						<details className="dropdown dropdown-bottom w-full">
 							<summary className="stat bg-base-200 p-6 hover:bg-base-300 focus:bg-base-300 transition-colors w-full cursor-pointer relative z-[2] flex justify-between items-center">
@@ -146,93 +146,24 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 						</details>
 					</div>
 
-					<div className="grid grid-cols-2 gap-4">
-						<div className="bg-base-200 p-6">
-							<div className="space-y-4">
-								<div>
-									<div className="text-sm font-medium text-base-content/70 mb-1">Detection Type</div>
-									<div className="text-base capitalize">{project.detection_type}</div>
+					<div className="bg-base-200 p-6">
+						<div className="text-sm font-medium text-base-content/70 mb-2">Top Taxonomy</div>
+						{sortedTaxa.slice(0, 5).map((taxa) => {
+							const taxonomyParts = taxa[0].split(";").filter(Boolean); // Remove empty strings after split
+							const lastTaxonomy = taxonomyParts[taxonomyParts.length - 1]?.trim() || "Unknown";
+							return (
+								<div key={taxa[0]} className="text-base mb-1">
+									{lastTaxonomy}: {taxa[1]}
 								</div>
-								<div>
-									<div className="text-sm font-medium text-base-content/70 mb-1">Study Factor</div>
-									<div className="text-base">{project.study_factor}</div>
-								</div>
-							</div>
-						</div>
-
-						<div className="bg-base-200 p-6">
-							<div className="text-sm font-medium text-base-content/70 mb-2">Top Taxonomy</div>
-							{sortedTaxa.slice(0, 5).map((taxa) => {
-								const taxonomyParts = taxa[0].split(";").filter(Boolean); // Remove empty strings after split
-								const lastTaxonomy = taxonomyParts[taxonomyParts.length - 1]?.trim() || "Unknown";
-								return (
-									<div key={taxa[0]} className="text-base mb-1">
-										{lastTaxonomy}: {taxa[1]}
-									</div>
-								);
-							})}
-						</div>
+							);
+						})}
 					</div>
 				</div>
 
-				<div className="col-span-3">
-					<div className="bg-base-200 p-6">
-						<h2 className="text-lg font-medium text-base-content/70 mb-4">Institution Information</h2>
-						<div className="space-y-4">
-							<div>
-								<div className="text-sm font-medium text-base-content/70 mb-1">Contact</div>
-								<div className="text-base">{project.project_contact}</div>
-							</div>
-							<div>
-								<div className="text-sm font-medium text-base-content/70 mb-1">Institution</div>
-								<div className="text-base">{project.institution}</div>
-							</div>
-							{project.institutionID && (
-								<div>
-									<div className="text-sm font-medium text-base-content/70 mb-1">Institution ID</div>
-									<a
-										href={project.institutionID}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="text-primary hover:underline block"
-									>
-										{project.institutionID}
-									</a>
-								</div>
-							)}
-							<div>
-								<div className="text-sm font-medium text-base-content/70 mb-1">Last Modified</div>
-								<div className="text-base">
-									{project.mod_date?.toLocaleDateString("en-US", {
-										year: "numeric",
-										month: "long",
-										day: "numeric"
-									})}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div className="col-span-3">
-					<div className="bg-base-200 p-6">
-						<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
-						<div className="h-[300px] overflow-y-auto">
-							<DataDisplay
-								data={justProject}
-								omit={[
-									"id",
-									"project_id",
-									"userId",
-									"institution",
-									"institutionID",
-									"mod_date",
-									"project_contact",
-									"detection_type",
-									"study_factor"
-								]}
-							/>
-						</div>
+				<div className="bg-base-200 p-6">
+					<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
+					<div className="h-[300px] overflow-y-auto">
+						<DataDisplay data={justProject} omit={["id", "project_id", "userId", "project_name"]} />
 					</div>
 				</div>
 			</div>

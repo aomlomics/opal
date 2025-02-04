@@ -4,7 +4,7 @@ import Image from "next/image";
 export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	const errorImg = <>No Image</>;
 
-	let ranksBySpecificity = ["species", "genus", "family", "order", "taxonClass", "phylum", "kingdom"] as Array<
+	const ranksBySpecificity = ["species", "genus", "family", "order", "taxonClass", "phylum", "kingdom"] as Array<
 		keyof typeof taxonomy
 	>;
 

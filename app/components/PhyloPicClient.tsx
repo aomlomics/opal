@@ -9,7 +9,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 	const [imageUrl, setImageUrl] = useState("");
 	const [imageDetails, setImageDetails] = useState({} as { rank: string; title: string });
 
-	let ranksBySpecificity = [
+	const ranksBySpecificity = [
 		"species",
 		"genus",
 		"family",

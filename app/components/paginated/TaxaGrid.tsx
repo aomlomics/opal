@@ -7,14 +7,13 @@ import PhyloPicClient from "../PhyloPicClient";
 import PaginationControls from "./PaginationControls";
 import { Prisma } from "@prisma/client";
 import { useState } from "react";
+import LoadingTaxaGrid from "./LoadingTaxaGrid";
 
 export default function TaxaGrid({
-	take = 50,
-	cols = 10,
+	cols = 5,
 	where,
 	orderBy
 }: {
-	take?: number;
 	cols?: number;
 	where?: Prisma.TaxonomyWhereInput;
 	orderBy?: Prisma.TaxonomyOrderByWithAggregationInput;
@@ -24,7 +23,7 @@ export default function TaxaGrid({
 	function handlePageHover(dir = 1) {
 		let query = new URLSearchParams({
 			table: "taxonomy",
-			take: take.toString(),
+			take: (cols ** 2).toString(),
 			page: (page + dir).toString()
 		});
 		if (where) {
@@ -39,7 +38,7 @@ export default function TaxaGrid({
 
 	let query = new URLSearchParams({
 		table: "taxonomy",
-		take: take.toString(),
+		take: (cols ** 2).toString(),
 		page: page.toString()
 	});
 	if (where) {
@@ -49,7 +48,7 @@ export default function TaxaGrid({
 		query.set("orderBy", JSON.stringify(orderBy));
 	}
 	const { data, error, isLoading } = useSWR(`/api/pagination?${query.toString()}`, fetcher);
-	if (isLoading) return <div>loading...</div>;
+	if (isLoading) return <LoadingTaxaGrid cols={cols} />;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
 
 	return (
@@ -57,13 +56,13 @@ export default function TaxaGrid({
 			{/* Pagination Controls */}
 			<PaginationControls
 				page={page}
-				take={take}
+				take={cols ** 2}
 				count={data.count}
 				handlePage={(dir?: number) => setPage(dir ? page + dir : page + 1)}
 				handlePageHover={handlePageHover}
 			/>
 
-			<div className={`grid gap-4`} style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+			<div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
 				{data.result.map((d: any) => (
 					<Link
 						href={`/explore/taxonomy/${encodeURIComponent(d.taxonomy)}`}
