@@ -163,45 +163,6 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 				</div>
 
-				{/* <div className="col-span-3">
-					<div className="bg-base-200 p-6">
-						<h2 className="text-lg font-medium text-base-content/70 mb-4">Institution Information</h2>
-						<div className="space-y-4">
-							<div>
-								<div className="text-sm font-medium text-base-content/70 mb-1">Contact</div>
-								<div className="text-base">{project.project_contact}</div>
-							</div>
-							<div>
-								<div className="text-sm font-medium text-base-content/70 mb-1">Institution</div>
-								<div className="text-base">{project.institution}</div>
-							</div>
-							{project.institutionID && (
-								<div>
-									<div className="text-sm font-medium text-base-content/70 mb-1">Institution ID</div>
-									<Link
-										href={project.institutionID}
-										target="_blank"
-										rel="noreferrer"
-										className="text-primary hover:underline block"
-									>
-										{project.institutionID}
-									</Link>
-								</div>
-							)}
-							<div>
-								<div className="text-sm font-medium text-base-content/70 mb-1">Last Modified</div>
-								<div className="text-base">
-									{project.mod_date?.toLocaleDateString("en-US", {
-										year: "numeric",
-										month: "long",
-										day: "numeric"
-									})}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div> */}
-
 				<div className="bg-base-200 p-6">
 					<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
 					<div className="h-[300px] overflow-y-auto">
