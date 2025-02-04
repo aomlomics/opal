@@ -66,25 +66,27 @@ export default function ExploreLayout({ children }: { children: React.ReactNode 
 	const currentTable = TABLES.find((table) => table.route === currentRoute) || TABLES[0];
 
 	return (
-		<div className="flex flex-col space-y-4 p-4">
-			{showTableNav && (
-				<>
-					{/* Tabs Navigation */}
-					<div className="border-b border-base-300">
-						<div className="flex space-x-2">
-							{TABLES.map((table) => (
-								<ExploreTabButton key={table.route} tabName={table.name} route={table.route} />
-							))}
+		<div className="max-w-7xl mx-auto p-6 bg-base-100">
+			<div className="flex flex-col space-y-4 p-4">
+				{showTableNav && (
+					<>
+						{/* Tabs Navigation */}
+						<div className="border-b border-base-300">
+							<div className="flex space-x-2">
+								{TABLES.map((table) => (
+									<ExploreTabButton key={table.route} tabName={table.name} route={table.route} />
+								))}
+							</div>
 						</div>
-					</div>
 
-					{/* Table Description */}
-					<TableDescription tableName={currentTable.name} description={currentTable.description} />
-				</>
-			)}
+						{/* Table Description */}
+						<TableDescription tableName={currentTable.name} description={currentTable.description} />
+					</>
+				)}
 
-			{/* Existing Content */}
-			<div className={`bg-base-200 p-6 rounded-lg ${!showTableNav && "mt-0"}`}>{children}</div>
+				{/* Existing Content */}
+				<div className={`bg-base-200 p-6 rounded-lg ${!showTableNav && "mt-0"}`}>{children}</div>
+			</div>
 		</div>
 	);
 }

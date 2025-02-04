@@ -78,25 +78,27 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 	const sortedTaxa = Object.entries(taxaCount).sort(([, a], [, b]) => b - a);
 
 	return (
-		<div className="max-w-7xl mx-auto p-6 space-y-8">
-			<div className="grid grid-cols-4 gap-8">
-				<div className="col-span-2 space-y-8">
+		<div className="max-w-7xl mx-auto p-6">
+			<div className="grid grid-cols-4 gap-8 mb-3">
+				<div className="col-span-4">
 					<header>
 						<h1 className="text-4xl font-semibold text-primary mb-2">{project.project_id}</h1>
 						<p className="text-lg text-base-content/70">{project.project_name}</p>
 					</header>
+				</div>
 
+				<div className="col-span-2 space-y-4">
 					<div className="grid grid-cols-2 gap-4">
 						<a
 							href="#samples-section"
-							className="stat bg-base-200 rounded-lg p-6 hover:bg-base-300 transition-colors cursor-pointer"
+							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors cursor-pointer"
 						>
 							<div className="text-sm font-medium text-base-content/70">Total Samples</div>
 							<div className="text-2xl font-medium mt-1">{project._count.Samples}</div>
 						</a>
 
 						<details className="dropdown dropdown-bottom w-full">
-							<summary className="stat bg-base-200 rounded-lg p-6 hover:bg-base-300 focus:bg-base-300 transition-colors w-full cursor-pointer relative z-[2] flex justify-between items-center">
+							<summary className="stat bg-base-200 p-6 hover:bg-base-300 focus:bg-base-300 transition-colors w-full cursor-pointer relative z-[2] flex justify-between items-center">
 								<div>
 									<div className="text-sm font-medium text-base-content/70">Total Analyses</div>
 									<div className="text-2xl font-medium mt-1">{project._count.Analyses}</div>
@@ -132,7 +134,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 
 					<div className="grid grid-cols-2 gap-4">
-						<div className="bg-base-200 rounded-lg p-6">
+						<div className="bg-base-200 p-6">
 							<div className="space-y-4">
 								<div>
 									<div className="text-sm font-medium text-base-content/70 mb-1">Detection Type</div>
@@ -145,7 +147,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 							</div>
 						</div>
 
-						<div className="bg-base-200 rounded-lg p-6">
+						<div className="bg-base-200 p-6">
 							<div className="text-sm font-medium text-base-content/70 mb-2">Top Taxonomy</div>
 							{sortedTaxa.splice(0, 5).map((taxa) => (
 								<div key={taxa[0]} className="text-base mb-1">
@@ -157,8 +159,8 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 
 				<div className="col-span-1">
-					<div className="bg-base-200 rounded-lg p-6">
-						<h2 className="text-lg font-medium text-primary mb-4">Institution Information</h2>
+					<div className="bg-base-200 p-6">
+						<h2 className="text-lg font-medium text-base-content/70 mb-4">Institution Information</h2>
 						<div className="space-y-4">
 							<div>
 								<div className="text-sm font-medium text-base-content/70 mb-1">Contact</div>
@@ -196,9 +198,9 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 
 				<div className="col-span-1">
-					<div className="bg-base-200 rounded-lg p-6">
-						<h2 className="text-lg font-medium text-primary mb-4">Project Information</h2>
-						<div className="h-[400px]">
+					<div className="bg-base-200 p-6">
+						<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
+						<div className="h-[300px] overflow-y-auto">
 							<DataDisplay
 								data={justProject}
 								omit={[
@@ -218,15 +220,17 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 			</div>
 
-			<div className="card bg-base-200 shadow-xl">
-				<div className="card-body">
-					<h2 className="card-title text-primary">Assays in this Project: {Object.keys(uniqueAssays).length}</h2>
+			<div className="bg-base-200 -mt-4">
+				<div className="card-body px-6">
+					<h2 className="card-title text-base-content/70">
+						Assays in this Project: {Object.keys(uniqueAssays).length}
+					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
 						{Object.keys(uniqueAssays).map((assay, index) => {
 							const imagePath = `/images/${assay}_icon.svg`;
 
 							return (
-								<div key={index} className="card bg-base-100 shadow-md">
+								<div key={index} className="card bg-base-300 shadow-md">
 									<div className="card-body">
 										<div className="flex items-center gap-4">
 											<div className="w-16 h-16">
@@ -245,40 +249,40 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 			</div>
 
-			<h2 id="samples-section" className="card-title text-primary">
-				Samples:
-			</h2>
-			<div role="tablist" className="tabs tabs-lifted">
-				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Map" defaultChecked />
-				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
-					<div className="card-body p-0 overflow-hidden h-[400px]">
-						<Map locations={project.Samples} id="samp_name" table="sample" cluster />
+			<div className="mt-4 px-6">
+				<h2 id="samples-section" className="card-title text-base-content/70 mb-4">
+					Samples:
+				</h2>
+				<div role="tablist" className="tabs tabs-lifted">
+					<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Map" defaultChecked />
+					<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+						<div className="card-body p-0 overflow-hidden h-[400px]">
+							<Map locations={project.Samples} id="samp_name" table="sample" cluster />
+						</div>
+					</div>
+
+					<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Table" />
+					<div
+						role="tabpanel"
+						className="tab-content bg-base-100 border-base-300 rounded-box p-6 h-[400px] w-full overflow-hidden"
+					>
+						<Table table="sample" title="samp_name" where={{ project_id }}></Table>
+					</div>
+
+					<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Charts" />
+					<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+						<BarChart
+							title="Top 10 Taxonomies"
+							labels={sortedTaxa.slice(0, 10).map((taxaArr) => taxaArr[0].split(";")[taxaArr[0].split(";").length - 1])}
+							datasets={Object.keys(taxaCountByAnalysis).map((taxa, i) => ({
+								label: taxa.split(";")[taxa.split(";").length - 1],
+								data: sortedTaxa.slice(0, 10).map((taxaArr) => taxaCountByAnalysis[taxa][taxaArr[0]]),
+								backgroundColor: colorsArr[i]
+							}))}
+						/>
 					</div>
 				</div>
-
-				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Table" />
-				<div
-					role="tabpanel"
-					className="tab-content bg-base-100 border-base-300 rounded-box p-6 h-[400px] w-full overflow-hidden"
-				>
-					<Table table="sample" title="samp_name" where={{ project_id }}></Table>
-				</div>
-
-				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Charts" />
-				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
-					<BarChart
-						title="Top 10 Taxonomies"
-						labels={sortedTaxa.slice(0, 10).map((taxaArr) => taxaArr[0].split(";")[taxaArr[0].split(";").length - 1])}
-						datasets={Object.keys(taxaCountByAnalysis).map((taxa, i) => ({
-							label: taxa.split(";")[taxa.split(";").length - 1],
-							data: sortedTaxa.slice(0, 10).map((taxaArr) => taxaCountByAnalysis[taxa][taxaArr[0]]),
-							backgroundColor: colorsArr[i]
-						}))}
-					/>
-				</div>
 			</div>
-
-			<div></div>
 		</div>
 	);
 }
