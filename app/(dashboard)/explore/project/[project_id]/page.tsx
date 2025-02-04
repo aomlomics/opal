@@ -90,13 +90,13 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 
 				<div className="col-span-2 space-y-4">
 					<div className="grid grid-cols-2 gap-4">
-						<a
+						<Link
 							href="#samples-section"
 							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors cursor-pointer"
 						>
 							<div className="text-sm font-medium text-base-content/70">Total Samples</div>
 							<div className="text-2xl font-medium mt-1">{project._count.Samples}</div>
-						</a>
+						</Link>
 
 						<details className="dropdown dropdown-bottom w-full">
 							<summary className="stat bg-base-200 p-6 hover:bg-base-300 focus:bg-base-300 transition-colors w-full cursor-pointer relative z-[2] flex justify-between items-center">
