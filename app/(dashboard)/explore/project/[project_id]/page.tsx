@@ -81,7 +81,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 	return (
 		<div className="max-w-7xl mx-auto p-6">
 			{/* Breadcrumb navigation */}
-			<div className="text-base breadcrumbs">
+			<div className="text-base breadcrumbs mb-6">
 				<ul>
 					<li>
 						<Link href="/explore/project" className="text-primary hover:text-primary-focus">
@@ -92,8 +92,8 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</ul>
 			</div>
 
-			<div className="grid grid-cols-12 gap-8 mb-3">
-				<div className="col-span-12">
+			<div className="grid grid-cols-4 gap-8 mb-3">
+				<div className="col-span-4">
 					<header>
 						<h1 className="text-4xl font-semibold text-primary mb-2">{project.project_id}</h1>
 						<p className="text-lg text-base-content/70">{project.project_name}</p>
@@ -104,10 +104,10 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					<div className="grid grid-cols-2 gap-4">
 						<Link
 							href="#samples-section"
-							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors cursor-pointer"
+							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors"
 						>
-							<div className="text-sm font-medium text-base-content/70">Total Samples</div>
-							<div className="text-2xl font-medium mt-1">{project._count.Samples}</div>
+							<div className="text-lg font-medium text-base-content/70">Total Samples</div>
+							<div className="text-base mt-1">{project._count.Samples}</div>
 						</Link>
 
 						<details className="dropdown dropdown-bottom w-full">
@@ -147,9 +147,9 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 
 					<div className="bg-base-200 p-6">
-						<div className="text-sm font-medium text-base-content/70 mb-2">Top Taxonomy</div>
+						<div className="text-lg font-medium text-base-content/70 mb-2">Top Taxonomy</div>
 						{sortedTaxa.slice(0, 5).map((taxa) => {
-							const taxonomyParts = taxa[0].split(";").filter(Boolean); // Remove empty strings after split
+							const taxonomyParts = taxa[0].split(";").filter(Boolean);
 							const lastTaxonomy = taxonomyParts[taxonomyParts.length - 1]?.trim() || "Unknown";
 							return (
 								<div key={taxa[0]} className="text-base mb-1">
@@ -160,10 +160,12 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</div>
 				</div>
 
-				<div className="bg-base-200 p-6">
-					<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
-					<div className="h-[300px] overflow-y-auto">
-						<DataDisplay data={justProject} omit={["id", "project_id", "userId", "project_name"]} />
+				<div className="col-span-2">
+					<div className="bg-base-200 p-6 h-full">
+						<h2 className="text-lg font-medium text-base-content/70 mb-4">Project Information</h2>
+						<div className="h-[300px] overflow-y-auto">
+							<DataDisplay data={justProject} omit={["id", "project_id", "userId", "project_name"]} />
+						</div>
 					</div>
 				</div>
 			</div>
