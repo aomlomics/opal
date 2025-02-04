@@ -8,10 +8,10 @@ import {
 	BarElement,
 	CategoryScale,
 	LinearScale,
-	Title
+	Title,
+	ChartDataset
 } from "chart.js";
 ChartJS.register(BarController, BarElement, LinearScale, Tooltip, Legend, CategoryScale, Title);
-import { ChartDataset } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
 export default function BarChart({
