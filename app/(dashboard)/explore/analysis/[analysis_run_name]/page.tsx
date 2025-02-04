@@ -105,14 +105,6 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 					</div>
 				</div>
 
-				{/* <input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Occurrences" />
-				<div
-					role="tabpanel"
-					className="tab-content bg-base-100 border-base-300 rounded-box p-6 h-[400px] w-full overflow-hidden"
-				>
-					<OccurrenceTable where={{ analysis_run_name }}></OccurrenceTable>
-				</div> */}
-
 				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Assignments" />
 				<div
 					role="tabpanel"

@@ -97,12 +97,18 @@ export default async function Featureid({ params }: { params: Promise<{ featurei
 						table="occurrence"
 						where={{ featureid }}
 						title={["analysis_run_name", "samp_name", "featureid"]}
+						fields={["organismQuantity"]}
 					/>
 				</div>
 
 				<input type="radio" name="dataTabs" role="tab" className="tab" aria-label="Assignments" />
 				<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
-					<Pagination table="assignment" where={{ featureid }} title={["analysis_run_name", "featureid"]} />
+					<Pagination
+						table="assignment"
+						where={{ featureid }}
+						title={["taxonomy", "featureid"]}
+						fields={["Confidence", "analysis_run_name"]}
+					/>
 				</div>
 			</div>
 		</div>

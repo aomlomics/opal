@@ -7,6 +7,8 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { fetcher } from "@/app/helpers/utils";
 import PaginationControls from "./PaginationControls";
+import { useState } from "react";
+import LoadingPagination from "./LoadingPagination";
 
 export default function Pagination({
 	table,
@@ -25,14 +27,12 @@ export default function Pagination({
 	relCounts?: string[];
 	take?: number;
 }) {
-	const searchParams = useSearchParams();
-	const pathname = usePathname();
-	const { replace } = useRouter();
+	const [page, setPage] = useState(1);
 
 	let query = new URLSearchParams({
 		table,
 		take: take.toString(),
-		page: searchParams.get("page") || "1"
+		page: page.toString()
 	});
 	if (where) {
 		query.set("where", JSON.stringify(where));
@@ -43,26 +43,14 @@ export default function Pagination({
 	const { data, error, isLoading } = useSWR(`/api/pagination?${query.toString()}`, fetcher, {
 		keepPreviousData: true
 	});
-	if (isLoading) return <div>loading...</div>;
+	if (isLoading) return <LoadingPagination />;
 	if (error || data.error) return <div>failed to load: {error || data.error}</div>;
-
-	function handlePage(dir = 1) {
-		const params = new URLSearchParams(searchParams);
-		const pageStr = params.get("page");
-		if (pageStr) {
-			const page = parseInt(pageStr);
-			params.set("page", (page + dir).toString());
-		} else {
-			params.set("page", "2");
-		}
-		replace(`${pathname}?${params.toString()}`);
-	}
 
 	function handlePageHover(dir = 1) {
 		let query = new URLSearchParams({
 			table,
 			take: take.toString(),
-			page: (parseInt(searchParams.get("page") || "1") + dir).toString()
+			page: page.toString()
 		});
 		if (where) {
 			query.set("where", JSON.stringify(where));
@@ -76,6 +64,15 @@ export default function Pagination({
 
 	return (
 		<div className="space-y-6 p-6">
+			{/* Pagination Controls */}
+			<PaginationControls
+				page={page}
+				take={take}
+				count={data.count}
+				handlePage={(dir?: number) => setPage(dir ? page + dir : page + 1)}
+				handlePageHover={handlePageHover}
+			/>
+
 			{/* Project Cards */}
 			<div className="grid gap-4">
 				{data.result.map((d: any, i: number) => (
@@ -85,19 +82,22 @@ export default function Pagination({
 						className="card bg-base-200 hover:bg-base-300 transition-all duration-200"
 					>
 						<div className="card-body p-5">
-							<div className="flex flex-col gap-3">
+							<div className="flex flex-col gap-2">
 								{/* Title with hover animation */}
 								{typeof title === "string" ? (
-									<h3 className="text-lg font-medium text-primary">{d[title]}</h3>
+									<h3 className="text-lg text-primary">{d[title]}</h3>
 								) : (
-									<div className="grid" style={{ gridTemplateColumns: `repeat(${title.length}, minmax(0, 1fr))` }}>
+									<div
+										className="grid gap-x-4"
+										style={{ gridTemplateColumns: `repeat(${title.length}, minmax(0, 1fr))` }}
+									>
 										{title.map((t) => (
 											<h3 key={`${t}1`} className="text-lg font-medium text-primary">
 												{t}:
 											</h3>
 										))}
 										{title.map((t) => (
-											<h3 key={`${t}2`} className="text-lg font-medium text-primary break-words">
+											<h3 key={`${t}2`} className="font-medium text-primary break-words">
 												{d[t]}
 											</h3>
 										))}
@@ -135,10 +135,10 @@ export default function Pagination({
 
 			{/* Pagination Controls */}
 			<PaginationControls
-				page={parseInt(searchParams.get("page") || "1")}
+				page={page}
 				take={take}
 				count={data.count}
-				handlePage={handlePage}
+				handlePage={(dir?: number) => setPage(dir ? page + dir : page + 1)}
 				handlePageHover={handlePageHover}
 			/>
 		</div>

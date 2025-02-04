@@ -9,7 +9,7 @@ export default function DataDisplay({
 	omit?: (keyof typeof data)[];
 }) {
 	return (
-		<div className="overflow-x-hidden overflow-y-auto scrollbar scrollbar-thumb-accent scrollbar-track-base-100 w-full grid grid-cols-2 gap-y-4 gap-x-2 h-full pr-5">
+		<div className="overflow-x-hidden overflow-y-auto scrollbar scrollbar-thumb-accent scrollbar-track-base-100 w-full grid grid-cols-2 gap-y-4 gap-x-2 h-full pr-3">
 			{Object.entries(data).reduce((acc: ReactNode[], [field, value]) => {
 				if (!omit.includes(field)) {
 					acc.push(
