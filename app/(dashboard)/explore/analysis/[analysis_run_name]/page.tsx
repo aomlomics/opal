@@ -40,17 +40,39 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 
 	return (
 		<div className="max-w-7xl mx-auto p-6">
-			<div className="grid grid-cols-4 gap-8 mb-3">
+			{/* Breadcrumb navigation */}
+			<div className="text-base breadcrumbs mb-6">
+				<ul>
+					<li>
+						<Link href="/explore/project" className="text-primary hover:text-primary-focus">
+							Projects
+						</Link>
+					</li>
+					<li>
+						<Link href={`/explore/project/${analysis.project_id}`} className="text-primary hover:text-primary-focus">
+							{analysis.project_id}
+						</Link>
+					</li>
+					<li>
+						<Link href={`/explore/analysis`} className="text-primary hover:text-primary-focus">
+							Analyses
+						</Link>
+					</li>
+					<li>{analysis_run_name}</li>
+				</ul>
+			</div>
+
+			<div className="grid grid-cols-4 gap-8">
 				<div className="col-span-4">
 					<header>
 						<h1 className="text-4xl font-semibold text-primary mb-2">{analysis_run_name}</h1>
-						<div className="bg-base-200 -ml-3.5">
-						<OccDownloadButton
-							text="Download Occurrence Table"
-							filename={`${analysis_run_name}_occurrenceTable`}
-							where={{ analysis_run_name }}
-						/>
-					</div>
+						<div className="bg-base-200 -ml-3.5 text-semibold">
+							<OccDownloadButton
+								text={"Download Occurrence Table"}
+								filename={`${analysis_run_name}_occurrenceTable`}
+								where={{ analysis_run_name }}
+							/>
+						</div>
 					</header>
 				</div>
 
@@ -60,39 +82,39 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 							href={`/explore/project/${analysis.project_id}`}
 							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors"
 						>
-							<div className="text-sm font-medium text-base-content/70">Project</div>
-							<div className="text-2xl font-medium mt-1">{analysis.project_id}</div>
+							<div className="text-lg font-medium text-base-content/70">Project</div>
+							<div className="text-base mt-1">{analysis.project_id}</div>
 						</Link>
 
 						<Link
 							href={`/explore/assay/${analysis.assay_name}`}
 							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors"
 						>
-							<div className="text-sm font-medium text-base-content/70">Assay</div>
-							<div className="text-2xl font-medium mt-1">{analysis.assay_name}</div>
+							<div className="text-lg font-medium text-base-content/70">Assay</div>
+							<div className="text-base mt-1">{analysis.assay_name}</div>
 						</Link>
 					</div>
 
 					<div className="grid grid-cols-2 gap-4">
 						<div className="stat bg-base-200 p-6">
-							<div className="text-sm font-medium text-base-content/70">Total Occurrences</div>
-							<div className="text-2xl font-medium mt-1">{analysis._count.Occurrences}</div>
+							<div className="text-lg font-medium text-base-content/70">Total Occurrences</div>
+							<div className="text-base mt-1">{analysis._count.Occurrences}</div>
 						</div>
 
 						<div className="stat bg-base-200 p-6">
-							<div className="text-sm font-medium text-base-content/70">Total Assignments</div>
-							<div className="text-2xl font-medium mt-1">{analysis._count.Assignments}</div>
+							<div className="text-lg font-medium text-base-content/70">Total Assignments</div>
+							<div className="text-base mt-1">{analysis._count.Assignments}</div>
 						</div>
 					</div>
 				</div>
 
 				<div className="col-span-2">
 					<div className="bg-base-200 p-6 h-full">
-						<h2 className="text-lg font-medium text-base-content/70 mb-4">Analysis Information</h2>
-						<div className="h-[300px] overflow-y-auto">
+						<div className="text-lg font-medium text-base-content/70">Analysis Information</div>
+						<div className="h-[300px] overflow-y-auto mt-4">
 							<DataDisplay 
 								data={justAnalysis} 
-								omit={["id", "project_id", "userId", "analysis_run_name", "assay_name"]} 
+								omit={["id", "project_id", "userId", "analysis_run_name", "assay_name"]}
 							/>
 						</div>
 					</div>
@@ -100,7 +122,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 			</div>
 
 			<div className="mt-4 px-6">
-				<h2 className="card-title text-base-content/70 mb-4">Data Explorer:</h2>
+				<h2 className="text-lg font-medium text-base-content/70 mb-4">Data Explorer</h2>
 				<div role="tablist" className="tabs tabs-lifted">
 					<input type="radio" defaultChecked name="dataTabs" role="tab" className="tab" aria-label="Samples" />
 					<div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">

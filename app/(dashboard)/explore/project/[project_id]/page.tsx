@@ -80,6 +80,18 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 
 	return (
 		<div className="max-w-7xl mx-auto p-6">
+			{/* Breadcrumb navigation */}
+			<div className="text-base breadcrumbs">
+				<ul>
+					<li>
+						<Link href="/explore/project" className="text-primary hover:text-primary-focus">
+							Projects
+						</Link>
+					</li>
+					<li>{project_id}</li>
+				</ul>
+			</div>
+
 			<div className="grid grid-cols-12 gap-8 mb-3">
 				<div className="col-span-12">
 					<header>
