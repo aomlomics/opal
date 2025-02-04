@@ -9,12 +9,10 @@ import { Prisma } from "@prisma/client";
 import { useState } from "react";
 
 export default function TaxaGrid({
-	take = 50,
 	cols = 5,
 	where,
 	orderBy
 }: {
-	take?: number;
 	cols?: number;
 	where?: Prisma.TaxonomyWhereInput;
 	orderBy?: Prisma.TaxonomyOrderByWithAggregationInput;
@@ -24,7 +22,7 @@ export default function TaxaGrid({
 	function handlePageHover(dir = 1) {
 		let query = new URLSearchParams({
 			table: "taxonomy",
-			take: take.toString(),
+			take: (cols ** 2).toString(),
 			page: (page + dir).toString()
 		});
 		if (where) {
@@ -39,7 +37,7 @@ export default function TaxaGrid({
 
 	let query = new URLSearchParams({
 		table: "taxonomy",
-		take: take.toString(),
+		take: (cols ** 2).toString(),
 		page: page.toString()
 	});
 	if (where) {
@@ -57,7 +55,7 @@ export default function TaxaGrid({
 			{/* Pagination Controls */}
 			<PaginationControls
 				page={page}
-				take={take}
+				take={cols ** 2}
 				count={data.count}
 				handlePage={(dir?: number) => setPage(dir ? page + dir : page + 1)}
 				handlePageHover={handlePageHover}
