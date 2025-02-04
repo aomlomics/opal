@@ -66,7 +66,7 @@ export default function ExploreLayout({ children }: { children: React.ReactNode 
 	const currentTable = TABLES.find((table) => table.route === currentRoute) || TABLES[0];
 
 	return (
-		<div className="max-w-7xl mx-auto p-6 bg-base-100">
+		<div className="py-6 px-60 bg-base-100">
 			<div className="flex flex-col space-y-4 p-4">
 				{showTableNav && (
 					<>
