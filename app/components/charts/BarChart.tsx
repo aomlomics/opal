@@ -2,16 +2,16 @@
 
 import {
 	Chart as ChartJS,
-	Tooltip,
-	Legend,
+	ChartDataset,
 	BarController,
 	BarElement,
-	CategoryScale,
 	LinearScale,
-	Title,
-	ChartDataset
+	CategoryScale,
+	Legend,
+	Tooltip,
+	Title
 } from "chart.js";
-ChartJS.register(BarController, BarElement, LinearScale, Tooltip, Legend, CategoryScale, Title);
+ChartJS.register(BarController, BarElement, LinearScale, CategoryScale, Tooltip, Legend, Title);
 import { Bar } from "react-chartjs-2";
 
 export default function BarChart({
