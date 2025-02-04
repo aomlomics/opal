@@ -196,7 +196,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					<h2 className="card-title text-primary">Assays in this Project: {Object.keys(uniqueAssays).length}</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
 						{Object.keys(uniqueAssays).map((assay, index) => {
-							const imagePath = `/images/${assay}_icon.png`;
+							const imagePath = `/images/${assay}_icon.svg`;
 
 							return (
 								<div key={index} className="card bg-base-100 shadow-md">
