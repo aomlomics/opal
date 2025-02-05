@@ -9,8 +9,6 @@ export default async function Taxonomy() {
 				<span className="text-primary"> Taxonomies</span>
 			</h1>
 
-			<TableFilter />
-
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<TaxaGrid />
 			</div>

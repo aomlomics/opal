@@ -10,8 +10,6 @@ export default async function Feature() {
 				<span className="text-primary"> Features</span>
 			</h1>
 
-			<TableFilter />
-
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<Suspense fallback={null}>
 					<Pagination

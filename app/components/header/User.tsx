@@ -21,21 +21,15 @@ export default function User() {
 							userButtonPopoverActionButton: "hover:text-primary",
 							userButtonPopoverActionButtonIcon: "text-primary",
 							userButtonPopoverActionButtonLabel: "text-primary",
-							menuItem: "text-primary hover:text-primary/80",
+							menuItem: "text-primary hover:text-primary",
 							actionButtonIcon: "text-primary",
-							userButtonPopoverActionButtonText: "text-primary hover:text-primary/80",
-							userButtonPopoverActionButton__link: "text-primary hover:text-primary/80",
-
-							// Add these specific selectors for custom menu links
-							userButtonPopoverActionButton__custom: "text-primary hover:text-primary/80",
-							userButtonPopoverActionButtonText__custom: "text-primary hover:text-primary/80",
 
 							// Email and name
 							userPreviewSecondaryIdentifier: "text-primary",
 							userPreviewMainIdentifier: "text-primary",
 
 							socialButtonsBlockButton: "text-primary hover:bg-primary",
-							formButtonPrimary: "text-primary hover:bg-primary/80",
+							formButtonPrimary: "text-primary hover:bg-primary",
 							formFieldInput: "text-primary",
 
 							avatarBox: "border-primary",
@@ -43,7 +37,7 @@ export default function User() {
 							footer: "hidden",
 							userButtonPopoverFooter: "hidden",
 
-							// Target the custom menu item button specifically
+							// Styling for the text on custom menu items (My Submissions)
 							userButtonPopoverCustomItemButton: "text-primary hover:text-primary"
 						}
 					}}
