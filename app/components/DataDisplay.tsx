@@ -1,5 +1,6 @@
 import { DeadValueEnum } from "@/types/enums";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 export default function DataDisplay({
 	data,
@@ -10,52 +11,16 @@ export default function DataDisplay({
 }) {
 	return (
 		<div className="overflow-x-hidden overflow-y-auto scrollbar scrollbar-thumb-accent scrollbar-track-base-100 w-full h-full pr-3 flex flex-col gap-5">
-			{Object.entries(data).map(([field, value]) =>
-				!omit.includes(field) ? (
-					<div key={field}>
-						<div className="text-sm font-medium text-base-content/70 mb-1 break-all">{field}</div>
-						{value === null ? (
-							<div key={`${field}2`} className="bg-base-300">
-								{"\u200b"}
-							</div>
-						) : URL.canParse(value.toString()) ? (
-							<Link
-								key={`${field}2`}
-								href={value.toString()}
-								className="text-primary hover:underline break-words"
-								target="_blank"
-								rel="noreferrer"
-							>
-								{value.toString()}
-							</Link>
-						) : typeof value === "number" && value in DeadValueEnum ? (
-							<div key={`${field}2`} className="break-words">
-								{DeadValueEnum[value]}
-							</div>
-						) : (
-							<div key={`${field}2`} className="break-words">
-								{value.toString()}
-							</div>
-						)}
-					</div>
-				) : (
-					<></>
-				)
-			)}
-			{/* {Object.entries(data).reduce((acc: ReactNode[], [field, value]) => {
+			{Object.entries(data).reduce((acc: ReactNode[], [field, value]) => {
 				if (!omit.includes(field)) {
-					acc.push(
-						<div key={`${field}1`} className="break-all">
-							{field}
-						</div>
-					);
+					const fieldNode = <div className="text-sm font-medium text-base-content/70 break-all">{field}</div>;
+					let valueNode;
 
 					if (value === null) {
-						acc.push(<div key={`${field}2`} className="bg-base-300"></div>);
+						valueNode = <div className="bg-base-300">{"\u200b"}</div>;
 					} else if (URL.canParse(value.toString())) {
-						acc.push(
+						valueNode = (
 							<Link
-								key={`${field}2`}
 								href={value.toString()}
 								className="text-primary hover:underline break-words"
 								target="_blank"
@@ -65,31 +30,21 @@ export default function DataDisplay({
 							</Link>
 						);
 					} else if (typeof value === "number" && value in DeadValueEnum) {
-						acc.push(
-							<div key={`${field}2`} className="break-words">
-								{DeadValueEnum[value]}
-							</div>
-						);
+						valueNode = <div className="break-words">{DeadValueEnum[value]}</div>;
 					} else {
-						acc.push(
-							<div key={`${field}2`} className="break-words">
-								{value.toString()}
-							</div>
-						);
+						valueNode = <div className="break-words">{value.toString()}</div>;
 					}
-					// acc.push(
-					// 	<div key={`${field}2`} className={`break-words ${value !== null ? "" : "bg-base-300"}`}>
-					// 		{value === null
-					// 			? ""
-					// 			: typeof value === "number" && value in DeadValueEnum
-					// 			? DeadValueEnum[value]
-					// 			: value.toString()}
-					// 	</div>
-					// );
+
+					acc.push(
+						<div className="flex flex-col gap-1" key={field}>
+							{fieldNode}
+							{valueNode}
+						</div>
+					);
 				}
 
 				return acc;
-			}, [])} */}
+			}, [])}
 		</div>
 	);
 }
