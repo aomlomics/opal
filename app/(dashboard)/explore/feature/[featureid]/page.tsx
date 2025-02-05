@@ -65,7 +65,7 @@ export default async function Featureid({ params }: { params: Promise<{ featurei
 		<div className="max-w-7xl mx-auto p-6 space-y-8">
 			<header>
 				<h1 className="text-4xl font-semibold text-primary mb-2">{feature.featureid}</h1>
-				<p className="text-md text-base-content/70 break-all">{feature.dna_sequence}</p>
+				<p className="text-md text-base-content/70 break-all font-mono">{feature.dna_sequence}</p>
 			</header>
 			<div>
 				<h2 className="text-primary text-2xl">Taxonomy</h2>
@@ -96,7 +96,7 @@ export default async function Featureid({ params }: { params: Promise<{ featurei
 					<Pagination
 						table="occurrence"
 						where={{ featureid }}
-						title={["analysis_run_name", "samp_name", "featureid"]}
+						title={["analysis_run_name", "samp_name"]}
 						fields={["organismQuantity"]}
 					/>
 				</div>
@@ -106,8 +106,8 @@ export default async function Featureid({ params }: { params: Promise<{ featurei
 					<Pagination
 						table="assignment"
 						where={{ featureid }}
-						title={["taxonomy", "featureid"]}
-						fields={["Confidence", "analysis_run_name"]}
+						title={["analysis_run_name", "taxonomy"]}
+						fields={["Confidence"]}
 					/>
 				</div>
 			</div>

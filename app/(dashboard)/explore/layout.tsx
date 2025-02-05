@@ -11,11 +11,11 @@ const TABLES = [
 		description:
 			"Research initiatives collecting eDNA samples, with metadata on study design, objectives, and participating institutions."
 	},
-	// {
-	// 	name: "Samples",
-	// 	route: "sample",
-	// 	description: "eDNA samples with metadata on collection, environmental conditions, storage, and processing methods."
-	// },
+	{
+		name: "Samples",
+		route: "sample",
+		description: "eDNA samples with metadata on collection, environmental conditions, storage, and processing methods."
+	},
 	// {
 	// 	name: "Assays",
 	// 	route: "assay",
