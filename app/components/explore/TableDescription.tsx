@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function TableDescription({ tableName, description }: { tableName: string; description: string }) {
 	return (
 		<div className="collapse collapse-arrow bg-base-100 border border-base-300 rounded-lg">
-			<input type="checkbox" />
+			<input type="checkbox" defaultChecked />
 			<div className="collapse-title flex items-center gap-3">
 				<h2 className="text-lg font-medium">{tableName}</h2>
 			</div>
