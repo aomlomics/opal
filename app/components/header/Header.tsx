@@ -46,13 +46,13 @@ export default function Header() {
 
 					{/* Rest of the tabs section */}
 					<div className="absolute bottom-0 right-[240px] hidden lg:flex space-x-4">
-						<button id="unfocusButton" className="w-0 h-0"></button>
 						<TabButton tabName="Home" route="/" />
 						<TabDropdown
 							tabName="Explore"
 							route="/explore"
 							dropdown={[
 								{ label: "Projects", href: "/explore/project" },
+								{ label: "Samples", href: "/explore/sample" },
 								{ label: "Analyses", href: "/explore/analysis" },
 								{ label: "Features", href: "/explore/feature" },
 								{ label: "Taxonomies", href: "/explore/taxonomy" }
