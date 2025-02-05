@@ -1,6 +1,5 @@
 import TableFilter from "@/app/components/explore/TableFilter";
 import Pagination from "@/app/components/paginated/Pagination";
-import { Suspense } from "react";
 
 export default async function Analysis() {
 	return (
@@ -13,15 +12,13 @@ export default async function Analysis() {
 			<TableFilter />
 
 			<div className="bg-base-100 rounded-lg border border-base-300">
-				<Suspense fallback={null}>
-					<Pagination
-						table="analysis"
-						id="analysis_run_name"
-						title="analysis_run_name"
-						fields={["project_id", "assay_name", "asv_method"]}
-						relCounts={["Occurrences", "Assignments"]}
-					/>
-				</Suspense>
+				<Pagination
+					table="analysis"
+					id="analysis_run_name"
+					title="analysis_run_name"
+					fields={["project_id", "assay_name", "asv_method"]}
+					relCounts={["Occurrences", "Assignments"]}
+				/>
 			</div>
 		</div>
 	);
