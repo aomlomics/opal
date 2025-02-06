@@ -10,10 +10,10 @@ export default function ExploreTabButton({ tabName, route }: { tabName: string; 
 	return (
 		<Link
 			href={`/explore/${route.toLowerCase()}`}
-			className={`px-6 py-3 text-base transition-colors ${
+			className={`px-6 py-3 text-base transition-colors border-b-0 border-x border-t font-medium ${
 				isActive
-					? "border-b-0 border-x-[1px] border-t-[1px] border-base-300 rounded-t-lg bg-base-100 text-primary font-medium"
-					: "border-b-[1px] border-base-300 text-base-content hover:text-primary/80"
+					? "border-base-300 rounded-t-lg bg-base-100 text-primary"
+					: "border-base-200 text-base-content hover:text-primary/80"
 			}`}
 		>
 			{tabName}
