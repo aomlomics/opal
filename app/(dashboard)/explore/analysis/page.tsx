@@ -10,10 +10,6 @@ export default async function Analysis() {
 				<span className="text-primary"> Analyses</span>
 			</h1>
 
-			<Suspense fallback={<div>Loading filters...</div>}>
-				<TableFilter table="analysis" />
-			</Suspense>
-
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<Pagination
 					table="analysis"
