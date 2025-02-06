@@ -1,21 +1,20 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState, ReactNode } from "react";
+import { Suspense, ReactNode } from "react";
 import ExploreTabButton from "@/app/components/explore/ExploreTabButton";
 import TableDescription from "@/app/components/explore/TableDescription";
 import TableFilter from "@/app/components/explore/TableFilter";
-import { FilterValue } from "@/app/components/explore/filters";
 
 const TABLES = [
 	{
-		name: "Projects",
+		tabName: "Projects",
 		route: "project",
 		description:
 			"Research initiatives collecting eDNA samples, with metadata on study design, objectives, and participating institutions."
 	},
 	{
-		name: "Samples",
+		tabName: "Samples",
 		route: "sample",
 		description: "eDNA samples with metadata on collection, environmental conditions, storage, and processing methods."
 	},
@@ -32,7 +31,7 @@ const TABLES = [
 	// 		"Sequencing preparation details for each Sample-Assay combination, including barcoding approach, sequencing platform, and adapter information."
 	// },
 	{
-		name: "Analyses",
+		tabName: "Analyses",
 		route: "analysis",
 		description:
 			"Bioinformatic processing runs that convert raw sequence data into species detections, documenting all parameters and methods used."
@@ -44,14 +43,14 @@ const TABLES = [
 	// 		"Individual detection records linking samples to specific DNA sequences (Features), including their quantified abundance."
 	// },
 	{
-		name: "Features",
+		tabName: "Features",
 		route: "feature",
 		description:
 			"Unique DNA sequences (eg, ASVs) found in samples, typically representing distinct organisms, with their consensus taxonomic classification."
 	},
 	// { name: "Assignments", route: "assignment", description: "Some description." },
 	{
-		name: "Taxonomies",
+		tabName: "Taxonomies",
 		route: "taxonomy",
 		description: "Hierarchical classification of detected organisms from domain to species level."
 	}
@@ -59,40 +58,28 @@ const TABLES = [
 
 export default function ExploreLayout({ children }: { children: ReactNode }) {
 	const pathname = usePathname();
-	const pathParts = pathname.split("/").filter(Boolean);
-
-	// Only show tabs and description if we're at the root of a table route
-	// e.g., /explore/project but not /explore/project/123
-	const showTableNav = pathParts.length === 2;
-
-	const currentRoute = pathParts[1] || "project";
-	const currentTable = TABLES.find((table) => table.route === currentRoute) || TABLES[0];
+	const currentTable = pathname.split("/")[2];
+	const currentTableConfig = TABLES.find((t) => t.route === currentTable);
 
 	return (
-		<div className="py-6 px-60 bg-base-100">
-			{showTableNav && (
-				<div className="border-b border-base-300 bg-base-200">
-					<div className="flex">
-						{TABLES.map((table) => (
-							<ExploreTabButton key={table.route} tabName={table.name} route={table.route} />
-						))}
-					</div>
+		<div className="max-w-[1400px] mx-auto p-6">
+			<div className="tabs mb-6">
+				{TABLES.map((table) => (
+					<ExploreTabButton key={table.route} tabName={table.tabName} route={table.route} />
+				))}
+			</div>
+
+			<div className="grid grid-cols-[300px_1fr] gap-6">
+				<Suspense fallback={<div>Loading filters...</div>}>
+					{currentTable && <TableFilter table={currentTable} />}
+				</Suspense>
+
+				<div>
+					{currentTableConfig && (
+						<TableDescription tableName={currentTableConfig.tabName} description={currentTableConfig.description} />
+					)}
+					{children}
 				</div>
-			)}
-
-			{showTableNav && <TableDescription tableName={currentTable.name} description={currentTable.description} />}
-
-			{/* Main content area with left sidebar layout */}
-			<div className="flex gap-6">
-				{/* Left sidebar filter */}
-				{showTableNav && (
-					<div className="w-80 flex-shrink-0">
-						<TableFilter table={currentRoute} />
-					</div>
-				)}
-
-				{/* Main content */}
-				<div className="flex-1">{children}</div>
 			</div>
 		</div>
 	);
