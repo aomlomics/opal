@@ -115,7 +115,7 @@ function FilterSection({
 	return (
 		<div className="group">
 			<button
-				onClick={onToggle}
+				onClick={onToggle} // daisyUI collapse dropdown
 				className="w-full px-4 py-3 flex items-center justify-between hover:bg-base-200/50 transition-colors"
 			>
 				<div className="flex flex-col items-start gap-1">

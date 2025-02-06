@@ -9,7 +9,7 @@ export default async function Project() {
 				<span className="text-primary"> Samples</span>
 			</h1>
 
-			<TableFilter />
+			{/* <TableFilter /> */}
 
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<Pagination
