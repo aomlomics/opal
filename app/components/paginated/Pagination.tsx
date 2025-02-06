@@ -1,10 +1,8 @@
 "use client";
 
-//import { useState } from "react";
 import { Prisma } from "@prisma/client";
 import useSWR, { preload } from "swr";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { fetcher } from "@/app/helpers/utils";
 import PaginationControls from "./PaginationControls";
 import { useState } from "react";

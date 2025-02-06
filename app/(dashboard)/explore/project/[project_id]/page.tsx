@@ -102,16 +102,17 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 
 				<div className="col-span-2 space-y-4">
 					<div className="grid grid-cols-2 gap-4">
-						<Link
-							href="#samples-section"
-							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors"
-						>
+						<Link href="#samples-section" className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors">
 							<div className="text-lg font-medium text-base-content/70">Total Samples</div>
 							<div className="text-base mt-1">{project._count.Samples}</div>
 						</Link>
 
-						<details className="dropdown dropdown-bottom w-full">
-							<summary className="stat bg-base-200 p-6 hover:bg-base-300 focus:bg-base-300 transition-colors w-full cursor-pointer relative z-[2] flex justify-between items-center">
+						<div className="dropdown dropdown-hover hover:bg-base-300">
+							<div
+								tabIndex={0}
+								role="button"
+								className="stat focus:bg-base-300 w-full p-6 flex justify-between items-center"
+							>
 								<div>
 									<div className="text-sm font-medium text-base-content/70">Total Analyses</div>
 									<div className="text-2xl font-medium mt-1">{project._count.Analyses}</div>
@@ -130,8 +131,11 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 								>
 									<path d="m6 9 6 6 6-6" />
 								</svg>
-							</summary>
-							<ul className="dropdown-content menu py-1 px-2 bg-base-300 rounded-b-box w-full rounded-t-none shadow-xl absolute top-[calc(100%-1.25rem)] left-0 z-[1]">
+							</div>
+							<ul
+								tabIndex={0}
+								className="dropdown-content menu bg-base-300 rounded-b-box rounded-t-none w-full z-[1] p-2 shadow"
+							>
 								{project.Analyses.map((analysis) => (
 									<li key={analysis.analysis_run_name}>
 										<Link
@@ -143,7 +147,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 									</li>
 								))}
 							</ul>
-						</details>
+						</div>
 					</div>
 
 					<div className="bg-base-200 p-6">

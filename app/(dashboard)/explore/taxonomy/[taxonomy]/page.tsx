@@ -45,29 +45,6 @@ export default async function Taxonomy({ params }: { params: Promise<{ taxonomy:
 
 		return { dbTaxonomy, samples };
 	});
-
-	// const samples = await prisma.sample.findMany({
-	// 	where: {
-	// 		Occurrences: {
-	// 			every: {
-	// 				Feature: {
-	// 					is: {
-	// 						Assignments: {
-	// 							every: {
-	// 								taxonomy
-	// 							}
-	// 						}
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	},
-	// 	select: {
-	// 		samp_name: true,
-	// 		decimalLatitude: true,
-	// 		decimalLongitude: true
-	// 	}
-	// });
 	if (!dbTaxonomy || !samples.length) return <>Taxonomy not found</>;
 
 	return (

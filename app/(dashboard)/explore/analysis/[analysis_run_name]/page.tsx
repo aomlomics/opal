@@ -61,39 +61,21 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 				</ul>
 			</div>
 
-			<div className="grid grid-cols-4 gap-8">
-				<div className="col-span-4">
+			<div className="grid grid-cols-2 gap-8">
+				<div className="col-span-2">
 					<header>
 						<h1 className="text-4xl font-semibold text-primary mb-2">{analysis_run_name}</h1>
 						<div className="bg-base-200 -ml-3.5 text-semibold">
-								<OccDownloadButton
-									text={"Download Occurrence Table"}
-									filename={`${analysis_run_name}_occurrenceTable`}
-									where={{ analysis_run_name }}
-								/>
-							</div>
+							<OccDownloadButton
+								text={"Download Occurrence Table"}
+								filename={`${analysis_run_name}_occurrenceTable`}
+								where={{ analysis_run_name }}
+							/>
+						</div>
 					</header>
 				</div>
 
-				<div className="col-span-2 space-y-4">
-					<div className="grid grid-cols-2 gap-4">
-						<Link
-							href={`/explore/project/${analysis.project_id}`}
-							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors"
-						>
-							<div className="text-lg font-medium text-base-content/70">Project</div>
-							<div className="text-base mt-1">{analysis.project_id}</div>
-						</Link>
-
-						<Link
-							href={`/explore/assay/${analysis.assay_name}`}
-							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors"
-						>
-							<div className="text-lg font-medium text-base-content/70">Assay</div>
-							<div className="text-base mt-1">{analysis.assay_name}</div>
-						</Link>
-					</div>
-
+				<div className="space-y-4">
 					<div className="grid grid-cols-2 gap-4">
 						<div className="stat bg-base-200 p-6">
 							<div className="text-lg font-medium text-base-content/70">Total Occurrences</div>
@@ -104,18 +86,21 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 							<div className="text-lg font-medium text-base-content/70">Total Assignments</div>
 							<div className="text-base mt-1">{analysis._count.Assignments}</div>
 						</div>
+
+						<Link
+							href={`/explore/assay/${analysis.assay_name}`}
+							className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors"
+						>
+							<div className="text-lg font-medium text-base-content/70">Assay</div>
+							<div className="text-base mt-1">{analysis.assay_name}</div>
+						</Link>
 					</div>
 				</div>
 
-				<div className="col-span-2">
-					<div className="bg-base-200 p-6 h-full">
-						<div className="text-lg font-medium text-base-content/70">Analysis Information</div>
-						<div className="h-[300px] overflow-y-auto mt-4">
-							<DataDisplay 
-								data={justAnalysis} 
-								omit={["id", "project_id", "userId", "analysis_run_name", "assay_name"]}
-							/>
-						</div>
+				<div className="bg-base-200 p-6 h-full">
+					<div className="text-lg font-medium text-base-content/70">Analysis Information</div>
+					<div className="h-[300px] overflow-y-auto mt-4">
+						<DataDisplay data={justAnalysis} omit={["id", "project_id", "userId", "analysis_run_name", "assay_name"]} />
 					</div>
 				</div>
 			</div>

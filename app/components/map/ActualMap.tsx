@@ -13,7 +13,7 @@ export default function ActualMap({
 	locations,
 	id,
 	title,
-	iconSize = 32,
+	iconSize = 25,
 	table,
 	cluster = false
 }: {
@@ -81,7 +81,7 @@ export default function ActualMap({
 						icon={divIcon({
 							className: "bg-none",
 							html:
-								`<div class='h-full text-center content-center rounded-full border border-black text-white' style=background-color:${
+								`<div class='h-full text-center font-mono content-center rounded-full border border-black text-white' style=background-color:${
 									loc.color ? loc.color : "rgb(200,0,0)"
 								}>` +
 								(cluster ? loc.values.length.toString() : "") +
