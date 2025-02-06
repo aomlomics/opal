@@ -107,7 +107,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 							<div className="text-base mt-1">{project._count.Samples}</div>
 						</Link>
 
-						<div className="dropdown dropdown-hover hover:bg-base-300">
+						<div className="dropdown dropdown-hover bg-base-200 hover:bg-base-300">
 							<div
 								tabIndex={0}
 								role="button"
