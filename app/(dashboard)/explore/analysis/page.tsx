@@ -9,8 +9,6 @@ export default async function Analysis() {
 				<span className="text-primary"> Analyses</span>
 			</h1>
 
-			<TableFilter />
-
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<Pagination
 					table="analysis"

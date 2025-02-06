@@ -9,8 +9,6 @@ export default async function Project() {
 				<span className="text-primary"> Projects</span>
 			</h1>
 
-			<TableFilter />
-
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<Pagination
 					id="project_id"

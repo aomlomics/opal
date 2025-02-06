@@ -1,8 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useState, ReactNode } from "react";
 import ExploreTabButton from "@/app/components/explore/ExploreTabButton";
 import TableDescription from "@/app/components/explore/TableDescription";
+import TableFilter from "@/app/components/explore/TableFilter";
+import { FilterValue } from "@/app/components/explore/filters";
 
 const TABLES = [
 	{
@@ -54,7 +57,7 @@ const TABLES = [
 	}
 ];
 
-export default function ExploreLayout({ children }: { children: React.ReactNode }) {
+export default function ExploreLayout({ children }: { children: ReactNode }) {
 	const pathname = usePathname();
 	const pathParts = pathname.split("/").filter(Boolean);
 
@@ -67,25 +70,29 @@ export default function ExploreLayout({ children }: { children: React.ReactNode 
 
 	return (
 		<div className="py-6 px-60 bg-base-100">
-			<div className="flex flex-col space-y-4 p-4">
-				{showTableNav && (
-					<>
-						{/* Tabs Navigation */}
-						<div className="border-b border-base-300">
-							<div className="flex space-x-2">
-								{TABLES.map((table) => (
-									<ExploreTabButton key={table.route} tabName={table.name} route={table.route} />
-								))}
-							</div>
-						</div>
+			{showTableNav && (
+				<div className="border-b border-base-300 bg-base-200">
+					<div className="flex">
+						{TABLES.map((table) => (
+							<ExploreTabButton key={table.route} tabName={table.name} route={table.route} />
+						))}
+					</div>
+				</div>
+			)}
 
-						{/* Table Description */}
-						<TableDescription tableName={currentTable.name} description={currentTable.description} />
-					</>
+			{showTableNav && <TableDescription tableName={currentTable.name} description={currentTable.description} />}
+
+			{/* Main content area with left sidebar layout */}
+			<div className="flex gap-6">
+				{/* Left sidebar filter */}
+				{showTableNav && (
+					<div className="w-80 flex-shrink-0">
+						<TableFilter table={currentRoute} />
+					</div>
 				)}
 
-				{/* Existing Content */}
-				<div className={`bg-base-200 p-6 rounded-lg ${!showTableNav && "mt-0"}`}>{children}</div>
+				{/* Main content */}
+				<div className="flex-1">{children}</div>
 			</div>
 		</div>
 	);

@@ -14,44 +14,51 @@ export default function User() {
 							userButtonPopoverContainer: "bg-base-100",
 							userButtonPopoverActions: "bg-base-100",
 							userButtonPopoverMain: "bg-base-100",
-							
-							headerTitle: "text-base-content",
-							headerSubtitle: "text-base-content",
+
 							button: "text-primary hover:bg-base-200",
-							buttonText: "text-base-content",
-							divider: "bg-base-300",
-							
+
 							// Menu items - text base-content, icons primary, hover effects
-							userButtonPopoverActionButton: "hover:bg-base-200",
+							userButtonPopoverActionButton: "hover:text-primary",
 							userButtonPopoverActionButtonIcon: "text-primary",
 							userButtonPopoverActionButtonLabel: "text-primary",
-							menuItem: "text-base-content",
-							menuItemText: "text-base-content",
+							menuItem: "text-primary hover:text-primary",
 							actionButtonIcon: "text-primary",
-							
+
 							// Email and name
 							userPreviewSecondaryIdentifier: "text-primary",
 							userPreviewMainIdentifier: "text-primary",
-							
-							socialButtonsBlockButton: "bg-base-200 text-primary hover:bg-primary",
-							formButtonPrimary: "text-primary hover:bg-primary/80",
-							formFieldInput: "bg-base-100 text-primary",
-							
+
+							socialButtonsBlockButton: "text-primary hover:bg-primary",
+							formButtonPrimary: "text-primary hover:bg-primary",
+							formFieldInput: "text-primary",
+
 							avatarBox: "border-primary",
-							
+
 							footer: "hidden",
-							userButtonPopoverFooter: "hidden"
+							userButtonPopoverFooter: "hidden",
+
+							// Styling for the text on custom menu items (My Submissions)
+							userButtonPopoverCustomItemButton: "text-primary hover:text-primary"
 						}
 					}}
 				>
 					<UserButton.MenuItems>
-						<UserButton.Link href="/mySubmissions" label="My Submissions" labelIcon={<span>.</span>} />
+						<UserButton.Link
+							href="/mySubmissions"
+							label="My Submissions"
+							labelIcon={
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+									<path strokeWidth="2" d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+									<path strokeWidth="1.5" d="M8 12h8M8 16h8" />
+								</svg>
+							}
+						/>
 					</UserButton.MenuItems>
 				</UserButton>
 			</SignedIn>
 			<SignedOut>
 				<SignInButton>
-					<button className="btn bg-primary text-base-content hover:bg-primary/80">Sign In</button>
+					<button className="btn bg-primary text-white hover:bg-primary/80">Sign In</button>
 				</SignInButton>
 			</SignedOut>
 		</>

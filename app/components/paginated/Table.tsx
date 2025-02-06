@@ -143,7 +143,7 @@ export default function Table({
 						{/* Dropdown */}
 						<div
 							tabIndex={0}
-							className="dropdown-content menu bg-base-300 rounded-box z-50 w-52 shadow p-0 text-xs min-w-min w-[250px]"
+							className="dropdown-content menu bg-base-300 rounded-box z-50 w-52 shadow p-0 text-xs min-w-min"
 						>
 							{/* Header Name Filter Section */}
 							<div className="form-control flex-row items-center w-full border-b-2 p-2 pb-0">
