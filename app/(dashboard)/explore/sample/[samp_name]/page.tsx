@@ -33,7 +33,7 @@ export default async function Samp_Name({ params }: { params: Promise<{ samp_nam
 	const sortedFeatures = Object.entries(featuresCount).sort(([, a], [, b]) => b - a);
 
 	return (
-		<div className="max-w-7xl mx-auto p-6 space-y-8">
+		<div className="space-y-8">
 			{/* Breadcrumb navigation */}
 			<div className="text-base breadcrumbs mb-6">
 				<ul>

@@ -62,7 +62,7 @@ export default async function Featureid({ params }: { params: Promise<{ featurei
 	taxaCounts.sort((a, b) => b.count - a.count);
 
 	return (
-		<div className="max-w-7xl mx-auto p-6 space-y-8">
+		<div className="space-y-8">
 			<header>
 				<h1 className="text-4xl font-semibold text-primary mb-2">{feature.featureid}</h1>
 				<p className="text-md text-base-content/70 break-all font-mono">{feature.dna_sequence}</p>

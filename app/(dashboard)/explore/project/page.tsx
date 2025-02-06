@@ -3,13 +3,13 @@ import Pagination from "@/app/components/paginated/Pagination";
 
 export default async function Project() {
 	return (
-		<div className="space-y-6">
+		<div className="space-y-6 w-full">
 			<h1 className="text-xl font-medium text-base-content">
 				Showing all
 				<span className="text-primary"> Projects</span>
 			</h1>
 
-			<div className="bg-base-100 rounded-lg border border-base-300">
+			<div className="bg-base-100 rounded-lg border border-base-300 w-full">
 				<Pagination
 					id="project_id"
 					table="project"

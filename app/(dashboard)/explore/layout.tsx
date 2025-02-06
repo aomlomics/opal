@@ -58,29 +58,43 @@ const TABLES = [
 
 export default function ExploreLayout({ children }: { children: ReactNode }) {
 	const pathname = usePathname();
-	const currentTable = pathname.split("/")[2];
+	const pathParts = pathname.split("/");
+	const currentTable = pathParts[2];
+	const isListPage = pathParts.length === 3;
 	const currentTableConfig = TABLES.find((t) => t.route === currentTable);
 
 	return (
 		<div className="max-w-[1400px] mx-auto p-6">
-			<div className="tabs mb-6">
-				{TABLES.map((table) => (
-					<ExploreTabButton key={table.route} tabName={table.tabName} route={table.route} />
-				))}
-			</div>
+			{isListPage ? (
+				// List pages - consistent grid layout with filter
+				<div className="grid grid-cols-[300px_1fr] gap-6">
+					{/* Left Sidebar */}
+					<Suspense fallback={<div>Loading filters...</div>}>
+						{currentTable && <TableFilter table={currentTable} />}
+					</Suspense>
 
-			<div className="grid grid-cols-[300px_1fr] gap-6">
-				<Suspense fallback={<div>Loading filters...</div>}>
-					{currentTable && <TableFilter table={currentTable} />}
-				</Suspense>
+					{/* Main Content */}
+					<div className="w-[1000px] space-y-6">
+						{/* Tabs and Description */}
+						<div className="space-y-[-1px]">
+							<div className="border-b border-base-300">
+								<nav className="flex tabs tabs-lifted">
+									{TABLES.map((table) => (
+										<ExploreTabButton key={table.route} tabName={table.tabName} route={table.route} />
+									))}
+								</nav>
+							</div>
+							{currentTableConfig && <TableDescription description={currentTableConfig.description} />}
+						</div>
 
-				<div>
-					{currentTableConfig && (
-						<TableDescription tableName={currentTableConfig.tabName} description={currentTableConfig.description} />
-					)}
-					{children}
+						{/* Page Content */}
+						{children}
+					</div>
 				</div>
-			</div>
+			) : (
+				// Detail pages - centered with consistent top margin
+				<div className="max-w-[1000px] mx-auto pt-6">{children}</div>
+			)}
 		</div>
 	);
 }

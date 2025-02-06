@@ -79,7 +79,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 	const topTaxa = [...sortedTaxa]; // Create a copy for the top taxonomy section
 
 	return (
-		<div className="max-w-7xl mx-auto p-6">
+		<div className="space-y-8">
 			{/* Breadcrumb navigation */}
 			<div className="text-base breadcrumbs mb-6">
 				<ul>
@@ -174,8 +174,8 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 			</div>
 
-			<div className="bg-base-200 -mt-4">
-				<div className="card-body px-6">
+			<div className="bg-base-200">
+				<div className="card-body">
 					<h2 className="card-title text-base-content/70">
 						Assays in this Project: {Object.keys(uniqueAssays).length}
 					</h2>
@@ -203,7 +203,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 				</div>
 			</div>
 
-			<div className="mt-4 px-6">
+			<div className="mt-4">
 				<h2 id="samples-section" className="card-title text-base-content/70 mb-4">
 					Samples:
 				</h2>

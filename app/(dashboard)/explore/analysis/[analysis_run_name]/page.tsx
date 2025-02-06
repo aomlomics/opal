@@ -38,7 +38,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 	const { _count: _, Occurrences: __, ...justAnalysis } = analysis;
 
 	return (
-		<div className="max-w-7xl mx-auto p-6">
+		<div className="space-y-8">
 			{/* Breadcrumb navigation */}
 			<div className="text-base breadcrumbs mb-6">
 				<ul>
@@ -105,7 +105,7 @@ export default async function Analysis_Run_name({ params }: { params: Promise<{ 
 				</div>
 			</div>
 
-			<div className="mt-4 px-6">
+			<div className="mt-4">
 				<h2 className="text-lg font-medium text-base-content/70 mb-4">Data Explorer</h2>
 				<div role="tablist" className="tabs tabs-lifted">
 					<input type="radio" defaultChecked name="dataTabs" role="tab" className="tab" aria-label="Samples" />

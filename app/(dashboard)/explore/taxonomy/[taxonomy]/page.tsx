@@ -48,7 +48,7 @@ export default async function Taxonomy({ params }: { params: Promise<{ taxonomy:
 	if (!dbTaxonomy || !samples.length) return <>Taxonomy not found</>;
 
 	return (
-		<div>
+		<div className="space-y-8">
 			<h2>{taxonomy}</h2>
 			<div className="grid grid-cols-2">
 				<PhyloPic taxonomy={dbTaxonomy} />
