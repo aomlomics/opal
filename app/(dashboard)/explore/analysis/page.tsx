@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import TableFilter from "@/app/components/explore/TableFilter";
 import Pagination from "@/app/components/paginated/Pagination";
 
@@ -8,6 +9,10 @@ export default async function Analysis() {
 				Showing all
 				<span className="text-primary"> Analyses</span>
 			</h1>
+
+			<Suspense fallback={<div>Loading filters...</div>}>
+				<TableFilter table="analysis" />
+			</Suspense>
 
 			<div className="bg-base-100 rounded-lg border border-base-300">
 				<Pagination
