@@ -115,8 +115,8 @@ export default function TaxaGrid({ take = 50 }: { take?: number }) {
 									? d.family
 									: d.order
 									? d.order
-									: d.taxonClass
-									? d.taxonClass
+									: d.class
+									? d.class
 									: d.phylum
 									? d.phylum
 									: d.kingdom

@@ -15,7 +15,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 		"genus",
 		"family",
 		"order",
-		"taxonClass",
+		"class",
 		"phylum",
 		"subdivision",
 		"division",
@@ -38,11 +38,7 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 						//get only the taxonomies that match the specific rank
 						//TODO: check GBIF API docs to do this step in the previous fetch
 						//have to replace our database class field with the proper keyword
-						if (rank === "taxonClass") {
-							gbifTaxonomy = gbifTaxa.filter((taxa: Record<string, any>) => taxa.rank.toLowerCase() === "class")[0];
-						} else {
-							gbifTaxonomy = gbifTaxa.filter((taxa: Record<string, any>) => taxa.rank.toLowerCase() === rank)[0];
-						}
+						gbifTaxonomy = gbifTaxa.filter((taxa: Record<string, any>) => taxa.rank.toLowerCase() === rank)[0];
 						if (gbifTaxonomy) {
 							break;
 						}
