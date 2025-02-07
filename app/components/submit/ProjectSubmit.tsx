@@ -20,9 +20,9 @@ export default function ProjectSubmit() {
 	const [loading, setLoading] = useState("");
 	const [submitted, setSubmitted] = useState(false);
 	const [fileStates, setFileStates] = useState<Record<string, File | null>>({
-		projectFile: null,
-		samplesFile: null,
-		libraryFile: null
+		project: null,
+		sample: null,
+		library: null
 	});
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +33,7 @@ export default function ProjectSubmit() {
 		}));
 	};
 
-	const allFilesPresent = fileStates.projectFile && fileStates.samplesFile && fileStates.libraryFile;
+	const allFilesPresent = fileStates.project && fileStates.sample && fileStates.library;
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -45,7 +45,7 @@ export default function ProjectSubmit() {
 		setSubmitted(true);
 
 		const formData = new FormData(event.currentTarget);
-		const fileTypes = ["projectFile", "samplesFile", "libraryFile"];
+		const fileTypes = ["project", "sample", "library"];
 
 		try {
 			// Process each file sequentially just for progress display
@@ -71,9 +71,9 @@ export default function ProjectSubmit() {
 					"Project successfully submitted! You will be redirected to submit your analysis files in 5 seconds...";
 				await new Promise((resolve) => setTimeout(resolve, 100));
 				setResponseObj({
-					projectFile: "Success!",
-					samplesFile: "Success!",
-					libraryFile: "Success!",
+					project: "Success!",
+					samples: "Success!",
+					library: "Success!",
 					submission: "Success!",
 					global: successMessage,
 					status: "✅ Project Submission Successful"
