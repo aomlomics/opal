@@ -24,24 +24,24 @@ export default async function projectDeleteAction(formData: FormData) {
 			}
 
 			// features delete
-			console.log("empty features delete");
-			await tx.feature.deleteMany({
-				where: {
-					Assignments: {
-						none: {}
-					}
-				}
-			});
+			// console.log("empty features delete");
+			// await tx.feature.deleteMany({
+			// 	where: {
+			// 		Assignments: {
+			// 			none: {}
+			// 		}
+			// 	}
+			// });
 
 			//taxonomies delete
-			console.log("empty taxonomies delete");
-			await tx.taxonomy.deleteMany({
-				where: {
-					Assignments: {
-						none: {}
-					}
-				}
-			});
+			// console.log("empty taxonomies delete");
+			// await tx.taxonomy.deleteMany({
+			// 	where: {
+			// 		Assignments: {
+			// 			none: {}
+			// 		}
+			// 	}
+			// });
 		},
 		{ timeout: 1.5 * 60 * 1000 }
 	);

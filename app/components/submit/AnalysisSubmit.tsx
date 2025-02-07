@@ -433,7 +433,24 @@ export default function AnalysisSubmit() {
 					)}
 
 					<div className="flex justify-center mt-8">
-						<button className="btn btn-primary text-white w-[200px]" disabled={!!loading || submitted}>
+						<button
+							className="btn btn-primary text-white w-[200px]"
+							disabled={!!loading || submitted}
+							onClick={() => {
+								for (let i = 0; i < analyses.length - 1; i++) {
+									if (analyses[i] !== null) {
+										const element = document.getElementById(`analysis_${i}`);
+										if (element) {
+											element.scrollIntoView({
+												block: "start",
+												behavior: "smooth"
+											});
+											break;
+										}
+									}
+								}
+							}}
+						>
 							{loading || submitted ? <span className="loading loading-spinner loading-sm"></span> : "Submit"}
 						</button>
 					</div>

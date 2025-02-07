@@ -87,11 +87,14 @@ export default async function assignSubmitAction(formData: FormData): SubmitActi
 					}
 
 					features.push(
-						FeatureOptionalDefaultsSchema.parse(featureRow, {
-							errorMap: (error, ctx) => {
-								return { message: `FeatureSchema (${analysis_run_name}): ${ctx.defaultError}` };
+						FeatureOptionalDefaultsSchema.parse(
+							{ ...featureRow, sequenceLength: featureRow.dna_sequence?.length },
+							{
+								errorMap: (error, ctx) => {
+									return { message: `FeatureSchema (${analysis_run_name}): ${ctx.defaultError}` };
+								}
 							}
-						})
+						)
 					);
 
 					//assignments can only be parsed after inserting the analyses
@@ -110,22 +113,16 @@ export default async function assignSubmitAction(formData: FormData): SubmitActi
 			//upload to database
 			//features
 			console.log("features");
-			await tx.feature.createManyAndReturn({
+			await tx.feature.createMany({
 				data: features,
-				skipDuplicates: true,
-				select: {
-					id: true
-				}
+				skipDuplicates: true
 			});
 
 			//taxonomies
 			console.log("taxonomies");
-			await tx.taxonomy.createManyAndReturn({
+			await tx.taxonomy.createMany({
 				data: taxonomies,
-				skipDuplicates: true,
-				select: {
-					id: true
-				}
+				skipDuplicates: true
 			});
 
 			//assignments
