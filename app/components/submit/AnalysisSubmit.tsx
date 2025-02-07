@@ -483,6 +483,20 @@ export default function AnalysisSubmit() {
 						<button
 							className="btn btn-primary text-white w-[200px]"
 							disabled={!!loading || submitted || !analyses.every((a) => a && checkAnalysisFiles(a, fileStates))}
+							onClick={() => {
+								for (let i = 0; i < analyses.length - 1; i++) {
+									if (analyses[i] !== null) {
+										const element = document.getElementById(`analysis_${i}`);
+										if (element) {
+											element.scrollIntoView({
+												block: "start",
+												behavior: "smooth"
+											});
+											break;
+										}
+									}
+								}
+							}}
 						>
 							{loading || submitted ? <span className="loading loading-spinner loading-sm"></span> : "Submit"}
 						</button>

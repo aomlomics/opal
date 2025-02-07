@@ -19,6 +19,7 @@ export const ProjectScalarFieldEnumSchema = z.enum([
 	"id",
 	"project_id",
 	"userId",
+	"dateSubmitted",
 	"recordedBy",
 	"recordedByID",
 	"project_contact",
@@ -235,6 +236,7 @@ export const AnalysisScalarFieldEnumSchema = z.enum([
 	"id",
 	"analysis_run_name",
 	"userId",
+	"dateSubmitted",
 	"project_id",
 	"assay_name",
 	"sop_bioinformatics",
@@ -303,7 +305,7 @@ export const OccurrenceScalarFieldEnumSchema = z.enum([
 	"organismQuantity"
 ]);
 
-export const FeatureScalarFieldEnumSchema = z.enum(["id", "featureid", "consensusTaxonomyId", "dna_sequence"]);
+export const FeatureScalarFieldEnumSchema = z.enum(["id", "featureid", "dna_sequence", "sequenceLength"]);
 
 export const AssignmentScalarFieldEnumSchema = z.enum([
 	"id",
@@ -323,7 +325,7 @@ export const TaxonomyScalarFieldEnumSchema = z.enum([
 	"division",
 	"subdivision",
 	"phylum",
-	"taxonClass",
+	"class",
 	"order",
 	"family",
 	"genus",
@@ -549,6 +551,7 @@ export const ProjectSchema = z.object({
 	id: z.number().int(),
 	project_id: z.string(),
 	userId: z.string(),
+	dateSubmitted: z.coerce.date(),
 	recordedBy: z.string(),
 	recordedByID: z.string().nullish(),
 	project_contact: z.string(),
@@ -867,6 +870,7 @@ export const AnalysisSchema = z.object({
 	id: z.number().int(),
 	analysis_run_name: z.string(),
 	userId: z.string(),
+	dateSubmitted: z.coerce.date(),
 	project_id: z.string(),
 	assay_name: z.string(),
 	sop_bioinformatics: z.string().nullish(),
@@ -986,8 +990,8 @@ export type OccurrenceOptionalDefaults = z.infer<typeof OccurrenceOptionalDefaul
 export const FeatureSchema = z.object({
 	id: z.number().int(),
 	featureid: z.string(),
-	consensusTaxonomyId: z.string().nullish(),
-	dna_sequence: z.string()
+	dna_sequence: z.string(),
+	sequenceLength: z.number().int()
 });
 
 export type Feature = z.infer<typeof FeatureSchema>;
@@ -1058,7 +1062,7 @@ export const TaxonomySchema = z.object({
 	division: z.string().nullish(),
 	subdivision: z.string().nullish(),
 	phylum: z.string().nullish(),
-	taxonClass: z.string().nullish(),
+	class: z.string().nullish(),
 	order: z.string().nullish(),
 	family: z.string().nullish(),
 	genus: z.string().nullish(),
