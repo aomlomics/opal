@@ -1,8 +1,8 @@
 export default function LoadingPaginationControls() {
 	return (
 		<div className="w-full flex justify-center">
-			<div className="flex items-center gap-12">
-				<button className="btn btn-ghost gap-2" disabled={true} type="button">
+			<div className="grid grid-cols-3 items-center w-full">
+				<button className="btn btn-ghost gap-2 justify-self-end" disabled={true} type="button">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="16"
@@ -20,7 +20,7 @@ export default function LoadingPaginationControls() {
 
 				<div className="text-base-content text-center grow">0-0 of 0</div>
 
-				<button className="btn btn-ghost gap-2" disabled={true} type="button">
+				<button className="btn btn-ghost gap-2 justify-self-start" disabled={true} type="button">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="16"

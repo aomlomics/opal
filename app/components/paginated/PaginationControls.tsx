@@ -13,9 +13,9 @@ export default function PaginationControls({
 }) {
 	return (
 		<div className="w-full flex justify-center">
-			<div className="flex items-center gap-12">
+			<div className="grid grid-cols-3 items-center w-full">
 				<button
-					className="btn btn-ghost gap-2"
+					className="btn btn-ghost gap-2 justify-self-end"
 					disabled={page <= 1}
 					onClick={() => handlePage(-1)}
 					onMouseEnter={() => handlePageHover(-1)}
@@ -41,7 +41,7 @@ export default function PaginationControls({
 				</div>
 
 				<button
-					className="btn btn-ghost gap-2"
+					className="btn btn-ghost gap-2 justify-self-start"
 					disabled={page * take > count}
 					onClick={() => handlePage()}
 					onMouseEnter={() => handlePageHover()}
