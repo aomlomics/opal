@@ -277,9 +277,10 @@ enum dada2_chimera_method {
 
 // Models
 model Project {
-    id         Int    @id @default(autoincrement())
-    project_id String @unique
-    userId     String
+    id            Int      @id @default(autoincrement())
+    project_id    String   @unique
+    userId        String
+    dateSubmitted DateTime
 
     // Relations
     Samples  Sample[]
@@ -613,9 +614,10 @@ model Library {
 
 //Analyses
 model Analysis {
-    id                Int    @id @default(autoincrement())
-    analysis_run_name String @unique
+    id                Int      @id @default(autoincrement())
+    analysis_run_name String   @unique
     userId            String
+    dateSubmitted     DateTime
 
     // Relations
     project_id  String
@@ -735,13 +737,12 @@ model Feature {
     featureid String @unique
 
     // Relations
-    Occurrences         Occurrence[]
-    Assignments         Assignment[]
-    consensusTaxonomyId String?
-    consensusTaxonomy   Taxonomy?    @relation(fields: [consensusTaxonomyId], references: [taxonomy])
+    Occurrences Occurrence[]
+    Assignments Assignment[]
 
     // Data
-    dna_sequence String
+    dna_sequence   String
+    sequenceLength Int
 }
 
 model Assignment {
@@ -768,7 +769,6 @@ model Taxonomy {
 
     // Relations
     Assignments Assignment[]
-    Features    Feature[]
 
     //Data
     verbatimIdentification String
@@ -778,7 +778,7 @@ model Taxonomy {
     division               String?
     subdivision            String?
     phylum                 String?
-    taxonClass             String? @map("class")
+    class                  String?
     order                  String?
     family                 String?
     genus                  String?

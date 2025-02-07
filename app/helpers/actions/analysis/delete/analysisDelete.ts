@@ -24,59 +24,23 @@ export default async function analysisDeleteAction(formData: FormData) {
 			}
 
 			//features delete
-			console.log("empty features delete");
-			await tx.feature.deleteMany({
-				where: {
-					Assignments: {
-						none: {}
-					}
-				}
-			});
-			// if (del.dbFeatures) {
-			// 	const featureChunks = [] as number[][];
-			// 	while (del.dbFeatures.length) {
-			// 		featureChunks.push(del.dbFeatures.splice(0, 30000));
+			// console.log("empty features delete");
+			// await tx.feature.deleteMany({
+			// 	where: {
+			// 		Assignments: {
+			// 			none: {}
+			// 		}
 			// 	}
-
-			// 	console.log("features delete");
-			// 	for (const chunk of featureChunks) {
-			// 		await tx.feature.deleteMany({
-			// 			where: {
-			// 				id: {
-			// 					in: chunk
-			// 				}
-			// 			}
-			// 		});
-			// 	}
-			// }
 
 			//taxonomies delete
-			console.log("empty taxonomies delete");
-			await tx.taxonomy.deleteMany({
-				where: {
-					Assignments: {
-						none: {}
-					}
-				}
-			});
-			// if (del.dbTaxonomies) {
-			// 	const taxonomyChunks = [] as number[][];
-			// 	while (del.dbTaxonomies.length) {
-			// 		taxonomyChunks.push(del.dbTaxonomies.splice(0, 30000));
+			// console.log("empty taxonomies delete");
+			// await tx.taxonomy.deleteMany({
+			// 	where: {
+			// 		Assignments: {
+			// 			none: {}
+			// 		}
 			// 	}
-
-			// 	//taxonomies
-			// 	console.log("taxonomies delete");
-			// 	for (const chunk of taxonomyChunks) {
-			// 		await tx.taxonomy.deleteMany({
-			// 			where: {
-			// 				id: {
-			// 					in: chunk
-			// 				}
-			// 			}
-			// 		});
-			// 	}
-			// }
+			// });
 		},
 		{ timeout: 1.5 * 60 * 1000 }
 	);
