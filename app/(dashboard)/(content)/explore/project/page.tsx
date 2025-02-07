@@ -1,10 +1,9 @@
-import ExploreTabButton from "@/app/components/explore/ExploreTabButton";
-import TableDescription from "@/app/components/explore/TableDescription";
+import ExploreTabButtons from "@/app/components/explore/ExploreTabButtons";
 import TableFilter from "@/app/components/explore/TableFilter";
 import Pagination from "@/app/components/paginated/Pagination";
-import { TABLES } from "@/app/helpers/consts";
 import { prisma } from "@/app/helpers/prisma";
 import { detection_type } from "@prisma/client";
+import Link from "next/link";
 
 export default async function Project() {
 	const { projInstitutionOptions: institutionOptions } = await prisma.$transaction(async (tx) => {
@@ -42,12 +41,22 @@ export default async function Project() {
 				<div className="space-y-[-1px]">
 					<div className="border-b border-base-300">
 						<nav className="flex tabs tabs-lifted">
-							{Object.entries(TABLES).map(([route, table]) => (
-								<ExploreTabButton key={route} tabName={table.tabName} route={route} />
-							))}
+							<ExploreTabButtons />
 						</nav>
 					</div>
-					<TableDescription description={TABLES.project.description} />
+					<div className="bg-base-100 border border-base-300 rounded-lg p-4 mb-6">
+						<p className="mb-2">
+							Research initiatives collecting eDNA samples, with metadata on study design, objectives, and participating
+							institutions.
+						</p>
+						<p className="text-sm">
+							For more detailed information, visit our{" "}
+							<Link href="/help" className="text-primary hover:underline">
+								Help page
+							</Link>
+							.
+						</p>
+					</div>
 				</div>
 
 				<div className="space-y-6">

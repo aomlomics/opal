@@ -1,8 +1,7 @@
-import ExploreTabButton from "@/app/components/explore/ExploreTabButton";
-import TableDescription from "@/app/components/explore/TableDescription";
+import ExploreTabButtons from "@/app/components/explore/ExploreTabButtons";
 import TableFilter from "@/app/components/explore/TableFilter";
 import TaxaGrid from "@/app/components/paginated/TaxaGrid";
-import { TABLES } from "@/app/helpers/consts";
+import Link from "next/link";
 
 export default async function Taxonomy() {
 	return (
@@ -21,12 +20,19 @@ export default async function Taxonomy() {
 				<div className="space-y-[-1px]">
 					<div className="border-b border-base-300">
 						<nav className="flex tabs tabs-lifted">
-							{Object.entries(TABLES).map(([route, table]) => (
-								<ExploreTabButton key={route} tabName={table.tabName} route={route} />
-							))}
+							<ExploreTabButtons />
 						</nav>
 					</div>
-					<TableDescription description={TABLES.taxonomy.description} />
+					<div className="bg-base-100 border border-base-300 rounded-lg p-4 mb-6">
+						<p className="mb-2">Hierarchical classification of detected organisms from domain to species level.</p>
+						<p className="text-sm">
+							For more detailed information, visit our{" "}
+							<Link href="/help" className="text-primary hover:underline">
+								Help page
+							</Link>
+							.
+						</p>
+					</div>
 				</div>
 
 				<div className="space-y-6">
