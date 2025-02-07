@@ -34,7 +34,6 @@ export default function PaginationControls({
 					>
 						<path d="m15 18-6-6 6-6" />
 					</svg>
-					Previous
 				</button>
 
 				<div className="text-base-content text-center grow">
@@ -48,7 +47,6 @@ export default function PaginationControls({
 					onMouseEnter={() => handlePageHover()}
 					type="button"
 				>
-					Next
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="16"

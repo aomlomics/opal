@@ -100,8 +100,8 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 					</header>
 				</div>
 
-				<div className="col-span-2 space-y-4">
-					<div className="grid grid-cols-2 gap-4">
+				<div className="col-span-2 flex flex-col gap-8">
+					<div className="grid grid-cols-2 gap-8">
 						<Link href="#samples-section" className="stat bg-base-200 p-6 hover:bg-base-300 transition-colors">
 							<div className="text-lg font-medium text-base-content/70">Total Samples</div>
 							<div className="text-base mt-1">{project._count.Samples}</div>
@@ -114,7 +114,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 								className="stat focus:bg-base-300 w-full p-6 flex justify-between items-center"
 							>
 								<div>
-									<div className="text-sm font-medium text-base-content/70">Total Analyses</div>
+									<div className="text-lg font-medium text-base-content/70">Total Analyses</div>
 									<div className="text-2xl font-medium mt-1">{project._count.Analyses}</div>
 								</div>
 								<svg
@@ -150,7 +150,7 @@ export default async function Project_Id({ params }: { params: Promise<{ project
 						</div>
 					</div>
 
-					<div className="bg-base-200 p-6">
+					<div className="bg-base-200 p-6 grow">
 						<div className="text-lg font-medium text-base-content/70 mb-2">Top Taxonomy</div>
 						{sortedTaxa.slice(0, 5).map((taxa) => {
 							const taxonomyParts = taxa[0].split(";").filter(Boolean);

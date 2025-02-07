@@ -16,13 +16,11 @@ export default function LoadingPaginationControls() {
 					>
 						<path d="m15 18-6-6 6-6" />
 					</svg>
-					Previous
 				</button>
 
 				<div className="text-base-content text-center grow">0-0 of 0</div>
 
 				<button className="btn btn-ghost gap-2" disabled={true} type="button">
-					Next
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="16"
