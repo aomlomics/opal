@@ -1,33 +1,37 @@
 import ExploreTabButtons from "@/app/components/explore/ExploreTabButtons";
+import LoadingTableFilter from "@/app/components/explore/LoadingTableFilter";
 import TableFilter from "@/app/components/explore/TableFilter";
 import TaxaGrid from "@/app/components/paginated/TaxaGrid";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default async function Taxonomy() {
 	return (
 		<div className="grid grid-cols-[300px_1fr] gap-6 pt-6">
-			<TableFilter
-				tableConfig={[
-					{
-						field: "taxonomic_rank",
-						label: "Taxonomic Rank",
-						type: "select",
-						options: [
-							"domain",
-							"kingdom",
-							"supergroup",
-							"division",
-							"subdivision",
-							"phylum",
-							"taxonClass",
-							"order",
-							"family",
-							"genus",
-							"species"
-						]
-					}
-				]}
-			/>
+			<Suspense fallback={<LoadingTableFilter />}>
+				<TableFilter
+					tableConfig={[
+						{
+							field: "taxonomic_rank",
+							label: "Taxonomic Rank",
+							type: "select",
+							options: [
+								"domain",
+								"kingdom",
+								"supergroup",
+								"division",
+								"subdivision",
+								"phylum",
+								"taxonClass",
+								"order",
+								"family",
+								"genus",
+								"species"
+							]
+						}
+					]}
+				/>
+			</Suspense>
 			<div className="space-y-6">
 				<div className="space-y-[-1px]">
 					<div className="border-b border-base-300">
