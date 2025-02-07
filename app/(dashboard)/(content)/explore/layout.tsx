@@ -64,7 +64,7 @@ export default function ExploreLayout({ children }: { children: ReactNode }) {
 	const currentTableConfig = TABLES.find((t) => t.route === currentTable);
 
 	return (
-		<div className="max-w-[1400px] mx-auto p-6">
+		<div className="w-full p-6">
 			{isListPage ? (
 				// List pages - consistent grid layout with filter
 				<div className="grid grid-cols-[300px_1fr] gap-6">
@@ -74,7 +74,7 @@ export default function ExploreLayout({ children }: { children: ReactNode }) {
 					</Suspense>
 
 					{/* Main Content */}
-					<div className="w-[1000px] space-y-6">
+					<div className="space-y-6">
 						{/* Tabs and Description */}
 						<div className="space-y-[-1px]">
 							<div className="border-b border-base-300">
@@ -93,7 +93,7 @@ export default function ExploreLayout({ children }: { children: ReactNode }) {
 				</div>
 			) : (
 				// Detail pages - centered with consistent top margin
-				<div className="max-w-[1000px] mx-auto pt-6">{children}</div>
+				<div className="pt-6">{children}</div>
 			)}
 		</div>
 	);

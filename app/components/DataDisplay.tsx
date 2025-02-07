@@ -21,7 +21,7 @@ export default function DataDisplay({
 
 								if (value === null) {
 									valueNode = <div className="bg-base-300">{"\u200b"}</div>;
-								} else if (URL.canParse(value.toString())) {
+								} else if (URL.canParse(value.toString()) && value.toString().split(":")[1].startsWith("//")) {
 									valueNode = (
 										<Link
 											href={value.toString()}
