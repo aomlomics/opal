@@ -1,7 +1,7 @@
 import TableFilter from "@/app/components/explore/TableFilter";
 import Pagination from "@/app/components/paginated/Pagination";
 import ExploreTabButtons from "@/app/components/explore/ExploreTabButtons";
-import { target_gene } from "@prisma/client";
+import { asv_method, target_gene } from "@prisma/client";
 import Link from "next/link";
 
 export default async function Analysis() {
@@ -13,13 +13,13 @@ export default async function Analysis() {
 						field: "asv_method",
 						label: "Analysis Method",
 						type: "select",
-						options: ["DADA2", "Deblur", "Other"]
+						enum: asv_method
 					},
 					{
 						field: "target_gene",
 						label: "Target Gene",
 						type: "select",
-						enumType: target_gene
+						enum: target_gene
 					}
 				]}
 			/>

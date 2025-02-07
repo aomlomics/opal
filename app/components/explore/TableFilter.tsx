@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
+import { ZodEnum } from "zod";
 
 type RangeValue = {
 	min?: number;
@@ -14,7 +15,7 @@ type FilterConfig = {
 	label: string;
 	type: "select" | "multiselect" | "date" | "range";
 	options?: string[];
-	enumType?: any;
+	enum?: Record<string, string>;
 	min?: number; // Add these for range type filters
 	max?: number; // Add these for range type filters
 };
@@ -95,12 +96,18 @@ export default function TableFilter({ tableConfig }: { tableConfig: FilterConfig
 									onChange={(e) => handleFilterChange(filter.field, e.target.value || undefined)}
 								>
 									<option value="">Any</option>
-									{filter.options &&
-										filter.options.map((option) => (
-											<option key={option} value={option}>
-												{option}
-											</option>
-										))}
+									{filter.enum
+										? Object.keys(filter.enum).map((option) => (
+												<option key={option} value={option}>
+													{option}
+												</option>
+										  ))
+										: filter.options &&
+										  filter.options.map((option) => (
+												<option key={option} value={option}>
+													{option}
+												</option>
+										  ))}
 								</select>
 							) : (
 								filter.type === "range" && <div>range</div>

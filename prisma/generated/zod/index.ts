@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type prisma from "@prisma/client";
 
 /////////////////////////////////////////
 // HELPER FUNCTIONS

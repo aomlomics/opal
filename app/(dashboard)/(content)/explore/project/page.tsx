@@ -6,7 +6,7 @@ import { detection_type } from "@prisma/client";
 import Link from "next/link";
 
 export default async function Project() {
-	const { projInstitutionOptions: institutionOptions } = await prisma.$transaction(async (tx) => {
+	const { institutionOptions } = await prisma.$transaction(async (tx) => {
 		const instutitionRes = await tx.project.findMany({
 			distinct: ["institution"],
 			select: {
@@ -14,10 +14,11 @@ export default async function Project() {
 			}
 		});
 
-		return { projInstitutionOptions: instutitionRes.map((proj) => proj.institution) };
+		return {
+			institutionOptions: instutitionRes.map((proj) => proj.institution)
+		};
 	});
 	if (!institutionOptions) return <>Loading...</>;
-	console.log(institutionOptions);
 
 	return (
 		<div className="grid grid-cols-[300px_1fr] gap-6 pt-6">
@@ -27,7 +28,7 @@ export default async function Project() {
 						field: "detection_type",
 						label: "Detection Type",
 						type: "select",
-						enumType: detection_type
+						enum: detection_type
 					},
 					{
 						field: "institution",

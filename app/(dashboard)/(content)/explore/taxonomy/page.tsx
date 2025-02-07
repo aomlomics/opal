@@ -12,7 +12,19 @@ export default async function Taxonomy() {
 						field: "taxonomic_rank",
 						label: "Taxonomic Rank",
 						type: "select",
-						options: ["kingdom", "phylum", "class", "order", "family", "genus", "species"]
+						options: [
+							"domain",
+							"kingdom",
+							"supergroup",
+							"division",
+							"subdivision",
+							"phylum",
+							"taxonClass",
+							"order",
+							"family",
+							"genus",
+							"species"
+						]
 					}
 				]}
 			/>
