@@ -13,7 +13,7 @@ export default function PaginationControls({
 }) {
 	return (
 		<div className="w-full flex justify-center">
-			<div className="grid grid-cols-3 items-center w-full">
+			<div className="grid grid-cols-3 items-center grow max-w-[600px]">
 				<button
 					className="btn btn-ghost gap-2 justify-self-end"
 					disabled={page <= 1}
