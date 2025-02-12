@@ -1,5 +1,6 @@
 "use client";
 
+import { convertDBEnum } from "@/app/helpers/utils";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -100,7 +101,7 @@ export default function ActualTableFilter({ tableConfig }: { tableConfig: Filter
 								>
 									<option value="">Any</option>
 									{filter.enum
-										? Object.keys(filter.enum).map((option) => (
+										? Object.values(convertDBEnum(filter.enum)).map((option) => (
 												<option key={option} value={option}>
 													{option}
 												</option>

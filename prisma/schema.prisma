@@ -24,9 +24,21 @@ generator zod {
 }
 
 // Enums
+// @map rules:
+//      spaces = _
+//      dashes = __
+//      % = PERCENT_
+//      ( = PAREN1_
+//      ) = PAREN2_
+// extra rules for @map that STARTS WITH a number (0-99 only):
+//      convert number to string representation in ALLCAPS
+//      terminate with __
+//      if there are two words in the number (ex: 28 = twenty eight), separate the words with _
+//      EX: 28 = TWENTY_EIGHT__
+
 enum DeadBoolean {
-    false          @map("false")
-    true           @map("true")
+    false
+    true
     not_applicable @map("not applicable")
     not_collected  @map("not collected")
     not_provided   @map("not provided")
@@ -49,11 +61,11 @@ enum neg_cont_type {
 }
 
 enum target_gene {
-    twelveS_rRNA       @map("12S rRNA")
-    sixteenS_rRNA      @map("16S rRNA")
-    eighteenS_rRNA     @map("18S rRNA")
-    twenty_threeS_rRNA @map("23S rRNA")
-    twenty_eightS_rRNA @map("28S rRNA")
+    TWELVE__S_rRNA       @map("12S rRNA")
+    SIXTEEN__S_rRNA      @map("16S rRNA")
+    EIGHTEEN__S_rRNA     @map("18S rRNA")
+    TWENTY_THREE__S_rRNA @map("23S rRNA")
+    TWENTY_EIGHT__S_rRNA @map("28S rRNA")
     rbcL
     CytB
     COI
@@ -75,24 +87,24 @@ enum target_gene {
     trnH
     trnL
     psbK
-    D_loop             @map("D-loop")
+    D__loop              @map("D-loop")
     //empty option
     other
 }
 
 enum probeQuencher {
-    Zero_End_Quencher_ZEN   @map("Zero-End Quencher (ZEN)")
+    Zero__End_Quencher_PAREN1_ZENPAREN2_  @map("Zero-End Quencher (ZEN)")
     TAMRA
-    lowa_Black              @map("lowa Black")
-    Minor_Groove_Binder_MGB @map("Minor Groove Binder (MGB)")
-    Black_Hole_Quencher_BHQ @map("Black Hole Quencher (BHQ)")
+    lowa_Black                            @map("lowa Black")
+    Minor_Groove_Binder_PAREN1_MGBPAREN2_ @map("Minor Groove Binder (MGB)")
+    Black_Hole_Quencher_PAREN1_BHQPAREN2_ @map("Black Hole Quencher (BHQ)")
     other
 }
 
 enum barcoding_pcr_appr {
-    one_step_PCR   @map("one-step PCR")
-    two_step_PCR   @map("two-step PCR")
-    ligation_based @map("ligation-based")
+    one__step_PCR   @map("one-step PCR")
+    two__step_PCR   @map("two-step PCR")
+    ligation__based @map("ligation-based")
     other
 }
 
@@ -129,7 +141,7 @@ enum error_rate_type {
 
 enum min_reads_cutoff_unit {
     reads
-    percent @map("%")
+    PERCENT_ @map("%")
     other
 }
 
@@ -246,7 +258,7 @@ enum nucl_acid_ext_lysis {
 }
 
 enum nucl_acid_ext_sep {
-    column_based      @map("column-based")
+    column__based     @map("column-based")
     magnetic_beads    @map("magnetic beads")
     centrifugation
     precipitation
