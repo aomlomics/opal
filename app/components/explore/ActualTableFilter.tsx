@@ -17,8 +17,8 @@ type FilterConfig = {
 	type: "select" | "multiselect" | "date" | "range";
 	options?: string[];
 	enum?: Record<string, string>;
-	gte?: number; // Add these for range type filters
-	lte?: number; // Add these for range type filters
+	gte?: number;
+	lte?: number;
 };
 
 // Main filter component that shows in the sidebar
@@ -37,15 +37,13 @@ export default function ActualTableFilter({ tableConfig }: { tableConfig: Filter
 	// When someone changes a filter, update the URL
 	function handleFilterChange(field: string, value: FilterValue) {
 		const params = new URLSearchParams(searchParams);
-		console.log(typeof value);
 
 		if (value === undefined || value === "") {
 			params.delete(field);
 		} else if (typeof value === "string") {
-			// Only handle string values for now
 			params.set(field, value);
 		} else if (typeof value === "object") {
-			const temp = {} as { gte?: number; lte?: number };
+			const temp = {} as RangeValue;
 
 			const valObj = params.get(field);
 			if (valObj) {
