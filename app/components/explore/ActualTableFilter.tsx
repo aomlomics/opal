@@ -100,10 +100,10 @@ export default function ActualTableFilter({ tableConfig }: { tableConfig: Filter
 					>
 						<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
 					</svg>
-					<div>
-						<h3 className="font-medium text-base-content">Filters</h3>
-						{activeFilterCount > 0 && <span className="text-sm text-base-content/70">{activeFilterCount} active</span>}
-					</div>
+					<h3 className="font-medium text-base-content">Filters</h3>
+				</div>
+				<div>
+					{activeFilterCount > 0 && <span className="text-sm text-base-content/70">{activeFilterCount} active</span>}
 				</div>
 			</div>
 
