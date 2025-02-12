@@ -2,7 +2,7 @@ import { Taxonomy } from "@prisma/client";
 import Image from "next/image";
 
 export default async function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
-	const errorImg = <>No Image</>;
+	const errorImg = <>?</>;
 
 	let ranksBySpecificity = ["species", "genus", "family", "order", "class", "phylum", "kingdom"] as Array<
 		keyof typeof taxonomy
