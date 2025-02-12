@@ -1,10 +1,8 @@
 import ExploreTabButtons from "@/app/components/explore/ExploreTabButtons";
-import LoadingTableFilter from "@/app/components/explore/LoadingTableFilter";
 import TableFilter from "@/app/components/explore/TableFilter";
 import Pagination from "@/app/components/paginated/Pagination";
 import { prisma } from "@/app/helpers/prisma";
 import Link from "next/link";
-import { Suspense } from "react";
 
 export default async function Feature() {
 	const minMaxSeqLength = await prisma.feature.aggregate({
@@ -19,19 +17,17 @@ export default async function Feature() {
 
 	return (
 		<div className="grid grid-cols-[300px_1fr] gap-6 pt-6">
-			<Suspense fallback={<LoadingTableFilter />}>
-				<TableFilter
-					tableConfig={[
-						{
-							field: "sequenceLength",
-							label: "Sequence Length",
-							type: "range",
-							min: minMaxSeqLength._min.sequenceLength as number,
-							max: minMaxSeqLength._max.sequenceLength as number
-						}
-					]}
-				/>
-			</Suspense>
+			<TableFilter
+				tableConfig={[
+					{
+						field: "sequenceLength",
+						label: "Sequence Length",
+						type: "range",
+						min: minMaxSeqLength._min.sequenceLength as number,
+						max: minMaxSeqLength._max.sequenceLength as number
+					}
+				]}
+			/>
 			<div className="space-y-6">
 				<div className="space-y-[-1px]">
 					<div className="border-b border-base-300">

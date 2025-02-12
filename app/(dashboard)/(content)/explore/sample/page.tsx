@@ -1,16 +1,12 @@
 import ExploreTabButtons from "@/app/components/explore/ExploreTabButtons";
-import LoadingTableFilter from "@/app/components/explore/LoadingTableFilter";
 import TableFilter from "@/app/components/explore/TableFilter";
 import Pagination from "@/app/components/paginated/Pagination";
 import Link from "next/link";
-import { Suspense } from "react";
 
 export default async function Project() {
 	return (
 		<div className="grid grid-cols-[300px_1fr] gap-6 pt-6">
-			<Suspense fallback={<LoadingTableFilter />}>
-				<TableFilter tableConfig={[]} />
-			</Suspense>
+			<TableFilter tableConfig={[]} />
 			<div className="space-y-6">
 				<div className="space-y-[-1px]">
 					<div className="border-b border-base-300">

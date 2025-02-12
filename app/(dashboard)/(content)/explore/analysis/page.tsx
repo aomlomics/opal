@@ -3,30 +3,26 @@ import Pagination from "@/app/components/paginated/Pagination";
 import ExploreTabButtons from "@/app/components/explore/ExploreTabButtons";
 import { asv_method, target_gene } from "@prisma/client";
 import Link from "next/link";
-import { Suspense } from "react";
-import LoadingTableFilter from "@/app/components/explore/LoadingTableFilter";
 
 export default async function Analysis() {
 	return (
 		<div className="grid grid-cols-[300px_1fr] gap-6 pt-6">
-			<Suspense fallback={<LoadingTableFilter />}>
-				<TableFilter
-					tableConfig={[
-						{
-							field: "asv_method",
-							label: "Analysis Method",
-							type: "select",
-							enum: asv_method
-						},
-						{
-							field: "target_gene",
-							label: "Target Gene",
-							type: "select",
-							enum: target_gene
-						}
-					]}
-				/>
-			</Suspense>
+			<TableFilter
+				tableConfig={[
+					{
+						field: "asv_method",
+						label: "Analysis Method",
+						type: "select",
+						enum: asv_method
+					},
+					{
+						field: "target_gene",
+						label: "Target Gene",
+						type: "select",
+						enum: target_gene
+					}
+				]}
+			/>
 			<div className="space-y-6">
 				<div className="space-y-[-1px]">
 					<div className="border-b border-base-300">
