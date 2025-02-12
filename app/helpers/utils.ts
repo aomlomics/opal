@@ -1,5 +1,5 @@
 import { DeadBooleanEnum, DeadValueEnum } from "@/types/enums";
-import { Prisma } from "@prisma/client";
+import { Prisma, Taxonomy } from "@prisma/client";
 import { ZodObject, ZodEnum, ZodNumber } from "zod";
 
 export async function fetcher(url: string) {
@@ -88,19 +88,20 @@ export function parsePaginationParams(searchParams: URLSearchParams) {
 	const query = {
 		orderBy: {
 			id: "asc"
-		},
-		omit: {
-			id: true
 		}
 	} as {
 		orderBy: { id: Prisma.SortOrder };
-		omit: { id: true };
 		take: number;
 		skip?: number;
 		cursor?: { id: number };
 		include?: { _count: { select: Record<string, boolean> } };
 		where?: Record<string, string>;
 	};
+
+	const orderBy = searchParams.get("orderBy");
+	if (orderBy) {
+		query.orderBy = JSON.parse(orderBy);
+	}
 
 	const take = searchParams.get("take");
 	if (!take) {
@@ -150,8 +151,32 @@ export function randomColors(num: number) {
 	let colors = [];
 	for (let i = 0; i < num; i++) {
 		colors.push(
-			`rgb(${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`
+			`rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`
 		);
 	}
 	return colors;
+}
+
+export function getMostSpecificRank(taxonomy: Taxonomy) {
+	const ranksBySpecificity = [
+		"species",
+		"genus",
+		"family",
+		"order",
+		"taxonClass",
+		"phylum",
+		"subdivision",
+		"division",
+		"supergroup",
+		"kingdom",
+		"domain"
+	] as Array<keyof typeof taxonomy>;
+
+	for (const rank of ranksBySpecificity) {
+		if (taxonomy[rank]) {
+			return { rank, label: taxonomy[rank] as string };
+		}
+	}
+
+	return { rank: "taxonomy", label: taxonomy.taxonomy };
 }

@@ -12,11 +12,15 @@ import { DeadValueEnum } from "@/types/enums";
 export default function ActualMap({
 	locations,
 	id,
+	title,
+	iconSize = 25,
 	table,
 	cluster = false
 }: {
-	locations: any[];
+	locations: Record<string, any>[];
 	id: string;
+	title?: string;
+	iconSize?: number;
 	table: Uncapitalize<Prisma.ModelName>;
 	cluster?: boolean;
 }) {
@@ -58,6 +62,7 @@ export default function ActualMap({
 		}
 		points = clusteredLocations;
 	}
+	console.log(points);
 
 	const centerStart = { lat: 25.7617, lng: -80.8918 };
 	const ARCGIS_API_KEY = process.env.ARCGIS_KEY;
@@ -74,9 +79,14 @@ export default function ActualMap({
 					<Marker
 						key={loc.decimalLatitude.toString() + loc.decimalLongitude.toString() + i}
 						icon={divIcon({
-							className: "text-center content-center bg-red-500 rounded-full border-2 border-black text-white",
-							html: cluster ? loc.values.length.toString() : "",
-							iconSize: [32, 32]
+							className: "bg-none",
+							html:
+								`<div class='h-full text-center font-mono content-center rounded-full border border-black text-white' style=background-color:${
+									loc.color ? loc.color : "rgb(200,0,0)"
+								}>` +
+								(cluster ? loc.values.length.toString() : "") +
+								"</div>",
+							iconSize: [iconSize, iconSize]
 						})}
 						position={{
 							lat: loc.decimalLatitude,
@@ -85,12 +95,13 @@ export default function ActualMap({
 					>
 						<Popup className="map-popup">
 							<div className="font-sans bg-base-100 p-4 rounded-lg">
+								{title && loc[title] && <h2 className="text-primary text-xl">{loc[title]}</h2>}
 								<div className="flex flex-col max-h-20 overflow-y-scroll pr-5">
 									{cluster ? (
 										loc.values.map((label: string) => (
 											<Link
 												key={label}
-												href={`/explore/${table}/${label}`}
+												href={`/explore/${table}/${encodeURIComponent(label)}`}
 												className="text-info hover:text-info-focus hover:underline transition-colors"
 											>
 												{label}
@@ -98,31 +109,31 @@ export default function ActualMap({
 										))
 									) : (
 										<Link
-											href={`/explore/${table}/${loc[id]}`}
+											href={`/explore/${table}/${encodeURIComponent(loc[id])}`}
 											className="text-info hover:text-info-focus hover:underline transition-colors"
 										>
 											{loc[id]}
 										</Link>
 									)}
 								</div>
-
-								<style jsx global>{`
-									.leaflet-popup-content-wrapper {
-										padding: 0;
-										border-radius: 0.5rem;
-									}
-									.leaflet-popup-content {
-										margin: 0;
-									}
-									.leaflet-popup-tip {
-										background: var(--fallback-b1, oklch(var(--b1))) !important;
-										opacity: 1 !important;
-									}
-								`}</style>
 							</div>
 						</Popup>
 					</Marker>
 				))}
+
+				<style jsx global>{`
+					.leaflet-popup-content-wrapper {
+						padding: 0;
+						border-radius: 0.5rem;
+					}
+					.leaflet-popup-content {
+						margin: 0;
+					}
+					.leaflet-popup-tip {
+						background: let(--fallback-b1, oklch(let(--b1))) !important;
+						opacity: 1 !important;
+					}
+				`}</style>
 			</MapContainer>
 		</div>
 	);

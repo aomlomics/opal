@@ -48,7 +48,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 		//code block to force garbage collection
 		{
 			//parse file
-			const projectFileLines = (await (formData.get("projectFile") as File).text()).replace(/[\r]+/gm, "").split("\n");
+			const projectFileLines = (await (formData.get("project") as File).text()).replace(/[\r]+/gm, "").split("\n");
 			const projectFileHeaders = projectFileLines[0].split("\t");
 			const field_name_i = projectFileHeaders.indexOf("field_name");
 			//iterate over each row
@@ -139,7 +139,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 		//code block to force garbage collection
 		{
 			//parse file
-			const libraryFileLines = (await (formData.get("libraryFile") as File).text()).replace(/[\r]+/gm, "").split("\n");
+			const libraryFileLines = (await (formData.get("library") as File).text()).replace(/[\r]+/gm, "").split("\n");
 			libraryFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 			const libraryFileHeaders = libraryFileLines[0].split("\t");
 			//iterate over each row
@@ -220,7 +220,7 @@ export default async function projectSubmitAction(formData: FormData): SubmitAct
 		console.log("sample file");
 		//code block to force garbage collection
 		{
-			const sampleFileLines = (await (formData.get("samplesFile") as File).text()).replace(/[\r]+/gm, "").split("\n");
+			const sampleFileLines = (await (formData.get("sample") as File).text()).replace(/[\r]+/gm, "").split("\n");
 			sampleFileLines.splice(0, 6); //TODO: parse comments out logically instead of hard-coded
 			const sampleFileHeaders = sampleFileLines[0].split("\t");
 			//iterate over each row

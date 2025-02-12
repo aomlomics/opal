@@ -4,21 +4,23 @@ import { useEffect, useState } from "react";
 
 export default function ScrollToTop() {
 	const [isVisible, setIsVisible] = useState(false);
+	const [isNearFooter, setIsNearFooter] = useState(false);
 
 	useEffect(() => {
 		const toggleVisibility = () => {
-			if (window.pageYOffset > 300) {
+			if (window.scrollY > 300) {
 				setIsVisible(true);
 			} else {
 				setIsVisible(false);
 			}
+
+			// Check if we're near the bottom
+			const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 150;
+			setIsNearFooter(nearBottom);
 		};
 
 		window.addEventListener("scroll", toggleVisibility);
-
-		return () => {
-			window.removeEventListener("scroll", toggleVisibility);
-		};
+		return () => window.removeEventListener("scroll", toggleVisibility);
 	}, []);
 
 	const scrollToTop = () => {
@@ -33,7 +35,9 @@ export default function ScrollToTop() {
 			{isVisible && (
 				<button
 					onClick={scrollToTop}
-					className="fixed bottom-8 right-8 p-4 bg-primary text-white rounded-full shadow-lg hover:bg-primary/80 transition-all duration-300 z-50"
+					className={`fixed right-8 p-4 bg-base-200 text-white rounded-full shadow-lg hover:bg-primary transition-all duration-300 z-50 ${
+						isNearFooter ? "bottom-20" : "bottom-6"
+					}`}
 					aria-label="Scroll to top"
 				>
 					<svg
