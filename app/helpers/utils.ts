@@ -180,3 +180,81 @@ export function getMostSpecificRank(taxonomy: Taxonomy) {
 
 	return { rank: "taxonomy", label: taxonomy.taxonomy };
 }
+
+//handles converting numbers from 0 to 99
+function stringToNumber(str: string) {
+	const NUMBERS = {
+		ZERO: 0,
+		ONE: 1,
+		TWO: 2,
+		THREE: 3,
+		FOUR: 4,
+		FIVE: 5,
+		SIX: 6,
+		SEVEN: 7,
+		EIGHT: 8,
+		NINE: 9,
+		TEN: 10,
+		ELEVEN: 11,
+		TWELVE: 12,
+		THIRTEEN: 13,
+		FOURTEEN: 14,
+		FIFTEEN: 15,
+		SIXTEEN: 16,
+		SEVENTEEN: 17,
+		EIGHTEEN: 18,
+		NINETEEN: 19,
+		TWENTY: 20,
+		THIRTY: 30,
+		FOURTY: 40,
+		FIFTY: 50,
+		SIXTY: 60,
+		SEVENTY: 70,
+		EIGHTY: 80,
+		NINETY: 90
+	} as Record<string, number>;
+
+	const ENDING = "__";
+	const SEP = "_";
+
+	const words = str.toString().split(ENDING);
+	if (words.length === 1) {
+		return str;
+	}
+
+	let num = 0;
+	let replace = "";
+
+	words[0].split(SEP).forEach((word) => {
+		if (word in NUMBERS) {
+			num += NUMBERS[word];
+
+			if (replace === "") {
+				replace += word;
+			} else {
+				replace += SEP + word;
+			}
+		}
+	});
+
+	if (replace === "") {
+		return str;
+	} else {
+		return str.replace(replace + ENDING, num.toString());
+	}
+}
+
+export function convertDBEnum(dbEnum: Record<string, string>) {
+	const newEnum = {} as Record<string, string>;
+
+	for (const [key, value] of Object.entries(dbEnum)) {
+		newEnum[key] = stringToNumber(value)
+			.replaceAll("PAREN1_", "(")
+			.replaceAll("PAREN2_", ")")
+			.replaceAll("PERCENT_", "%")
+			.replaceAll("__", "-")
+			.replaceAll("_", " ");
+	}
+
+	return newEnum;
+}

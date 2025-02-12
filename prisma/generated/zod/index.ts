@@ -48,15 +48,15 @@ export const neg_cont_typeSchema = z.enum(['site_negative','field_negative','pro
 
 export type neg_cont_typeType = `${z.infer<typeof neg_cont_typeSchema>}`
 
-export const target_geneSchema = z.enum(['twelveS_rRNA','sixteenS_rRNA','eighteenS_rRNA','twenty_threeS_rRNA','twenty_eightS_rRNA','rbcL','CytB','COI','COII','COIII','nifH','ITS','ND1','ND2','ND3','ND4','ND5','ND6','amoA','rpoB','rpoC1','rpoC2','matK','trnH','trnL','psbK','D_loop','other']);
+export const target_geneSchema = z.enum(['TWELVE__S_rRNA','SIXTEEN__S_rRNA','EIGHTEEN__S_rRNA','TWENTY_THREE__S_rRNA','TWENTY_EIGHT__S_rRNA','rbcL','CytB','COI','COII','COIII','nifH','ITS','ND1','ND2','ND3','ND4','ND5','ND6','amoA','rpoB','rpoC1','rpoC2','matK','trnH','trnL','psbK','D__loop','other']);
 
 export type target_geneType = `${z.infer<typeof target_geneSchema>}`
 
-export const probeQuencherSchema = z.enum(['Zero_End_Quencher_ZEN','TAMRA','lowa_Black','Minor_Groove_Binder_MGB','Black_Hole_Quencher_BHQ','other']);
+export const probeQuencherSchema = z.enum(['Zero__End_Quencher_PAREN1_ZENPAREN2_','TAMRA','lowa_Black','Minor_Groove_Binder_PAREN1_MGBPAREN2_','Black_Hole_Quencher_PAREN1_BHQPAREN2_','other']);
 
 export type probeQuencherType = `${z.infer<typeof probeQuencherSchema>}`
 
-export const barcoding_pcr_apprSchema = z.enum(['one_step_PCR','two_step_PCR','ligation_based','other']);
+export const barcoding_pcr_apprSchema = z.enum(['one__step_PCR','two__step_PCR','ligation__based','other']);
 
 export type barcoding_pcr_apprType = `${z.infer<typeof barcoding_pcr_apprSchema>}`
 
@@ -72,7 +72,7 @@ export const error_rate_typeSchema = z.enum(['Phred_score','expected_error_rate'
 
 export type error_rate_typeType = `${z.infer<typeof error_rate_typeSchema>}`
 
-export const min_reads_cutoff_unitSchema = z.enum(['reads','percent','other']);
+export const min_reads_cutoff_unitSchema = z.enum(['reads','PERCENT_','other']);
 
 export type min_reads_cutoff_unitType = `${z.infer<typeof min_reads_cutoff_unitSchema>}`
 
@@ -124,7 +124,7 @@ export const nucl_acid_ext_lysisSchema = z.enum(['physical','chemical','enzymati
 
 export type nucl_acid_ext_lysisType = `${z.infer<typeof nucl_acid_ext_lysisSchema>}`
 
-export const nucl_acid_ext_sepSchema = z.enum(['column_based','magnetic_beads','centrifugation','precipitation','phenol_chloroform','g','electrophoresis','other']);
+export const nucl_acid_ext_sepSchema = z.enum(['column__based','magnetic_beads','centrifugation','precipitation','phenol_chloroform','g','electrophoresis','other']);
 
 export type nucl_acid_ext_sepType = `${z.infer<typeof nucl_acid_ext_sepSchema>}`
 
