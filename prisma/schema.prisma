@@ -75,13 +75,13 @@ enum target_gene {
     trnH
     trnL
     psbK
-    D_loop             @map("D-loop")
+    D__loop            @map("D-loop")
     //empty option
     other
 }
 
 enum probeQuencher {
-    Zero_End_Quencher_ZEN   @map("Zero-End Quencher (ZEN)")
+    Zero__End_Quencher_ZEN  @map("Zero-End Quencher (ZEN)")
     TAMRA
     lowa_Black              @map("lowa Black")
     Minor_Groove_Binder_MGB @map("Minor Groove Binder (MGB)")
@@ -90,9 +90,9 @@ enum probeQuencher {
 }
 
 enum barcoding_pcr_appr {
-    one_step_PCR   @map("one-step PCR")
-    two_step_PCR   @map("two-step PCR")
-    ligation_based @map("ligation-based")
+    one__step_PCR   @map("one-step PCR")
+    two__step_PCR   @map("two-step PCR")
+    ligation__based @map("ligation-based")
     other
 }
 
@@ -246,7 +246,7 @@ enum nucl_acid_ext_lysis {
 }
 
 enum nucl_acid_ext_sep {
-    column_based      @map("column-based")
+    column__based     @map("column-based")
     magnetic_beads    @map("magnetic beads")
     centrifugation
     precipitation
