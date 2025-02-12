@@ -287,6 +287,7 @@ export default function ActualTableFilter({ tableConfig }: { tableConfig: Filter
 			</div>
 
 			{/* Button to clear all active filters */}
+			{/* TODO: reset all fields back to default */}
 			{activeFilterCount > 0 && (
 				<div className="p-4 border-t border-base-300 bg-base-200/50">
 					<button
