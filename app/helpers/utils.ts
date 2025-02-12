@@ -1,5 +1,5 @@
 import { DeadBooleanEnum, DeadValueEnum } from "@/types/enums";
-import { Prisma, Taxonomy } from "@prisma/client";
+import { Taxonomy } from "@prisma/client";
 import { ZodObject, ZodEnum, ZodNumber } from "zod";
 
 export async function fetcher(url: string) {
@@ -82,69 +82,6 @@ export function replaceDead(
 			obj[fieldName] = field;
 		}
 	}
-}
-
-export function parsePaginationParams(searchParams: URLSearchParams) {
-	const query = {
-		orderBy: {
-			id: "asc"
-		}
-	} as {
-		orderBy: { id: Prisma.SortOrder };
-		take: number;
-		skip?: number;
-		cursor?: { id: number };
-		include?: { _count: { select: Record<string, boolean> } };
-		where?: Record<string, string>;
-	};
-
-	const orderBy = searchParams.get("orderBy");
-	if (orderBy) {
-		query.orderBy = JSON.parse(orderBy);
-	}
-
-	const take = searchParams.get("take");
-	if (!take) {
-		throw new Error("take is required");
-	}
-	query.take = parseInt(take);
-
-	const page = searchParams.get("page");
-	//const cursorId = searchParams.get("cursorId");
-	if (page) {
-		//offset pagination
-		query.skip = (parseInt(page) - 1) * query.take;
-	}
-	//} else if (cursorId) {
-	//	const dir = searchParams.get("dir");
-	//	//cursor pagination
-	//	findMany.skip = 1;
-	//	findMany.cursor = {
-	//		id: parseInt(cursorId)
-	//	};
-	//	if (dir) {
-	//		findMany.take *= parseInt(dir);
-	//	}
-	//}
-
-	const whereStr = searchParams.get("where");
-	if (whereStr) {
-		const where = JSON.parse(whereStr);
-		query.where = where;
-	}
-
-	const relCounts = searchParams.get("relCounts");
-	if (relCounts) {
-		query.include = {
-			_count: {
-				select: relCounts
-					.split(",")
-					.reduce((acc: Record<string, boolean>, rel: string) => ({ ...acc, [rel]: true }), {})
-			}
-		};
-	}
-
-	return query;
 }
 
 export function randomColors(num: number) {
