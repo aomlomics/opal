@@ -7,6 +7,7 @@ import { fetcher } from "@/app/helpers/utils";
 import PaginationControls from "./PaginationControls";
 import { useState } from "react";
 import LoadingPagination from "./LoadingPagination";
+import { useSearchParams } from "next/navigation";
 
 export default function Pagination({
 	table,
@@ -25,6 +26,7 @@ export default function Pagination({
 	relCounts?: string[];
 	take?: number;
 }) {
+	const searchParams = useSearchParams();
 	const [page, setPage] = useState(1);
 
 	let query = new URLSearchParams({
@@ -32,9 +34,14 @@ export default function Pagination({
 		take: take.toString(),
 		page: page.toString()
 	});
+	let whereQuery = {} as Record<string, string>;
 	if (where) {
-		query.set("where", JSON.stringify(where));
+		whereQuery = { ...where };
 	}
+	if (searchParams.size) {
+		whereQuery = { ...whereQuery, ...Object.fromEntries(searchParams) };
+	}
+	query.set("where", JSON.stringify(whereQuery));
 	if (relCounts) {
 		query.set("relCounts", relCounts.toString());
 	}

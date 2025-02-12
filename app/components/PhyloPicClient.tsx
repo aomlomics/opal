@@ -31,7 +31,6 @@ export default function PhyloPic({ taxonomy }: { taxonomy: Taxonomy }) {
 			try {
 				for (const rank of ranksBySpecificity) {
 					if (taxonomy[rank] && /^[a-zA-Z]+$/.test(taxonomy[rank].toString())) {
-						// console.log("TEST:", rank, taxonomy);
 						//retrieve suggested taxonomies from GBIF
 						//TODO: split more logically
 						const gbifTaxaRes = await fetch(`https://api.gbif.org/v1/species/suggest?q=${taxonomy[rank]}`);

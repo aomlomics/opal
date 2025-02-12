@@ -16,7 +16,6 @@ export default async function Feature() {
 		}
 	});
 	if (!minMaxSeqLength) return <>Loading...</>;
-	console.log(minMaxSeqLength);
 
 	return (
 		<div className="grid grid-cols-[300px_1fr] gap-6 pt-6">
