@@ -118,7 +118,7 @@ export default function ActualTableFilter({ tableConfig }: { tableConfig: Filter
 								{activeFilters[filter.field] !== undefined && (
 									<span className="text-sm text-base-content/70">
 										{typeof safeJsonParse(activeFilters[filter.field]) === "object"
-											? (JSON.parse(activeFilters[filter.field]).gte || filter) +
+											? (JSON.parse(activeFilters[filter.field]).gte || filter.gte) +
 											  " to " +
 											  (JSON.parse(activeFilters[filter.field]).lte || filter.lte)
 											: activeFilters[filter.field]}
