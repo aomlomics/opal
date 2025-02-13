@@ -1,0 +1,151 @@
+import SubmissionsDeleteButton from "@/app/components/SubmissionsDeleteButton";
+import analysisDeleteAction from "@/app/helpers/actions/analysis/delete/analysisDelete";
+import projectDeleteAction from "@/app/helpers/actions/analysis/delete/projectDelete";
+import { prisma } from "@/app/helpers/prisma";
+import { auth } from "@clerk/nextjs/server";
+import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
+import Image from "next/image";
+
+export default async function MySubmissions() {
+	const { userId } = await auth();
+	if (!userId) {
+		return <div>Unauthorized</div>;
+	}
+
+	const [projects, analyses] = await prisma.$transaction([
+		prisma.project.findMany({
+			where: {
+				userId
+			}
+		}),
+		prisma.analysis.findMany({
+			where: {
+				userId
+			}
+		})
+	]);
+
+	return (
+		<div>
+			{/* Header Section */}
+			<div className="mb-10 mt-4">
+				<div className="flex items-center gap-4 mb-4">
+					<div className="scale-150">
+						<UserButton afterSignOutUrl="/" showName={false} />
+					</div>
+					<h1 className="text-3xl font-bold text-primary">Submissions Manager</h1>
+				</div>
+				<p className="text-base-content/80">
+					Note: If you delete a project, all associated analyses will also be deleted. You can delete individual
+					analyses at any time.
+				</p>
+			</div>
+
+			{/* Content Section */}
+			<div className="grid lg:grid-cols-2 gap-8">
+				{/* Projects Section */}
+				<div className="card bg-base-200 shadow-xl h-[260px] relative overflow-hidden hover:shadow-2xl transition-shadow">
+					<div className="card-body">
+						<div className="w-full h-full flex flex-col">
+							<div>
+								<h2 className="text-2xl text-primary mb-4">Projects:</h2>
+								{projects.length === 0 ? (
+									<>
+										<p className="text-base text-base-content/80 mb-6">
+											No Projects found. Submit a new project to get started.
+										</p>
+										<div className="mt-auto">
+											<Link href="/submit/project" className="btn btn-primary">
+												Submit Project
+											</Link>
+										</div>
+									</>
+								) : (
+									<div className="flex flex-col gap-3">
+										{projects.map((proj) => (
+											<div key={proj.id} className="flex items-center justify-between p-3 bg-base-100 rounded-lg">
+												<Link
+													href={`/explore/project/${encodeURIComponent(proj.project_id)}`}
+													className="text-info hover:text-info-focus hover:underline transition-colors"
+												>
+													{proj.project_id}
+												</Link>
+												<SubmissionsDeleteButton
+													field={"project_id"}
+													value={proj.project_id}
+													action={projectDeleteAction}
+												/>
+											</div>
+										))}
+									</div>
+								)}
+							</div>
+						</div>
+						{projects.length === 0 && (
+							<div className="absolute bottom-5 right-0 w-3/4 h-60 translate-x-1/3 translate-y-1/3">
+								<Image
+									src="/images/Catcher_Vessel4.svg"
+									alt="Project Upload Illustration"
+									fill
+									className="object-contain opacity-80"
+								/>
+							</div>
+						)}
+					</div>
+				</div>
+
+				{/* Analyses Section */}
+				<div className="card bg-base-200 shadow-xl h-[260px] relative overflow-hidden hover:shadow-2xl transition-shadow">
+					<div className="card-body">
+						<div className="w-full h-full flex flex-col">
+							<div>
+								<h2 className="text-2xl text-primary mb-4">Analyses:</h2>
+								{analyses.length === 0 ? (
+									<>
+										<p className="text-base text-base-content/80 mb-6">
+											No Analyses found. Submit a new analysis to get started.
+										</p>
+										<div className="mt-auto">
+											<Link href="/submit/analysis" className="btn btn-primary">
+												Submit Analysis
+											</Link>
+										</div>
+									</>
+								) : (
+									<div className="flex flex-col gap-3">
+										{analyses.map((a) => (
+											<div key={a.id} className="flex items-center justify-between p-3 bg-base-100 rounded-lg">
+												<Link
+													href={`/explore/analysis/${encodeURIComponent(a.analysis_run_name)}`}
+													className="text-info hover:text-info-focus hover:underline transition-colors"
+												>
+													{a.analysis_run_name}
+												</Link>
+												<SubmissionsDeleteButton
+													field={"analysis_run_name"}
+													value={a.analysis_run_name}
+													action={analysisDeleteAction}
+												/>
+											</div>
+										))}
+									</div>
+								)}
+							</div>
+						</div>
+						{analyses.length === 0 && (
+							<div className="absolute bottom-6 right-6 w-1/2 h-48 translate-x-1/4 translate-y-1/4">
+								<Image
+									src="/images/analysis_outline_image.svg"
+									alt="Analysis Upload Illustration"
+									fill
+									className="object-contain opacity-80"
+								/>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
