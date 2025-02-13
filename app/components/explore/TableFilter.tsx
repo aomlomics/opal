@@ -7,8 +7,8 @@ type FilterConfig = {
 	type: "select" | "multiselect" | "date" | "range";
 	options?: string[];
 	enum?: Record<string, string>;
-	min?: number; // Add these for range type filters
-	max?: number; // Add these for range type filters
+	gte?: number; // Add these for range type filters
+	lte?: number; // Add these for range type filters
 };
 
 export default function TableFilter({ tableConfig }: { tableConfig: FilterConfig[] }) {
