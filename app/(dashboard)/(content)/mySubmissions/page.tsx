@@ -31,7 +31,7 @@ export default async function MySubmissions() {
 			{/* Header Section */}
 			<div className="mb-10 mt-4">
 				<div className="flex items-center gap-4 mb-4">
-					<div className="scale-150">
+					<div className="scale-150 pointer-events-none">
 						<UserButton afterSignOutUrl="/" showName={false} />
 					</div>
 					<h1 className="text-3xl font-bold text-primary">Submissions Manager</h1>
@@ -88,7 +88,7 @@ export default async function MySubmissions() {
 									src="/images/Catcher_Vessel4.svg"
 									alt="Project Upload Illustration"
 									fill
-									className="object-contain opacity-80"
+									className="object-contain"
 								/>
 							</div>
 						)}
@@ -139,7 +139,7 @@ export default async function MySubmissions() {
 									src="/images/analysis_outline_image.svg"
 									alt="Analysis Upload Illustration"
 									fill
-									className="object-contain opacity-80"
+									className="object-contain"
 								/>
 							</div>
 						)}

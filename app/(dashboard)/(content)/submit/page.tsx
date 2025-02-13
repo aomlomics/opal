@@ -127,7 +127,7 @@ export default function Submit() {
 									src="/images/Catcher_Vessel4.svg"
 									alt="Project Upload Illustration"
 									fill
-									className="object-contain opacity-80"
+									className="object-contain"
 								/>
 							</div>
 						</div>
@@ -154,7 +154,7 @@ export default function Submit() {
 									src="/images/analysis_outline_image.svg"
 									alt="Analysis Upload Illustration"
 									fill
-									className="object-contain opacity-80"
+									className="object-contain"
 								/>
 							</div>
 						</div>
