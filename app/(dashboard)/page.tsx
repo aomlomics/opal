@@ -5,13 +5,15 @@ import ThemeAwareLogo from "../components/ThemeAwareLogo";
 import { DeadValueEnum } from "@/types/enums";
 import { prisma } from "../helpers/prisma";
 import Map from "../components/map/Map";
+import { randomColors } from "../helpers/utils";
 
 export default async function Home() {
 	const deadValues = Object.values(DeadValueEnum).filter((v) => !isNaN(Number(v))) as number[];
 
-	const rawLocations = await prisma.sample.groupBy({
-		by: ["project_id"],
-		_avg: {
+	const samples = await prisma.sample.findMany({
+		select: {
+			samp_name: true,
+			project_id: true,
 			decimalLatitude: true,
 			decimalLongitude: true
 		},
@@ -34,43 +36,60 @@ export default async function Home() {
 			]
 		}
 	});
-	const avgProjectLocs = rawLocations.map((loc) => ({
-		project_id: loc.project_id,
-		decimalLatitude: loc._avg.decimalLatitude,
-		decimalLongitude: loc._avg.decimalLongitude
-	}));
+
+	const uniqueProjects = samples.reduce((acc, a) => {
+		if (!acc.includes(a.project_id)) {
+			acc.push(a.project_id);
+		}
+
+		return acc;
+	}, [] as string[]);
+	const colors = randomColors(uniqueProjects.length);
+	const projectColors = {} as Record<string, string>;
+	for (let i = 0; i < colors.length; i++) {
+		projectColors[uniqueProjects[i]] = colors[i];
+	}
+
+	const locations = samples.map((samp) => ({ ...samp, color: projectColors[samp.project_id] }));
 
 	return (
 		<main className="flex flex-col grow bg-base-400 text-base-content">
-			<div className="relative w-full h-[80vh] bg-black overflow-hidden z-content-overlay">
+			<div className="relative w-full h-screen max-h-[80vh] bg-black overflow-hidden z-content-overlay">
 				<Carousel />
 				{/* Gradient for left-to-right */}
 				<div className="absolute inset-0 -right-[60%] bg-gradient-to-r from-base-100 via-base-100/30 via-[40%] to-transparent to-[100%]"></div>
 				{/* Gradient for bottom */}
 				<div className="absolute inset-0 bg-gradient-to-b from-transparent via-base-100/40 via-[50%] to-base-100"></div>
-				<div className="absolute z-content text-left px-4 sm:px-6 lg:px-8 top-1/4 max-w-4xl lg:max-w-5xl">
-					<h1 className="text-5xl sm:text-6xl lg:text-7xl font-light drop-shadow-lg leading-tight">
-						<span className="block text-primary animate-slide-in">Welcome</span>
-					</h1>
-					<div className="text-base-content drop-shadow-lg">
-						<span className="block text-3xl sm:text-4xl font-light lg:text-5xl mb-4">
-							to the <span className="text-primary font-light">NOAA Ocean DNA Explorer</span>
-						</span>
-						<div className="text-lg sm:text-xl lg:text-2xl mb-8 text-base-content leading-relaxed max-w-3xl">
-							<span className="block">
-								a data sharing platform, search engine, and visualization and analysis tool for ocean environmental DNA
-								data
-							</span>
-						</div>
-					</div>
+				{/* Updated hero content container */}
+				<div className="absolute inset-0 flex items-center z-content">
+					<div className="w-full px-4 sm:px-6 lg:px-8 max-w-[95%] mx-auto">
+						<div className="max-w-4xl">
+							<h1 className="text-[clamp(2.5rem,7.5vw,6.25rem)] font-light leading-none mb-1">
+								<span className="block text-primary animate-slide-in">Welcome</span>
+							</h1>
 
-					<div className="flex flex-col items-start gap-4">
-						<a
-							href="/data"
-							className="btn btn-lg btn-secondary bg-primary/90 backdrop-blur-sm outline-none text-white hover:bg-primary transition-all duration-300"
-						>
-							Start Searching
-						</a>
+							<div className="text-base-content -mt-1">
+								<span className="block text-[clamp(1.5rem,4.5vw,3.75rem)] font-light leading-tight mb-1">
+									to the <span className="text-primary font-light">NOAA Ocean DNA Explorer</span>
+								</span>
+
+								<div className="text-[clamp(1rem,2.2vw,1.9rem)] leading-snug text-base-content max-w-3xl mb-8">
+									<span className="block">
+										a data sharing platform, search engine, and visualization and analysis tool for ocean environmental
+										DNA data
+									</span>
+								</div>
+							</div>
+
+							<div className="flex flex-col items-start gap-4">
+								<Link
+									href="/data"
+									className="btn btn-lg btn-secondary bg-primary/90 backdrop-blur-sm outline-none text-white hover:bg-primary transition-all duration-300"
+								>
+									Start Searching
+								</Link>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -80,7 +99,7 @@ export default async function Home() {
 					href="#dataSummary"
 					className="relative inline-block after:absolute after:content-[''] after:inset-[-40px] after:cursor-pointer"
 				>
-					<p className="text-primary mb-2">Explore Our Data</p>
+					<p className="text-primary text-xl font-medium mb-2">Explore Our Data</p>
 					<div className="animate-bounce">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +120,7 @@ export default async function Home() {
 				</div>
 				<div className="flex gap-8">
 					<div className="h-[500px] w-1/2 rounded-lg overflow-hidden">
-						<Map locations={avgProjectLocs} id="project_id" table="project" />
+						<Map locations={locations} id="samp_name" title="project_id" table="project" iconSize={16} />
 					</div>
 					<div className="w-1/2">
 						<DataSummary />
@@ -115,67 +134,67 @@ export default async function Home() {
 					<div className="max-w-4xl mx-auto text-lg text-main mb-16 text-center leading-tight">
 						<p>
 							NODE is a product of{" "}
-							<a
+							<Link
 								href="https://www.aoml.noaa.gov/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA's Atlantic Oceanographic and Meteorological Laboratory
-							</a>{" "}
+							</Link>{" "}
 							in collaboration with the{" "}
-							<a
+							<Link
 								href="https://www.northerngulfinstitute.org/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								Northern Gulf Institute
-							</a>{" "}
+							</Link>{" "}
 							at{" "}
-							<a
+							<Link
 								href="https://www.msstate.edu/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								Mississippi State University
-							</a>{" "}
+							</Link>{" "}
 							and is supported by{" "}
-							<a
+							<Link
 								href="https://oceanexplorer.noaa.gov/"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA Ocean Exploration
-							</a>{" "}
+							</Link>{" "}
 							and{" "}
-							<a
+							<Link
 								href="https://oceanexplorer.noaa.gov/technology/omics/noaa-omics.html"
 								className="text-primary hover:underline"
 								target="_blank"
-								rel="noopener noreferrer"
+								rel="noreferrer"
 							>
 								NOAA Omics
-							</a>{" "}
+							</Link>{" "}
 							projects NO_0062 and NO_0066.
 						</p>
 					</div>
 					<div className="shadow-md p-8 rounded-lg justify-center mx-auto max-w-fit">
 						<div className="flex justify-center items-center gap-20">
 							<div className="relative h-24 w-64">
-								<a href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noopener noreferrer">
+								<Link href="https://oceanexplorer.noaa.gov/welcome.html" target="_blank" rel="noreferrer">
 									<ThemeAwareLogo
 										src="/images/noaa_exploration_logo_FINAL.svg"
 										alt="National Oceanic and Atmospheric Administration Exploration Logo"
 										fill={true}
 										className="object-contain"
 									/>
-								</a>
+								</Link>
 							</div>
 							<div>
-								<a href="https://www.northerngulfinstitute.org/" target="_blank" rel="noopener noreferrer">
+								<Link href="https://www.northerngulfinstitute.org/" target="_blank" rel="noreferrer">
 									<ThemeAwareLogo
 										src="/images/ngi_msu_logo_FINAL.svg"
 										alt="Mississippi State University, Northern Gulf Institute Logo"
@@ -183,7 +202,7 @@ export default async function Home() {
 										height={300}
 										className="object-contain"
 									/>
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>

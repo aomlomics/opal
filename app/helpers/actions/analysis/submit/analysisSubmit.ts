@@ -41,7 +41,7 @@ export default async function analysisSubmitAction(formData: FormData): SubmitAc
 	console.log("analysis");
 	const dbAnalysis = await prisma.analysis.create({
 		data: AnalysisOptionalDefaultsSchema.parse(
-			{ ...analysisCol, userId: userId },
+			{ ...analysisCol, userId: userId, dateSubmitted: new Date() },
 			{
 				errorMap: (error, ctx) => {
 					return { message: `AnalysisSchema: ${ctx.defaultError}` };

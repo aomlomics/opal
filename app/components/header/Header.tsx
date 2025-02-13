@@ -36,29 +36,41 @@ export default function Header() {
 
 				{/* Right side elements */}
 				<div className="flex items-center gap-4">
-					{/* Tabs with placeholder routes */}
-					<ThemeToggle />
+					{/* Theme toggle and User profile should be aligned */}
+					<div className="flex items-center gap-4">
+						<ThemeToggle />
+						<div className="mr-5 flex items-center">
+							<User />
+						</div>
+					</div>
+
+					{/* Rest of the tabs section */}
 					<div className="absolute bottom-0 right-[240px] hidden lg:flex space-x-4">
-						<button id="unfocusButton" className="w-0 h-0"></button>
 						<TabButton tabName="Home" route="/" />
 						<TabDropdown
 							tabName="Explore"
 							route="/explore"
 							dropdown={[
 								{ label: "Projects", href: "/explore/project" },
+								{ label: "Samples", href: "/explore/sample" },
 								{ label: "Analyses", href: "/explore/analysis" },
+								{ label: "Features", href: "/explore/feature" },
 								{ label: "Taxonomies", href: "/explore/taxonomy" }
 							]}
 						/>
 						<TabButton tabName="Search" route="/search" />
-						<TabButton tabName="Submit" route="/submit" />
+						<TabDropdown
+							tabName="Submit"
+							route="/submit"
+							dropdown={[
+								{ label: "Project", href: "/submit/project" },
+								{ label: "Analysis", href: "/submit/analysis" }
+							]}
+						/>
 						<TabButton tabName="Assays" route="/assays" />
 						<TabButton tabName="Tourmaline" route="/tourmaline" />
 						<TabButton tabName="API" route="/api" />
 						<TabButton tabName="Help" route="/help" />
-					</div>
-					<div className="mr-5">
-						<User />
 					</div>
 				</div>
 			</div>

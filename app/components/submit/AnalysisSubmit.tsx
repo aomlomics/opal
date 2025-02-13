@@ -19,6 +19,32 @@ function reducer(state: Record<string, string>, updates: Record<string, string>)
 	}
 }
 
+function checkAnalysisFiles(analysis: string, fileStates: Record<string, File | null>) {
+	console.log("Named analysis check:", {
+		analysis,
+		hasMetadata: !!fileStates[analysis] || (analysis !== "\u200b" && !!fileStates["\u200b"]),
+		hasFeatures: !!fileStates[`${analysis}_assign`],
+		hasOccurrences: !!fileStates[`${analysis}_occ`],
+		fileStates: {
+			metadata: fileStates[analysis] || fileStates["\u200b"],
+			features: fileStates[`${analysis}_assign`],
+			occurrences: fileStates[`${analysis}_occ`]
+		}
+	});
+
+	if (analysis === "\u200b") {
+		console.log("Current fileStates:", fileStates);
+		console.log("Current analyses:", analysis);
+		console.log("Files present?", !!fileStates["\u200b"]);
+		return !!fileStates["\u200b"];
+	}
+	return (
+		(!!fileStates[analysis] || !!fileStates["\u200b"]) &&
+		!!fileStates[`${analysis}_assign`] &&
+		!!fileStates[`${analysis}_occ`]
+	);
+}
+
 export default function AnalysisSubmit() {
 	const router = useRouter();
 	const [responseObj, setResponseObj] = useReducer(reducer, {} as Record<string, string>);
@@ -301,6 +327,29 @@ export default function AnalysisSubmit() {
 		setLoading("");
 	}
 
+	// To Carter: there is a rare case where the submit button is disabled if you delete an analysis
+	const handleDeleteAnalysis = (index: number) => {
+		const analysisToDelete = analyses[index];
+
+		// Update analyses array
+		setAnalyses((prev) => {
+			const newAnalyses = [...prev];
+			newAnalyses[index] = null;
+			return newAnalyses;
+		});
+
+		// Clean up fileStates
+		setFileStates((prev) => {
+			const newState = { ...prev };
+			if (analysisToDelete) {
+				delete newState[analysisToDelete];
+				delete newState[`${analysisToDelete}_assign`];
+				delete newState[`${analysisToDelete}_occ`];
+			}
+			return newState;
+		});
+	};
+
 	return (
 		<>
 			<form className="card-body w-full max-w-4xl mx-auto" onSubmit={handleSubmit}>
@@ -319,7 +368,7 @@ export default function AnalysisSubmit() {
 												<div className="flex items-center gap-3">
 													<label className="form-control w-full">
 														<div className="label">
-															<span className="label-text text-base-content">Metadata:</span>
+															<span className="label-text text-base-content">Analysis Metadata File:</span>
 														</div>
 														<input
 															type="file"
@@ -349,7 +398,7 @@ export default function AnalysisSubmit() {
 														<div className="flex items-center gap-3">
 															<label className="form-control w-full">
 																<div className="label">
-																	<span className="label-text text-base-content">Features:</span>
+																	<span className="label-text text-base-content">ASV Taxa/Features File:</span>
 																</div>
 																<input
 																	type="file"
@@ -374,7 +423,7 @@ export default function AnalysisSubmit() {
 														<div className="flex items-center gap-3">
 															<label className="form-control w-full">
 																<div className="label">
-																	<span className="label-text text-base-content">Occurrences:</span>
+																	<span className="label-text text-base-content">Occurrence Table File:</span>
 																</div>
 																<input
 																	type="file"
@@ -407,9 +456,7 @@ export default function AnalysisSubmit() {
 											type="button"
 											disabled={!!loading}
 											onClick={() => {
-												const tempAList = [...analyses];
-												tempAList[i] = null;
-												setAnalyses(tempAList);
+												handleDeleteAnalysis(i);
 											}}
 										>
 											<span className="text-base-content">×</span>
@@ -433,7 +480,24 @@ export default function AnalysisSubmit() {
 					)}
 
 					<div className="flex justify-center mt-8">
-						<button className="btn btn-primary text-white w-[200px]" disabled={!!loading || submitted}>
+						<button
+							className="btn btn-primary text-white w-[200px]"
+							disabled={!!loading || submitted || !analyses.every((a) => a && checkAnalysisFiles(a, fileStates))}
+							onClick={() => {
+								for (let i = 0; i < analyses.length - 1; i++) {
+									if (analyses[i] !== null) {
+										const element = document.getElementById(`analysis_${i}`);
+										if (element) {
+											element.scrollIntoView({
+												block: "start",
+												behavior: "smooth"
+											});
+											break;
+										}
+									}
+								}
+							}}
+						>
 							{loading || submitted ? <span className="loading loading-spinner loading-sm"></span> : "Submit"}
 						</button>
 					</div>
