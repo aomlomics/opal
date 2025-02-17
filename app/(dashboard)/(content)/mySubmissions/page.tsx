@@ -36,23 +36,23 @@ export default async function MySubmissions() {
 					</div>
 					<h1 className="text-3xl font-bold text-primary">Submissions Manager</h1>
 				</div>
-				<p className="text-base-content/80">
-					Note: If you delete a project, all associated analyses will also be deleted. You can delete individual
-					analyses at any time.
+				<p className="text-sm text-base-content italic">
+					View and manage your uploads. Deleting a project will also delete its associated analyses. You can delete
+					individual analyses at any time.
 				</p>
 			</div>
 
 			{/* Content Section */}
 			<div className="grid lg:grid-cols-2 gap-8">
 				{/* Projects Section */}
-				<div className="card bg-base-200 shadow-xl h-[260px] relative overflow-hidden hover:shadow-2xl transition-shadow">
+				<div className="card bg-base-200 shadow-xl min-h-[260px] h-fit hover:shadow-2xl transition-shadow">
 					<div className="card-body">
 						<div className="w-full h-full flex flex-col">
 							<div>
 								<h2 className="text-2xl text-primary mb-4">Projects:</h2>
 								{projects.length === 0 ? (
 									<>
-										<p className="text-base text-base-content/80 mb-6">
+										<p className="text-base text-base-content mb-6">
 											No Projects found. Submit a new project to get started.
 										</p>
 										<div className="mt-auto">
@@ -62,12 +62,12 @@ export default async function MySubmissions() {
 										</div>
 									</>
 								) : (
-									<div className="flex flex-col gap-3">
+									<div className="flex flex-col gap-3 mt-2">
 										{projects.map((proj) => (
 											<div key={proj.id} className="flex items-center justify-between p-3 bg-base-100 rounded-lg">
 												<Link
 													href={`/explore/project/${encodeURIComponent(proj.project_id)}`}
-													className="text-info hover:text-info-focus hover:underline transition-colors"
+													className="text-primary hover:text-info-focus hover:underline transition-colors"
 												>
 													{proj.project_id}
 												</Link>
@@ -96,14 +96,14 @@ export default async function MySubmissions() {
 				</div>
 
 				{/* Analyses Section */}
-				<div className="card bg-base-200 shadow-xl h-[260px] relative overflow-hidden hover:shadow-2xl transition-shadow">
+				<div className="card bg-base-200 shadow-xl min-h-[260px] h-fit hover:shadow-2xl transition-shadow">
 					<div className="card-body">
 						<div className="w-full h-full flex flex-col">
 							<div>
 								<h2 className="text-2xl text-primary mb-4">Analyses:</h2>
 								{analyses.length === 0 ? (
 									<>
-										<p className="text-base text-base-content/80 mb-6">
+										<p className="text-base text-base-content mb-6">
 											No Analyses found. Submit a new analysis to get started.
 										</p>
 										<div className="mt-auto">
@@ -113,12 +113,12 @@ export default async function MySubmissions() {
 										</div>
 									</>
 								) : (
-									<div className="flex flex-col gap-3">
+									<div className="flex flex-col gap-3 mt-2">
 										{analyses.map((a) => (
 											<div key={a.id} className="flex items-center justify-between p-3 bg-base-100 rounded-lg">
 												<Link
 													href={`/explore/analysis/${encodeURIComponent(a.analysis_run_name)}`}
-													className="text-info hover:text-info-focus hover:underline transition-colors"
+													className="text-primary hover:text-info-focus hover:underline transition-colors"
 												>
 													{a.analysis_run_name}
 												</Link>
